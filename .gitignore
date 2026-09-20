@@ -1,0 +1,17 @@
+__pycache__/
+*.py[cod]
+*.egg-info/
+.eggs/
+.venv/
+venv/
+.env
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.ipynb_checkpoints/
+.streamlit/secrets.toml
+artifacts/*.joblib
+artifacts/*.pkl
+!artifacts/.gitkeep
+*.log
+.DS_Store
