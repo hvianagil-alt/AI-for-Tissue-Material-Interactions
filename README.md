@@ -17,8 +17,9 @@ The point of the MVP is not “AI for biology”. It is:
 
 | Piece | Status |
 |---|---|
-| Data schema for material + tissue + conditions + outcomes | Done |
-| 30 literature-extracted records from hydrogel–chondrocyte papers | Done |
+| SQLite experimental DB (`studies` / `experiments` / `measurements`) | Done — `data/tissuelab.sqlite` |
+| Native literature measurements (no fake porosity) | Done |
+| Mapped 0–100 scores + simulator (software prior only) | Still in the old CSV/ML path |
 | Literature-informed simulator (~650 records) | Done |
 | Baseline models (mean, Ridge, Random Forest, XGBoost) | Done |
 | Quantile uncertainty (10–90%) | Done |
@@ -27,7 +28,7 @@ The point of the MVP is not “AI for biology”. It is:
 | Streamlit app + FastAPI | Done |
 | Competitor / dataset landscape | `docs/LANDSCAPE.md` |
 
-The mixed dataset is intentional. There is no public table of `hydrogel properties × chondrocyte outcomes` large enough to train on. The simulator encodes directional findings from the papers (stiffness windows, TGF-β3, adhesive vs bioinert gels, degradable PEG). Literature rows are the reality check.
+The **source of truth for science** is `data/tissuelab.sqlite` (see `docs/DATA_MODEL.md`). The mixed CSV + simulator is only a software prior. Do not train a “result” on simulated labels.
 
 ## Quick start
 
@@ -36,6 +37,7 @@ python3 -m venv .venv
 source .venv/bin/activate
 pip install -e ".[dev]"
 
+python -m tissuelab.load_database
 python -m tissuelab.build_dataset
 python -m tissuelab.train
 pytest -q
