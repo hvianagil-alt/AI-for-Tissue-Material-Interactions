@@ -31,7 +31,7 @@ Harvest more papers only after the top 250 queued items are extracted or rejecte
 
 There is **no** public `material × chondrocyte × outcome` CSV. BIOMATDB and OOCDB are search portals. The better source we added is **Europe PMC open fulltext** (free XML), used before paid Amass fulltext.
 
-Current snapshot: **53 hand studies / 156 hand experiments / 42 numeric viability (15 papers)**; ~8.5k papers. Honest LOPO: dummy MAE **16.5**, Ridge MAE **22.6**, R² **−2.1**, `n_studies` 15, `mvp_pass` false. The first count bar (`n_studies ≥ 15`) is met; Ridge still loses to dummy. Remaining queue papers mostly lack a live/dead mean in prose (floors, ECM-matured moduli, or the wrong tissue).
+Current snapshot: **53 hand studies / 156 hand experiments / 42 numeric viability (15 papers)**; ~8.5k papers. Honest LOPO: dummy MAE **16.5**, material-mean MAE **16.4** (deployed), Ridge MAE **22.6** (not served), R² still negative, `n_studies` 15, `mvp_pass` false. The first count bar (`n_studies ≥ 15`) is met; the deployed estimator barely beats dummy. Remaining queue papers mostly lack a live/dead mean in prose (floors, ECM-matured moduli, or the wrong tissue).
 
 ## Step by step
 
@@ -48,7 +48,7 @@ Work the queue top-down (`data/extraction_queue.csv`). Target **40 papers → ~2
 
 Time: ~1.5–3 h per paper if you only take tables/text (not figure-digitizing). 40 papers ≈ **two focused weeks**.
 
-Exit: `n_studies ≥ 25`, `n_numeric_viability ≥ 80`. Re-run LOPO. **Pass bar v1:** Ridge LOPO MAE ≤ 85% of dummy MAE and R² > 0.
+Exit: `n_studies ≥ 25`, `n_numeric_viability ≥ 80`. Re-run LOPO. **Pass bar v1:** deployed tabular estimator LOPO MAE ≤ 85% of dummy MAE and R² > 0.
 
 ### Months 2–3 — one lab loop
 
@@ -94,7 +94,7 @@ Dummy LOPO is the competitor. A scientist using “GelMA ~25 kPa + TGF-β3” is
 python -m tissuelab.load_database    # curated + keep harvest
 python -m tissuelab.rank_papers      # fill extraction_queue (skips extracted)
 python -m tissuelab.benchmark        # honest LOPO on v_model_viability
-python -m tissuelab.train            # demo XGBoost + literature Ridge
+python -m tissuelab.train            # optional demo XGBoost; literature predictor does not need it
 ```
 
 Read the queue: `data/extraction_queue.csv`. Put new numbers only in `src/tissuelab/curated.py` (or a future curator UI), never in `paper_extractions`.

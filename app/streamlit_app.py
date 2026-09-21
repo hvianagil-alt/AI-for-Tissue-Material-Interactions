@@ -53,16 +53,30 @@ TARGET_LABELS = {
 
 @st.cache_resource
 def get_model():
+    """Simulator XGBoost only. Missing joblib must not block literature Predict."""
     if not MODEL_PATH.exists():
-        train_main()
+        return None
     return load_model()
 
 
 @st.cache_data
 def get_data():
     if not DATASET_PATH.exists():
-        train_main()
+        return None
     return load_dataset()
+
+
+@st.cache_data
+def literature_for(material_class: str, stiffness_kpa: float, cell_type: str, growth_factor: str, culture_time_days: int):
+    return predict_literature_viability(
+        {
+            "material_class": material_class,
+            "stiffness_kpa": stiffness_kpa,
+            "cell_type": cell_type,
+            "growth_factor": growth_factor,
+            "culture_time_days": culture_time_days,
+        }
+    )
 
 
 def radar_chart(values: dict, title: str, low: dict | None = None, high: dict | None = None) -> go.Figure:
@@ -181,20 +195,37 @@ def design_form(prefix: str, defaults: dict | None = None) -> dict:
     }
 
 
-def show_prediction(result, literature: dict | None = None) -> None:
-    if literature and literature.get("mean") is not None:
-        st.subheader("Published viability (hand-curated table)")
-        c1, c2, c3 = st.columns(3)
-        c1.metric("Literature viability", f"{literature['mean']:.0f}%", f"{literature['low']:.0f}–{literature['high']:.0f}")
-        lopo = literature.get("lopo") or {}
-        c2.metric("LOPO MAE (Ridge)", f"{lopo.get('ridge_mae', float('nan')):.1f}" if lopo.get("ridge_mae") is not None else "—")
-        c3.metric("Papers in split", lopo.get("n_studies") or "—")
-        st.caption("Interval is ± leave-one-paper-out MAE on numeric live/dead. Auto-promoted abstracts are not in this model.")
-        if literature.get("similar"):
-            st.markdown("Nearest **extracted** papers")
-            st.dataframe(pd.DataFrame(literature["similar"]), hide_index=True, use_container_width=True)
-        for note in literature.get("notes") or []:
-            st.info(note)
+def _lopo_mae_label(literature: dict) -> str:
+    deployed = (literature.get("lopo") or {}).get("deployed_estimator") or literature.get("estimator") or "material_mean"
+    return {
+        "material_mean": "LOPO MAE (material mean)",
+        "dummy": "LOPO MAE (dummy)",
+    }.get(deployed, "LOPO MAE")
+
+
+def show_literature(literature: dict) -> None:
+    st.subheader("Published viability (hand-curated table)")
+    if literature.get("mean") is None:
+        st.warning("No hand-curated live/dead rows yet. Run `python -m tissuelab.load_database`.")
+        return
+    c1, c2, c3 = st.columns(3)
+    c1.metric("Literature viability", f"{literature['mean']:.0f}%", f"{literature['low']:.0f}–{literature['high']:.0f}")
+    lopo = literature.get("lopo") or {}
+    mae = lopo.get("deployed_mae")
+    c2.metric(_lopo_mae_label(literature), f"{mae:.1f}" if mae is not None else "—")
+    c3.metric("Papers in split", lopo.get("n_studies") or "—")
+    st.caption(
+        "Interval is ± leave-one-paper-out MAE of the deployed estimator on numeric live/dead. "
+        "Auto-promoted abstracts are not in this model."
+    )
+    if literature.get("similar"):
+        st.markdown("Nearest **extracted** papers")
+        st.dataframe(pd.DataFrame(literature["similar"]), hide_index=True, use_container_width=True)
+    for note in literature.get("notes") or []:
+        st.info(note)
+
+
+def show_simulator(result) -> None:
     st.caption("The four scores below still include the simulator-informed demo model. Viability above is the scientific number.")
     cols = st.columns(4)
     for col, target in zip(cols, TARGETS):
@@ -218,9 +249,6 @@ def show_prediction(result, literature: dict | None = None) -> None:
     st.dataframe(pd.DataFrame(result.similar_experiments), hide_index=True, use_container_width=True)
 
 
-model = get_model()
-data = get_data()
-
 st.title("TissueLab AI")
 st.caption(
     "MVP 1 — Tissue Interaction Engine for **hydrogel → chondrocyte / cartilage**. "
@@ -235,9 +263,24 @@ tab_predict, tab_inverse, tab_next, tab_data, tab_about = st.tabs(
 with tab_predict:
     st.markdown("Enter a hydrogel and biological context. Published viability comes from hand-curated live/dead %. The four-outcome radar is still a demo prior.")
     design = design_form("predict")
-    if st.button("Predict tissue interaction", type="primary"):
-        lit = predict_literature_viability(design)
-        show_prediction(predict_design(model, design), literature=lit)
+    lit = literature_for(
+        design["material_class"],
+        float(design["stiffness_kpa"]),
+        design["cell_type"],
+        design["growth_factor"],
+        int(design["culture_time_days"]),
+    )
+    show_literature(lit)
+    model = get_model()
+    if model is None:
+        st.caption("Four-outcome radar is a simulator demo and is not required for the literature number.")
+        if st.button("Load demo radar (trains XGBoost if the joblib is missing)"):
+            train_main()
+            get_model.clear()
+            get_data.clear()
+            st.rerun()
+    else:
+        show_simulator(predict_design(model, design))
 
 with tab_inverse:
     st.markdown(
@@ -256,7 +299,10 @@ with tab_inverse:
         default=["GelMA", "fibrin", "HA", "alginate"],
     )
     max_stiffness = st.slider("Max stiffness (kPa)", 10, 200, 50)
-    if st.button("Propose candidate designs", type="primary"):
+    model = get_model()
+    if model is None:
+        st.info("Inverse design uses the simulator model, which is not on disk. Literature Predict still works.")
+    elif st.button("Propose candidate designs", type="primary"):
         constraints = {"stiffness_kpa_max": max_stiffness}
         if allowed:
             constraints["material_class"] = allowed
@@ -282,7 +328,10 @@ with tab_next:
         index=3,
     )
     n = st.slider("How many experiments to propose", 3, 8, 5)
-    if st.button("Recommend next experiments", type="primary"):
+    model = get_model()
+    if model is None:
+        st.info("Next-experiment ranking uses the simulator model, which is not on disk. Literature Predict still works.")
+    elif st.button("Recommend next experiments", type="primary"):
         recs = recommend_experiments(model, objective=objective, n=n)
         st.dataframe(
             recs[
@@ -306,8 +355,7 @@ with tab_next:
             st.caption(protocol_from_row(row))
 
 with tab_data:
-    n_lit = int((data["source"] == "literature").sum())
-    n_sim = int((data["source"] == "simulated_literature_informed").sum())
+    data = get_data()
     quality = json.loads(QUALITY_REPORT_PATH.read_text()) if QUALITY_REPORT_PATH.exists() else {}
     honest = json.loads(HONEST_METRICS_PATH.read_text()) if HONEST_METRICS_PATH.exists() else {}
     c1, c2, c3, c4 = st.columns(4)
@@ -321,11 +369,14 @@ with tab_data:
     )
     if honest:
         st.subheader("Honest metric (leave-one-paper-out viability)")
-        d1, d2, d3 = st.columns(3)
+        d1, d2, d3, d4 = st.columns(4)
         d1.metric("Dummy LOPO MAE", f"{honest['dummy_lopo']['mae']:.1f}" if "dummy_lopo" in honest else "—")
-        d2.metric("Ridge LOPO MAE", f"{honest['ridge_lopo']['mae']:.1f}" if "ridge_lopo" in honest else "—")
-        d3.metric("MVP pass", "yes" if honest.get("mvp_pass") else "not yet")
-        st.caption(honest.get("pass_bar", {}).get("description", ""))
+        material_mae = (honest.get("material_mean_lopo") or {}).get("mae")
+        d2.metric("Material-mean LOPO MAE", f"{material_mae:.1f}" if material_mae is not None else "—")
+        d3.metric("Ridge LOPO MAE", f"{honest['ridge_lopo']['mae']:.1f}" if "ridge_lopo" in honest else "—")
+        d4.metric("MVP pass", "yes" if honest.get("mvp_pass") else "not yet")
+        deployed = honest.get("deployed_estimator") or "—"
+        st.caption(f"Deployed estimator: **{deployed}**. " + (honest.get("pass_bar", {}) or {}).get("description", ""))
     if EXTRACTION_QUEUE_PATH.exists():
         queue = pd.read_csv(EXTRACTION_QUEUE_PATH)
         st.subheader("Next papers to extract")
@@ -346,39 +397,44 @@ with tab_data:
         native = pd.read_csv(NATIVE_EXPORT_PATH)
         st.subheader("All measurements (native units, includes inventory rows)")
         st.dataframe(native.head(80), use_container_width=True, hide_index=True)
-    st.markdown("Mapped CSV used by the demo four-outcome model (includes simulator rows):")
-    c1, c2, c3 = st.columns(3)
-    c1.metric("CSV records", len(data))
-    c2.metric("Literature-extracted", n_lit)
-    c3.metric("Simulator-generated", n_sim)
-    st.dataframe(data.head(50), use_container_width=True, hide_index=True)
-    st.download_button("Download full CSV", data.to_csv(index=False), "hydrogel_chondrocyte_records.csv", "text/csv")
-    left, right = st.columns(2)
-    with left:
-        counts = data.groupby("material_class").size().reset_index(name="n")
-        fig = go.Figure(go.Bar(x=counts["material_class"], y=counts["n"], marker_color="#3ecfb2"))
-        fig.update_layout(title="Records by hydrogel", paper_bgcolor="rgba(0,0,0,0)", font=dict(color="#e8eef7"), height=360)
-        st.plotly_chart(fig, use_container_width=True)
-    with right:
-        lit = data[data["source"] == "literature"]
-        fig = go.Figure(
-            go.Scatter(
-                x=lit["stiffness_kpa"],
-                y=lit["ecm_deposition_score"],
-                mode="markers",
-                text=lit["material_class"] + " — " + lit["citation"].fillna(""),
-                marker=dict(size=10, color="#f4b942"),
+    if data is None:
+        st.caption("Mapped CSV is optional. Literature viability does not need it.")
+    else:
+        n_lit = int((data["source"] == "literature").sum())
+        n_sim = int((data["source"] == "simulated_literature_informed").sum())
+        st.markdown("Mapped CSV used by the demo four-outcome model (includes simulator rows):")
+        c1, c2, c3 = st.columns(3)
+        c1.metric("CSV records", len(data))
+        c2.metric("Literature-extracted", n_lit)
+        c3.metric("Simulator-generated", n_sim)
+        st.dataframe(data.head(50), use_container_width=True, hide_index=True)
+        st.download_button("Download full CSV", data.to_csv(index=False), "hydrogel_chondrocyte_records.csv", "text/csv")
+        left, right = st.columns(2)
+        with left:
+            counts = data.groupby("material_class").size().reset_index(name="n")
+            fig = go.Figure(go.Bar(x=counts["material_class"], y=counts["n"], marker_color="#3ecfb2"))
+            fig.update_layout(title="Records by hydrogel", paper_bgcolor="rgba(0,0,0,0)", font=dict(color="#e8eef7"), height=360)
+            st.plotly_chart(fig, use_container_width=True)
+        with right:
+            lit_rows = data[data["source"] == "literature"]
+            fig = go.Figure(
+                go.Scatter(
+                    x=lit_rows["stiffness_kpa"],
+                    y=lit_rows["ecm_deposition_score"],
+                    mode="markers",
+                    text=lit_rows["material_class"] + " — " + lit_rows["citation"].fillna(""),
+                    marker=dict(size=10, color="#f4b942"),
+                )
             )
-        )
-        fig.update_layout(
-            title="Literature: stiffness vs ECM score",
-            xaxis_title="kPa",
-            yaxis_title="ECM score",
-            paper_bgcolor="rgba(0,0,0,0)",
-            font=dict(color="#e8eef7"),
-            height=360,
-        )
-        st.plotly_chart(fig, use_container_width=True)
+            fig.update_layout(
+                title="Literature: stiffness vs ECM score",
+                xaxis_title="kPa",
+                yaxis_title="ECM score",
+                paper_bgcolor="rgba(0,0,0,0)",
+                font=dict(color="#e8eef7"),
+                height=360,
+            )
+            st.plotly_chart(fig, use_container_width=True)
 
 with tab_about:
     st.markdown(
@@ -411,7 +467,8 @@ See `docs/ROADMAP.md` for the path from this table to a lab-changing product, an
     if HONEST_METRICS_PATH.exists():
         st.subheader("Honest LOPO viability")
         st.json(json.loads(HONEST_METRICS_PATH.read_text()))
-    holdout = model.metrics.get("xgboost_holdout", {})
+    model = get_model()
+    holdout = (model.metrics.get("xgboost_holdout", {}) if model is not None else {})
     if holdout:
         st.subheader("Simulated-holdout metrics (not the product bar)")
         st.json(holdout)

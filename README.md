@@ -19,7 +19,7 @@ The point of the MVP is not “AI for biology”. It is:
 |---|---|
 | SQLite experimental DB (`studies` / `experiments` / `measurements`) | Done — `data/tissuelab.sqlite` |
 | Hand-curated live/dead training view (`v_model_viability`) | Done — `data/literature_viability.csv` |
-| Literature viability Ridge ± LOPO MAE | Done (does not beat dummy yet) |
+| Literature viability (material-class mean ± LOPO MAE) | Done (barely beats dummy; R² still < 0) |
 | Native literature measurements (no fake porosity) | Done |
 | Mapped 0–100 scores + simulator (software prior only) | Still in the old CSV/ML path |
 | Literature-informed simulator (~650 records) | Done |
@@ -50,13 +50,13 @@ streamlit run app/streamlit_app.py
 uvicorn app.api:app --reload --port 8000
 ```
 
-Open the app, go to **Predict**, keep the default GelMA ~25 kPa chondrocyte encapsulation, and run a prediction. The **literature viability** number and nearest extracted papers are the scientific output. The four-outcome radar is still a simulator-informed demo.
+Open the app, go to **Predict**, keep the default GelMA ~25 kPa chondrocyte encapsulation. Literature viability and nearest extracted papers run automatically. The four-outcome radar is still a simulator-informed demo and is skipped if the XGBoost joblib is not on disk.
 
 ## How to read the numbers
 
-- **Literature viability** is trained only on published live/dead % in `v_model_viability`. The band is ± leave-one-paper-out MAE, not a biological CI.
+- **Literature viability** is the material-class mean of published live/dead % in `v_model_viability` (unseen gels fall back to the global mean). The band is ± leave-one-paper-out MAE of that estimator, not a biological CI.
 - **Proliferation / differentiation / ECM** in the radar are mapped 0–100 scores plus a simulator prior. Do not cite them as measurements.
-- Ridge does **not** yet beat a dummy mean under LOPO. Use nearest extracted papers to choose the next gel.
+- Material-class mean **barely** beats a dummy mean under LOPO. Ridge loses and is **not** served. Use nearest extracted papers to choose the next gel.
 
 ### Current baseline
 
@@ -66,10 +66,11 @@ Open the app, go to **Predict**, keep the default GelMA ~25 kPa chondrocyte enca
 | Hand experiments | 156 |
 | Numeric live/dead (training) | 42 rows / 15 papers |
 | Dummy LOPO MAE | 16.5 |
-| Ridge LOPO MAE | 22.6 (does not beat dummy) |
+| Material-mean LOPO MAE | 16.4 (deployed; barely beats dummy) |
+| Ridge LOPO MAE | 22.6 (not deployed) |
 | Simulated XGBoost holdout R² | ~0.92 — **ignore** for science |
 
-The product is ready to **use as an evidence table**. It is not ready to claim a model that beats “GelMA ~25 kPa + TGF-β3”.
+The product is ready to **use as Predict**: literature viability + nearest extracted papers. It is not ready to claim a model that beats “GelMA ~25 kPa + TGF-β3”.
 
 ## Project layout
 

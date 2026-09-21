@@ -18,7 +18,7 @@ Rebuild curated tables (keeps any Amass harvest already in the sqlite file):
 python -m tissuelab.load_database
 python -m tissuelab.rank_papers
 python -m tissuelab.benchmark
-python -m tissuelab.train
+# python -m tissuelab.train   # optional simulator joblib; literature Predict does not need it
 ```
 
 Harvest BiomedCore (needs `AMASS_API_KEY` in `.env`; billed search):

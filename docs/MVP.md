@@ -38,6 +38,6 @@ Train viability only on `v_model_viability` / `data/literature_viability.csv`. A
 
 ## Model policy
 
-Start tabular (Ridge, RF, XGBoost). Quantile XGBoost for uncertainty.
-The number on the box is **LOPO viability**, not simulated holdout R².
+The served literature number is the **material-class mean** of published live/dead % (Ridge is reported in `artifacts/honest_benchmark.json` but not deployed because it loses to dummy). Quantile XGBoost remains a simulator demo for the four-outcome radar.
+The number on the box is **LOPO viability of the deployed estimator**, not simulated holdout R².
 Gaussian Processes and mechanistic residuals are the Phase 4/physics+data step, not v0.1.

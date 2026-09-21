@@ -42,7 +42,9 @@ def main() -> None:
     lopo = lit.get("lopo") or {}
     print(
         "Literature LOPO: n_studies="
-        f"{lopo.get('n_studies')}  ridge_mae={((lopo.get('ridge_lopo') or {}).get('mae'))}  "
+        f"{lopo.get('n_studies')}  deployed={lopo.get('deployed_estimator')}  "
+        f"deployed_mae={((lopo.get('deployed_lopo') or {}).get('mae'))}  "
+        f"ridge_mae={((lopo.get('ridge_lopo') or {}).get('mae'))}  "
         f"mvp_pass={lopo.get('mvp_pass')}"
     )
     print("\nHoldout XGBoost")

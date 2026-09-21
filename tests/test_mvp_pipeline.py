@@ -62,3 +62,39 @@ def test_lopo_too_few_studies():
     )
     report = leave_one_paper_out(frame)
     assert report["status"] == "too_few_studies"
+
+
+def test_material_mean_lopo_beats_dummy_when_materials_differ():
+    import pandas as pd
+    from tissuelab.benchmark import leave_one_paper_out
+
+    rows = []
+    for i, (study, material, value) in enumerate(
+        [
+            ("s1", "GelMA", 90.0),
+            ("s1", "GelMA", 88.0),
+            ("s2", "GelMA", 92.0),
+            ("s2", "alginate", 40.0),
+            ("s3", "alginate", 42.0),
+            ("s3", "alginate", 38.0),
+            ("s4", "GelMA", 91.0),
+            ("s4", "alginate", 41.0),
+        ]
+    ):
+        rows.append(
+            {
+                "study_id": study,
+                "viability_pct": value,
+                "stiffness_kpa": 20.0,
+                "polymer_concentration_wt_pct": 8.0,
+                "culture_time_days": 14.0,
+                "material_class": material,
+                "cell_type": "articular_chondrocyte",
+                "experiment_id": f"e{i}",
+            }
+        )
+    report = leave_one_paper_out(pd.DataFrame(rows))
+    assert report["material_mean_lopo"]["mae"] < report["dummy_lopo"]["mae"]
+    assert report["deployed_estimator"] == "material_mean"
+    assert report["beats_dummy"] is True
+    assert "ridge_lopo" in report
