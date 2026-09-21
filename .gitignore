@@ -14,4 +14,4 @@ artifacts/*.joblib
 artifacts/*.pkl
 !artifacts/.gitkeep
 *.log
-.DS_Store
+data/fulltext_cache/

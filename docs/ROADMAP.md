@@ -29,6 +29,8 @@ The product question is unchanged:
 
 Harvest more papers only after the top 250 queued items are extracted or rejected. Extra abstracts without labels are search quality, not model quality.
 
+Current snapshot after auto-promotion (low confidence, `pmid*` studies): ~43 studies / ~95 experiments / ~61 numeric viability. Honest LOPO now runs on ~35 papers: Ridge barely beats dummy (R² ~0.05). That is still **not** `mvp_pass`.
+
 ## Step by step
 
 ### Now (week 0) — done in this commit

@@ -1,9 +1,9 @@
 {
-  "n_studies": 11,
-  "n_experiments": 47,
-  "n_measurements": 91,
-  "n_numeric_viability": 13,
-  "n_with_stiffness_kpa": 31,
+  "n_studies": 43,
+  "n_experiments": 95,
+  "n_measurements": 139,
+  "n_numeric_viability": 61,
+  "n_with_stiffness_kpa": 38,
   "experiments_per_study": {
     "bachmann2020": 18,
     "bryant2004": 3,
@@ -12,31 +12,63 @@
     "dekosky2010": 3,
     "li2016": 3,
     "ma2012": 5,
+    "pmid17148854": 1,
+    "pmid17208295": 1,
+    "pmid17417949": 1,
+    "pmid19341919": 3,
+    "pmid20704471": 1,
+    "pmid22776769": 1,
+    "pmid23172542": 1,
+    "pmid23571151": 2,
+    "pmid23934174": 1,
+    "pmid24249698": 2,
+    "pmid24275437": 2,
+    "pmid24770944": 1,
+    "pmid25806996": 1,
+    "pmid26347860": 3,
+    "pmid27106636": 1,
+    "pmid27566509": 1,
+    "pmid27612810": 1,
+    "pmid28586346": 1,
+    "pmid28611002": 2,
+    "pmid28986174": 1,
+    "pmid32999847": 1,
+    "pmid33367226": 3,
+    "pmid34970927": 1,
+    "pmid36566553": 2,
+    "pmid36826873": 1,
+    "pmid37177235": 1,
+    "pmid37692373": 1,
+    "pmid37835986": 3,
+    "pmid38002439": 1,
+    "pmid38671751": 3,
+    "pmid41590061": 2,
+    "pmid41916393": 1,
     "schuh2012": 2,
     "sridhar2015": 2,
     "thomas2017": 2,
     "zhang2024": 3
   },
   "experiments_per_cell_type": {
-    "MSC": 11,
-    "articular_chondrocyte": 36
+    "MSC": 20,
+    "articular_chondrocyte": 75
   },
   "measurements_per_assay": {
     "col2_col1_ratio": 2,
     "dna_fold_vs_day0": 7,
     "morphology_spherical": 17,
     "sgag_histology": 36,
-    "viability_pct": 29
+    "viability_pct": 77
   },
   "measurements_per_evidence": {
-    "numeric_text": 15,
+    "numeric_text": 63,
     "qualitative_text": 76
   },
   "percent_missing": {
-    "stiffness_kpa": 34.0,
-    "polymer_concentration_wt_pct": 27.7,
-    "species": 14.9,
-    "passage": 51.1,
+    "stiffness_kpa": 60.0,
+    "polymer_concentration_wt_pct": 64.2,
+    "species": 12.6,
+    "passage": 75.8,
     "porosity_pct": 100.0
   },
   "modeling_notes": [
@@ -45,10 +77,12 @@
     "Do not impute missing stiffness as 0; keep NA and use models that allow missing values or restrict to complete cases.",
     "Ordinal histology is within-paper rank, not a universal 0\u20131 scale \u2014 do not pool as if it were sGAG/DNA.",
     "New cell types add vocab_cell_types + assays; they do not get new columns on experiments.",
-    "Amass papers live in `papers`; regex hits in `paper_extractions` are not training labels."
+    "Amass papers live in `papers`; regex hits in `paper_extractions` are not training labels.",
+    "Auto-promoted pmid* studies are low-confidence abstract/fulltext numbers; prefer hand-curated rows when they disagree."
   ],
   "n_amass_papers": 8062,
   "n_amass_extractions": 22276,
   "n_extraction_queue": 250,
-  "n_mvp_relevant_papers": 1941
+  "n_mvp_relevant_papers": 1941,
+  "n_auto_promoted_studies": 32
 }

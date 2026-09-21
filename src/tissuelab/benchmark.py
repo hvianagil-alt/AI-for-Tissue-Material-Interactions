@@ -98,8 +98,8 @@ def leave_one_paper_out(frame: pd.DataFrame) -> dict:
         },
         "notes": [
             "This is the MVP scientific metric. Simulated holdout R² is not.",
-            "Negative R² with n=13 is expected: too few papers, strong study effects.",
-            "Do not add regex abstract % into v_model_viability to inflate this number.",
+            "Auto-promoted pmid* rows are low-confidence; a human pass on the queue still matters.",
+            "Do not add unpaired regex hits to inflate n_rows.",
         ],
         "status": "baseline",
     }

@@ -41,6 +41,8 @@ python -m tissuelab.load_database
 # optional: Amass literature harvest (requires AMASS_API_KEY in .env)
 python -m tissuelab.harvest_amass
 python -m tissuelab.rank_papers
+python -m tissuelab.ingest_literature
+python -m tissuelab.load_database
 python -m tissuelab.benchmark
 python -m tissuelab.build_dataset
 python -m tissuelab.train
@@ -89,6 +91,8 @@ See `docs/ROADMAP.md`. In short: **do not grow the paper harvest**. Extract the 
 
 ```bash
 python -m tissuelab.rank_papers
+python -m tissuelab.ingest_literature
+python -m tissuelab.load_database
 python -m tissuelab.benchmark
 ```
 

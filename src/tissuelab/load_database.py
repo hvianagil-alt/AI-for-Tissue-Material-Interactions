@@ -10,6 +10,7 @@ import pandas as pd
 
 from tissuelab.curated import EXPERIMENTS, STUDIES
 from tissuelab.db import connect, init_schema
+from tissuelab.ingest_literature import load_promoted
 from tissuelab.paths import DATA_DIR, DB_PATH, NATIVE_EXPORT_PATH, QUALITY_REPORT_PATH
 
 HARVEST_TABLES = (
@@ -84,6 +85,7 @@ def quality_report(conn) -> dict:
             "Ordinal histology is within-paper rank, not a universal 0–1 scale — do not pool as if it were sGAG/DNA.",
             "New cell types add vocab_cell_types + assays; they do not get new columns on experiments.",
             "Amass papers live in `papers`; regex hits in `paper_extractions` are not training labels.",
+            "Auto-promoted pmid* studies are low-confidence abstract/fulltext numbers; prefer hand-curated rows when they disagree.",
         ],
     }
     tables = {
@@ -97,6 +99,9 @@ def quality_report(conn) -> dict:
         report["n_mvp_relevant_papers"] = conn.execute(
             "SELECT COUNT(*) FROM paper_scores WHERE is_mvp_relevant = 1"
         ).fetchone()[0]
+    report["n_auto_promoted_studies"] = conn.execute(
+        "SELECT COUNT(*) FROM studies WHERE study_id LIKE 'pmid%'"
+    ).fetchone()[0]
     return report
 
 
@@ -144,11 +149,23 @@ def load(path=DB_PATH):
         path.unlink()
     conn = connect(path)
     init_schema(conn)
-    for study in STUDIES:
-        cols = ",".join(study.keys())
-        placeholders = ",".join(["?"] * len(study))
-        conn.execute(f"INSERT INTO studies ({cols}) VALUES ({placeholders})", tuple(study.values()))
-    for exp in EXPERIMENTS:
+    promoted_studies, promoted_experiments = load_promoted()
+    all_studies = list(STUDIES) + promoted_studies
+    all_experiments = list(EXPERIMENTS) + promoted_experiments
+    seen_study = set()
+    for study in all_studies:
+        if study["study_id"] in seen_study:
+            continue
+        seen_study.add(study["study_id"])
+        payload = {k: v for k, v in study.items() if k != "amass_id"}
+        cols = ",".join(payload.keys())
+        placeholders = ",".join(["?"] * len(payload))
+        conn.execute(f"INSERT INTO studies ({cols}) VALUES ({placeholders})", tuple(payload.values()))
+    seen_exp = set()
+    for exp in all_experiments:
+        if exp["experiment_id"] in seen_exp:
+            continue
+        seen_exp.add(exp["experiment_id"])
         payload = {key: exp.get(key) for key in EXP_COLUMNS}
         payload["tissue"] = payload.get("tissue") or "cartilage"
         cols = ",".join(payload.keys())

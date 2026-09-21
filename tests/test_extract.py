@@ -1,4 +1,4 @@
-from tissuelab.extract import extract_from_abstract
+from tissuelab.extract import extract_conditions, extract_from_abstract
 from tissuelab.load_database import load
 from tissuelab.paths import DB_PATH
 
@@ -19,6 +19,19 @@ def test_extract_numeric_candidates_are_flagged_low():
     assert viab[0]["confidence"] == "low"
     mats = {r["value_text"] for r in rows if r["field"] == "material_class"}
     assert "GelMA" in mats
+
+
+def test_extract_conditions_pairs_sentence_numbers():
+    rows = extract_conditions(
+        "GelMA cartilage hydrogel",
+        "Chondrocytes in GelMA showed 92% viability at 25 kPa after 14 days.",
+    )
+    assert len(rows) == 1
+    assert rows[0]["viability_pct"] == 92.0
+    assert rows[0]["stiffness_kpa"] == 25.0
+    assert rows[0]["paired_stiffness"] is True
+    assert rows[0]["material_class"] == "GelMA"
+    assert rows[0]["cell_type"] == "articular_chondrocyte"
 
 
 def test_load_preserves_amass_papers(tmp_path):

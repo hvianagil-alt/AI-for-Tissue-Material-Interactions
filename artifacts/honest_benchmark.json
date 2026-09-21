@@ -1,20 +1,52 @@
 {
-  "n_rows": 13,
-  "n_studies": 3,
+  "n_rows": 61,
+  "n_studies": 35,
   "studies": [
     "bachmann2020",
     "daly2016",
+    "pmid17148854",
+    "pmid17208295",
+    "pmid17417949",
+    "pmid19341919",
+    "pmid20704471",
+    "pmid22776769",
+    "pmid23172542",
+    "pmid23571151",
+    "pmid23934174",
+    "pmid24249698",
+    "pmid24275437",
+    "pmid24770944",
+    "pmid25806996",
+    "pmid26347860",
+    "pmid27106636",
+    "pmid27566509",
+    "pmid27612810",
+    "pmid28586346",
+    "pmid28611002",
+    "pmid28986174",
+    "pmid32999847",
+    "pmid33367226",
+    "pmid34970927",
+    "pmid36566553",
+    "pmid36826873",
+    "pmid37177235",
+    "pmid37692373",
+    "pmid37835986",
+    "pmid38002439",
+    "pmid38671751",
+    "pmid41590061",
+    "pmid41916393",
     "zhang2024"
   ],
-  "viability_mean": 80.28769230769231,
-  "viability_std": 24.315212712019797,
+  "viability_mean": 82.09983606557377,
+  "viability_std": 15.031736037664142,
   "dummy_lopo": {
-    "mae": 13.904786324786322,
-    "r2": -0.09299843766951521
+    "mae": 10.388821617834074,
+    "r2": -0.029300739981169333
   },
   "ridge_lopo": {
-    "mae": 23.294475025208744,
-    "r2": -1.951851656261859
+    "mae": 10.132537532740361,
+    "r2": 0.05270660731590404
   },
   "pass_bar": {
     "description": "Ridge LOPO MAE at least 15% below dummy LOPO, R\u00b2 > 0, n_studies >= 15.",
@@ -23,10 +55,10 @@
   },
   "notes": [
     "This is the MVP scientific metric. Simulated holdout R\u00b2 is not.",
-    "Negative R\u00b2 with n=13 is expected: too few papers, strong study effects.",
-    "Do not add regex abstract % into v_model_viability to inflate this number."
+    "Auto-promoted pmid* rows are low-confidence; a human pass on the queue still matters.",
+    "Do not add unpaired regex hits to inflate n_rows."
   ],
   "status": "baseline",
-  "beats_dummy": false,
+  "beats_dummy": true,
   "mvp_pass": false
 }

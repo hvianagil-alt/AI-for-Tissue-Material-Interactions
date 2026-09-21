@@ -7,7 +7,7 @@
 | `amass_papers.csv` | Harvest index (no abstracts — those stay in SQLite). |
 | `amass_extractions.csv` | Regex candidates from abstracts. Not ground truth. |
 | `amass_harvest_report.json` | Paper counts, year coverage, extraction tallies. |
-| `extraction_queue.csv` | Ranked papers to extract next. Reading list, not labels. |
+| `promoted_literature.json` | Auto-extracted conditions from abstracts/fulltext. Low confidence. |
 | `quality_report.json` | Counts, missingness, modeling notes. |
 | `hydrogel_chondrocyte_records.csv` | Older mixed literature+simulator table for the v0.1 ML demo. Not scientific ground truth. |
 

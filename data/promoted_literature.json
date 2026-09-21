@@ -1,0 +1,1665 @@
+{
+  "generated_at": "2026-09-21T09:23:39Z",
+  "n_candidates": 57,
+  "n_fulltext_fetched": 36,
+  "n_studies": 32,
+  "n_experiments": 48,
+  "n_with_stiffness": 7,
+  "studies": [
+    {
+      "study_id": "pmid37692373",
+      "citation": "Sattwikesh Paul et al., APL bioengineering 2023",
+      "doi": "10.1063/5.0160472",
+      "year": 2023,
+      "journal": "APL bioengineering",
+      "pmcid": "PMC10492648",
+      "license": "amass_index",
+      "tissue_focus": "cartilage",
+      "notes": "Auto-promoted from abstract+fulltext; numbers need human review."
+    },
+    {
+      "study_id": "pmid24275437",
+      "citation": "Donald L. Zignego et al., Journal of biomechanics 2014",
+      "doi": "10.1016/j.jbiomech.2013.10.051",
+      "year": 2014,
+      "journal": "Journal of biomechanics",
+      "pmcid": "PMC4014520",
+      "license": "amass_index",
+      "tissue_focus": "cartilage",
+      "notes": "Auto-promoted from abstract+fulltext; numbers need human review."
+    },
+    {
+      "study_id": "pmid28611002",
+      "citation": "Aaron X. Sun et al., Acta biomaterialia 2017",
+      "doi": "10.1016/j.actbio.2017.06.016",
+      "year": 2017,
+      "journal": "Acta biomaterialia",
+      "pmcid": "PMC5813286",
+      "license": "amass_index",
+      "tissue_focus": "cartilage",
+      "notes": "Auto-promoted from abstract+fulltext; numbers need human review."
+    },
+    {
+      "study_id": "pmid37835986",
+      "citation": "Mario Alberto Pérez-Díaz et al., Polymers 2023",
+      "doi": "10.3390/polym15193938",
+      "year": 2023,
+      "journal": "Polymers",
+      "pmcid": "PMC10574893",
+      "license": "amass_index",
+      "tissue_focus": "cartilage",
+      "notes": "Auto-promoted from abstract+fulltext; numbers need human review."
+    },
+    {
+      "study_id": "pmid26347860",
+      "citation": "Aaron X. Sun et al., Frontiers in bioengineering and biotechnology 2015",
+      "doi": "10.3389/fbioe.2015.00115",
+      "year": 2015,
+      "journal": "Frontiers in bioengineering and biotechnology",
+      "pmcid": "PMC4539543",
+      "license": "amass_index",
+      "tissue_focus": "cartilage",
+      "notes": "Auto-promoted from abstract+fulltext; numbers need human review."
+    },
+    {
+      "study_id": "pmid32999847",
+      "citation": "Benjamin Kessel et al., Advanced science (Weinheim, Baden-Wurttemberg, Germany) 2020",
+      "doi": "10.1002/advs.202001419",
+      "year": 2020,
+      "journal": "Advanced science (Weinheim, Baden-Wurttemberg, Germany)",
+      "pmcid": "PMC7509724",
+      "license": "amass_index",
+      "tissue_focus": "cartilage",
+      "notes": "Auto-promoted from abstract+fulltext; numbers need human review."
+    },
+    {
+      "study_id": "pmid41590061",
+      "citation": "Antonio Rojas-Murillo et al., Gels (Basel, Switzerland) 2025",
+      "doi": "10.3390/gels12010035",
+      "year": 2025,
+      "journal": "Gels (Basel, Switzerland)",
+      "pmcid": "PMC12841122",
+      "license": "amass_index",
+      "tissue_focus": "cartilage",
+      "notes": "Auto-promoted from abstract+fulltext; numbers need human review."
+    },
+    {
+      "study_id": "pmid38671751",
+      "citation": "Alexandra H. Aitchison et al., Bioengineering (Basel, Switzerland) 2024",
+      "doi": "10.3390/bioengineering11040329",
+      "year": 2024,
+      "journal": "Bioengineering (Basel, Switzerland)",
+      "pmcid": "PMC11048018",
+      "license": "amass_index",
+      "tissue_focus": "cartilage",
+      "notes": "Auto-promoted from abstract+fulltext; numbers need human review."
+    },
+    {
+      "study_id": "pmid36566553",
+      "citation": "Jiannan Li et al., Biomaterials 2023",
+      "doi": "10.1016/j.biomaterials.2022.121969",
+      "year": 2023,
+      "journal": "Biomaterials",
+      "pmcid": "PMC9868087",
+      "license": "amass_index",
+      "tissue_focus": "cartilage",
+      "notes": "Auto-promoted from abstract+fulltext; numbers need human review."
+    },
+    {
+      "study_id": "pmid19341919",
+      "citation": "Venkat Seshadri et al., Arthroscopy : the journal of arthroscopic & related surgery : official publication of the Arthroscopy Association of North America and the International Arthroscopy Association 2009",
+      "doi": "10.1016/j.arthro.2009.01.003",
+      "year": 2009,
+      "journal": "Arthroscopy : the journal of arthroscopic & related surgery : official publication of the Arthroscopy Association of North America and the International Arthroscopy Association",
+      "pmcid": "PMC6548446",
+      "license": "amass_index",
+      "tissue_focus": "cartilage",
+      "notes": "Auto-promoted from abstract+fulltext; numbers need human review."
+    },
+    {
+      "study_id": "pmid27106636",
+      "citation": "Laura Hockaday Kang et al., Annals of biomedical engineering 2017",
+      "doi": "10.1007/s10439-016-1619-1",
+      "year": 2017,
+      "journal": "Annals of biomedical engineering",
+      "pmcid": "PMC5075276",
+      "license": "amass_index",
+      "tissue_focus": "cartilage",
+      "notes": "Auto-promoted from abstract+fulltext; numbers need human review."
+    },
+    {
+      "study_id": "pmid28586346",
+      "citation": "Michelle T. Poldervaart et al., PloS one 2017",
+      "doi": "10.1371/journal.pone.0177628",
+      "year": 2017,
+      "journal": "PloS one",
+      "pmcid": "PMC5460858",
+      "license": "amass_index",
+      "tissue_focus": "cartilage",
+      "notes": "Auto-promoted from abstract+fulltext; numbers need human review."
+    },
+    {
+      "study_id": "pmid38002439",
+      "citation": "Megan Hamilton et al., Bioengineering (Basel, Switzerland) 2023",
+      "doi": "10.3390/bioengineering10111315",
+      "year": 2023,
+      "journal": "Bioengineering (Basel, Switzerland)",
+      "pmcid": "PMC10669156",
+      "license": "amass_index",
+      "tissue_focus": "cartilage",
+      "notes": "Auto-promoted from abstract+fulltext; numbers need human review."
+    },
+    {
+      "study_id": "pmid23571151",
+      "citation": "Limin Wang et al., Cells, tissues, organs 2013",
+      "doi": "10.1159/000348359",
+      "year": 2013,
+      "journal": "Cells, tissues, organs",
+      "pmcid": "PMC3711684",
+      "license": "amass_index",
+      "tissue_focus": "cartilage",
+      "notes": "Auto-promoted from abstract+fulltext; numbers need human review."
+    },
+    {
+      "study_id": "pmid33367226",
+      "citation": "Seyedsina Moeinzadeh et al., Materialia 2021",
+      "doi": "10.1016/j.mtla.2020.100954",
+      "year": 2021,
+      "journal": "Materialia",
+      "pmcid": "PMC7751945",
+      "license": "amass_index",
+      "tissue_focus": "cartilage",
+      "notes": "Auto-promoted from abstract+fulltext; numbers need human review."
+    },
+    {
+      "study_id": "pmid27612810",
+      "citation": "Lin Wang et al., Materials science & engineering. C, Materials for biological applications 2016",
+      "doi": "10.1016/j.msec.2016.08.019",
+      "year": 2016,
+      "journal": "Materials science & engineering. C, Materials for biological applications",
+      "pmcid": "PMC5609678",
+      "license": "amass_index",
+      "tissue_focus": "cartilage",
+      "notes": "Auto-promoted from abstract+fulltext; numbers need human review."
+    },
+    {
+      "study_id": "pmid37177235",
+      "citation": "Rachasit Jeencham et al., Polymers 2023",
+      "doi": "10.3390/polym15092092",
+      "year": 2023,
+      "journal": "Polymers",
+      "pmcid": "PMC10180748",
+      "license": "amass_index",
+      "tissue_focus": "cartilage",
+      "notes": "Auto-promoted from abstract+fulltext; numbers need human review."
+    },
+    {
+      "study_id": "pmid24249698",
+      "citation": "Kee W. Jang et al., Journal of orthopaedic research : official publication of the Orthopaedic Research Society 2014",
+      "doi": "10.1002/jor.22523",
+      "year": 2014,
+      "journal": "Journal of orthopaedic research : official publication of the Orthopaedic Research Society",
+      "pmcid": "PMC4034578",
+      "license": "amass_index",
+      "tissue_focus": "cartilage",
+      "notes": "Auto-promoted from abstract+fulltext; numbers need human review."
+    },
+    {
+      "study_id": "pmid36826873",
+      "citation": "Danielle Benigno de Andrade et al., Journal of functional biomaterials 2023",
+      "doi": "10.3390/jfb14020074",
+      "year": 2023,
+      "journal": "Journal of functional biomaterials",
+      "pmcid": "PMC9961749",
+      "license": "amass_index",
+      "tissue_focus": "cartilage",
+      "notes": "Auto-promoted from abstract+fulltext; numbers need human review."
+    },
+    {
+      "study_id": "pmid28986174",
+      "citation": "Xia Chen et al., Cytotherapy 2017",
+      "doi": "10.1016/j.jcyt.2017.08.016",
+      "year": 2017,
+      "journal": "Cytotherapy",
+      "pmcid": "PMC5723234",
+      "license": "amass_index",
+      "tissue_focus": "cartilage",
+      "notes": "Auto-promoted from abstract+fulltext; numbers need human review."
+    },
+    {
+      "study_id": "pmid41916393",
+      "citation": "Yizi Ye et al., Biofabrication 2026",
+      "doi": "10.1088/1758-5090/ae59b5",
+      "year": 2026,
+      "journal": "Biofabrication",
+      "pmcid": null,
+      "license": "amass_index",
+      "tissue_focus": "cartilage",
+      "notes": "Auto-promoted from abstract; numbers need human review."
+    },
+    {
+      "study_id": "pmid20704471",
+      "citation": "Andrew D. Rouillard et al., Tissue engineering. Part C, Methods 2011",
+      "doi": "10.1089/ten.TEC.2009.0582",
+      "year": 2011,
+      "journal": "Tissue engineering. Part C, Methods",
+      "pmcid": null,
+      "license": "amass_index",
+      "tissue_focus": "cartilage",
+      "notes": "Auto-promoted from abstract; numbers need human review."
+    },
+    {
+      "study_id": "pmid25806996",
+      "citation": "Kajsa Markstedt et al., Biomacromolecules 2015",
+      "doi": "10.1021/acs.biomac.5b00188",
+      "year": 2015,
+      "journal": "Biomacromolecules",
+      "pmcid": null,
+      "license": "amass_index",
+      "tissue_focus": "cartilage",
+      "notes": "Auto-promoted from abstract; numbers need human review."
+    },
+    {
+      "study_id": "pmid23172542",
+      "citation": "Tao Xu et al., Biofabrication 2013",
+      "doi": "10.1088/1758-5082/5/1/015001",
+      "year": 2013,
+      "journal": "Biofabrication",
+      "pmcid": null,
+      "license": "amass_index",
+      "tissue_focus": "cartilage",
+      "notes": "Auto-promoted from abstract; numbers need human review."
+    },
+    {
+      "study_id": "pmid17148854",
+      "citation": "Andreas Fehrenbacher et al., Biorheology 2006",
+      "doi": null,
+      "year": 2006,
+      "journal": "Biorheology",
+      "pmcid": null,
+      "license": "amass_index",
+      "tissue_focus": "cartilage",
+      "notes": "Auto-promoted from abstract; numbers need human review."
+    },
+    {
+      "study_id": "pmid34970927",
+      "citation": "Ângela Semitela et al., Journal of biomaterials applications 2022",
+      "doi": "10.1177/08853282211064403",
+      "year": 2022,
+      "journal": "Journal of biomaterials applications",
+      "pmcid": null,
+      "license": "amass_index",
+      "tissue_focus": "cartilage",
+      "notes": "Auto-promoted from abstract; numbers need human review."
+    },
+    {
+      "study_id": "pmid23934174",
+      "citation": "Karthikeyan Rajagopal et al., Cell and tissue banking 2014",
+      "doi": "10.1007/s10561-013-9387-8",
+      "year": 2014,
+      "journal": "Cell and tissue banking",
+      "pmcid": null,
+      "license": "amass_index",
+      "tissue_focus": "cartilage",
+      "notes": "Auto-promoted from abstract; numbers need human review."
+    },
+    {
+      "study_id": "pmid27566509",
+      "citation": "Yaaziel Melgarejo-Ramírez et al., Cell and tissue banking 2016",
+      "doi": "10.1007/s10561-016-9574-5",
+      "year": 2016,
+      "journal": "Cell and tissue banking",
+      "pmcid": null,
+      "license": "amass_index",
+      "tissue_focus": "cartilage",
+      "notes": "Auto-promoted from abstract; numbers need human review."
+    },
+    {
+      "study_id": "pmid17417949",
+      "citation": "Chelsea N. Salinas et al., Tissue engineering 2007",
+      "doi": "10.1089/ten.2006.0126",
+      "year": 2007,
+      "journal": "Tissue engineering",
+      "pmcid": null,
+      "license": "amass_index",
+      "tissue_focus": "cartilage",
+      "notes": "Auto-promoted from abstract; numbers need human review."
+    },
+    {
+      "study_id": "pmid24770944",
+      "citation": "Hongjie Huang et al., Biomedical materials (Bristol, England) 2014",
+      "doi": "10.1088/1748-6041/9/3/035008",
+      "year": 2014,
+      "journal": "Biomedical materials (Bristol, England)",
+      "pmcid": null,
+      "license": "amass_index",
+      "tissue_focus": "cartilage",
+      "notes": "Auto-promoted from abstract; numbers need human review."
+    },
+    {
+      "study_id": "pmid17208295",
+      "citation": "Jung‐Ju Kim et al., Biomaterials 2007",
+      "doi": "10.1016/j.biomaterials.2006.11.050",
+      "year": 2007,
+      "journal": "Biomaterials",
+      "pmcid": null,
+      "license": "amass_index",
+      "tissue_focus": "cartilage",
+      "notes": "Auto-promoted from abstract; numbers need human review."
+    },
+    {
+      "study_id": "pmid22776769",
+      "citation": "Caroline Ceccaldi et al., Cell transplantation 2012",
+      "doi": "10.3727/096368912X647252",
+      "year": 2012,
+      "journal": "Cell transplantation",
+      "pmcid": null,
+      "license": "amass_index",
+      "tissue_focus": "cartilage",
+      "notes": "Auto-promoted from abstract; numbers need human review."
+    }
+  ],
+  "experiments": [
+    {
+      "experiment_id": "pmid37692373-c1",
+      "study_id": "pmid37692373",
+      "material_class": "GelMA",
+      "material_detail": "alginate+gelatin (+GelMA,collagen,chitosan)",
+      "stiffness_kpa": 283.0,
+      "stiffness_method": "text_kPa",
+      "tissue": "cartilage",
+      "cell_type": "articular_chondrocyte",
+      "species": "human",
+      "culture_model": "3D_encapsulation",
+      "growth_factor": "TGF_b3",
+      "culture_time_days": null,
+      "extracted_from": "abstract+fulltext",
+      "curator_confidence": "medium",
+      "notes": "dulus of 283 kPa and provided a biocompatible environment (>70% viability of embedded chondrocytes) in long-term culture within a bov",
+      "amass_id": "AMBC_K39FGxqfrLKIXctokphTVj3dKix",
+      "measurements": [
+        {
+          "assay": "viability_pct",
+          "value": 70.0,
+          "unit": "%",
+          "evidence": "numeric_text",
+          "notes": "abstract+fulltext: dulus of 283 kPa and provided a biocompatible environment (>70% viability of embedded chondrocytes) in long-term culture within a bov"
+        }
+      ]
+    },
+    {
+      "experiment_id": "pmid24275437-c1",
+      "study_id": "pmid24275437",
+      "material_class": "agarose",
+      "material_detail": "alginate+PEG+agarose",
+      "stiffness_kpa": null,
+      "stiffness_method": null,
+      "tissue": "cartilage",
+      "cell_type": "articular_chondrocyte",
+      "species": "human",
+      "culture_model": "2D",
+      "growth_factor": "none",
+      "culture_time_days": null,
+      "extracted_from": "abstract+fulltext",
+      "curator_confidence": "low",
+      "notes": "iffness agarose gels can maintain primary human chondrocyte viability of >95%, and (3) compression of chondrocytes in 4.5% agarose can in",
+      "amass_id": "AMBC_1izFNGvg7IWWzxyRNan27HJ4Oqg",
+      "measurements": [
+        {
+          "assay": "viability_pct",
+          "value": 95.0,
+          "unit": "%",
+          "evidence": "numeric_text",
+          "notes": "abstract+fulltext: iffness agarose gels can maintain primary human chondrocyte viability of >95%, and (3) compression of chondrocytes in 4.5% agarose can in"
+        }
+      ]
+    },
+    {
+      "experiment_id": "pmid24275437-c2",
+      "study_id": "pmid24275437",
+      "material_class": "alginate",
+      "material_detail": "alginate+PEG+agarose",
+      "stiffness_kpa": null,
+      "stiffness_method": null,
+      "tissue": "cartilage",
+      "cell_type": "articular_chondrocyte",
+      "species": "human",
+      "culture_model": "2D",
+      "growth_factor": "none",
+      "culture_time_days": null,
+      "extracted_from": "abstract+fulltext",
+      "curator_confidence": "low",
+      "notes": "All average viability measures were ≥ 96.2%.",
+      "amass_id": "AMBC_1izFNGvg7IWWzxyRNan27HJ4Oqg",
+      "measurements": [
+        {
+          "assay": "viability_pct",
+          "value": 96.2,
+          "unit": "%",
+          "evidence": "numeric_text",
+          "notes": "abstract+fulltext: All average viability measures were ≥ 96.2%."
+        }
+      ]
+    },
+    {
+      "experiment_id": "pmid28611002-c1",
+      "study_id": "pmid28611002",
+      "material_class": "PEG",
+      "material_detail": "HA+alginate+PEG+collagen+agarose",
+      "stiffness_kpa": null,
+      "stiffness_method": null,
+      "tissue": "cartilage",
+      "cell_type": "articular_chondrocyte",
+      "species": "human",
+      "culture_model": "2D",
+      "growth_factor": "TGF_b3",
+      "culture_time_days": null,
+      "extracted_from": "abstract+fulltext",
+      "curator_confidence": "low",
+      "notes": "] (PDLLA-PEG 1000), that are biodegradable, biocompatible (>80% viability post fabrication), and possess high, physiologically releva",
+      "amass_id": "AMBC_U8G6REaFhr1DQxxWznWENw5bBTZ",
+      "measurements": [
+        {
+          "assay": "viability_pct",
+          "value": 80.0,
+          "unit": "%",
+          "evidence": "numeric_text",
+          "notes": "abstract+fulltext: ] (PDLLA-PEG 1000), that are biodegradable, biocompatible (>80% viability post fabrication), and possess high, physiologically releva"
+        }
+      ]
+    },
+    {
+      "experiment_id": "pmid28611002-c2",
+      "study_id": "pmid28611002",
+      "material_class": "alginate",
+      "material_detail": "HA+alginate+PEG+collagen+agarose",
+      "stiffness_kpa": null,
+      "stiffness_method": null,
+      "tissue": "cartilage",
+      "cell_type": "articular_chondrocyte",
+      "species": "human",
+      "culture_model": "2D",
+      "growth_factor": "TGF_b3",
+      "culture_time_days": null,
+      "extracted_from": "abstract+fulltext",
+      "curator_confidence": "low",
+      "notes": "ned high between the post-fabrication period and day 7 with cell viability >85% in all groups at day 7 (Figure 2).",
+      "amass_id": "AMBC_U8G6REaFhr1DQxxWznWENw5bBTZ",
+      "measurements": [
+        {
+          "assay": "viability_pct",
+          "value": 85.0,
+          "unit": "%",
+          "evidence": "numeric_text",
+          "notes": "abstract+fulltext: ned high between the post-fabrication period and day 7 with cell viability >85% in all groups at day 7 (Figure 2)."
+        }
+      ]
+    },
+    {
+      "experiment_id": "pmid37835986-c1",
+      "study_id": "pmid37835986",
+      "material_class": "gelatin_alginate",
+      "material_detail": "alginate+gelatin (+collagen,chitosan,PVA)",
+      "stiffness_kpa": null,
+      "stiffness_method": null,
+      "tissue": "cartilage",
+      "cell_type": "articular_chondrocyte",
+      "species": "human",
+      "culture_model": "3D_bioprint",
+      "growth_factor": "TGF_b1",
+      "culture_time_days": null,
+      "extracted_from": "abstract+fulltext",
+      "curator_confidence": "low",
+      "notes": "The viability assay showed that 87% of AD-hMSCs were metabolically active, as indicated by the",
+      "amass_id": "AMBC_CegtYxjbfpWyg3vmuFk1d1u68Ee",
+      "measurements": [
+        {
+          "assay": "viability_pct",
+          "value": 87.0,
+          "unit": "%",
+          "evidence": "numeric_text",
+          "notes": "abstract+fulltext: The viability assay showed that 87% of AD-hMSCs were metabolically active, as indicated by the"
+        }
+      ]
+    },
+    {
+      "experiment_id": "pmid37835986-c2",
+      "study_id": "pmid37835986",
+      "material_class": "PVA",
+      "material_detail": "alginate+gelatin (+collagen,chitosan,PVA)",
+      "stiffness_kpa": null,
+      "stiffness_method": null,
+      "tissue": "cartilage",
+      "cell_type": "articular_chondrocyte",
+      "species": "human",
+      "culture_model": "3D_bioprint",
+      "growth_factor": "TGF_b1",
+      "culture_time_days": null,
+      "extracted_from": "abstract+fulltext",
+      "curator_confidence": "low",
+      "notes": "ls was found to be nontoxic and biocompatible with AD-hMSC (87% viability) as well as with hMSC-derived chondrocytes (99%). ### 3.5.",
+      "amass_id": "AMBC_CegtYxjbfpWyg3vmuFk1d1u68Ee",
+      "measurements": [
+        {
+          "assay": "viability_pct",
+          "value": 87.0,
+          "unit": "%",
+          "evidence": "numeric_text",
+          "notes": "abstract+fulltext: ls was found to be nontoxic and biocompatible with AD-hMSC (87% viability) as well as with hMSC-derived chondrocytes (99%). ### 3.5."
+        }
+      ]
+    },
+    {
+      "experiment_id": "pmid37835986-c3",
+      "study_id": "pmid37835986",
+      "material_class": "gelatin_alginate",
+      "material_detail": "alginate+gelatin (+collagen,chitosan,PVA)",
+      "stiffness_kpa": null,
+      "stiffness_method": null,
+      "tissue": "cartilage",
+      "cell_type": "articular_chondrocyte",
+      "species": "human",
+      "culture_model": "3D_bioprint",
+      "growth_factor": "TGF_b1",
+      "culture_time_days": null,
+      "extracted_from": "abstract+fulltext",
+      "curator_confidence": "low",
+      "notes": "Cell viability remained at 99% and 1% mortality during chondrogenic stimulation from day 7",
+      "amass_id": "AMBC_CegtYxjbfpWyg3vmuFk1d1u68Ee",
+      "measurements": [
+        {
+          "assay": "viability_pct",
+          "value": 99.0,
+          "unit": "%",
+          "evidence": "numeric_text",
+          "notes": "abstract+fulltext: Cell viability remained at 99% and 1% mortality during chondrogenic stimulation from day 7"
+        }
+      ]
+    },
+    {
+      "experiment_id": "pmid26347860-c1",
+      "study_id": "pmid26347860",
+      "material_class": "gelatin_alginate",
+      "material_detail": "alginate+gelatin (+HA,PEG,collagen,fibrin,agarose)",
+      "stiffness_kpa": 780.0,
+      "stiffness_method": "text_kPa",
+      "tissue": "cartilage",
+      "cell_type": "articular_chondrocyte",
+      "species": "human",
+      "culture_model": "3D_encapsulation",
+      "growth_factor": "TGF_b3",
+      "culture_time_days": null,
+      "extracted_from": "abstract+fulltext",
+      "curator_confidence": "medium",
+      "notes": "After fabrication, hASCs showed high viability (84%) and were uniformly distributed throughout the constructs,",
+      "amass_id": "AMBC_NEtpnJLPE9XCoAF7vivhNiXoCh1",
+      "measurements": [
+        {
+          "assay": "viability_pct",
+          "value": 84.0,
+          "unit": "%",
+          "evidence": "numeric_text",
+          "notes": "abstract+fulltext: After fabrication, hASCs showed high viability (84%) and were uniformly distributed throughout the constructs,"
+        }
+      ]
+    },
+    {
+      "experiment_id": "pmid26347860-c2",
+      "study_id": "pmid26347860",
+      "material_class": "collagen",
+      "material_detail": "alginate+gelatin (+HA,PEG,collagen,fibrin,agarose)",
+      "stiffness_kpa": 780.0,
+      "stiffness_method": "text_kPa",
+      "tissue": "cartilage",
+      "cell_type": "articular_chondrocyte",
+      "species": "human",
+      "culture_model": "3D_encapsulation",
+      "growth_factor": "TGF_b3",
+      "culture_time_days": null,
+      "extracted_from": "abstract+fulltext",
+      "curator_confidence": "medium",
+      "notes": "genic medium-treated group (TGF-β3 group), hASCs maintained 77% viability and expressed chondrogenic genes Sox9, collagen type II, an",
+      "amass_id": "AMBC_NEtpnJLPE9XCoAF7vivhNiXoCh1",
+      "measurements": [
+        {
+          "assay": "viability_pct",
+          "value": 77.0,
+          "unit": "%",
+          "evidence": "numeric_text",
+          "notes": "abstract+fulltext: genic medium-treated group (TGF-β3 group), hASCs maintained 77% viability and expressed chondrogenic genes Sox9, collagen type II, an"
+        }
+      ]
+    },
+    {
+      "experiment_id": "pmid26347860-c3",
+      "study_id": "pmid26347860",
+      "material_class": "gelatin_alginate",
+      "material_detail": "alginate+gelatin (+HA,PEG,collagen,fibrin,agarose)",
+      "stiffness_kpa": 240.0,
+      "stiffness_method": "text_kPa",
+      "tissue": "cartilage",
+      "cell_type": "articular_chondrocyte",
+      "species": "human",
+      "culture_model": "3D_encapsulation",
+      "growth_factor": "TGF_b3",
+      "culture_time_days": 28.0,
+      "extracted_from": "abstract+fulltext",
+      "curator_confidence": "medium",
+      "notes": "Without chondroinductive addition (Control group), cell viability decreased with time (65% at 28 days) and showed poor cartilage matrix deposition.",
+      "amass_id": "AMBC_NEtpnJLPE9XCoAF7vivhNiXoCh1",
+      "measurements": [
+        {
+          "assay": "viability_pct",
+          "value": 65.0,
+          "unit": "%",
+          "evidence": "numeric_text",
+          "notes": "abstract+fulltext: Without chondroinductive addition (Control group), cell viability decreased with time (65% at 28 days) and showed poor cartilage matrix deposition."
+        }
+      ]
+    },
+    {
+      "experiment_id": "pmid32999847-c1",
+      "study_id": "pmid32999847",
+      "material_class": "gelatin_alginate",
+      "material_detail": "alginate+gelatin (+GelMA,HA,collagen,dextran)",
+      "stiffness_kpa": 780.2,
+      "stiffness_method": "text_kPa",
+      "tissue": "cartilage",
+      "cell_type": "articular_chondrocyte",
+      "species": "human",
+      "culture_model": "3D_bioprint",
+      "growth_factor": "none",
+      "culture_time_days": null,
+      "extracted_from": "abstract+fulltext",
+      "curator_confidence": "medium",
+      "notes": "be placed either inside or outside the hydrogel phase with >90% viability.",
+      "amass_id": "AMBC_PfK34qrI2SnoV1DuFP32iQkfwZA",
+      "measurements": [
+        {
+          "assay": "viability_pct",
+          "value": 90.0,
+          "unit": "%",
+          "evidence": "numeric_text",
+          "notes": "abstract+fulltext: be placed either inside or outside the hydrogel phase with >90% viability."
+        }
+      ]
+    },
+    {
+      "experiment_id": "pmid41590061-c1",
+      "study_id": "pmid41590061",
+      "material_class": "fibrin",
+      "material_detail": "GelMA+collagen+fibrin",
+      "stiffness_kpa": null,
+      "stiffness_method": null,
+      "tissue": "cartilage",
+      "cell_type": "articular_chondrocyte",
+      "species": "human",
+      "culture_model": "3D_encapsulation",
+      "growth_factor": "none",
+      "culture_time_days": null,
+      "extracted_from": "abstract+fulltext",
+      "curator_confidence": "low",
+      "notes": "The tricomposite remained cytocompatible (~99% viability), supported marked cell expansion (~250% by day 28), and de",
+      "amass_id": "AMBC_ZPBpDRMUJPgqd5cNMixllRBJtx6",
+      "measurements": [
+        {
+          "assay": "viability_pct",
+          "value": 99.0,
+          "unit": "%",
+          "evidence": "numeric_text",
+          "notes": "abstract+fulltext: The tricomposite remained cytocompatible (~99% viability), supported marked cell expansion (~250% by day 28), and de"
+        }
+      ]
+    },
+    {
+      "experiment_id": "pmid41590061-c2",
+      "study_id": "pmid41590061",
+      "material_class": "GelMA",
+      "material_detail": "GelMA+collagen+fibrin",
+      "stiffness_kpa": null,
+      "stiffness_method": null,
+      "tissue": "cartilage",
+      "cell_type": "articular_chondrocyte",
+      "species": "human",
+      "culture_model": "3D_encapsulation",
+      "growth_factor": "none",
+      "culture_time_days": 28.0,
+      "extracted_from": "abstract+fulltext",
+      "curator_confidence": "low",
+      "notes": "Tricomposite hydrogels sustained ~99% viability throughout 28 days of culture, with no statistically signif",
+      "amass_id": "AMBC_ZPBpDRMUJPgqd5cNMixllRBJtx6",
+      "measurements": [
+        {
+          "assay": "viability_pct",
+          "value": 99.0,
+          "unit": "%",
+          "evidence": "numeric_text",
+          "notes": "abstract+fulltext: Tricomposite hydrogels sustained ~99% viability throughout 28 days of culture, with no statistically signif"
+        }
+      ]
+    },
+    {
+      "experiment_id": "pmid38671751-c1",
+      "study_id": "pmid38671751",
+      "material_class": "GelMA",
+      "material_detail": "GelMA+alginate+PEG+collagen+chitosan+PVA+cellulose",
+      "stiffness_kpa": null,
+      "stiffness_method": null,
+      "tissue": "cartilage",
+      "cell_type": "articular_chondrocyte",
+      "species": "human",
+      "culture_model": "3D_bioprint",
+      "growth_factor": "none",
+      "culture_time_days": 14.0,
+      "extracted_from": "abstract+fulltext",
+      "curator_confidence": "low",
+      "notes": "Cellular viability was 87% post printing, which decreased to 76% after seven days, and",
+      "amass_id": "AMBC_1KLvlATgOrhGMfQKRLL0BkAYiW0",
+      "measurements": [
+        {
+          "assay": "viability_pct",
+          "value": 87.0,
+          "unit": "%",
+          "evidence": "numeric_text",
+          "notes": "abstract+fulltext: Cellular viability was 87% post printing, which decreased to 76% after seven days, and"
+        }
+      ]
+    },
+    {
+      "experiment_id": "pmid38671751-c2",
+      "study_id": "pmid38671751",
+      "material_class": "GelMA",
+      "material_detail": "GelMA+alginate+PEG+collagen+chitosan+PVA+cellulose",
+      "stiffness_kpa": null,
+      "stiffness_method": null,
+      "tissue": "cartilage",
+      "cell_type": "articular_chondrocyte",
+      "species": "human",
+      "culture_model": "3D_bioprint",
+      "growth_factor": "none",
+      "culture_time_days": 14.0,
+      "extracted_from": "abstract+fulltext",
+      "curator_confidence": "low",
+      "notes": "Immediately post-printing, the cellular viability was 87.2%.",
+      "amass_id": "AMBC_1KLvlATgOrhGMfQKRLL0BkAYiW0",
+      "measurements": [
+        {
+          "assay": "viability_pct",
+          "value": 87.2,
+          "unit": "%",
+          "evidence": "numeric_text",
+          "notes": "abstract+fulltext: Immediately post-printing, the cellular viability was 87.2%."
+        }
+      ]
+    },
+    {
+      "experiment_id": "pmid38671751-c3",
+      "study_id": "pmid38671751",
+      "material_class": "GelMA",
+      "material_detail": "GelMA+alginate+PEG+collagen+chitosan+PVA+cellulose",
+      "stiffness_kpa": null,
+      "stiffness_method": null,
+      "tissue": "cartilage",
+      "cell_type": "articular_chondrocyte",
+      "species": "human",
+      "culture_model": "3D_bioprint",
+      "growth_factor": "none",
+      "culture_time_days": 14.0,
+      "extracted_from": "abstract+fulltext",
+      "curator_confidence": "low",
+      "notes": "The viability decreased significantly to 76.4% at day 7 (p < 0.001), possibly due to environmental stress",
+      "amass_id": "AMBC_1KLvlATgOrhGMfQKRLL0BkAYiW0",
+      "measurements": [
+        {
+          "assay": "viability_pct",
+          "value": 76.4,
+          "unit": "%",
+          "evidence": "numeric_text",
+          "notes": "abstract+fulltext: The viability decreased significantly to 76.4% at day 7 (p < 0.001), possibly due to environmental stress"
+        }
+      ]
+    },
+    {
+      "experiment_id": "pmid36566553-c1",
+      "study_id": "pmid36566553",
+      "material_class": "gelatin_alginate",
+      "material_detail": "alginate+gelatin (+GelMA,PEG)",
+      "stiffness_kpa": null,
+      "stiffness_method": null,
+      "tissue": "cartilage",
+      "cell_type": "articular_chondrocyte",
+      "species": "human",
+      "culture_model": "3D_bioprint",
+      "growth_factor": "none",
+      "culture_time_days": 7.0,
+      "extracted_from": "abstract+fulltext",
+      "curator_confidence": "low",
+      "notes": "Live/dead staining showed that cell viability in the printed hydrogels was over 90% for 7 days.",
+      "amass_id": "AMBC_NnKcLE71ULGYaFTjGoiFhnlPl4E",
+      "measurements": [
+        {
+          "assay": "viability_pct",
+          "value": 90.0,
+          "unit": "%",
+          "evidence": "numeric_text",
+          "notes": "abstract+fulltext: Live/dead staining showed that cell viability in the printed hydrogels was over 90% for 7 days."
+        }
+      ]
+    },
+    {
+      "experiment_id": "pmid36566553-c2",
+      "study_id": "pmid36566553",
+      "material_class": "gelatin_alginate",
+      "material_detail": "alginate+gelatin (+GelMA,PEG)",
+      "stiffness_kpa": null,
+      "stiffness_method": null,
+      "tissue": "cartilage",
+      "cell_type": "articular_chondrocyte",
+      "species": "human",
+      "culture_model": "3D_bioprint",
+      "growth_factor": "none",
+      "culture_time_days": null,
+      "extracted_from": "abstract+fulltext",
+      "curator_confidence": "low",
+      "notes": "All groups showed decreased viability at Day 1 (88.9%−98.7% viability at Day 0, 74.4%−88.7% at Day 1), while the overall viabilit",
+      "amass_id": "AMBC_NnKcLE71ULGYaFTjGoiFhnlPl4E",
+      "measurements": [
+        {
+          "assay": "viability_pct",
+          "value": 98.7,
+          "unit": "%",
+          "evidence": "numeric_text",
+          "notes": "abstract+fulltext: All groups showed decreased viability at Day 1 (88.9%−98.7% viability at Day 0, 74.4%−88.7% at Day 1), while the overall viabilit"
+        }
+      ]
+    },
+    {
+      "experiment_id": "pmid19341919-c1",
+      "study_id": "pmid19341919",
+      "material_class": "alginate",
+      "material_detail": "alginate+PEG",
+      "stiffness_kpa": null,
+      "stiffness_method": null,
+      "tissue": "cartilage",
+      "cell_type": "articular_chondrocyte",
+      "species": "human",
+      "culture_model": "2D",
+      "growth_factor": "none",
+      "culture_time_days": 1.0,
+      "extracted_from": "abstract+fulltext",
+      "curator_confidence": "low",
+      "notes": "RESULTS: Chondrocyte viability decreased from 84% in saline solution to 62%, 38%, and 2.4% 1 day after 60 min",
+      "amass_id": "AMBC_7DlRrpRS3iBSFfhfHCh9l2alou4",
+      "measurements": [
+        {
+          "assay": "viability_pct",
+          "value": 84.0,
+          "unit": "%",
+          "evidence": "numeric_text",
+          "notes": "abstract+fulltext: RESULTS: Chondrocyte viability decreased from 84% in saline solution to 62%, 38%, and 2.4% 1 day after 60 min"
+        }
+      ]
+    },
+    {
+      "experiment_id": "pmid19341919-c2",
+      "study_id": "pmid19341919",
+      "material_class": "alginate",
+      "material_detail": "alginate+PEG",
+      "stiffness_kpa": null,
+      "stiffness_method": null,
+      "tissue": "cartilage",
+      "cell_type": "articular_chondrocyte",
+      "species": "human",
+      "culture_model": "2D",
+      "growth_factor": "none",
+      "culture_time_days": null,
+      "extracted_from": "abstract+fulltext",
+      "curator_confidence": "low",
+      "notes": "In IL-1beta-activated chondrocytes, viability decreased from 76% in saline solution to 2.9% after 60 minutes of methylpredni",
+      "amass_id": "AMBC_7DlRrpRS3iBSFfhfHCh9l2alou4",
+      "measurements": [
+        {
+          "assay": "viability_pct",
+          "value": 76.0,
+          "unit": "%",
+          "evidence": "numeric_text",
+          "notes": "abstract+fulltext: In IL-1beta-activated chondrocytes, viability decreased from 76% in saline solution to 2.9% after 60 minutes of methylpredni"
+        }
+      ]
+    },
+    {
+      "experiment_id": "pmid19341919-c3",
+      "study_id": "pmid19341919",
+      "material_class": "alginate",
+      "material_detail": "alginate+PEG",
+      "stiffness_kpa": null,
+      "stiffness_method": null,
+      "tissue": "cartilage",
+      "cell_type": "articular_chondrocyte",
+      "species": "human",
+      "culture_model": "2D",
+      "growth_factor": "none",
+      "culture_time_days": null,
+      "extracted_from": "abstract+fulltext",
+      "curator_confidence": "low",
+      "notes": "minute exposure of methylprednisolone caused a reduction in viability, from 84.1% in normal saline solution to 62.2% (P < .05).",
+      "amass_id": "AMBC_7DlRrpRS3iBSFfhfHCh9l2alou4",
+      "measurements": [
+        {
+          "assay": "viability_pct",
+          "value": 84.1,
+          "unit": "%",
+          "evidence": "numeric_text",
+          "notes": "abstract+fulltext: minute exposure of methylprednisolone caused a reduction in viability, from 84.1% in normal saline solution to 62.2% (P < .05)."
+        }
+      ]
+    },
+    {
+      "experiment_id": "pmid27106636-c1",
+      "study_id": "pmid27106636",
+      "material_class": "gelatin_alginate",
+      "material_detail": "alginate+gelatin (+GelMA,HA,PEG,collagen,fibrin)",
+      "stiffness_kpa": 40.0,
+      "stiffness_method": "text_kPa",
+      "tissue": "cartilage",
+      "cell_type": "articular_chondrocyte",
+      "species": "human",
+      "culture_model": "3D_bioprint",
+      "growth_factor": "none",
+      "culture_time_days": null,
+      "extracted_from": "abstract+fulltext",
+      "curator_confidence": "medium",
+      "notes": "tage of live cells below the short term screening target of 80% live cells.",
+      "amass_id": "AMBC_L66jt3I3t9E3nreHa24Vu0AN3bi",
+      "measurements": [
+        {
+          "assay": "viability_pct",
+          "value": 80.0,
+          "unit": "%",
+          "evidence": "numeric_text",
+          "notes": "abstract+fulltext: tage of live cells below the short term screening target of 80% live cells."
+        }
+      ]
+    },
+    {
+      "experiment_id": "pmid28586346-c1",
+      "study_id": "pmid28586346",
+      "material_class": "HA",
+      "material_detail": "HA+PEG",
+      "stiffness_kpa": null,
+      "stiffness_method": null,
+      "tissue": "cartilage",
+      "cell_type": "MSC",
+      "species": "human",
+      "culture_model": "3D_bioprint",
+      "growth_factor": "none",
+      "culture_time_days": 21.0,
+      "extracted_from": "abstract+fulltext",
+      "curator_confidence": "low",
+      "notes": "mal cells (MSCs) were incorporated into MeHA hydrogels, and cell viability remained 64.4% after 21 days of culture.",
+      "amass_id": "AMBC_XS7OOajv7REF9OokhVorRDDhNRi",
+      "measurements": [
+        {
+          "assay": "viability_pct",
+          "value": 64.4,
+          "unit": "%",
+          "evidence": "numeric_text",
+          "notes": "abstract+fulltext: mal cells (MSCs) were incorporated into MeHA hydrogels, and cell viability remained 64.4% after 21 days of culture."
+        }
+      ]
+    },
+    {
+      "experiment_id": "pmid38002439-c1",
+      "study_id": "pmid38002439",
+      "material_class": "alginate",
+      "material_detail": "HA+alginate+PEG+collagen",
+      "stiffness_kpa": null,
+      "stiffness_method": null,
+      "tissue": "cartilage",
+      "cell_type": "articular_chondrocyte",
+      "species": "human",
+      "culture_model": "3D_encapsulation",
+      "growth_factor": "none",
+      "culture_time_days": null,
+      "extracted_from": "abstract+fulltext",
+      "curator_confidence": "low",
+      "notes": "Additionally, encapsulated MSC viability was found to be above 70% over one week in culture.",
+      "amass_id": "AMBC_2zCUGZFXtrHHVmaDj8ymIY4uYXQ",
+      "measurements": [
+        {
+          "assay": "viability_pct",
+          "value": 70.0,
+          "unit": "%",
+          "evidence": "numeric_text",
+          "notes": "abstract+fulltext: Additionally, encapsulated MSC viability was found to be above 70% over one week in culture."
+        }
+      ]
+    },
+    {
+      "experiment_id": "pmid23571151-c1",
+      "study_id": "pmid23571151",
+      "material_class": "alginate",
+      "material_detail": "alginate+collagen+chitosan+agarose",
+      "stiffness_kpa": null,
+      "stiffness_method": null,
+      "tissue": "cartilage",
+      "cell_type": "articular_chondrocyte",
+      "species": "human",
+      "culture_model": "2D",
+      "growth_factor": "none",
+      "culture_time_days": null,
+      "extracted_from": "abstract+fulltext",
+      "curator_confidence": "low",
+      "notes": "aining showed that MSC survived the encapsulation process (>90% viability) and spread inside the matrix over a period of 9 days in cu",
+      "amass_id": "AMBC_KCBZtV9fg7Ahcq4N3vWYgi6WMiI",
+      "measurements": [
+        {
+          "assay": "viability_pct",
+          "value": 90.0,
+          "unit": "%",
+          "evidence": "numeric_text",
+          "notes": "abstract+fulltext: aining showed that MSC survived the encapsulation process (>90% viability) and spread inside the matrix over a period of 9 days in cu"
+        }
+      ]
+    },
+    {
+      "experiment_id": "pmid23571151-c2",
+      "study_id": "pmid23571151",
+      "material_class": "collagen",
+      "material_detail": "collagen+chitosan",
+      "stiffness_kpa": null,
+      "stiffness_method": null,
+      "tissue": "cartilage",
+      "cell_type": "articular_chondrocyte",
+      "species": "human",
+      "culture_model": "2D",
+      "growth_factor": "none",
+      "culture_time_days": null,
+      "extracted_from": "abstract+fulltext",
+      "curator_confidence": "low",
+      "notes": "agen occurred at physiological pH and temperature with over 90% viability of embedded MSC.",
+      "amass_id": "AMBC_KCBZtV9fg7Ahcq4N3vWYgi6WMiI",
+      "measurements": [
+        {
+          "assay": "viability_pct",
+          "value": 90.0,
+          "unit": "%",
+          "evidence": "numeric_text",
+          "notes": "abstract+fulltext: agen occurred at physiological pH and temperature with over 90% viability of embedded MSC."
+        }
+      ]
+    },
+    {
+      "experiment_id": "pmid33367226-c1",
+      "study_id": "pmid33367226",
+      "material_class": "alginate",
+      "material_detail": "HA+alginate+collagen",
+      "stiffness_kpa": null,
+      "stiffness_method": null,
+      "tissue": "cartilage",
+      "cell_type": "MSC",
+      "species": "human",
+      "culture_model": "3D_bioprint",
+      "growth_factor": "none",
+      "culture_time_days": 7.0,
+      "extracted_from": "abstract+fulltext",
+      "curator_confidence": "low",
+      "notes": "em cells (hMSCs) encapsulated in alg/col hydrogels had over 90% viability over 7 days after injection.",
+      "amass_id": "AMBC_4sS9St5YJ4A24tNNtPFeI6EfWUo",
+      "measurements": [
+        {
+          "assay": "viability_pct",
+          "value": 90.0,
+          "unit": "%",
+          "evidence": "numeric_text",
+          "notes": "abstract+fulltext: em cells (hMSCs) encapsulated in alg/col hydrogels had over 90% viability over 7 days after injection."
+        }
+      ]
+    },
+    {
+      "experiment_id": "pmid33367226-c2",
+      "study_id": "pmid33367226",
+      "material_class": "alginate",
+      "material_detail": "HA+alginate+collagen",
+      "stiffness_kpa": null,
+      "stiffness_method": null,
+      "tissue": "cartilage",
+      "cell_type": "MSC",
+      "species": "human",
+      "culture_model": "3D_bioprint",
+      "growth_factor": "none",
+      "culture_time_days": null,
+      "extracted_from": "abstract+fulltext",
+      "curator_confidence": "low",
+      "notes": "The hMSC viability was 94%, 92%, and 95% for alg/col 1/0.25, alg/col 1/0.5, and alg/co",
+      "amass_id": "AMBC_4sS9St5YJ4A24tNNtPFeI6EfWUo",
+      "measurements": [
+        {
+          "assay": "viability_pct",
+          "value": 94.0,
+          "unit": "%",
+          "evidence": "numeric_text",
+          "notes": "abstract+fulltext: The hMSC viability was 94%, 92%, and 95% for alg/col 1/0.25, alg/col 1/0.5, and alg/co"
+        }
+      ]
+    },
+    {
+      "experiment_id": "pmid33367226-c3",
+      "study_id": "pmid33367226",
+      "material_class": "alginate",
+      "material_detail": "HA+alginate+collagen",
+      "stiffness_kpa": null,
+      "stiffness_method": null,
+      "tissue": "cartilage",
+      "cell_type": "MSC",
+      "species": "human",
+      "culture_model": "3D_bioprint",
+      "growth_factor": "none",
+      "culture_time_days": 28.0,
+      "extracted_from": "abstract+fulltext",
+      "curator_confidence": "low",
+      "notes": "injection. hMSCs encapsulated in alg/col hydrogels had over 90% viability and proliferated along 28 days of incubation.",
+      "amass_id": "AMBC_4sS9St5YJ4A24tNNtPFeI6EfWUo",
+      "measurements": [
+        {
+          "assay": "viability_pct",
+          "value": 90.0,
+          "unit": "%",
+          "evidence": "numeric_text",
+          "notes": "abstract+fulltext: injection. hMSCs encapsulated in alg/col hydrogels had over 90% viability and proliferated along 28 days of incubation."
+        }
+      ]
+    },
+    {
+      "experiment_id": "pmid27612810-c1",
+      "study_id": "pmid27612810",
+      "material_class": "chitosan_HA",
+      "material_detail": "HA+chitosan (+alginate,collagen,fibrin,gelatin)",
+      "stiffness_kpa": null,
+      "stiffness_method": null,
+      "tissue": "cartilage",
+      "cell_type": "articular_chondrocyte",
+      "species": "human",
+      "culture_model": "2D",
+      "growth_factor": "none",
+      "culture_time_days": null,
+      "extracted_from": "abstract+fulltext",
+      "curator_confidence": "low",
+      "notes": "In (E), the percentages of live cells in the four groups were all above 90% and increased from 1 d to 14 d (p < 0.05).",
+      "amass_id": "AMBC_QybXKgHCU4OdstxGS9f9UKUByEM",
+      "measurements": [
+        {
+          "assay": "viability_pct",
+          "value": 90.0,
+          "unit": "%",
+          "evidence": "numeric_text",
+          "notes": "abstract+fulltext: In (E), the percentages of live cells in the four groups were all above 90% and increased from 1 d to 14 d (p < 0.05)."
+        }
+      ]
+    },
+    {
+      "experiment_id": "pmid37177235-c1",
+      "study_id": "pmid37177235",
+      "material_class": "GelMA",
+      "material_detail": "alginate+gelatin (+GelMA,collagen,fibrin,chitosan,cellulose)",
+      "stiffness_kpa": null,
+      "stiffness_method": null,
+      "tissue": "cartilage",
+      "cell_type": "articular_chondrocyte",
+      "species": "human",
+      "culture_model": "2D",
+      "growth_factor": "none",
+      "culture_time_days": null,
+      "extracted_from": "abstract+fulltext",
+      "curator_confidence": "low",
+      "notes": "0.5%CNF/3%GelMA injectable hydrogels significantly promoted cell viability (>80%) and also showed good physicochemical properties, which met",
+      "amass_id": "AMBC_GEeDcqARrbdPvEk8eHfO8EWe4SE",
+      "measurements": [
+        {
+          "assay": "viability_pct",
+          "value": 80.0,
+          "unit": "%",
+          "evidence": "numeric_text",
+          "notes": "abstract+fulltext: 0.5%CNF/3%GelMA injectable hydrogels significantly promoted cell viability (>80%) and also showed good physicochemical properties, which met"
+        }
+      ]
+    },
+    {
+      "experiment_id": "pmid24249698-c1",
+      "study_id": "pmid24249698",
+      "material_class": "collagen",
+      "material_detail": null,
+      "stiffness_kpa": null,
+      "stiffness_method": null,
+      "tissue": "cartilage",
+      "cell_type": "articular_chondrocyte",
+      "species": "bovine",
+      "culture_model": "2D",
+      "growth_factor": "none",
+      "culture_time_days": 3.0,
+      "extracted_from": "abstract+fulltext",
+      "curator_confidence": "low",
+      "notes": "With no treatment immediate post-impact viability was 59%.",
+      "amass_id": "AMBC_DLJaZ9fvW41IQELYhRwQ4IUVue9",
+      "measurements": [
+        {
+          "assay": "viability_pct",
+          "value": 59.0,
+          "unit": "%",
+          "evidence": "numeric_text",
+          "notes": "abstract+fulltext: With no treatment immediate post-impact viability was 59%."
+        }
+      ]
+    },
+    {
+      "experiment_id": "pmid24249698-c2",
+      "study_id": "pmid24249698",
+      "material_class": "collagen",
+      "material_detail": null,
+      "stiffness_kpa": null,
+      "stiffness_method": null,
+      "tissue": "cartilage",
+      "cell_type": "articular_chondrocyte",
+      "species": "bovine",
+      "culture_model": "2D",
+      "growth_factor": "none",
+      "culture_time_days": 3.0,
+      "extracted_from": "abstract+fulltext",
+      "curator_confidence": "low",
+      "notes": "Treatment with 10 μM SFKi, 10 μM, or 100 μM FAKi improved viability to 80%, 77%, and 82%, respectively (p < 0.05).",
+      "amass_id": "AMBC_DLJaZ9fvW41IQELYhRwQ4IUVue9",
+      "measurements": [
+        {
+          "assay": "viability_pct",
+          "value": 80.0,
+          "unit": "%",
+          "evidence": "numeric_text",
+          "notes": "abstract+fulltext: Treatment with 10 μM SFKi, 10 μM, or 100 μM FAKi improved viability to 80%, 77%, and 82%, respectively (p < 0.05)."
+        }
+      ]
+    },
+    {
+      "experiment_id": "pmid36826873-c1",
+      "study_id": "pmid36826873",
+      "material_class": "GelMA",
+      "material_detail": "GelMA+PEG+collagen+gelatin",
+      "stiffness_kpa": null,
+      "stiffness_method": null,
+      "tissue": "cartilage",
+      "cell_type": "articular_chondrocyte",
+      "species": "human",
+      "culture_model": "3D_encapsulation",
+      "growth_factor": "none",
+      "culture_time_days": 21.0,
+      "extracted_from": "abstract+fulltext",
+      "curator_confidence": "low",
+      "notes": "It showed cell viability more significant than 80% in the MTT test, which makes it suitable for in vivo osteog",
+      "amass_id": "AMBC_3acJPXQ4KJuLQQd8KaHUr3SUm7g",
+      "measurements": [
+        {
+          "assay": "viability_pct",
+          "value": 80.0,
+          "unit": "%",
+          "evidence": "numeric_text",
+          "notes": "abstract+fulltext: It showed cell viability more significant than 80% in the MTT test, which makes it suitable for in vivo osteog"
+        }
+      ]
+    },
+    {
+      "experiment_id": "pmid28986174-c1",
+      "study_id": "pmid28986174",
+      "material_class": "gelatin_alginate",
+      "material_detail": "alginate+gelatin (+HA,PEG)",
+      "stiffness_kpa": null,
+      "stiffness_method": null,
+      "tissue": "cartilage",
+      "cell_type": "MSC",
+      "species": "human",
+      "culture_model": "3D_encapsulation",
+      "growth_factor": "none",
+      "culture_time_days": 3.0,
+      "extracted_from": "abstract+fulltext",
+      "curator_confidence": "low",
+      "notes": "d final DMSO concentration (<0.5%), hydrogel-induced BM-MSC viability remained >82% following syringe needle passage by 25- or 27-gauge needles",
+      "amass_id": "AMBC_1JpNoRaGEXWRiJ26q7mAwJR6mRJ",
+      "measurements": [
+        {
+          "assay": "viability_pct",
+          "value": 82.0,
+          "unit": "%",
+          "evidence": "numeric_text",
+          "notes": "abstract+fulltext: d final DMSO concentration (<0.5%), hydrogel-induced BM-MSC viability remained >82% following syringe needle passage by 25- or 27-gauge needles"
+        }
+      ]
+    },
+    {
+      "experiment_id": "pmid41916393-c1",
+      "study_id": "pmid41916393",
+      "material_class": "GelMA",
+      "material_detail": "GelMA+collagen+gelatin",
+      "stiffness_kpa": 500.0,
+      "stiffness_method": "text_kPa",
+      "tissue": "cartilage",
+      "cell_type": "articular_chondrocyte",
+      "species": null,
+      "culture_model": "3D_encapsulation",
+      "growth_factor": "none",
+      "culture_time_days": null,
+      "extracted_from": "abstract",
+      "curator_confidence": "medium",
+      "notes": "Importantly, cell viability remains above 90%, with chondrocytes maintaining a spherical phenotype and es",
+      "amass_id": "AMBC_HN7MOliJ7AkQRrkhQMqwiHMyAiK",
+      "measurements": [
+        {
+          "assay": "viability_pct",
+          "value": 90.0,
+          "unit": "%",
+          "evidence": "numeric_text",
+          "notes": "abstract: Importantly, cell viability remains above 90%, with chondrocytes maintaining a spherical phenotype and es"
+        }
+      ]
+    },
+    {
+      "experiment_id": "pmid20704471-c1",
+      "study_id": "pmid20704471",
+      "material_class": "alginate",
+      "material_detail": null,
+      "stiffness_kpa": null,
+      "stiffness_method": null,
+      "tissue": "cartilage",
+      "cell_type": "articular_chondrocyte",
+      "species": "bovine",
+      "culture_model": "3D_encapsulation",
+      "growth_factor": "none",
+      "culture_time_days": null,
+      "extracted_from": "abstract",
+      "curator_confidence": "low",
+      "notes": "for photocrosslinking alginate hydrogel scaffolds with high cell viability Methods for seeding high-viability (>85%) three-dimensional (3D) alginate-chondrocyte hydrogel scaff",
+      "amass_id": "AMBC_KpkkinKj8aPCTSB9Bxfrz2OZQGw",
+      "measurements": [
+        {
+          "assay": "viability_pct",
+          "value": 85.0,
+          "unit": "%",
+          "evidence": "numeric_text",
+          "notes": "abstract: for photocrosslinking alginate hydrogel scaffolds with high cell viability Methods for seeding high-viability (>85%) three-dimensional (3D) alginate-chondrocyte hydrogel scaff"
+        }
+      ]
+    },
+    {
+      "experiment_id": "pmid25806996-c1",
+      "study_id": "pmid25806996",
+      "material_class": "cellulose",
+      "material_detail": "alginate+cellulose",
+      "stiffness_kpa": null,
+      "stiffness_method": null,
+      "tissue": "cartilage",
+      "cell_type": "articular_chondrocyte",
+      "species": "human",
+      "culture_model": "3D_bioprint",
+      "growth_factor": "none",
+      "culture_time_days": 7.0,
+      "extracted_from": "abstract",
+      "curator_confidence": "low",
+      "notes": "in the noncytotoxic, nanocellulose-based bioink exhibited a cell viability of 73% and 86% after 1 and 7 days of 3D culture, respectively.",
+      "amass_id": "AMBC_AFYreZtaHyHFh0pHhyZFteeVnLM",
+      "measurements": [
+        {
+          "assay": "viability_pct",
+          "value": 73.0,
+          "unit": "%",
+          "evidence": "numeric_text",
+          "notes": "abstract: in the noncytotoxic, nanocellulose-based bioink exhibited a cell viability of 73% and 86% after 1 and 7 days of 3D culture, respectively."
+        }
+      ]
+    },
+    {
+      "experiment_id": "pmid23172542-c1",
+      "study_id": "pmid23172542",
+      "material_class": "fibrin_alginate",
+      "material_detail": "alginate+fibrin (+collagen)",
+      "stiffness_kpa": null,
+      "stiffness_method": null,
+      "tissue": "cartilage",
+      "cell_type": "articular_chondrocyte",
+      "species": "rabbit",
+      "culture_model": "3D_bioprint",
+      "growth_factor": "none",
+      "culture_time_days": null,
+      "extracted_from": "abstract",
+      "curator_confidence": "low",
+      "notes": "survived within the printed hybrid construct with more than 80% viability one week after printing.",
+      "amass_id": "AMBC_NClZAcUMsrT8kiWCDZSRVgU17Tg",
+      "measurements": [
+        {
+          "assay": "viability_pct",
+          "value": 80.0,
+          "unit": "%",
+          "evidence": "numeric_text",
+          "notes": "abstract: survived within the printed hybrid construct with more than 80% viability one week after printing."
+        }
+      ]
+    },
+    {
+      "experiment_id": "pmid17148854-c1",
+      "study_id": "pmid17148854",
+      "material_class": "chitosan",
+      "material_detail": "collagen+chitosan",
+      "stiffness_kpa": null,
+      "stiffness_method": null,
+      "tissue": "cartilage",
+      "cell_type": "articular_chondrocyte",
+      "species": null,
+      "culture_model": "3D_encapsulation",
+      "growth_factor": "none",
+      "culture_time_days": 21.0,
+      "extracted_from": "abstract",
+      "curator_confidence": "low",
+      "notes": "biocomposites revealed a homogenous cell distribution, high viability (>95%) and maintenance of a rounded cell shape typical for chondr",
+      "amass_id": "AMBC_Ix0MkwsajriJoZ40sPzTssr28ZA",
+      "measurements": [
+        {
+          "assay": "viability_pct",
+          "value": 95.0,
+          "unit": "%",
+          "evidence": "numeric_text",
+          "notes": "abstract: biocomposites revealed a homogenous cell distribution, high viability (>95%) and maintenance of a rounded cell shape typical for chondr"
+        }
+      ]
+    },
+    {
+      "experiment_id": "pmid34970927-c1",
+      "study_id": "pmid34970927",
+      "material_class": "gelatin_alginate",
+      "material_detail": "alginate+gelatin",
+      "stiffness_kpa": null,
+      "stiffness_method": null,
+      "tissue": "cartilage",
+      "cell_type": "articular_chondrocyte",
+      "species": null,
+      "culture_model": "3D_encapsulation",
+      "growth_factor": "none",
+      "culture_time_days": null,
+      "extracted_from": "abstract",
+      "curator_confidence": "low",
+      "notes": "ion led to a significant (p < 0.05) increase in chondrocyte viability (50%) relative to the case without polymer supplement (15%).",
+      "amass_id": "AMBC_KqPZbHiYuGOGN0YLKDag8cdAULv",
+      "measurements": [
+        {
+          "assay": "viability_pct",
+          "value": 50.0,
+          "unit": "%",
+          "evidence": "numeric_text",
+          "notes": "abstract: ion led to a significant (p < 0.05) increase in chondrocyte viability (50%) relative to the case without polymer supplement (15%)."
+        }
+      ]
+    },
+    {
+      "experiment_id": "pmid23934174-c1",
+      "study_id": "pmid23934174",
+      "material_class": "collagen",
+      "material_detail": null,
+      "stiffness_kpa": null,
+      "stiffness_method": null,
+      "tissue": "cartilage",
+      "cell_type": "articular_chondrocyte",
+      "species": "human",
+      "culture_model": "2D",
+      "growth_factor": "none",
+      "culture_time_days": null,
+      "extracted_from": "abstract",
+      "curator_confidence": "low",
+      "notes": "Viability was 65.75 % after 3 months of cryopreservation at -196 °C, as compared",
+      "amass_id": "AMBC_110oNIv52MB14lSg649ORfiKEOO",
+      "measurements": [
+        {
+          "assay": "viability_pct",
+          "value": 65.75,
+          "unit": "%",
+          "evidence": "numeric_text",
+          "notes": "abstract: Viability was 65.75 % after 3 months of cryopreservation at -196 °C, as compared"
+        }
+      ]
+    },
+    {
+      "experiment_id": "pmid27566509-c1",
+      "study_id": "pmid27566509",
+      "material_class": "collagen",
+      "material_detail": null,
+      "stiffness_kpa": null,
+      "stiffness_method": null,
+      "tissue": "cartilage",
+      "cell_type": "articular_chondrocyte",
+      "species": null,
+      "culture_model": "3D_encapsulation",
+      "growth_factor": "none",
+      "culture_time_days": null,
+      "extracted_from": "abstract",
+      "curator_confidence": "low",
+      "notes": "Cell viability was 94.6 % during in vitro expansion.",
+      "amass_id": "AMBC_Cw3KSdsPWnTzGoAyZmXJ1NyNMCD",
+      "measurements": [
+        {
+          "assay": "viability_pct",
+          "value": 94.6,
+          "unit": "%",
+          "evidence": "numeric_text",
+          "notes": "abstract: Cell viability was 94.6 % during in vitro expansion."
+        }
+      ]
+    },
+    {
+      "experiment_id": "pmid17417949-c1",
+      "study_id": "pmid17417949",
+      "material_class": "collagen",
+      "material_detail": null,
+      "stiffness_kpa": null,
+      "stiffness_method": null,
+      "tissue": "cartilage",
+      "cell_type": "MSC",
+      "species": "human",
+      "culture_model": "3D_encapsulation",
+      "growth_factor": "none",
+      "culture_time_days": null,
+      "extracted_from": "abstract",
+      "curator_confidence": "low",
+      "notes": "ation of 5 mM RGDS incorporated into the network maintained 75% viability in control cultures.",
+      "amass_id": "AMBC_O4KT5I5fKj2Srg9ZxA7gNt6jKzD",
+      "measurements": [
+        {
+          "assay": "viability_pct",
+          "value": 75.0,
+          "unit": "%",
+          "evidence": "numeric_text",
+          "notes": "abstract: ation of 5 mM RGDS incorporated into the network maintained 75% viability in control cultures."
+        }
+      ]
+    },
+    {
+      "experiment_id": "pmid24770944-c1",
+      "study_id": "pmid24770944",
+      "material_class": "chitosan",
+      "material_detail": null,
+      "stiffness_kpa": null,
+      "stiffness_method": null,
+      "tissue": "cartilage",
+      "cell_type": "MSC",
+      "species": null,
+      "culture_model": "3D_encapsulation",
+      "growth_factor": "none",
+      "culture_time_days": null,
+      "extracted_from": "abstract",
+      "curator_confidence": "low",
+      "notes": "ure, bone-derived mesenchymal stem cells (BMSCs) maintained viability above 90% in all three materials; however, the cell retention of the",
+      "amass_id": "AMBC_Oj9bwTBdHyHL8Z8gwr3LhZpBQbW",
+      "measurements": [
+        {
+          "assay": "viability_pct",
+          "value": 90.0,
+          "unit": "%",
+          "evidence": "numeric_text",
+          "notes": "abstract: ure, bone-derived mesenchymal stem cells (BMSCs) maintained viability above 90% in all three materials; however, the cell retention of the"
+        }
+      ]
+    },
+    {
+      "experiment_id": "pmid17208295-c1",
+      "study_id": "pmid17208295",
+      "material_class": "HA",
+      "material_detail": null,
+      "stiffness_kpa": null,
+      "stiffness_method": null,
+      "tissue": "cartilage",
+      "cell_type": "MSC",
+      "species": "human",
+      "culture_model": "3D_encapsulation",
+      "growth_factor": "none",
+      "culture_time_days": null,
+      "extracted_from": "abstract",
+      "curator_confidence": "low",
+      "notes": "Cellular viability in vitro was increased up to 55% in the hydrogels with BMP-2 compared with the control.",
+      "amass_id": "AMBC_VI1j5r4Mvp6WwGacN5BPYhKGpRf",
+      "measurements": [
+        {
+          "assay": "viability_pct",
+          "value": 55.0,
+          "unit": "%",
+          "evidence": "numeric_text",
+          "notes": "abstract: Cellular viability in vitro was increased up to 55% in the hydrogels with BMP-2 compared with the control."
+        }
+      ]
+    },
+    {
+      "experiment_id": "pmid22776769-c1",
+      "study_id": "pmid22776769",
+      "material_class": "alginate",
+      "material_detail": null,
+      "stiffness_kpa": null,
+      "stiffness_method": null,
+      "tissue": "cartilage",
+      "cell_type": "MSC",
+      "species": "murine",
+      "culture_model": "3D_encapsulation",
+      "growth_factor": "none",
+      "culture_time_days": 28.0,
+      "extracted_from": "abstract",
+      "curator_confidence": "low",
+      "notes": "In both cases, encapsulated MSC viability was maintained at around 75%, and their secretion characteristics were retained 28 days",
+      "amass_id": "AMBC_RlK811YDFBrg5M7UwZDxwZmOIPQ",
+      "measurements": [
+        {
+          "assay": "viability_pct",
+          "value": 75.0,
+          "unit": "%",
+          "evidence": "numeric_text",
+          "notes": "abstract: In both cases, encapsulated MSC viability was maintained at around 75%, and their secretion characteristics were retained 28 days"
+        }
+      ]
+    }
+  ],
+  "notes": [
+    "Low/medium confidence auto-promotion from abstracts and selected fulltext.",
+    "Do not treat as a hand-curated table. Leave-one-paper-out still required.",
+    "Full article text was not written to disk."
+  ]
+}

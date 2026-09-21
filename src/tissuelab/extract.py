@@ -50,9 +50,43 @@ STIFFNESS_RE = re.compile(
     re.I,
 )
 CULTURE_DAYS_RE = re.compile(r"\b(?:after|at|for|day)\s+(\d{1,3})\s*(?:days?|d)\b", re.I)
+CULTURE_DAYS_BARE_RE = re.compile(r"\b(\d{1,2})\s*days?\b", re.I)
 HYDROGEL_RE = re.compile(r"\bhydrogels?\b|\bbioinks?\b|\bscaffolds?\b", re.I)
 CARTILAGE_RE = re.compile(r"\bcartilage\b|\bchondrogen(?:ic|esis)\b", re.I)
 TGF_RE = re.compile(r"\bTGF[-\s]?β?\s*3\b|\bTGF[-\s]?beta[-\s]?3\b", re.I)
+TGF_B1_RE = re.compile(r"\bTGF[-\s]?β?\s*1\b|\bTGF[-\s]?beta[-\s]?1\b", re.I)
+SPECIES_PATTERNS = [
+    ("human", re.compile(r"\bhuman\b|\bprimary human\b", re.I)),
+    ("bovine", re.compile(r"\bbovine\b|\bcow\b|\bcalf\b", re.I)),
+    ("porcine", re.compile(r"\bporcine\b|\bpig\b", re.I)),
+    ("rabbit", re.compile(r"\brabbit\b", re.I)),
+    ("murine", re.compile(r"\bmurine\b|\bmouse\b|\brat\b", re.I)),
+]
+SENTENCE_SPLIT = re.compile(r"(?<=[.!?])\s+(?=[A-Z0-9])")
+CANONICAL_DAYS = {1, 3, 7, 10, 14, 21, 28, 42, 56}
+COMPOSITE_MATERIALS = {
+    frozenset({"chitosan", "HA"}): "chitosan_HA",
+    frozenset({"gelatin", "alginate"}): "gelatin_alginate",
+    frozenset({"fibrin", "alginate"}): "fibrin_alginate",
+    frozenset({"PEG", "dextran"}): "PEG_dextran",
+    frozenset({"silk_fibrin", "fibrin"}): "silk_fibrin",
+}
+MATERIAL_PRIORITY = [
+    "GelMA",
+    "alginate",
+    "HA",
+    "fibrin",
+    "agarose",
+    "collagen",
+    "PEG",
+    "chitosan",
+    "silk_fibrin",
+    "gelatin",
+    "PVA",
+    "dextran",
+    "cellulose",
+    "gellan",
+]
 
 
 def _span(text: str, m: re.Match[str], pad: int = 40) -> str:
@@ -196,3 +230,232 @@ def extract_from_abstract(abstract: str | None, title: str | None = None) -> lis
             }
         )
     return rows
+
+
+def materials_in(text: str) -> list[str]:
+    found = []
+    for label, pat in MATERIAL_PATTERNS:
+        if pat.search(text) and label not in found:
+            found.append(label)
+    return found
+
+
+def cells_in(text: str) -> list[str]:
+    found = []
+    for label, pat in CELL_PATTERNS:
+        if pat.search(text) and label not in found:
+            found.append(label)
+    return found
+
+
+def viability_hits(text: str) -> list[tuple[float, str]]:
+    seen: set[float] = set()
+    hits = []
+    for pat in VIABILITY_RES:
+        for m in pat.finditer(text):
+            val = float(m.group(1))
+            if val > 99.5 or val < 40 or val in seen:
+                continue
+            seen.add(val)
+            hits.append((val, _span(text, m, 60)))
+    return hits
+
+
+def stiffness_hits(text: str) -> list[tuple[float, str]]:
+    seen: set[float] = set()
+    hits = []
+    for m in STIFFNESS_RE.finditer(text):
+        lo = float(m.group(1))
+        hi = float(m.group(2)) if m.group(2) else None
+        unit = m.group(3)
+        if hi is not None and hi != lo:
+            continue
+        kpa = _kpa(lo, unit)
+        if kpa is None or kpa < 0.1 or kpa > 800 or kpa in seen:
+            continue
+        seen.add(kpa)
+        hits.append((kpa, _span(text, m, 50)))
+    return hits
+
+
+def culture_days_in(text: str) -> list[int]:
+    days: list[int] = []
+    for pat in (CULTURE_DAYS_RE, CULTURE_DAYS_BARE_RE):
+        for m in pat.finditer(text):
+            val = int(m.group(1))
+            if val in CANONICAL_DAYS and val not in days:
+                days.append(val)
+    return days
+
+
+def pick_material(materials: list[str]) -> tuple[str | None, str | None]:
+    unique = []
+    for item in materials:
+        if item not in unique:
+            unique.append(item)
+    if not unique:
+        return None, None
+    key = frozenset(unique)
+    if key in COMPOSITE_MATERIALS:
+        return COMPOSITE_MATERIALS[key], "+".join(sorted(unique))
+    if len(unique) == 1:
+        return unique[0], None
+    for subset, mapped in COMPOSITE_MATERIALS.items():
+        if subset <= key:
+            extra = [m for m in unique if m not in subset]
+            detail = "+".join(sorted(subset))
+            if extra:
+                detail = detail + " (+" + ",".join(extra) + ")"
+            return mapped, detail
+    for label in MATERIAL_PRIORITY:
+        if label in unique:
+            return label, "+".join(unique)
+    return unique[0], "+".join(unique)
+
+
+def pick_cell(cells: list[str]) -> str | None:
+    if "articular_chondrocyte" in cells:
+        return "articular_chondrocyte"
+    if "MSC" in cells or "iPSC" in cells:
+        return "MSC"
+    if "ATDC5" in cells:
+        return "ATDC5"
+    return None
+
+
+def pick_species(text: str) -> str | None:
+    for label, pat in SPECIES_PATTERNS:
+        if pat.search(text):
+            return label
+    return None
+
+
+def pick_growth_factor(text: str) -> str:
+    if TGF_RE.search(text):
+        return "TGF_b3"
+    if TGF_B1_RE.search(text):
+        return "TGF_b1"
+    return "none"
+
+
+def pick_culture_model(text: str) -> str:
+    blob = text.lower()
+    if "bioprint" in blob or "bioink" in blob or "bio-ink" in blob:
+        return "3D_bioprint"
+    if "2d" in blob or "monolayer" in blob:
+        return "2D"
+    return "3D_encapsulation"
+
+
+def _window_kpa(text: str, needle: str) -> float | None:
+    if not needle:
+        return None
+    pos = text.find(needle[:40]) if needle else -1
+    if pos < 0:
+        pos = 0
+    window = text[max(0, pos - 280) : pos + 280]
+    hits = stiffness_hits(window)
+    if len(hits) == 1:
+        return hits[0][0]
+    return None
+
+
+def extract_conditions(title: str | None, abstract: str | None, extra: str | None = None) -> list[dict[str, Any]]:
+    """Promote sentence-level numbers into candidate experiments.
+
+    Still not ground truth. Caller must store curator_confidence=low and
+    never invent a second condition from unpaired numbers.
+    """
+    parts = [p for p in (title, abstract, extra) if p]
+    text = " ".join(parts)
+    if not HYDROGEL_RE.search(text) and not CARTILAGE_RE.search(text):
+        return []
+    material, detail = pick_material(materials_in(text))
+    cell = pick_cell(cells_in(text))
+    if not material or not cell:
+        return []
+    species = pick_species(text)
+    gf = pick_growth_factor(text)
+    model = pick_culture_model(text)
+    paper_days = culture_days_in(text)
+    paper_day = paper_days[0] if len(paper_days) == 1 else None
+
+    conditions: list[dict[str, Any]] = []
+    for sent in SENTENCE_SPLIT.split(text):
+        viabs = viability_hits(sent)
+        if not viabs:
+            continue
+        kpas = stiffness_hits(sent)
+        sent_mat, sent_detail = pick_material(materials_in(sent))
+        use_mat = sent_mat or material
+        use_detail = sent_detail or detail
+        days = culture_days_in(sent)
+        day = days[0] if len(days) == 1 else paper_day
+        if len(viabs) == 1:
+            kpa = kpas[0][0] if len(kpas) == 1 else None
+            if kpa is None:
+                kpa = _window_kpa(text, sent)
+            conditions.append(
+                {
+                    "material_class": use_mat,
+                    "material_detail": use_detail,
+                    "cell_type": cell,
+                    "species": species,
+                    "growth_factor": gf,
+                    "culture_model": model,
+                    "culture_time_days": float(day) if day else None,
+                    "stiffness_kpa": kpa,
+                    "viability_pct": viabs[0][0],
+                    "evidence_span": viabs[0][1],
+                    "paired_stiffness": kpa is not None,
+                }
+            )
+        elif len(viabs) == len(kpas) == 2:
+            for (val, span), (kpa, _) in zip(viabs, kpas):
+                conditions.append(
+                    {
+                        "material_class": use_mat,
+                        "material_detail": use_detail,
+                        "cell_type": cell,
+                        "species": species,
+                        "growth_factor": gf,
+                        "culture_model": model,
+                        "culture_time_days": float(day) if day else None,
+                        "stiffness_kpa": kpa,
+                        "viability_pct": val,
+                        "evidence_span": span,
+                        "paired_stiffness": True,
+                    }
+                )
+
+    if not conditions:
+        header = " ".join(p for p in (title, abstract) if p)
+        viabs = viability_hits(header) or viability_hits(text)
+        kpas = stiffness_hits(header)
+        if len(viabs) == 1:
+            kpa = kpas[0][0] if len(kpas) == 1 else _window_kpa(header, viabs[0][1])
+            conditions.append(
+                {
+                    "material_class": material,
+                    "material_detail": detail,
+                    "cell_type": cell,
+                    "species": species,
+                    "growth_factor": gf,
+                    "culture_model": model,
+                    "culture_time_days": float(paper_day) if paper_day else None,
+                    "stiffness_kpa": kpa,
+                    "viability_pct": viabs[0][0],
+                    "evidence_span": viabs[0][1],
+                    "paired_stiffness": kpa is not None,
+                }
+            )
+
+    uniq = []
+    seen_keys = set()
+    for row in conditions:
+        key = (row["material_class"], row["viability_pct"], row["stiffness_kpa"], row["culture_time_days"])
+        if key in seen_keys:
+            continue
+        seen_keys.add(key)
+        uniq.append(row)
+    return uniq

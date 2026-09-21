@@ -9,6 +9,7 @@ from tissuelab.paths import DB_PATH, SCHEMA_SQL_PATH
 VOCAB_CELL_TYPES = [
     ("articular_chondrocyte", "cartilage", "Primary or expanded articular chondrocytes"),
     ("MSC", "stromal", "Bone-marrow or otherwise unspecified MSCs in a cartilage protocol"),
+    ("ATDC5", "cartilage", "Murine ATDC5 chondrogenic cell line"),
 ]
 
 VOCAB_MATERIALS = [
@@ -23,6 +24,12 @@ VOCAB_MATERIALS = [
     ("collagen", "protein", None),
     ("agarose", "polysaccharide", None),
     ("chitosan_HA", "polysaccharide", None),
+    ("chitosan", "polysaccharide", None),
+    ("gelatin", "protein", None),
+    ("PVA", "synthetic", None),
+    ("dextran", "polysaccharide", None),
+    ("cellulose", "polysaccharide", None),
+    ("gellan", "polysaccharide", None),
     ("gelatin_alginate", "composite", None),
     ("fibrin_alginate", "composite", None),
 ]
