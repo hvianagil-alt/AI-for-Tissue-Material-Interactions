@@ -1,6 +1,9 @@
 [browser]
 gatherUsageStats = false
 
+[client]
+showErrorDetails = true
+
 [theme]
 base = "dark"
 primaryColor = "#3ecfb2"

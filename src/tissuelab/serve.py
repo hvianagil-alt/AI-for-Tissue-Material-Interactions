@@ -2,9 +2,9 @@
 
 from __future__ import annotations
 
+import os
 import subprocess
 import sys
-from pathlib import Path
 
 from tissuelab.paths import DB_PATH, ROOT
 
@@ -21,10 +21,21 @@ def main() -> None:
             file=sys.stderr,
         )
         raise SystemExit(1)
+    env = os.environ.copy()
+    env["STREAMLIT_BROWSER_GATHER_USAGE_STATS"] = "false"
     raise SystemExit(
         subprocess.call(
-            [sys.executable, "-m", "streamlit", "run", str(app), "--browser.gatherUsageStats", "false"],
+            [
+                sys.executable,
+                "-m",
+                "streamlit",
+                "run",
+                str(app),
+                "--browser.gatherUsageStats",
+                "false",
+            ],
             cwd=ROOT,
+            env=env,
         )
     )
 
