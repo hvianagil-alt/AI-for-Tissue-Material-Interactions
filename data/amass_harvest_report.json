@@ -1,0 +1,112 @@
+{
+  "n_papers": 8062,
+  "n_with_abstract": 7944,
+  "n_extractions": 22276,
+  "n_papers_with_viability_mention": 67,
+  "n_papers_with_stiffness_mention": 395,
+  "n_papers_mentioning_chondrocyte": 3041,
+  "n_papers_with_mapped_material": 3618,
+  "papers_per_year": {
+    "2004": 166,
+    "2005": 175,
+    "2006": 237,
+    "2007": 256,
+    "2008": 178,
+    "2009": 300,
+    "2010": 329,
+    "2011": 207,
+    "2012": 264,
+    "2013": 302,
+    "2014": 350,
+    "2015": 426,
+    "2016": 343,
+    "2017": 397,
+    "2018": 258,
+    "2019": 271,
+    "2020": 527,
+    "2021": 513,
+    "2022": 491,
+    "2023": 512,
+    "2024": 518,
+    "2025": 513,
+    "2026": 529
+  },
+  "extractions_per_field": {
+    "cell_type": 5226,
+    "culture_time_days": 582,
+    "growth_factor": 159,
+    "material_class": 5426,
+    "scaffold_class": 5284,
+    "stiffness_kpa": 695,
+    "tissue": 4829,
+    "viability_pct": 75
+  },
+  "top_journals": [
+    {
+      "journal": "Frontiers in bioengineering and biotechnology",
+      "n": 261
+    },
+    {
+      "journal": "Polymers",
+      "n": 260
+    },
+    {
+      "journal": "Gels (Basel, Switzerland)",
+      "n": 235
+    },
+    {
+      "journal": "Biomaterials",
+      "n": 233
+    },
+    {
+      "journal": "Acta biomaterialia",
+      "n": 213
+    },
+    {
+      "journal": "International journal of molecular sciences",
+      "n": 198
+    },
+    {
+      "journal": "Scientific reports",
+      "n": 125
+    },
+    {
+      "journal": "PloS one",
+      "n": 124
+    },
+    {
+      "journal": "Journal of biomedical materials research. Part A",
+      "n": 124
+    },
+    {
+      "journal": "Tissue engineering. Part A",
+      "n": 110
+    },
+    {
+      "journal": "Advanced science (Weinheim, Baden-Wurttemberg, Germany)",
+      "n": 108
+    },
+    {
+      "journal": "Advanced healthcare materials",
+      "n": 105
+    },
+    {
+      "journal": "International journal of biological macromolecules",
+      "n": 98
+    },
+    {
+      "journal": "Osteoarthritis and cartilage",
+      "n": 86
+    },
+    {
+      "journal": "Materials (Basel, Switzerland)",
+      "n": 79
+    }
+  ],
+  "notes": [
+    "papers are Amass BiomedCore search hits, not curated experiments.",
+    "paper_extractions are regex candidates from title+abstract; confidence is low for numbers.",
+    "Do not train the viability model on paper_extractions.",
+    "Curated numeric outcomes remain in experiments/measurements."
+  ]
+}

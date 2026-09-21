@@ -3,12 +3,16 @@
 from __future__ import annotations
 
 import json
+import sqlite3
+from pathlib import Path
 
 import pandas as pd
 
 from tissuelab.curated import EXPERIMENTS, STUDIES
 from tissuelab.db import connect, init_schema
 from tissuelab.paths import DATA_DIR, DB_PATH, NATIVE_EXPORT_PATH, QUALITY_REPORT_PATH
+
+HARVEST_TABLES = ("papers", "paper_extractions", "harvest_log")
 
 EXP_COLUMNS = [
     "experiment_id",
@@ -55,7 +59,7 @@ def quality_report(conn) -> dict:
             f"SELECT ROUND(100.0 * AVG({col} IS NULL), 1) FROM experiments"
         ).fetchone()[0]
     # Leakage warning: small n_studies means study-level CV is the only honest split.
-    return {
+    report = {
         "n_studies": n_studies,
         "n_experiments": n_exp,
         "n_measurements": n_meas,
@@ -72,11 +76,58 @@ def quality_report(conn) -> dict:
             "Do not impute missing stiffness as 0; keep NA and use models that allow missing values or restrict to complete cases.",
             "Ordinal histology is within-paper rank, not a universal 0–1 scale — do not pool as if it were sGAG/DNA.",
             "New cell types add vocab_cell_types + assays; they do not get new columns on experiments.",
+            "Amass papers live in `papers`; regex hits in `paper_extractions` are not training labels.",
         ],
     }
+    tables = {
+        r[0] for r in conn.execute("SELECT name FROM sqlite_master WHERE type='table'").fetchall()
+    }
+    if "papers" in tables:
+        report["n_amass_papers"] = conn.execute("SELECT COUNT(*) FROM papers").fetchone()[0]
+        report["n_amass_extractions"] = conn.execute("SELECT COUNT(*) FROM paper_extractions").fetchone()[0]
+    return report
+
+
+def snapshot_harvest(path) -> dict | None:
+    if not path.exists():
+        return None
+    raw = sqlite3.connect(path)
+    raw.row_factory = sqlite3.Row
+    try:
+        names = {r[0] for r in raw.execute("SELECT name FROM sqlite_master WHERE type='table'")}
+        if "papers" not in names:
+            return None
+        snap = {}
+        for table in HARVEST_TABLES:
+            if table in names:
+                snap[table] = [dict(row) for row in raw.execute(f"SELECT * FROM {table}").fetchall()]
+            else:
+                snap[table] = []
+        return snap
+    except sqlite3.Error:
+        return None
+    finally:
+        raw.close()
+
+
+def restore_harvest(conn, snap: dict | None) -> None:
+    if not snap:
+        return
+    conn.execute("PRAGMA foreign_keys = OFF")
+    for table in HARVEST_TABLES:
+        rows = snap.get(table) or []
+        for row in rows:
+            cols = ",".join(row.keys())
+            placeholders = ",".join(["?"] * len(row))
+            conn.execute(
+                f"INSERT OR REPLACE INTO {table} ({cols}) VALUES ({placeholders})",
+                tuple(row.values()),
+            )
+    conn.execute("PRAGMA foreign_keys = ON")
 
 
 def load(path=DB_PATH):
+    snap = snapshot_harvest(path)
     if path.exists():
         path.unlink()
     conn = connect(path)
@@ -109,19 +160,21 @@ def load(path=DB_PATH):
                     meas.get("notes"),
                 ),
             )
+    restore_harvest(conn, snap)
     conn.commit()
     report = quality_report(conn)
-    DATA_DIR.mkdir(parents=True, exist_ok=True)
-    QUALITY_REPORT_PATH.write_text(json.dumps(report, indent=2))
-    native = pd.read_sql_query(
-        """
-        SELECT e.*, m.assay, m.value, m.value_sd, m.unit, m.qualitative_label, m.evidence
-        FROM experiments e
-        JOIN measurements m USING (experiment_id)
-        """,
-        conn,
-    )
-    native.to_csv(NATIVE_EXPORT_PATH, index=False)
+    if Path(path).resolve() == DB_PATH.resolve():
+        DATA_DIR.mkdir(parents=True, exist_ok=True)
+        QUALITY_REPORT_PATH.write_text(json.dumps(report, indent=2))
+        native = pd.read_sql_query(
+            """
+            SELECT e.*, m.assay, m.value, m.value_sd, m.unit, m.qualitative_label, m.evidence
+            FROM experiments e
+            JOIN measurements m USING (experiment_id)
+            """,
+            conn,
+        )
+        native.to_csv(NATIVE_EXPORT_PATH, index=False)
     conn.close()
     return report
 

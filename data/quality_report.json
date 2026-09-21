@@ -44,6 +44,9 @@
     "Train viability models only on v_model_viability (numeric live/dead).",
     "Do not impute missing stiffness as 0; keep NA and use models that allow missing values or restrict to complete cases.",
     "Ordinal histology is within-paper rank, not a universal 0\u20131 scale \u2014 do not pool as if it were sGAG/DNA.",
-    "New cell types add vocab_cell_types + assays; they do not get new columns on experiments."
-  ]
+    "New cell types add vocab_cell_types + assays; they do not get new columns on experiments.",
+    "Amass papers live in `papers`; regex hits in `paper_extractions` are not training labels."
+  ],
+  "n_amass_papers": 8062,
+  "n_amass_extractions": 22276
 }

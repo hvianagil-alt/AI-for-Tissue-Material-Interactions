@@ -19,6 +19,8 @@ studies 1──* experiments 1──* measurements
 - **studies** — one paper. Split the ML data here (leave-one-paper-out). Random 80/20 on rows leaks the same gel series into train and test.
 - **experiments** — one published condition. Features that the paper omitted are `NULL`, never `0`, never a guessed porosity.
 - **measurements** — long form: `(assay, value, unit, evidence)`. Viability, sGAG, COL2/COL1, ALP (bone, later) are rows, not columns.
+- **papers** — Amass BiomedCore harvest (title, abstract, identifiers). Not a training table.
+- **paper_extractions** — regex candidates from title+abstract. Low-confidence numbers stay here; they are **not** copied into `measurements`.
 
 That last point is the answer to “later we add more cell variables”. Osteoblast ALP is a new **assay + cell_type**, not a new column that breaks chondrocyte models. Filter `cell_type = articular_chondrocyte` and `assay = viability_pct` for the MVP.
 
@@ -30,6 +32,8 @@ That last point is the answer to “later we add more cell variables”. Osteobl
 | Stiffness as a feature | experiments with `stiffness_kpa IS NOT NULL` | Complete-case or a missingness indicator |
 | Histology ordinals | measurements `*_histology` | Within-paper rank only; do not treat as µg/µg |
 | Simulated rows | **not in this database** | They are a software prior, not observations |
+| Amass `papers` | literature index / retrieval | Abstracts + identifiers |
+| `paper_extractions` | **not a model table** | Regex from abstracts; numbers are low-confidence |
 
 ## Evidence field
 

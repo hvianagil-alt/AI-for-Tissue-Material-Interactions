@@ -28,6 +28,7 @@ dev = ["pytest>=8.0", "httpx>=0.27"]
 tissuelab-build-dataset = "tissuelab.build_dataset:main"
 tissuelab-train = "tissuelab.train:main"
 tissuelab-load-database = "tissuelab.load_database:main"
+tissuelab-harvest-amass = "tissuelab.harvest_amass:main"
 
 [tool.setuptools.packages.find]
 where = ["src"]

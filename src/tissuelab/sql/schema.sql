@@ -85,6 +85,63 @@ CREATE INDEX IF NOT EXISTS idx_exp_material ON experiments(material_class);
 CREATE INDEX IF NOT EXISTS idx_exp_cell ON experiments(cell_type);
 CREATE INDEX IF NOT EXISTS idx_meas_assay ON measurements(assay);
 
+-- Amass BiomedCore harvest. Abstracts are observations of the literature,
+-- not curated experiments. Do not copy regex hits into experiments.
+CREATE TABLE IF NOT EXISTS papers (
+    amass_id              TEXT PRIMARY KEY,
+    pmid                  TEXT,
+    pmcid                 TEXT,
+    doi                   TEXT,
+    title                 TEXT,
+    abstract              TEXT,
+    journal               TEXT,
+    publication_date      TEXT,
+    year                  INTEGER,
+    citation_count        INTEGER,
+    journal_quality_jufo  INTEGER,
+    has_fulltext          INTEGER,
+    is_retracted          INTEGER,
+    publication_types     TEXT,
+    mesh_terms            TEXT,
+    keywords              TEXT,
+    substances            TEXT,
+    authors               TEXT,
+    language              TEXT,
+    query_hits            TEXT,
+    harvested_at          TEXT
+);
+
+CREATE TABLE IF NOT EXISTS paper_extractions (
+    extraction_id   INTEGER PRIMARY KEY AUTOINCREMENT,
+    amass_id        TEXT NOT NULL REFERENCES papers(amass_id) ON DELETE CASCADE,
+    field           TEXT NOT NULL,
+    value_text      TEXT,
+    value_num       REAL,
+    unit            TEXT,
+    evidence_span   TEXT,
+    extractor       TEXT NOT NULL DEFAULT 'regex_abstract',
+    confidence      TEXT NOT NULL DEFAULT 'low'
+);
+
+CREATE TABLE IF NOT EXISTS harvest_log (
+    log_id                 INTEGER PRIMARY KEY AUTOINCREMENT,
+    query                  TEXT NOT NULL,
+    min_publication_date   TEXT,
+    max_publication_date   TEXT,
+    limit_requested        INTEGER,
+    n_returned             INTEGER,
+    n_new                  INTEGER,
+    http_status            INTEGER,
+    credit_cost            INTEGER,
+    requested_at           TEXT
+);
+
+CREATE INDEX IF NOT EXISTS idx_papers_pmid ON papers(pmid);
+CREATE INDEX IF NOT EXISTS idx_papers_year ON papers(year);
+CREATE INDEX IF NOT EXISTS idx_papers_doi ON papers(doi);
+CREATE INDEX IF NOT EXISTS idx_extract_amass ON paper_extractions(amass_id);
+CREATE INDEX IF NOT EXISTS idx_extract_field ON paper_extractions(field);
+
 -- Modeling view: one row per experiment, viability only when a number was published.
 CREATE VIEW IF NOT EXISTS v_model_viability AS
 SELECT

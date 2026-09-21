@@ -28,7 +28,7 @@ The point of the MVP is not “AI for biology”. It is:
 | Streamlit app + FastAPI | Done |
 | Competitor / dataset landscape | `docs/LANDSCAPE.md` |
 
-The **source of truth for science** is `data/tissuelab.sqlite` (see `docs/DATA_MODEL.md`). The mixed CSV + simulator is only a software prior. Do not train a “result” on simulated labels.
+The **source of truth for science** is `data/tissuelab.sqlite` (see `docs/DATA_MODEL.md`). Curated measurements stay in `experiments` / `measurements`. Amass harvest lives in `papers` (~8k BiomedCore records). Regex candidates in `paper_extractions` are **not** training labels. The mixed CSV + simulator is only a software prior.
 
 ## Quick start
 
@@ -38,6 +38,8 @@ source .venv/bin/activate
 pip install -e ".[dev]"
 
 python -m tissuelab.load_database
+# optional: Amass literature harvest (requires AMASS_API_KEY in .env)
+python -m tissuelab.harvest_amass
 python -m tissuelab.build_dataset
 python -m tissuelab.train
 pytest -q

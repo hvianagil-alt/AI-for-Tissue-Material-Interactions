@@ -1,0 +1,54 @@
+from tissuelab.extract import extract_from_abstract
+from tissuelab.load_database import load
+from tissuelab.paths import DB_PATH
+
+
+def test_extract_numeric_candidates_are_flagged_low():
+    text = (
+        "Chondrocytes encapsulated in a GelMA hydrogel showed 92% viability after 14 days. "
+        "Young's modulus was 25 kPa. TGF-β3 was added."
+    )
+    rows = extract_from_abstract(text, "GelMA cartilage hydrogel")
+    fields = {r["field"] for r in rows}
+    assert "material_class" in fields
+    assert "cell_type" in fields
+    assert "viability_pct" in fields
+    assert "stiffness_kpa" in fields
+    viab = [r for r in rows if r["field"] == "viability_pct"]
+    assert viab[0]["value_num"] == 92.0
+    assert viab[0]["confidence"] == "low"
+    mats = {r["value_text"] for r in rows if r["field"] == "material_class"}
+    assert "GelMA" in mats
+
+
+def test_load_preserves_amass_papers(tmp_path):
+    db = tmp_path / "t.sqlite"
+    load(db)
+    from tissuelab.db import connect, init_schema
+
+    conn = connect(db)
+    init_schema(conn)
+    conn.execute(
+        """
+        INSERT INTO papers (amass_id, pmid, title, abstract, harvested_at)
+        VALUES ('AMBC_test', '1', 't', 'chondrocyte hydrogel', 'now')
+        """
+    )
+    conn.commit()
+    conn.close()
+    load(db)
+    conn = connect(db)
+    n = conn.execute("SELECT COUNT(*) FROM papers WHERE amass_id = 'AMBC_test'").fetchone()[0]
+    n_exp = conn.execute("SELECT COUNT(*) FROM experiments").fetchone()[0]
+    conn.close()
+    assert n == 1
+    assert n_exp >= 40
+
+
+def test_tmp_load_does_not_clobber_quality_report(tmp_path):
+    from tissuelab.paths import QUALITY_REPORT_PATH
+
+    before = QUALITY_REPORT_PATH.read_text() if QUALITY_REPORT_PATH.exists() else None
+    load(tmp_path / "t.sqlite")
+    after = QUALITY_REPORT_PATH.read_text() if QUALITY_REPORT_PATH.exists() else None
+    assert after == before
