@@ -43,14 +43,14 @@ pip install -e .
 tissuelab-app
 ```
 
-Opens [http://localhost:8501](http://localhost:8501). Open **Predict**, leave GelMA ~25 kPa, and read **literature viability** plus the nearest extracted papers. That is the product. The four-outcome radar is a simulator demo (skipped if the gitignored XGBoost joblib is missing).
+Opens [http://localhost:8501](http://localhost:8501) as a **plain HTML** Predict page (works in Cursor’s browser). Leave GelMA ~25 kPa and read literature viability plus the nearest extracted papers.
 
 Optional:
 
 ```bash
-streamlit run app/streamlit_app.py           # same app, no console script
-uvicorn app.api:app --reload --port 8000     # POST /predict
-pip install -e ".[dev]" && pytest -q         # tests
+streamlit run app/streamlit_app.py --server.port 8502   # radar demo; needs websocket
+uvicorn app.api:app --host 0.0.0.0 --port 8501          # same UI as tissuelab-app
+pip install -e ".[dev]" && pytest -q
 ```
 
 ## How to read the numbers

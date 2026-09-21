@@ -11,14 +11,14 @@ pip install -e .
 tissuelab-app
 ```
 
-The browser opens at [http://localhost:8501](http://localhost:8501). If it does not, paste that URL yourself.
+The browser opens at [http://localhost:8501](http://localhost:8501). This is a **plain HTML** Predict page (no Streamlit websocket), so the Cursor Simple Browser and Chrome can both open it.
 
-If the browser shows `ERR_CONNECTION_RESET` / `-101`, Streamlit was bound only to `127.0.0.1` (Cursor’s preview talks to the VM IP). Restart with `tissuelab-app` (binds `0.0.0.0:8501`) and reload. Confirm from a terminal: `curl -s http://127.0.0.1:8501/_stcore/health` should print `ok`.
+In Cursor: open the **Ports** panel, find **8501**, and click the globe / Open in Browser. Or paste `http://localhost:8501/` in Cursor’s Simple Browser.
 
-Equivalent without the console script:
+Optional Streamlit radar demo (needs a websocket; often fails in Cursor’s preview):
 
 ```bash
-streamlit run app/streamlit_app.py
+streamlit run app/streamlit_app.py --server.port 8502
 ```
 
 ## 2. What to open

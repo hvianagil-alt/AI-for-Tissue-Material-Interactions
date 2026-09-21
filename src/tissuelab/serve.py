@@ -1,4 +1,4 @@
-"""Launch the TissueLab Streamlit app from the repo root."""
+"""Launch the TissueLab Predict UI in a browser (plain HTTP, no Streamlit websocket)."""
 
 from __future__ import annotations
 
@@ -10,10 +10,6 @@ from tissuelab.paths import DB_PATH, ROOT
 
 
 def main() -> None:
-    app = ROOT / "app" / "streamlit_app.py"
-    if not app.exists():
-        print(f"Missing Streamlit app at {app}", file=sys.stderr)
-        raise SystemExit(1)
     if not DB_PATH.exists():
         print(
             f"Missing {DB_PATH}. From the repo root run:\n"
@@ -22,29 +18,19 @@ def main() -> None:
         )
         raise SystemExit(1)
     env = os.environ.copy()
-    env["STREAMLIT_BROWSER_GATHER_USAGE_STATS"] = "false"
-    # Bind all interfaces so Cursor/VS Code port-forward and localhost both work.
-    # CORS/XSRF off: Streamlit otherwise RST's proxied websocket upgrades.
+    env.setdefault("PYTHONPATH", str(ROOT / "src"))
+    print("TissueLab Predict: http://localhost:8501/", flush=True)
     raise SystemExit(
         subprocess.call(
             [
                 sys.executable,
                 "-m",
-                "streamlit",
-                "run",
-                str(app),
-                "--server.address",
+                "uvicorn",
+                "app.api:app",
+                "--host",
                 "0.0.0.0",
-                "--server.port",
+                "--port",
                 "8501",
-                "--server.headless",
-                "true",
-                "--server.enableCORS",
-                "false",
-                "--server.enableXsrfProtection",
-                "false",
-                "--browser.gatherUsageStats",
-                "false",
             ],
             cwd=ROOT,
             env=env,

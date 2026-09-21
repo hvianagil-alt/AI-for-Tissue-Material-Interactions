@@ -11,7 +11,8 @@ SRC = ROOT / "src"
 if str(SRC) not in sys.path:
     sys.path.insert(0, str(SRC))
 
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Query
+from fastapi.responses import HTMLResponse
 from pydantic import BaseModel, Field
 
 from tissuelab.inverse import inverse_design
@@ -21,6 +22,8 @@ from tissuelab.predict import predict_design
 from tissuelab.recommend import recommend_experiments
 from tissuelab.schema import DesignInput, TARGETS
 from tissuelab.train import load_model
+
+from app.ui import CELL_TYPES, GROWTH_FACTORS, MATERIALS, render_predict_page
 
 app = FastAPI(title="TissueLab AI", version="0.1.0")
 
@@ -55,6 +58,41 @@ class InverseRequest(BaseModel):
 class RecommendRequest(BaseModel):
     objective: str = Field(default="ecm_deposition_score")
     n: int = 5
+
+
+@app.get("/", response_class=HTMLResponse)
+def home(
+    material_class: str = Query(default="GelMA"),
+    stiffness_kpa: float = Query(default=25.0),
+    cell_type: str = Query(default="articular_chondrocyte"),
+    growth_factor: str = Query(default="none"),
+    culture_time_days: int = Query(default=14),
+):
+    if material_class not in MATERIALS:
+        material_class = "GelMA"
+    if cell_type not in CELL_TYPES:
+        cell_type = "articular_chondrocyte"
+    if growth_factor not in GROWTH_FACTORS:
+        growth_factor = "none"
+    stiffness_kpa = min(200.0, max(0.5, float(stiffness_kpa)))
+    culture_time_days = min(42, max(1, int(culture_time_days)))
+    lit = predict_literature_viability(
+        {
+            "material_class": material_class,
+            "stiffness_kpa": stiffness_kpa,
+            "cell_type": cell_type,
+            "growth_factor": growth_factor,
+            "culture_time_days": culture_time_days,
+        }
+    )
+    return render_predict_page(
+        material_class=material_class,
+        stiffness_kpa=stiffness_kpa,
+        cell_type=cell_type,
+        growth_factor=growth_factor,
+        culture_time_days=culture_time_days,
+        literature=lit,
+    )
 
 
 @app.get("/health")
