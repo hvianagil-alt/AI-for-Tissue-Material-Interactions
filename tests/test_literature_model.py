@@ -8,13 +8,13 @@ def test_notes_warn_when_dummy_wins():
 
 def test_notes_mvp_pass():
     notes = _notes({"beats_dummy": True, "mvp_pass": True, "deployed_estimator": "material_mean"})
-    assert any("meets the viability MVP bar" in note for note in notes)
+    assert any("atinge a barra MVP" in note for note in notes)
 
 
 def test_notes_barely_beats_dummy():
     notes = _notes({"beats_dummy": True, "mvp_pass": False, "deployed_estimator": "material_mean"})
-    assert any("beats dummy" in note.lower() for note in notes)
-    assert any("MVP bar" in note for note in notes)
+    assert any("dummy" in note.lower() for note in notes)
+    assert any("MVP" in note for note in notes)
 
 
 def test_material_mean_estimate_falls_back():

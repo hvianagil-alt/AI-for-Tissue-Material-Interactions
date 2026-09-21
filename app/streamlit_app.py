@@ -216,7 +216,7 @@ def show_literature(literature: dict) -> None:
     c2.metric(_lopo_mae_label(literature), f"{mae:.1f}" if mae is not None else "—")
     c3.metric("Papers in split", lopo.get("n_studies") or "—")
     st.caption(
-        "Interval is ± leave-one-paper-out MAE of the deployed estimator on numeric live/dead. "
+        "Interval is at least ± leave-one-paper-out MAE, wider when this gel is thin or borrowing kPa. "
         "Auto-promoted abstracts are not in this model."
     )
     if literature.get("similar"):

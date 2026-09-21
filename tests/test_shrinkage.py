@@ -50,6 +50,20 @@ def test_soft_gel_is_not_identical_to_stiff_gel():
     ]
 
 
+def test_gelma_is_weaker_evidence_than_fibrin():
+    gelma = predict_literature_viability(_q(material_class="GelMA"))
+    fibrin = predict_literature_viability(_q(material_class="fibrin"))
+    assert gelma["n_eff_same"] <= 1.1
+    assert fibrin["n_eff_same"] > gelma["n_eff_same"]
+    assert gelma["interval_half"] > fibrin["interval_half"]
+    assert gelma["trust"]["level"] == "fraca"
+    stiff = next(d for d in gelma["knob_deltas"] if d.get("key") == "stiffness_kpa")
+    assert stiff["borrowed"] is True
+    assert gelma["coverage"]["material_min"] is not None
+    assert any(a["id"] == "competitor" for a in gelma["alternatives"])
+    assert gelma["interval_floor_is_lopo_mae"] is True
+
+
 def test_shrinkage_falls_back_on_empty_frame():
     import pandas as pd
 

@@ -34,7 +34,7 @@ streamlit run app/streamlit_app.py --server.port 8502
 ## 3. Predict — the actual workflow
 
 1. Leave the defaults the first time: **GelMA**, ~25 kPa, articular chondrocyte, 3D encapsulation.
-2. Read **Literature viability** (material-class mean of published live/dead) and the **± LOPO MAE** band.
+2. Read **Literature viability** and the **adaptive band** (never narrower than LOPO MAE; wider for thin or heterogeneous gels).
 3. Read **Nearest extracted papers**. Open those DOIs. That list is how you choose the next gel.
 4. Change only the hydrogel (try **fibrin**, **HA**, **alginate**, **chitosan**) and compare the papers that appear.
 5. Ignore the four-outcome radar / protocol / simulated neighbors unless you explicitly want the demo.
@@ -44,7 +44,7 @@ If the gel you typed has **no** live/dead rows, the app falls back to the global
 ## 4. How to read the numbers
 
 - **80% on GelMA** is the mean of the GelMA rows in `v_model_viability` (today: one Daly 2016 condition). It is not a prediction of your next flask.
-- The band is **leave-one-paper-out MAE (~16 points)**, not a biological confidence interval. A published 80% is compatible with roughly 64–96 under that error.
+- The band is **at least leave-one-paper-out MAE (~16 points)** and wider when that gel has one row, no kPa, or a huge spread. It is not a biological confidence interval.
 - Material-class mean **barely** beats a dummy mean (16.4 vs 16.5). Ridge is worse and is not served. The scientific MVP bar (15% better than dummy, R² > 0) is **not** met.
 - Competitor to beat: a PI who already runs “GelMA ~25 kPa + TGF-β3”.
 

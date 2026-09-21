@@ -12,6 +12,9 @@ def test_home_shows_gelma_literature_without_javascript():
     assert "Qual é o próximo gel" in body
     assert "<svg" in body
     assert "live/dead" in body.lower()
+    assert "E se mudasses o protocolo" in body
+    assert "Condrócito articular" in body
+    assert "lang=\"pt\"" in body
 
 
 def test_home_fibrin_differs_from_gelma():
@@ -22,4 +25,12 @@ def test_home_fibrin_differs_from_gelma():
     assert fibrin.status_code == 200
     assert "<svg" in gelma.text
     assert gelma.text != fibrin.text
-    assert "fibrin" in fibrin.text.lower()
+    assert "Fibrina" in fibrin.text
+
+
+def test_home_lists_extracted_composites():
+    client = TestClient(app)
+    body = client.get("/").text
+    assert 'value="fibrin_dECM"' in body
+    assert 'value="chitosan_gelatin_PVA"' in body
+    assert "emprestado" in body.lower() or "Evidência fraca" in body

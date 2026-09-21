@@ -71,6 +71,17 @@ def _n_eff(weights: np.ndarray) -> float:
     return float((s * s) / (float((weights ** 2).sum()) + 1e-12))
 
 
+def _n_eff_same_material(weights: np.ndarray, train: pd.DataFrame, material: str | None) -> float:
+    """Kish n_eff using only the query material. The full-kernel n_eff is ~30 for every gel."""
+    if weights.size == 0 or not material:
+        return 0.0
+    same = _col_str(train, "material_class") == str(material)
+    masked = np.where(same, weights, 0.0)
+    if float(masked.sum()) <= 0:
+        return 0.0
+    return _n_eff(masked)
+
+
 def shrinkage_estimate(query: dict, train: pd.DataFrame) -> dict:
     """Return a shrunk point estimate and the pieces needed for the UI."""
     if train.empty:
@@ -79,6 +90,7 @@ def shrinkage_estimate(query: dict, train: pd.DataFrame) -> dict:
             "local": None,
             "prior": None,
             "n_eff": 0.0,
+            "n_eff_same": 0.0,
             "n_support": 0,
             "local_weight": 0.0,
             "weights": np.zeros(0),
@@ -86,6 +98,8 @@ def shrinkage_estimate(query: dict, train: pd.DataFrame) -> dict:
         }
     y = train["viability_pct"].astype(float).to_numpy()
     weights = kernel_weights(query, train)
+    material = query.get("material_class")
+    n_eff_same = _n_eff_same_material(weights, train, material)
     if float(weights.sum()) <= 0:
         prior = float(y.mean())
         return {
@@ -93,6 +107,7 @@ def shrinkage_estimate(query: dict, train: pd.DataFrame) -> dict:
             "local": prior,
             "prior": prior,
             "n_eff": 0.0,
+            "n_eff_same": n_eff_same,
             "n_support": int(len(train)),
             "local_weight": 0.0,
             "weights": weights,
@@ -100,7 +115,7 @@ def shrinkage_estimate(query: dict, train: pd.DataFrame) -> dict:
         }
     local = float(np.average(y, weights=weights))
     n_eff = _n_eff(weights)
-    same = _col_str(train, "material_class") == str(query.get("material_class") or "")
+    same = _col_str(train, "material_class") == str(material or "")
     if same.any():
         prior = float(y[same].mean())
         estimator = "shrinkage"
@@ -116,6 +131,7 @@ def shrinkage_estimate(query: dict, train: pd.DataFrame) -> dict:
         "local": float(np.clip(local, 0, 100)),
         "prior": float(np.clip(prior, 0, 100)),
         "n_eff": n_eff,
+        "n_eff_same": n_eff_same,
         "n_support": n_support,
         "local_weight": float(local_weight),
         "weights": weights,
@@ -149,6 +165,37 @@ def lopo_shrinkage_predictions(frame: pd.DataFrame) -> np.ndarray:
     return pred
 
 
+KNOB_LABELS = {
+    "material_class": "Hidrogel",
+    "stiffness_kpa": "Rigidez",
+    "cell_type": "Células",
+    "growth_factor": "Factor de crescimento",
+    "culture_time_days": "Dias em cultura",
+}
+
+
+def _knob_support(query: dict, train: pd.DataFrame, key: str) -> dict:
+    """How many published rows of this gel actually carry the knob."""
+    material = query.get("material_class")
+    if train.empty or not material or "material_class" not in train.columns:
+        return {"n_material": 0, "n_observed": 0, "borrowed": True}
+    same = train[train["material_class"].astype(str) == str(material)]
+    n_material = int(len(same))
+    if key == "material_class":
+        return {"n_material": n_material, "n_observed": n_material, "borrowed": n_material == 0}
+    if key not in same.columns:
+        return {"n_material": n_material, "n_observed": 0, "borrowed": True}
+    observed = same[key]
+    if key in {"stiffness_kpa", "culture_time_days"}:
+        n_observed = int(observed.notna().sum())
+        borrowed = n_observed == 0
+    else:
+        want = str(query.get(key) or "")
+        n_observed = int((observed.fillna("").astype(str) == want).sum()) if want else 0
+        borrowed = n_material > 0 and n_observed == 0
+    return {"n_material": n_material, "n_observed": n_observed, "borrowed": bool(borrowed)}
+
+
 def knob_deltas(query: dict, train: pd.DataFrame) -> list[dict]:
     """How much each knob pulled the estimate away from the ablated query."""
     base = shrinkage_estimate(query, train)
@@ -157,22 +204,27 @@ def knob_deltas(query: dict, train: pd.DataFrame) -> list[dict]:
     full = base["mean"]
     out = []
     ablations = [
-        ("material_class", {**query, "material_class": "__none__"}, "Hydrogel"),
-        ("stiffness_kpa", {**query, "stiffness_kpa": None}, "Stiffness"),
-        ("cell_type", {**query, "cell_type": ""}, "Cell type"),
-        ("growth_factor", {**query, "growth_factor": "none"}, "Growth factor"),
-        ("culture_time_days", {**query, "culture_time_days": None}, "Culture time"),
+        ("material_class", {**query, "material_class": "__none__"}),
+        ("stiffness_kpa", {**query, "stiffness_kpa": None}),
+        ("cell_type", {**query, "cell_type": ""}),
+        ("growth_factor", {**query, "growth_factor": "none"}),
+        ("culture_time_days", {**query, "culture_time_days": None}),
     ]
     # Don't report GF if the query is already none (ablation is a no-op).
-    for key, ablated, label in ablations:
+    for key, ablated in ablations:
+        support = _knob_support(query, train, key)
+        label = KNOB_LABELS[key]
         if key == "growth_factor" and (query.get("growth_factor") or "none") == "none":
             other = shrinkage_estimate({**query, "growth_factor": "TGF_b3"}, train)
             out.append(
                 {
                     "feature": label,
+                    "key": key,
                     "delta": round(float(other["mean"] - full), 2),
-                    "note": "turn TGF-β3 on to see this pull",
+                    "note": "se ligares TGF-β3",
                     "hypothetical": True,
+                    "borrowed": support["borrowed"],
+                    "n_observed": support["n_observed"],
                 }
             )
             continue
@@ -182,9 +234,12 @@ def knob_deltas(query: dict, train: pd.DataFrame) -> list[dict]:
         out.append(
             {
                 "feature": label,
+                "key": key,
                 "delta": round(float(full - other["mean"]), 2),
-                "note": "pull vs this knob ignored",
+                "note": "puxão vs esta variável ignorada",
                 "hypothetical": False,
+                "borrowed": support["borrowed"],
+                "n_observed": support["n_observed"],
             }
         )
     return out
