@@ -1,17 +1,21 @@
 {
-  "n_studies": 82,
-  "n_experiments": 184,
-  "n_measurements": 229,
+  "n_studies": 90,
+  "n_experiments": 203,
+  "n_measurements": 257,
   "n_numeric_viability": 42,
   "n_auto_promoted_viability": 47,
-  "n_hand_studies": 45,
+  "n_hand_studies": 53,
   "n_hand_viability_studies": 15,
-  "n_with_stiffness_kpa": 93,
+  "n_with_stiffness_kpa": 97,
   "experiments_per_study": {
     "aitchison2024": 3,
     "bachmann2020": 18,
     "bryant2004": 3,
+    "byers2008": 2,
+    "chawla2012": 2,
+    "choy2017": 3,
     "chung2009": 2,
+    "cigan2016": 2,
     "daly2016": 4,
     "dekosky2010": 3,
     "demori2025": 8,
@@ -19,9 +23,12 @@
     "galarraga2021": 3,
     "hu2012": 4,
     "ingavle2012": 2,
+    "jooybar2019": 2,
     "kessel2020": 3,
     "kim2015": 2,
+    "kudva2018": 3,
     "lee2025": 3,
+    "levato2017": 3,
     "levett2014": 2,
     "li2016": 3,
     "lin2017": 2,
@@ -32,6 +39,7 @@
     "mouser2017": 3,
     "nicodemus2011": 3,
     "ortega2024": 2,
+    "pahoff2019": 2,
     "park2013": 4,
     "paul2023": 2,
     "perezdiaz2023": 1,
@@ -92,27 +100,29 @@
     "zigon2019": 3
   },
   "experiments_per_cell_type": {
-    "MSC": 47,
-    "adipose_MSC": 15,
-    "articular_chondrocyte": 119,
-    "auricular_chondrocyte": 3
+    "ATDC5": 1,
+    "MSC": 52,
+    "adipose_MSC": 18,
+    "articular_chondrocyte": 128,
+    "auricular_chondrocyte": 3,
+    "cartilage_progenitor": 1
   },
   "measurements_per_assay": {
     "col2_col1_ratio": 2,
     "dna_fold_vs_day0": 7,
-    "morphology_spherical": 18,
-    "sgag_histology": 59,
-    "viability_pct": 143
+    "morphology_spherical": 23,
+    "sgag_histology": 72,
+    "viability_pct": 153
   },
   "measurements_per_evidence": {
     "numeric_text": 91,
-    "qualitative_text": 138
+    "qualitative_text": 166
   },
   "percent_missing": {
-    "stiffness_kpa": 49.5,
-    "polymer_concentration_wt_pct": 58.7,
-    "species": 20.7,
-    "passage": 76.1,
+    "stiffness_kpa": 52.2,
+    "polymer_concentration_wt_pct": 59.1,
+    "species": 21.2,
+    "passage": 78.3,
     "porosity_pct": 100.0
   },
   "modeling_notes": [
@@ -127,17 +137,17 @@
   "n_amass_papers": 8473,
   "n_amass_extractions": 23257,
   "n_extraction_queue": 250,
-  "n_mvp_relevant_papers": 1989,
+  "n_mvp_relevant_papers": 1981,
   "n_auto_promoted_studies": 37,
   "extraction_queue": {
     "n_papers_scored": 8473,
-    "n_mvp_relevant": 1989,
+    "n_mvp_relevant": 1981,
     "n_reviews": 2279,
-    "n_already_curated_linked": 40,
+    "n_already_curated_linked": 48,
     "n_queued": 250,
-    "n_extracted_excluded_from_queue": 40,
+    "n_extracted_excluded_from_queue": 48,
     "n_queue_with_viability_number": 14,
-    "n_queue_with_stiffness_number": 96,
+    "n_queue_with_stiffness_number": 92,
     "note": "Queue is a reading list. Extract into experiments/measurements by hand; do not promote regex hits."
   }
 }

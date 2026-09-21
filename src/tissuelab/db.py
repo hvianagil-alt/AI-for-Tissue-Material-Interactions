@@ -12,6 +12,7 @@ VOCAB_CELL_TYPES = [
     ("MSC", "stromal", "Bone-marrow or otherwise unspecified MSCs in a cartilage protocol"),
     ("adipose_MSC", "stromal", "Adipose-derived MSCs / ASCs in a cartilage protocol"),
     ("ATDC5", "cartilage", "Murine ATDC5 chondrogenic cell line"),
+    ("cartilage_progenitor", "cartilage", "Articular cartilage-resident chondroprogenitor cells (ACPCs)"),
 ]
 
 VOCAB_MATERIALS = [
@@ -46,6 +47,7 @@ VOCAB_MATERIALS = [
     ("chitosan_silk", "composite", "Chitosan–silk fibroin scaffolds"),
     ("PEG_HA", "composite", "PEG or pHPMA-PEG hydrogels with methacrylated HA"),
     ("PEG_silk", "composite", "Silk fibroin plus PEGDMA / PEG hydrogels"),
+    ("saccharide_peptide", "synthetic", "Saccharide-peptide copolymer hydrogels"),
 ]
 
 VOCAB_ASSAYS = [

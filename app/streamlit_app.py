@@ -153,7 +153,7 @@ def design_form(prefix: str, defaults: dict | None = None) -> dict:
     with c3:
         cell_type = st.selectbox(
             "Cell type",
-            ["articular_chondrocyte", "auricular_chondrocyte", "MSC", "adipose_MSC"],
+            ["articular_chondrocyte", "auricular_chondrocyte", "MSC", "adipose_MSC", "ATDC5", "cartilage_progenitor"],
             key=f"{prefix}_cell",
         )
         species = st.selectbox("Species", ["human", "bovine", "porcine", "rabbit"], key=f"{prefix}_sp")

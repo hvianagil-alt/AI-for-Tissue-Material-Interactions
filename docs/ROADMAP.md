@@ -4,7 +4,7 @@ The product question is unchanged:
 
 > Can this system change which hydrogel experiment a cartilage researcher runs next?
 
-8000 Amass papers are a **library**. They do not make the model work. A model that “works” needs labeled conditions: material × stiffness × cells × time → a number the lab actually measured. That table is now **45 hand-curated studies / 137 experiments / 42 numeric live/dead rows from 15 papers**. Auto-promoted `pmid*` rows stay in SQLite as inventory and are **not** in the training view.
+8000 Amass papers are a **library**. They do not make the model work. A model that “works” needs labeled conditions: material × stiffness × cells × time → a number the lab actually measured. That table is now **53 hand-curated studies / 156 experiments / 42 numeric live/dead rows from 15 papers**. Auto-promoted `pmid*` rows stay in SQLite as inventory and are **not** in the training view.
 
 ## What “MVP” means here (and what it does not)
 
@@ -31,7 +31,7 @@ Harvest more papers only after the top 250 queued items are extracted or rejecte
 
 There is **no** public `material × chondrocyte × outcome` CSV. BIOMATDB and OOCDB are search portals. The better source we added is **Europe PMC open fulltext** (free XML), used before paid Amass fulltext.
 
-Current snapshot: **45 hand studies / 137 hand experiments / 42 numeric viability (15 papers)**; ~8.5k papers. Honest LOPO: dummy MAE **16.5**, Ridge MAE **22.6**, R² **−2.1**, `n_studies` 15, `mvp_pass` false. The first count bar (`n_studies ≥ 15`) is met; Ridge still loses to dummy. The product to start using is the evidence table + nearest extracted papers, not the Ridge point estimate.
+Current snapshot: **53 hand studies / 156 hand experiments / 42 numeric viability (15 papers)**; ~8.5k papers. Honest LOPO: dummy MAE **16.5**, Ridge MAE **22.6**, R² **−2.1**, `n_studies` 15, `mvp_pass` false. The first count bar (`n_studies ≥ 15`) is met; Ridge still loses to dummy. Remaining queue papers mostly lack a live/dead mean in prose (floors, ECM-matured moduli, or the wrong tissue).
 
 ## Step by step
 

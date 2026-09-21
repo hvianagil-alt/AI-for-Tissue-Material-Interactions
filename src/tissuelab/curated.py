@@ -478,6 +478,92 @@ STUDIES: list[dict] = [
         "license": "NIH public access",
         "notes": "Human OA chondrocytes in RGD-PEGDM with a G′ gradient ~3.8–27 kPa. Lower modulus maintained cell number and phenotype. No live/dead percent.",
     },
+    {
+        "study_id": "jooybar2019",
+        "citation": "Jooybar et al., Acta Biomater. 2019",
+        "doi": "10.1016/j.actbio.2018.10.031",
+        "pmid": "30366137",
+        "year": 2019,
+        "journal": "Acta Biomaterialia",
+        "license": "publisher",
+        "notes": "hMSC in injectable HA-tyramine. G′ 500–2000 Pa with polymer concentration. Platelet lysate made cells attach and deposit COL2/proteoglycan. No live/dead percent.",
+    },
+    {
+        "study_id": "kudva2018",
+        "citation": "Kudva, Luyten & Patterson, Int. J. Mol. Sci. 2018",
+        "doi": "10.3390/ijms19113341",
+        "pmid": "30373138",
+        "year": 2018,
+        "journal": "International Journal of Molecular Sciences",
+        "pmcid": "PMC6274881",
+        "license": "CC-BY",
+        "notes": "hPDC and ATDC5 in 4-arm PEG-VS. 6.5% + GPQGIWGQ + RGD selected. G′ 1.2±0.13 kPa for that 6.5% gel. Initial hPDC viability not less than 75% (floor). No-RGD arms dropped toward ~50% by week 4 — not stored as a single-gel mean.",
+    },
+    {
+        "study_id": "choy2017",
+        "citation": "Choy et al., Biomater. Res. 2017",
+        "doi": "10.1186/s40824-017-0105-7",
+        "pmid": "29075508",
+        "year": 2017,
+        "journal": "Biomaterials Research",
+        "pmcid": "PMC5646124",
+        "license": "CC-BY",
+        "notes": "hADSC:nasal chondrocyte 2:1 in 1.0/1.2/1.5% alginate, 7 d. Trypan blue viability 66–72% across groups; 1.5% highest. Per-concentration means are only in the figure, not stored.",
+    },
+    {
+        "study_id": "levato2017",
+        "citation": "Levato et al., Acta Biomater. 2017",
+        "doi": "10.1016/j.actbio.2017.08.005",
+        "pmid": "28782725",
+        "year": 2017,
+        "journal": "Acta Biomaterialia",
+        "pmcid": "PMC7116023",
+        "license": "publisher",
+        "notes": "GelMA with ACPC vs MSC vs chondrocytes. ACPCs made more neo-cartilage, lowest COL10, highest PRG4. No live/dead percent or starting modulus in the abstract.",
+    },
+    {
+        "study_id": "cigan2016",
+        "citation": "Cigan et al., J. Biomech. 2016",
+        "doi": "10.1016/j.jbiomech.2016.04.039",
+        "pmid": "27198889",
+        "year": 2016,
+        "journal": "Journal of Biomechanics",
+        "pmcid": "PMC4920373",
+        "license": "NIH public access",
+        "notes": "Human chondrocytes in 2% agarose, 15–90 million/mL. Day-later Young's ~250 kPa is ECM-matured and is not stored as gel stiffness. High seeding density improved nearly all measured properties.",
+    },
+    {
+        "study_id": "byers2008",
+        "citation": "Byers, Mauck, Chiang & Tuan, Tissue Eng. Part A 2008",
+        "doi": "10.1089/ten.tea.2007.0222",
+        "pmid": "18611145",
+        "year": 2008,
+        "journal": "Tissue Engineering Part A",
+        "pmcid": "PMC2656914",
+        "license": "NIH public access",
+        "notes": "Bovine chondrocytes in agarose. Transient TGF-β3 (2 weeks, 2.5–5 ng/mL) in serum-free medium reached ~0.8 MPa and 6–7% ww GAG after <2 months — ECM-matured, not starting gel modulus.",
+    },
+    {
+        "study_id": "pahoff2019",
+        "citation": "Pahoff et al., J. Mater. Chem. B 2019",
+        "doi": "10.1039/c8tb02607f",
+        "pmid": "32254918",
+        "year": 2019,
+        "journal": "Journal of Materials Chemistry B",
+        "license": "publisher",
+        "notes": "Human chondrocytes in GelMA/HAMA, LAP vs Irgacure 2959, bovine vs porcine GelMA. Day-28 ~1.5 MPa is ECM-matured. Viability measured, no percent in the abstract.",
+    },
+    {
+        "study_id": "chawla2012",
+        "citation": "Chawla et al., Biomaterials 2012",
+        "doi": "10.1016/j.biomaterials.2012.04.058",
+        "pmid": "22672831",
+        "year": 2012,
+        "journal": "Biomaterials",
+        "pmcid": "PMC3387337",
+        "license": "NIH public access",
+        "notes": "Chondrocytes in saccharide-peptide gels, V vs Y amino acid. Viable 21 d. Day-21 193±46 vs 44±21 kPa is ECM-matured, not starting gel modulus.",
+    },
 ]
 
 
@@ -2312,10 +2398,423 @@ def _queue_pass_three() -> list[dict]:
     return rows
 
 
+def _queue_pass_four() -> list[dict]:
+    """Fourth queue pass: published 3D hydrogel conditions; no invented live/dead means."""
+    rows = []
+
+    # Jooybar 2019 — HA-tyramine G′ endpoints ± platelet lysate.
+    rows.append(
+        {
+            "experiment_id": "jooybar2019-hata-low-nopl",
+            "study_id": "jooybar2019",
+            "material_class": "HA",
+            "material_detail": "HA-tyramine, HRP/H2O2, no platelet lysate",
+            "crosslinking": "enzymatic",
+            "stiffness_kpa": 0.5,
+            "stiffness_method": "rheology_G_prime",
+            "surface_chemistry": "native",
+            "has_adhesion_ligand": 0.3,
+            "cell_type": "MSC",
+            "species": "human",
+            "culture_model": "3D_encapsulation",
+            "growth_factor": "none",
+            "extracted_from": "abstract",
+            "curator_confidence": "medium",
+            "notes": "Low end of G′ 500–2000 Pa. Cells stayed round in pure HA-TA. G′ stored as kPa.",
+            "measurements": [
+                _m(
+                    "morphology_spherical",
+                    1.0,
+                    "ordinal",
+                    evidence="qualitative_text",
+                    notes="Retained round shape without platelet lysate.",
+                ),
+            ],
+        }
+    )
+    rows.append(
+        {
+            "experiment_id": "jooybar2019-hata-high-pl",
+            "study_id": "jooybar2019",
+            "material_class": "HA",
+            "material_detail": "HA-tyramine enriched with platelet lysate",
+            "crosslinking": "enzymatic",
+            "stiffness_kpa": 2.0,
+            "stiffness_method": "rheology_G_prime",
+            "surface_chemistry": "native",
+            "has_adhesion_ligand": 1.0,
+            "cell_type": "MSC",
+            "species": "human",
+            "culture_model": "3D_encapsulation",
+            "growth_factor": "none",
+            "extracted_from": "abstract",
+            "curator_confidence": "medium",
+            "notes": "High end of G′ range. PL is a mixed GF source, not stored as TGF-β3. Cells attached and deposited COL2/proteoglycan.",
+            "measurements": [
+                _m(
+                    "sgag_histology",
+                    0.85,
+                    "ordinal",
+                    evidence="qualitative_text",
+                    notes="Increasing collagen II and proteoglycan with PL; not µg.",
+                ),
+                _m(
+                    "morphology_spherical",
+                    0.2,
+                    "ordinal",
+                    evidence="qualitative_text",
+                    notes="hMSCs attached and spread in PL-enriched matrix.",
+                ),
+            ],
+        }
+    )
+
+    # Kudva 2018 — 6.5% PEG-VS ± RGD, G′ 1.2 kPa on the selected gel.
+    rows.append(
+        {
+            "experiment_id": "kudva2018-peg65-rgd-hpdc",
+            "study_id": "kudva2018",
+            "material_class": "PEG",
+            "material_detail": "6.5% 4-arm PEG-VS, GPQGIWGQ peptide cross-linker, RGD",
+            "crosslinking": "chemical",
+            "polymer_concentration_wt_pct": 6.5,
+            "stiffness_kpa": 1.2,
+            "stiffness_sd_kpa": 0.13,
+            "stiffness_method": "rheology_G_prime",
+            "surface_chemistry": "RGD",
+            "has_adhesion_ligand": 1.0,
+            "cell_type": "MSC",
+            "species": "human",
+            "culture_model": "3D_encapsulation",
+            "growth_factor": "none",
+            "extracted_from": "PMC6274881 results + methods",
+            "curator_confidence": "high",
+            "notes": "Selected composition. hPDC coded as MSC. Initial live/dead not less than 75% (floor, not stored as 75).",
+            "measurements": [
+                _m(
+                    "viability_pct",
+                    None,
+                    "%",
+                    qualitative="high_>75_initial",
+                    evidence="qualitative_text",
+                    notes="No composition displayed a viability percentage of less than 75% at the first time point.",
+                ),
+            ],
+        }
+    )
+    rows.append(
+        {
+            "experiment_id": "kudva2018-peg65-norgd-hpdc-w4",
+            "study_id": "kudva2018",
+            "material_class": "PEG",
+            "material_detail": "PEG-VS without RGD, growth medium, 4 weeks",
+            "crosslinking": "chemical",
+            "surface_chemistry": "none",
+            "has_adhesion_ligand": 0.0,
+            "cell_type": "MSC",
+            "species": "human",
+            "culture_model": "3D_encapsulation",
+            "growth_factor": "none",
+            "culture_time_days": 28,
+            "extracted_from": "PMC6274881 Fig 1C text",
+            "curator_confidence": "medium",
+            "notes": "No-RGD gels dropped; paper says as low as approximately 50% across those compositions, not a single-gel mean.",
+            "measurements": [
+                _m(
+                    "viability_pct",
+                    None,
+                    "%",
+                    qualitative="drop_toward_50",
+                    evidence="qualitative_text",
+                ),
+            ],
+        }
+    )
+    rows.append(
+        {
+            "experiment_id": "kudva2018-peg65-rgd-atdc5",
+            "study_id": "kudva2018",
+            "material_class": "PEG",
+            "material_detail": "6.5% PEG-VS + RGD, ATDC5 in chondrogenic medium",
+            "crosslinking": "chemical",
+            "polymer_concentration_wt_pct": 6.5,
+            "stiffness_kpa": 1.2,
+            "stiffness_sd_kpa": 0.13,
+            "stiffness_method": "rheology_G_prime",
+            "surface_chemistry": "RGD",
+            "has_adhesion_ligand": 1.0,
+            "cell_type": "ATDC5",
+            "species": "murine",
+            "culture_model": "3D_encapsulation",
+            "growth_factor": "none",
+            "extracted_from": "PMC6274881 ATDC5 paragraph",
+            "curator_confidence": "medium",
+            "notes": "ATDC5 ~75% or higher at week 0; no drop over 4 weeks. Floor, not a mean.",
+            "measurements": [
+                _m(
+                    "viability_pct",
+                    None,
+                    "%",
+                    qualitative="high_>75",
+                    evidence="qualitative_text",
+                ),
+            ],
+        }
+    )
+
+    # Choy 2017 — alginate concentration series, co-culture.
+    for conc, gag, extra in [
+        (1.0, 0.55, "Lowest alginate. Viability mid of the 66–72% band."),
+        (1.2, 1.0, "Paper: relatively most effective for chondrocytic differentiation."),
+        (1.5, 0.7, "Highest trypan-blue viability of the three; more cell clusters."),
+    ]:
+        rows.append(
+            {
+                "experiment_id": f"choy2017-alg-{str(conc).replace('.', 'p')}-d7",
+                "study_id": "choy2017",
+                "material_class": "alginate",
+                "material_detail": f"{conc:g}% alginate, hADSC:nasal chondrocyte co-culture 2:1",
+                "crosslinking": "ionic",
+                "polymer_concentration_wt_pct": conc,
+                "surface_chemistry": "native",
+                "has_adhesion_ligand": 0.5,
+                "cell_type": "adipose_MSC",
+                "species": "human",
+                "culture_model": "3D_encapsulation",
+                "growth_factor": "none",
+                "culture_time_days": 7,
+                "extracted_from": "PMC5646124 results",
+                "curator_confidence": "medium",
+                "notes": extra + " Trypan blue 66–72% across groups; per-gel means only in Fig. 2, not stored.",
+                "measurements": [
+                    _m(
+                        "viability_pct",
+                        None,
+                        "%",
+                        qualitative="band_66_72",
+                        evidence="qualitative_text",
+                    ),
+                    _m(
+                        "sgag_histology",
+                        gag,
+                        "ordinal",
+                        evidence="qualitative_text",
+                        notes="Within-paper chondrogenesis ranking, not µg.",
+                    ),
+                    _m(
+                        "morphology_spherical",
+                        1.0,
+                        "ordinal",
+                        evidence="qualitative_text",
+                    ),
+                ],
+            }
+        )
+
+    # Levato 2017 — GelMA, three cell types.
+    for tag, cell, extra in [
+        ("acpc", "cartilage_progenitor", "ACPCs outperformed chondrocytes in neo-cartilage; highest PRG4, lowest COL10."),
+        ("msc", "MSC", "MSCs more hypertrophic (COL10) than ACPCs."),
+        ("chondrocyte", "articular_chondrocyte", "Less neo-cartilage than ACPCs in the same GelMA."),
+    ]:
+        rows.append(
+            {
+                "experiment_id": f"levato2017-gelma-{tag}",
+                "study_id": "levato2017",
+                "material_class": "GelMA",
+                "material_detail": "GelMA hydrogel / bioink",
+                "crosslinking": "photocrosslink",
+                "surface_chemistry": "native",
+                "has_adhesion_ligand": 1.0,
+                "cell_type": cell,
+                "culture_model": "3D_encapsulation",
+                "growth_factor": "none",
+                "extracted_from": "abstract",
+                "curator_confidence": "medium",
+                "notes": extra + " Starting modulus not in the abstract.",
+                "measurements": [
+                    _m(
+                        "sgag_histology",
+                        1.0 if cell == "cartilage_progenitor" else (0.55 if cell == "MSC" else 0.4),
+                        "ordinal",
+                        evidence="qualitative_text",
+                        notes="Within-paper neo-cartilage ranking.",
+                    ),
+                ],
+            }
+        )
+
+    # Cigan 2016 — 2% agarose, seeding density.
+    for dens, extra in [
+        (15.0, "Low end of the 15–90 million/mL series."),
+        (90.0, "High seeding density significantly increased nearly all measured properties."),
+    ]:
+        rows.append(
+            {
+                "experiment_id": f"cigan2016-agarose-2pct-{int(dens)}m",
+                "study_id": "cigan2016",
+                "material_class": "agarose",
+                "material_detail": "2% agarose, expanded human chondrocytes from allografts",
+                "crosslinking": "thermal",
+                "polymer_concentration_wt_pct": 2.0,
+                "surface_chemistry": "none",
+                "has_adhesion_ligand": 0.0,
+                "cell_type": "articular_chondrocyte",
+                "species": "human",
+                "culture_model": "3D_encapsulation",
+                "growth_factor": "TGF_b3",
+                "cell_density_million_per_ml": dens,
+                "extracted_from": "abstract",
+                "curator_confidence": "high",
+                "notes": extra + " Construct Young's ~250 kPa is ECM-matured and is not stored.",
+                "measurements": [
+                    _m(
+                        "sgag_histology",
+                        0.45 if dens < 50 else 1.0,
+                        "ordinal",
+                        evidence="qualitative_text",
+                        notes="High density reached 5.7% ww GAG; ranking only, not µg/µg.",
+                    ),
+                ],
+            }
+        )
+
+    # Byers 2008 — agarose ± transient TGF-β3.
+    rows.append(
+        {
+            "experiment_id": "byers2008-agarose-tgf-transient",
+            "study_id": "byers2008",
+            "material_class": "agarose",
+            "material_detail": "Agarose, serum-free, TGF-β3 2.5–5 ng/mL for 2 weeks then withdrawn",
+            "crosslinking": "thermal",
+            "surface_chemistry": "none",
+            "has_adhesion_ligand": 0.0,
+            "cell_type": "articular_chondrocyte",
+            "species": "bovine",
+            "culture_model": "3D_encapsulation",
+            "growth_factor": "TGF_b3",
+            "culture_time_days": 14,
+            "extracted_from": "abstract",
+            "curator_confidence": "high",
+            "notes": "Transient TGF-β3. Later 0.8 MPa / 6–7% ww GAG is ECM after <2 months, not starting gel stiffness.",
+            "measurements": [
+                _m(
+                    "sgag_histology",
+                    1.0,
+                    "ordinal",
+                    evidence="qualitative_text",
+                    notes="Far superior maturation vs continuous TGF or serum + transient TGF.",
+                ),
+            ],
+        }
+    )
+    rows.append(
+        {
+            "experiment_id": "byers2008-agarose-no-tgf",
+            "study_id": "byers2008",
+            "material_class": "agarose",
+            "material_detail": "Agarose without the transient TGF-β3 protocol",
+            "crosslinking": "thermal",
+            "surface_chemistry": "none",
+            "has_adhesion_ligand": 0.0,
+            "cell_type": "articular_chondrocyte",
+            "species": "bovine",
+            "culture_model": "3D_encapsulation",
+            "growth_factor": "none",
+            "extracted_from": "abstract",
+            "curator_confidence": "medium",
+            "notes": "Comparator: continuous GF or serum-containing arms were inferior; this row is the no-transient protocol.",
+            "measurements": [
+                _m(
+                    "sgag_histology",
+                    0.35,
+                    "ordinal",
+                    evidence="qualitative_text",
+                ),
+            ],
+        }
+    )
+
+    # Pahoff 2019 — GelMA/HAMA photoinitiator.
+    for tag, xl, extra in [
+        ("lap", "photocrosslink", "LAP + 405 nm. Dedifferentiation genes upregulated vs Irgacure."),
+        ("irgacure", "photocrosslink", "Irgacure 2959 + 365 nm. Chondrogenic marker genes upregulated. Day-28 B-IC ~1.5 MPa is ECM, not stored."),
+    ]:
+        rows.append(
+            {
+                "experiment_id": f"pahoff2019-gelma-hama-{tag}",
+                "study_id": "pahoff2019",
+                "material_class": "GelMA_HA",
+                "material_detail": f"GelMA/HAMA, {'LAP 405 nm' if tag == 'lap' else 'Irgacure 2959 365 nm'}, mPCL MEW reinforcement present in the paper",
+                "crosslinking": xl,
+                "surface_chemistry": "native",
+                "has_adhesion_ligand": 1.0,
+                "cell_type": "articular_chondrocyte",
+                "species": "human",
+                "culture_model": "3D_encapsulation",
+                "growth_factor": "none",
+                "culture_time_days": 1,
+                "extracted_from": "abstract",
+                "curator_confidence": "medium",
+                "notes": extra + " Viability assayed at day 1 and 28; no percent in the abstract. Starting gel modulus not given.",
+                "measurements": [
+                    _m(
+                        "viability_pct",
+                        None,
+                        "%",
+                        qualitative="assayed_no_percent",
+                        evidence="qualitative_text",
+                    ),
+                ],
+            }
+        )
+
+    # Chawla 2012 — V vs Y saccharide-peptide.
+    for tag, gag, extra in [
+        ("valine", 0.4, "V-functionalized. Day-21 44±21 kPa is ECM-matured, not stored as gel stiffness."),
+        ("tyrosine", 1.0, "Y-functionalized: higher GAG and collagen. Day-21 193±46 kPa is ECM-matured, not stored."),
+    ]:
+        rows.append(
+            {
+                "experiment_id": f"chawla2012-saccpep-{tag}-d21",
+                "study_id": "chawla2012",
+                "material_class": "saccharide_peptide",
+                "material_detail": f"Saccharide-peptide copolymer hydrogel, {tag} amino-acid moiety",
+                "crosslinking": "chemical",
+                "surface_chemistry": "native",
+                "has_adhesion_ligand": 0.5,
+                "cell_type": "articular_chondrocyte",
+                "culture_model": "3D_encapsulation",
+                "growth_factor": "none",
+                "culture_time_days": 21,
+                "extracted_from": "abstract",
+                "curator_confidence": "medium",
+                "notes": extra + " Encapsulated chondrocytes remained viable 21 d.",
+                "measurements": [
+                    _m(
+                        "viability_pct",
+                        None,
+                        "%",
+                        qualitative="viable_21d",
+                        evidence="qualitative_text",
+                    ),
+                    _m(
+                        "sgag_histology",
+                        gag,
+                        "ordinal",
+                        evidence="qualitative_text",
+                    ),
+                ],
+            }
+        )
+    return rows
+
+
 EXPERIMENTS: list[dict] = (
     _bachmann_experiments()
     + _other_experiments()
     + _queue_pass_experiments()
     + _queue_pass_more()
     + _queue_pass_three()
+    + _queue_pass_four()
 )

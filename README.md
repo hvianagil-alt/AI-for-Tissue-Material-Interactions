@@ -62,8 +62,8 @@ Open the app, go to **Predict**, keep the default GelMA ~25 kPa chondrocyte enca
 
 | Check | Value |
 |---|---|
-| Hand-curated studies | 45 |
-| Hand experiments | 137 |
+| Hand-curated studies | 53 |
+| Hand experiments | 156 |
 | Numeric live/dead (training) | 42 rows / 15 papers |
 | Dummy LOPO MAE | 16.5 |
 | Ridge LOPO MAE | 22.6 (does not beat dummy) |

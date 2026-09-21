@@ -53,7 +53,8 @@ def test_hand_curated_replaces_auto_promoted():
         "ingavle2012", "zignego2014", "maneechan2026", "lee2025", "rouillard2011",
         "nicodemus2011", "park2013", "salinas2007", "mouser2017", "schneider2017",
         "wang2014", "xu2013", "ye2026", "fathi2020", "lin2017", "galarraga2021",
-        "smith2013",
+        "smith2013", "jooybar2019", "kudva2018", "choy2017", "levato2017",
+        "cigan2016", "byers2008", "pahoff2019", "chawla2012",
     }
     assert all(s.get("pmid") for s in STUDIES if s["study_id"] in require_pmid)
 
