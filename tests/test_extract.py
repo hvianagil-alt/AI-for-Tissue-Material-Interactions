@@ -1,3 +1,4 @@
+from tissuelab.europepmc import xml_to_text
 from tissuelab.extract import extract_conditions, extract_from_abstract
 from tissuelab.load_database import load
 from tissuelab.paths import DB_PATH
@@ -32,6 +33,12 @@ def test_extract_conditions_pairs_sentence_numbers():
     assert rows[0]["paired_stiffness"] is True
     assert rows[0]["material_class"] == "GelMA"
     assert rows[0]["cell_type"] == "articular_chondrocyte"
+
+
+def test_europepmc_xml_to_text_strips_tags():
+    text = xml_to_text("<article><p>Chondrocytes showed 90% viability</p></article>")
+    assert "90%" in text
+    assert "<p>" not in text
 
 
 def test_load_preserves_amass_papers(tmp_path):

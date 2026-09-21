@@ -120,7 +120,9 @@ def link_curated_studies(conn) -> int:
         if paper["pmcid"]:
             pmc_index[str(paper["pmcid"]).upper()] = paper["amass_id"]
     n = 0
-    for study in conn.execute("SELECT study_id, doi, pmcid FROM studies"):
+    for study in conn.execute(
+        "SELECT study_id, doi, pmcid FROM studies WHERE study_id NOT LIKE 'pmid%'"
+    ):
         amass_id = None
         matched_on = None
         doi = normalize_doi(study["doi"])

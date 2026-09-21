@@ -15,14 +15,16 @@ from datetime import datetime, timezone
 
 from tissuelab.curated import STUDIES
 from tissuelab.db import VOCAB_MATERIALS, connect, init_schema
+from tissuelab.europepmc import fetch_pmc_fulltext
 from tissuelab.extract import extract_conditions
-from tissuelab.harvest_amass import api_key, load_dotenv
+from tissuelab.harvest_amass import load_dotenv
 from tissuelab.paths import DATA_DIR, DB_PATH, PROMOTED_PATH
 from tissuelab.rank_papers import is_review, normalize_doi
 
 GET_URL = "https://api.amass.tech/api/v1/cores/biomedcore/records/{amass_id}?include=fulltext"
-MAX_FULLTEXT = 90
-FULLTEXT_SLEEP = 1.15
+MAX_PMC_FULLTEXT = 180
+MAX_AMASS_FULLTEXT = 40
+FULLTEXT_SLEEP = 0.9
 ALLOWED_MATERIALS = {row[0] for row in VOCAB_MATERIALS}
 
 
@@ -50,22 +52,48 @@ def _curated_dois() -> set[str]:
 
 
 def _candidate_ids(conn) -> list[str]:
-    sql = """
-    SELECT p.amass_id, p.has_fulltext, COALESCE(s.score, 0) AS score
-    FROM papers p
-    LEFT JOIN paper_scores s ON s.amass_id = p.amass_id
-    LEFT JOIN paper_extractions v
-      ON v.amass_id = p.amass_id AND v.field = 'viability_pct' AND v.value_num BETWEEN 40 AND 99.5
-    WHERE p.pmid IS NOT NULL
-      AND p.abstract IS NOT NULL
-      AND length(p.abstract) > 80
-      AND COALESCE(s.is_review, 0) = 0
-      AND COALESCE(s.already_curated, 0) = 0
-      AND v.extraction_id IS NOT NULL
-    GROUP BY p.amass_id
-    ORDER BY (p.has_fulltext = 1) DESC, score DESC
-    """
-    return [row[0] for row in conn.execute(sql).fetchall()]
+    viability = [
+        row[0]
+        for row in conn.execute(
+            """
+            SELECT p.amass_id
+            FROM papers p
+            LEFT JOIN paper_scores s ON s.amass_id = p.amass_id
+            JOIN paper_extractions v
+              ON v.amass_id = p.amass_id AND v.field = 'viability_pct'
+             AND v.value_num BETWEEN 40 AND 99.5
+            WHERE p.pmid IS NOT NULL
+              AND COALESCE(s.is_review, 0) = 0
+              AND COALESCE(s.already_curated, 0) = 0
+            GROUP BY p.amass_id
+            """
+        ).fetchall()
+    ]
+    mvp = [
+        row[0]
+        for row in conn.execute(
+            """
+            SELECT p.amass_id
+            FROM papers p
+            JOIN paper_scores s ON s.amass_id = p.amass_id
+            WHERE s.is_mvp_relevant = 1
+              AND s.is_review = 0
+              AND s.already_curated = 0
+              AND p.pmid IS NOT NULL
+              AND p.pmcid IS NOT NULL
+            ORDER BY s.score DESC
+            LIMIT 160
+            """
+        ).fetchall()
+    ]
+    seen = set()
+    ordered = []
+    for amass_id in viability + mvp:
+        if amass_id in seen:
+            continue
+        seen.add(amass_id)
+        ordered.append(amass_id)
+    return ordered
 
 
 CACHE_DIR = DATA_DIR / "fulltext_cache"
@@ -174,23 +202,38 @@ def ingest(path=DB_PATH, fetch=True) -> dict:
         row["amass_id"]: dict(row)
         for row in conn.execute("SELECT * FROM papers").fetchall()
     }
-    want_fulltext = []
+    want_pmc = []
+    want_amass = []
     for amass_id in ids:
         paper = papers.get(amass_id)
         if not paper:
             continue
-        if paper.get("has_fulltext") and fetch:
-            want_fulltext.append(amass_id)
-        if len(want_fulltext) >= MAX_FULLTEXT:
-            break
+        if paper.get("pmcid") and len(want_pmc) < MAX_PMC_FULLTEXT:
+            want_pmc.append(amass_id)
+        elif paper.get("has_fulltext") and len(want_amass) < MAX_AMASS_FULLTEXT:
+            want_amass.append(amass_id)
 
-    key = api_key() if fetch and want_fulltext else None
     fulltexts: dict[str, str] = {}
-    for i, amass_id in enumerate(want_fulltext, start=1):
-        text = fetch_fulltext(key, amass_id)
+    for i, amass_id in enumerate(want_pmc, start=1):
+        paper = papers[amass_id]
+        text = fetch_pmc_fulltext(paper.get("pmcid"))
         if text:
             fulltexts[amass_id] = text
-        print(f"fulltext [{i}/{len(want_fulltext)}] {amass_id} chars={len(text or '')}", flush=True)
+        print(f"pmc [{i}/{len(want_pmc)}] {paper.get('pmcid')} chars={len(text or '')}", flush=True)
+        time.sleep(FULLTEXT_SLEEP)
+
+    key = None
+    if fetch and want_amass:
+        from tissuelab.harvest_amass import api_key as _api_key
+
+        key = _api_key()
+    for i, amass_id in enumerate(want_amass, start=1):
+        if amass_id in fulltexts:
+            continue
+        text = fetch_fulltext(key, amass_id) if key else None
+        if text:
+            fulltexts[amass_id] = text
+        print(f"amass-ft [{i}/{len(want_amass)}] {amass_id} chars={len(text or '')}", flush=True)
         time.sleep(FULLTEXT_SLEEP)
 
     promoted_studies = []
@@ -217,6 +260,7 @@ def ingest(path=DB_PATH, fetch=True) -> dict:
         "generated_at": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
         "n_candidates": len(ids),
         "n_fulltext_fetched": len(fulltexts),
+        "n_pmc_attempted": len(want_pmc),
         "n_studies": len(promoted_studies),
         "n_experiments": len(promoted_experiments),
         "n_with_stiffness": sum(1 for e in promoted_experiments if e.get("stiffness_kpa") is not None),

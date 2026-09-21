@@ -23,6 +23,13 @@ Harvest BiomedCore (needs `AMASS_API_KEY` in `.env`; billed search):
 
 ```bash
 python -m tissuelab.harvest_amass
+python -m tissuelab.europepmc
+python -m tissuelab.rank_papers
+python -m tissuelab.ingest_literature
+```
+
+```bash
+python -m tissuelab.harvest_amass
 ```
 
 See `docs/DATA_MODEL.md`.

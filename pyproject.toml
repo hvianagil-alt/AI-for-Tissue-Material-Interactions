@@ -32,6 +32,7 @@ tissuelab-harvest-amass = "tissuelab.harvest_amass:main"
 tissuelab-rank-papers = "tissuelab.rank_papers:main"
 tissuelab-benchmark = "tissuelab.benchmark:main"
 tissuelab-ingest-literature = "tissuelab.ingest_literature:main"
+tissuelab-europepmc = "tissuelab.europepmc:main"
 
 [tool.setuptools.packages.find]
 where = ["src"]

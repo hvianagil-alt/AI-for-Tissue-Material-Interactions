@@ -29,7 +29,9 @@ The product question is unchanged:
 
 Harvest more papers only after the top 250 queued items are extracted or rejected. Extra abstracts without labels are search quality, not model quality.
 
-Current snapshot after auto-promotion (low confidence, `pmid*` studies): ~43 studies / ~95 experiments / ~61 numeric viability. Honest LOPO now runs on ~35 papers: Ridge barely beats dummy (R² ~0.05). That is still **not** `mvp_pass`.
+There is **no** public `material × chondrocyte × outcome` CSV. BIOMATDB and OOCDB are search portals. The better source we added is **Europe PMC open fulltext** (free XML), used before paid Amass fulltext.
+
+Current snapshot: ~64 studies / ~120 experiments / ~86 numeric viability; ~8.5k papers (Amass + Europe PMC OA). Honest LOPO on ~56 papers: Ridge does **not** yet beat dummy. Count bars for 4 weeks are met; the MAE bar is not.
 
 ## Step by step
 

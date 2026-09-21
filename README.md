@@ -40,6 +40,7 @@ pip install -e ".[dev]"
 python -m tissuelab.load_database
 # optional: Amass literature harvest (requires AMASS_API_KEY in .env)
 python -m tissuelab.harvest_amass
+python -m tissuelab.europepmc
 python -m tissuelab.rank_papers
 python -m tissuelab.ingest_literature
 python -m tissuelab.load_database
@@ -90,6 +91,7 @@ tests/             schema, simulator biology checks, model vs dummy, inverse des
 See `docs/ROADMAP.md`. In short: **do not grow the paper harvest**. Extract the ranked queue into labeled experiments, then beat a dummy model under leave-one-paper-out on live/dead %.
 
 ```bash
+python -m tissuelab.europepmc
 python -m tissuelab.rank_papers
 python -m tissuelab.ingest_literature
 python -m tissuelab.load_database

@@ -34,9 +34,13 @@ These are the relationships encoded in `tissuelab.simulator`. They are priors fo
 
 | Source | What it actually contains | Useful for this MVP? |
 |---|---|---|
-| **OOCDB / KLOCD** (organchip.cn) | Organ-on-chip literature, patents, GEO-like transcriptomics, a knowledge graph (~76k nodes). Lab models are mostly the host institute’s chips. | Poor fit as a training table. Useful later for literature retrieval and cartilage-on-chip expansion. Licensing and bulk download of a material–outcome matrix were not evident. |
-| Materials Project / NIST / MatWeb / PoLyInfo | Solid-state / polymer **material** properties (modulus, Tg, strength). | Useful for inverse *polymer* selection (see Sahu 2022 cartilage polymer blends). Not cell-response data. |
-| GEO / ArrayExpress | Transcriptomics, including some organoid and chondrocyte datasets. | Later multimodal feature, not an MVP label. |
+| **OOCDB / KLOCD** | Organ-on-chip portal / knowledge graph | No material×outcome CSV we can train on |
+| **BIOMATDB** (biomaterialdatabase.com) | EU literature search + visualisation over PMC | Search engine, not a tidy experiment table. No public bulk API for a training matrix. |
+| **Europe PMC OA** | Open abstracts + XML fulltext (free) | **Yes — best free fulltext.** Wired in `tissuelab.europepmc`. |
+| **Amass BiomedCore** | Paid search, 40M papers, ranking | Best *index* we already harvested (~8k). Do not pay for fulltext if PMC XML exists. |
+| **Zenodo / Dryad** | Per-paper supplements (e.g. Bachmann PDF) | Use paper-by-paper; no unified cartilage-hydrogel table. |
+| Materials Project / NIST / MatWeb | Polymer/solid properties | Not cell-response data |
+| GEO / ArrayExpress | Transcriptomics | Later multimodal feature |
 | Published hydrogel papers | The real training data. Properties and outcomes live in figures, not tables. | Yes — this is the corpus to mine. Seed extraction is in `src/tissuelab/literature.py` (30 records, 10 papers). |
 | Unified public `material × tissue × outcome` database | Does not exist. | This absence is the product opportunity. |
 
