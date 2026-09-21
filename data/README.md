@@ -3,7 +3,8 @@
 | File | Role |
 |---|---|
 | `tissuelab.sqlite` | Source of truth. Curated studies/experiments/measurements plus Amass `papers`. |
-| `literature_native.csv` | Long-form export of curated measurements. |
+| `literature_viability.csv` | Hand-curated numeric live/dead % (`v_model_viability`). Start here. |
+| `literature_native.csv` | Long-form export of all measurements (hand + auto-promoted inventory). |
 | `amass_papers.csv` | Harvest index (no abstracts — those stay in SQLite). |
 | `amass_extractions.csv` | Regex candidates from abstracts. Not ground truth. |
 | `amass_harvest_report.json` | Paper counts, year coverage, extraction tallies. |
@@ -17,6 +18,7 @@ Rebuild curated tables (keeps any Amass harvest already in the sqlite file):
 python -m tissuelab.load_database
 python -m tissuelab.rank_papers
 python -m tissuelab.benchmark
+python -m tissuelab.train
 ```
 
 Harvest BiomedCore (needs `AMASS_API_KEY` in `.env`; billed search):

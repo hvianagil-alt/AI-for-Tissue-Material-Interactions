@@ -113,15 +113,20 @@ def link_curated_studies(conn) -> int:
     conn.execute("DELETE FROM study_paper_links")
     doi_index = {}
     pmc_index = {}
-    for paper in conn.execute("SELECT amass_id, doi, pmcid FROM papers"):
+    pmid_index = {}
+    for paper in conn.execute("SELECT amass_id, doi, pmcid, pmid FROM papers"):
         doi = normalize_doi(paper["doi"])
         if doi:
             doi_index[doi] = paper["amass_id"]
         if paper["pmcid"]:
             pmc_index[str(paper["pmcid"]).upper()] = paper["amass_id"]
+        if paper["pmid"]:
+            pmid_index[str(paper["pmid"])] = paper["amass_id"]
     n = 0
+    study_cols = {row[1] for row in conn.execute("PRAGMA table_info(studies)")}
+    select_pmid = ", pmid" if "pmid" in study_cols else ""
     for study in conn.execute(
-        "SELECT study_id, doi, pmcid FROM studies WHERE study_id NOT LIKE 'pmid%'"
+        f"SELECT study_id, doi, pmcid{select_pmid} FROM studies WHERE study_id NOT LIKE 'pmid%'"
     ):
         amass_id = None
         matched_on = None
@@ -132,6 +137,9 @@ def link_curated_studies(conn) -> int:
         elif study["pmcid"] and str(study["pmcid"]).upper() in pmc_index:
             amass_id = pmc_index[str(study["pmcid"]).upper()]
             matched_on = "pmcid"
+        elif "pmid" in study_cols and study["pmid"] and str(study["pmid"]) in pmid_index:
+            amass_id = pmid_index[str(study["pmid"])]
+            matched_on = "pmid"
         if not amass_id:
             continue
         conn.execute(
@@ -212,7 +220,7 @@ def rank(path=DB_PATH) -> dict:
                 now,
             ),
         )
-        if mvp:
+        if mvp and paper["amass_id"] not in curated_ids:
             scored_rows.append((score, paper, reasons))
 
     scored_rows.sort(key=lambda item: (-item[0], -(item[1]["citation_count"] or 0)))
@@ -249,6 +257,7 @@ def rank(path=DB_PATH) -> dict:
         "n_reviews": conn.execute("SELECT COUNT(*) FROM paper_scores WHERE is_review = 1").fetchone()[0],
         "n_already_curated_linked": n_links,
         "n_queued": conn.execute("SELECT COUNT(*) FROM extraction_queue").fetchone()[0],
+        "n_extracted_excluded_from_queue": n_links,
         "n_queue_with_viability_number": conn.execute(
             """
             SELECT COUNT(*) FROM extraction_queue q

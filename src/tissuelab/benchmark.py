@@ -97,8 +97,8 @@ def leave_one_paper_out(frame: pd.DataFrame) -> dict:
             "min_studies": 15,
         },
         "notes": [
-            "This is the MVP scientific metric. Simulated holdout R² is not.",
-            "Auto-promoted pmid* rows are low-confidence; a human pass on the queue still matters.",
+            "This is the MVP scientific metric on hand-curated live/dead only. Simulated holdout R² is not.",
+            "Auto-promoted pmid* rows are excluded from this split.",
             "Do not add unpaired regex hits to inflate n_rows.",
         ],
         "status": "baseline",

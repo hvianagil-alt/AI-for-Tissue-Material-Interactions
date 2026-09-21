@@ -7,8 +7,9 @@ import json
 import joblib
 import pandas as pd
 
+from tissuelab.literature_model import train_literature_viability
 from tissuelab.models import train_tissue_model
-from tissuelab.paths import ARTIFACTS_DIR, DATASET_PATH, METRICS_PATH, MODEL_PATH
+from tissuelab.paths import ARTIFACTS_DIR, DATASET_PATH, LITERATURE_MODEL_PATH, METRICS_PATH, MODEL_PATH
 from tissuelab.schema import TARGETS
 
 
@@ -33,9 +34,17 @@ def main() -> None:
     frame = load_dataset()
     model = train_tissue_model(frame)
     save_model(model)
+    lit = train_literature_viability()
     METRICS_PATH.write_text(json.dumps(model.metrics, indent=2))
     print(f"Saved model to {MODEL_PATH}")
+    print(f"Saved literature viability model to {LITERATURE_MODEL_PATH}")
     print(f"Saved metrics to {METRICS_PATH}")
+    lopo = lit.get("lopo") or {}
+    print(
+        "Literature LOPO: n_studies="
+        f"{lopo.get('n_studies')}  ridge_mae={((lopo.get('ridge_lopo') or {}).get('mae'))}  "
+        f"mvp_pass={lopo.get('mvp_pass')}"
+    )
     print("\nHoldout XGBoost")
     for target, scores in model.metrics["xgboost_holdout"].items():
         print(f"  {target:24s}  MAE={scores['mae']:.2f}  R2={scores['r2']:.3f}")

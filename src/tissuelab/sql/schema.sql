@@ -9,6 +9,7 @@ CREATE TABLE IF NOT EXISTS studies (
     study_id        TEXT PRIMARY KEY,
     citation        TEXT NOT NULL,
     doi             TEXT,
+    pmid            TEXT,
     year            INTEGER,
     journal         TEXT,
     pmcid           TEXT,
@@ -185,11 +186,16 @@ CREATE TABLE IF NOT EXISTS study_paper_links (
 CREATE INDEX IF NOT EXISTS idx_queue_rank ON extraction_queue(rank);
 CREATE INDEX IF NOT EXISTS idx_scores_mvp ON paper_scores(is_mvp_relevant, score);
 
--- Modeling view: one row per experiment, viability only when a number was published.
+-- Modeling view: published live/dead % from hand-curated studies only.
+-- Auto-promoted pmid* rows stay in experiments; they are not training labels.
+DROP VIEW IF EXISTS v_model_viability;
+DROP VIEW IF EXISTS v_auto_viability;
 CREATE VIEW IF NOT EXISTS v_model_viability AS
 SELECT
     e.experiment_id,
     e.study_id,
+    s.citation,
+    s.doi,
     e.material_class,
     e.stiffness_kpa,
     e.polymer_concentration_wt_pct,
@@ -201,10 +207,26 @@ SELECT
     e.cell_density_million_per_ml,
     e.passage,
     e.has_adhesion_ligand,
+    e.curator_confidence,
     m.value AS viability_pct,
     m.value_sd AS viability_sd,
     m.evidence AS viability_evidence
 FROM experiments e
+JOIN studies s ON s.study_id = e.study_id
 JOIN measurements m ON m.experiment_id = e.experiment_id
 WHERE m.assay = 'viability_pct'
-  AND m.value IS NOT NULL;
+  AND m.value IS NOT NULL
+  AND e.study_id NOT LIKE 'pmid%';
+
+CREATE VIEW IF NOT EXISTS v_auto_viability AS
+SELECT
+    e.experiment_id,
+    e.study_id,
+    e.material_class,
+    e.stiffness_kpa,
+    m.value AS viability_pct
+FROM experiments e
+JOIN measurements m ON m.experiment_id = e.experiment_id
+WHERE m.assay = 'viability_pct'
+  AND m.value IS NOT NULL
+  AND e.study_id LIKE 'pmid%';

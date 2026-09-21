@@ -11,10 +11,10 @@ import pandas as pd
 from tissuelab.curated import EXPERIMENTS, STUDIES
 from tissuelab.db import connect, init_schema
 from tissuelab.ingest_literature import load_promoted
-from tissuelab.paths import DATA_DIR, DB_PATH, NATIVE_EXPORT_PATH, QUALITY_REPORT_PATH
+from tissuelab.paths import DATA_DIR, DB_PATH, NATIVE_EXPORT_PATH, QUALITY_REPORT_PATH, VIABILITY_EXPORT_PATH
 from tissuelab.rank_papers import normalize_doi
 
-STUDY_SKIP_KEYS = {"amass_id", "pmid"}
+STUDY_SKIP_KEYS = {"amass_id"}
 
 HARVEST_TABLES = (
     "papers",
@@ -59,6 +59,12 @@ def quality_report(conn) -> dict:
     n_exp = conn.execute("SELECT COUNT(*) FROM experiments").fetchone()[0]
     n_meas = conn.execute("SELECT COUNT(*) FROM measurements").fetchone()[0]
     n_viab = conn.execute("SELECT COUNT(*) FROM v_model_viability").fetchone()[0]
+    n_auto_viab = 0
+    tables = {r[0] for r in conn.execute("SELECT name FROM sqlite_master WHERE type='view'").fetchall()}
+    if "v_auto_viability" in tables:
+        n_auto_viab = conn.execute("SELECT COUNT(*) FROM v_auto_viability").fetchone()[0]
+    n_hand = conn.execute("SELECT COUNT(*) FROM studies WHERE study_id NOT LIKE 'pmid%'").fetchone()[0]
+    n_hand_viab_studies = conn.execute("SELECT COUNT(DISTINCT study_id) FROM v_model_viability").fetchone()[0]
     n_stiff = conn.execute("SELECT COUNT(*) FROM experiments WHERE stiffness_kpa IS NOT NULL").fetchone()[0]
     by_study = dict(conn.execute("SELECT study_id, COUNT(*) FROM experiments GROUP BY study_id").fetchall())
     by_cell = dict(conn.execute("SELECT cell_type, COUNT(*) FROM experiments GROUP BY cell_type").fetchall())
@@ -75,6 +81,9 @@ def quality_report(conn) -> dict:
         "n_experiments": n_exp,
         "n_measurements": n_meas,
         "n_numeric_viability": n_viab,
+        "n_auto_promoted_viability": n_auto_viab,
+        "n_hand_studies": n_hand,
+        "n_hand_viability_studies": n_hand_viab_studies,
         "n_with_stiffness_kpa": n_stiff,
         "experiments_per_study": by_study,
         "experiments_per_cell_type": by_cell,
@@ -83,12 +92,12 @@ def quality_report(conn) -> dict:
         "percent_missing": missing,
         "modeling_notes": [
             "Split by study_id (leave-one-paper-out), never by random row — conditions from one paper leak.",
-            "Train viability models only on v_model_viability (numeric live/dead).",
+            "Train viability models only on v_model_viability (hand-curated numeric live/dead).",
             "Do not impute missing stiffness as 0; keep NA and use models that allow missing values or restrict to complete cases.",
             "Ordinal histology is within-paper rank, not a universal 0–1 scale — do not pool as if it were sGAG/DNA.",
             "New cell types add vocab_cell_types + assays; they do not get new columns on experiments.",
             "Amass papers live in `papers`; regex hits in `paper_extractions` are not training labels.",
-            "Auto-promoted pmid* studies are low-confidence abstract/fulltext numbers; prefer hand-curated rows when they disagree.",
+            "Auto-promoted pmid* studies are inventory only; they are excluded from v_model_viability.",
         ],
     }
     tables = {
@@ -259,6 +268,8 @@ def load(path=DB_PATH):
             conn,
         )
         native.to_csv(NATIVE_EXPORT_PATH, index=False)
+        viability = pd.read_sql_query("SELECT * FROM v_model_viability", conn)
+        viability.to_csv(VIABILITY_EXPORT_PATH, index=False)
     conn.close()
     return report
 
@@ -267,6 +278,7 @@ def main() -> None:
     report = load()
     print(f"Wrote {DB_PATH}")
     print(f"Wrote {NATIVE_EXPORT_PATH}")
+    print(f"Wrote {VIABILITY_EXPORT_PATH}")
     print(json.dumps(report, indent=2))
 
 

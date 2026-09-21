@@ -18,6 +18,8 @@ The point of the MVP is not “AI for biology”. It is:
 | Piece | Status |
 |---|---|
 | SQLite experimental DB (`studies` / `experiments` / `measurements`) | Done — `data/tissuelab.sqlite` |
+| Hand-curated live/dead training view (`v_model_viability`) | Done — `data/literature_viability.csv` |
+| Literature viability Ridge ± LOPO MAE | Done (does not beat dummy yet) |
 | Native literature measurements (no fake porosity) | Done |
 | Mapped 0–100 scores + simulator (software prior only) | Still in the old CSV/ML path |
 | Literature-informed simulator (~650 records) | Done |
@@ -28,7 +30,7 @@ The point of the MVP is not “AI for biology”. It is:
 | Streamlit app + FastAPI | Done |
 | Competitor / dataset landscape | `docs/LANDSCAPE.md` |
 
-The **source of truth for science** is `data/tissuelab.sqlite` (see `docs/DATA_MODEL.md`). Curated measurements stay in `experiments` / `measurements`. Amass harvest lives in `papers` (~8k BiomedCore records). Regex candidates in `paper_extractions` are **not** training labels. The mixed CSV + simulator is only a software prior.
+The **source of truth for science** is `data/tissuelab.sqlite` (see `docs/DATA_MODEL.md`). Start with `data/literature_viability.csv` (`v_model_viability`: hand-curated live/dead % only). Amass harvest lives in `papers` (~8.5k BiomedCore records). Regex candidates in `paper_extractions` and auto-promoted `pmid*` rows are **not** training labels. The mixed CSV + simulator is only a software prior.
 
 ## Quick start
 
@@ -37,16 +39,10 @@ python3 -m venv .venv
 source .venv/bin/activate
 pip install -e ".[dev]"
 
-python -m tissuelab.load_database
-# optional: Amass literature harvest (requires AMASS_API_KEY in .env)
-python -m tissuelab.harvest_amass
-python -m tissuelab.europepmc
-python -m tissuelab.rank_papers
-python -m tissuelab.ingest_literature
-python -m tissuelab.load_database
-python -m tissuelab.benchmark
-python -m tissuelab.build_dataset
-python -m tissuelab.train
+PYTHONPATH=src python -m tissuelab.load_database
+PYTHONPATH=src python -m tissuelab.rank_papers
+PYTHONPATH=src python -m tissuelab.benchmark
+PYTHONPATH=src python -m tissuelab.train
 pytest -q
 
 streamlit run app/streamlit_app.py
@@ -54,27 +50,26 @@ streamlit run app/streamlit_app.py
 uvicorn app.api:app --reload --port 8000
 ```
 
-Open the app, go to **Predict**, keep the default GelMA ~25 kPa chondrocyte encapsulation, and run a prediction. Then try **Inverse design** with high differentiation + high ECM.
+Open the app, go to **Predict**, keep the default GelMA ~25 kPa chondrocyte encapsulation, and run a prediction. The **literature viability** number and nearest extracted papers are the scientific output. The four-outcome radar is still a simulator-informed demo.
 
 ## How to read the numbers
 
-Outcomes are on a 0–100 scale.
+- **Literature viability** is trained only on published live/dead % in `v_model_viability`. The band is ± leave-one-paper-out MAE, not a biological CI.
+- **Proliferation / differentiation / ECM** in the radar are mapped 0–100 scores plus a simulator prior. Do not cite them as measurements.
+- Ridge does **not** yet beat a dummy mean under LOPO. Use nearest extracted papers to choose the next gel.
 
-- **Viability** is closest to a real assay (live/dead %).
-- **Proliferation / differentiation / ECM** are indices. When a paper reported sGAG/DNA or COL2A1, the value is a mapped relative score, not a literal µg/µg.
+### Current baseline
 
-Quantile bands are the model saying it does not know. Wide intervals should change the experiment you run, not be ignored.
+| Check | Value |
+|---|---|
+| Hand-curated studies | 34 |
+| Hand experiments | 110 |
+| Numeric live/dead (training) | 37 rows / 13 papers |
+| Dummy LOPO MAE | 17.2 |
+| Ridge LOPO MAE | 25.6 (does not beat dummy) |
+| Simulated XGBoost holdout R² | ~0.92 — **ignore** for science |
 
-### Current baseline (v0.1)
-
-| Model | Holdout MAE | Holdout R² |
-|---|---|---|
-| Dummy mean | 16.9 | ~0 |
-| Ridge | 6.9 | 0.84 |
-| Random Forest | 6.4 | 0.84 |
-| **XGBoost** | **4.6** | **0.92** |
-
-That holdout is mostly simulated data, so it only proves the pipeline learned the prior. The honest test is `python -m tissuelab.benchmark` (leave-one-paper-out on numeric viability). Simulated holdout **MAE 13.4 / R² 0.11** on 31 mapped literature rows is the old mixed-CSV check — still not the product metric.
+The product is ready to **use as an evidence table**. It is not ready to claim a model that beats “GelMA ~25 kPa + TGF-β3”.
 
 ## Project layout
 

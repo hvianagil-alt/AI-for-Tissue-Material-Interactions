@@ -15,6 +15,7 @@ from fastapi import FastAPI
 from pydantic import BaseModel, Field
 
 from tissuelab.inverse import inverse_design
+from tissuelab.literature_model import predict_literature_viability
 from tissuelab.predict import predict_design
 from tissuelab.recommend import recommend_experiments
 from tissuelab.schema import DesignInput, TARGETS
@@ -54,7 +55,9 @@ def health():
 @app.post("/predict")
 def predict(design: DesignInput):
     result = predict_design(get_model(), design)
-    return result.model_dump()
+    payload = result.model_dump()
+    payload["literature_viability"] = predict_literature_viability(design.model_dump())
+    return payload
 
 
 @app.post("/inverse")

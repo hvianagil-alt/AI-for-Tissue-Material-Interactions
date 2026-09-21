@@ -41,6 +41,9 @@ VOCAB_MATERIALS = [
     ("collagen_alginate", "composite", "Collagen I / alginate blends"),
     ("fibrin_dECM", "composite", "Fibrin plus decellularized cartilage and/or amnion matrix"),
     ("PDLLA_PEG_HA", "synthetic", "Methacrylated PDLLA-PEG with HA, PSL scaffolds"),
+    ("cellulose_alginate", "composite", "Nanocellulose–alginate bioinks"),
+    ("fibrin_HA", "composite", "Fibrin plus methacrylated hyaluronic acid"),
+    ("chitosan_silk", "composite", "Chitosan–silk fibroin scaffolds"),
 ]
 
 VOCAB_ASSAYS = [

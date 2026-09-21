@@ -16,7 +16,8 @@ import plotly.graph_objects as go
 import streamlit as st
 
 from tissuelab.inverse import candidate_rationale, inverse_design
-from tissuelab.paths import DATASET_PATH, HONEST_METRICS_PATH, EXTRACTION_QUEUE_PATH, MODEL_PATH, QUALITY_REPORT_PATH
+from tissuelab.literature_model import predict_literature_viability
+from tissuelab.paths import DATASET_PATH, HONEST_METRICS_PATH, EXTRACTION_QUEUE_PATH, MODEL_PATH, NATIVE_EXPORT_PATH, QUALITY_REPORT_PATH, VIABILITY_EXPORT_PATH
 from tissuelab.predict import predict_design
 from tissuelab.protocol import protocol_from_row
 from tissuelab.recommend import recommend_experiments, recommendation_reason
@@ -123,7 +124,14 @@ def design_form(prefix: str, defaults: dict | None = None) -> dict:
                 "agarose",
                 "PEG",
                 "PEG_dextran",
+                "chitosan",
                 "chitosan_HA",
+                "chitosan_gelatin_PVA",
+                "cellulose_alginate",
+                "fibrin_HA",
+                "GelMA_HA",
+                "GelMA_chitosan",
+                "collagen_alginate",
             ],
             index=0,
             key=f"{prefix}_material",
@@ -141,7 +149,11 @@ def design_form(prefix: str, defaults: dict | None = None) -> dict:
         surface_chemistry = st.selectbox("Surface chemistry", ["native", "RGD", "MMP_degradable", "none"], key=f"{prefix}_surf")
         has_adhesion_ligand = st.slider("Adhesion ligand (0–1)", 0.0, 1.0, 1.0, key=f"{prefix}_lig")
     with c3:
-        cell_type = st.selectbox("Cell type", ["articular_chondrocyte", "MSC"], key=f"{prefix}_cell")
+        cell_type = st.selectbox(
+            "Cell type",
+            ["articular_chondrocyte", "auricular_chondrocyte", "MSC", "adipose_MSC"],
+            key=f"{prefix}_cell",
+        )
         species = st.selectbox("Species", ["human", "bovine", "porcine", "rabbit"], key=f"{prefix}_sp")
         culture_model = st.selectbox("Culture model", ["3D_encapsulation", "3D_bioprint", "2D"], key=f"{prefix}_cult")
         growth_factor = st.selectbox("Growth factor", ["none", "TGF_b3", "TGF_b1"], key=f"{prefix}_gf")
@@ -167,7 +179,21 @@ def design_form(prefix: str, defaults: dict | None = None) -> dict:
     }
 
 
-def show_prediction(result) -> None:
+def show_prediction(result, literature: dict | None = None) -> None:
+    if literature and literature.get("mean") is not None:
+        st.subheader("Published viability (hand-curated table)")
+        c1, c2, c3 = st.columns(3)
+        c1.metric("Literature viability", f"{literature['mean']:.0f}%", f"{literature['low']:.0f}–{literature['high']:.0f}")
+        lopo = literature.get("lopo") or {}
+        c2.metric("LOPO MAE (Ridge)", f"{lopo.get('ridge_mae', float('nan')):.1f}" if lopo.get("ridge_mae") is not None else "—")
+        c3.metric("Papers in split", lopo.get("n_studies") or "—")
+        st.caption("Interval is ± leave-one-paper-out MAE on numeric live/dead. Auto-promoted abstracts are not in this model.")
+        if literature.get("similar"):
+            st.markdown("Nearest **extracted** papers")
+            st.dataframe(pd.DataFrame(literature["similar"]), hide_index=True, use_container_width=True)
+        for note in literature.get("notes") or []:
+            st.info(note)
+    st.caption("The four scores below still include the simulator-informed demo model. Viability above is the scientific number.")
     cols = st.columns(4)
     for col, target in zip(cols, TARGETS):
         interval = result.outcomes[target]
@@ -196,8 +222,8 @@ data = get_data()
 st.title("TissueLab AI")
 st.caption(
     "MVP 1 — Tissue Interaction Engine for **hydrogel → chondrocyte / cartilage**. "
-    "The dataset mixes literature-extracted records with a literature-informed simulator. "
-    "Use this to choose the next experiment, not as a virtual human."
+    "Published live/dead numbers are the training labels. The four-outcome radar still uses a simulator-informed demo. "
+    "Use nearest extracted papers to choose the next gel, not as a virtual human."
 )
 
 tab_predict, tab_inverse, tab_next, tab_data, tab_about = st.tabs(
@@ -205,10 +231,11 @@ tab_predict, tab_inverse, tab_next, tab_data, tab_about = st.tabs(
 )
 
 with tab_predict:
-    st.markdown("Enter a hydrogel and biological context. The model predicts viability, proliferation, chondrogenic differentiation, and ECM deposition with 10–90% quantile intervals.")
+    st.markdown("Enter a hydrogel and biological context. Published viability comes from hand-curated live/dead %. The four-outcome radar is still a demo prior.")
     design = design_form("predict")
     if st.button("Predict tissue interaction", type="primary"):
-        show_prediction(predict_design(model, design))
+        lit = predict_literature_viability(design)
+        show_prediction(predict_design(model, design), literature=lit)
 
 with tab_inverse:
     st.markdown(
@@ -223,7 +250,7 @@ with tab_inverse:
     }
     allowed = st.multiselect(
         "Allowed hydrogels (optional)",
-        ["GelMA", "fibrin", "silk_fibrin", "HA", "alginate", "gelatin_alginate", "collagen", "agarose", "PEG", "chitosan_HA"],
+        ["GelMA", "fibrin", "silk_fibrin", "HA", "alginate", "gelatin_alginate", "collagen", "agarose", "PEG", "chitosan", "chitosan_HA", "cellulose_alginate"],
         default=["GelMA", "fibrin", "HA", "alginate"],
     )
     max_stiffness = st.slider("Max stiffness (kPa)", 10, 200, 50)
@@ -283,9 +310,9 @@ with tab_data:
     honest = json.loads(HONEST_METRICS_PATH.read_text()) if HONEST_METRICS_PATH.exists() else {}
     c1, c2, c3, c4 = st.columns(4)
     c1.metric("SQLite papers", quality.get("n_amass_papers", "—"))
-    c2.metric("Curated experiments", quality.get("n_experiments", n_lit))
-    c3.metric("Numeric viability", quality.get("n_numeric_viability", "—"))
-    c4.metric("Extraction queue", quality.get("n_extraction_queue", "—"))
+    c2.metric("Hand-curated studies", quality.get("n_hand_studies", "—"))
+    c3.metric("Numeric viability (curated)", quality.get("n_numeric_viability", "—"))
+    c4.metric("Extraction queue remaining", quality.get("n_extraction_queue", "—"))
     st.caption(
         "Papers are a library. The model only learns from curated numeric measurements. "
         "Simulator rows in the CSV below are a prior, not observations."
@@ -301,7 +328,23 @@ with tab_data:
         queue = pd.read_csv(EXTRACTION_QUEUE_PATH)
         st.subheader("Next papers to extract")
         st.dataframe(queue.head(25), use_container_width=True, hide_index=True)
-    st.markdown("Mapped CSV used by the demo model (includes simulator rows):")
+    if VIABILITY_EXPORT_PATH.exists():
+        viability = pd.read_csv(VIABILITY_EXPORT_PATH)
+        st.subheader("Training table — hand-curated live/dead %")
+        st.caption("This is `v_model_viability`. Auto-promoted pmid* rows are excluded.")
+        st.dataframe(viability, use_container_width=True, hide_index=True)
+        st.download_button(
+            "Download literature viability CSV",
+            viability.to_csv(index=False),
+            "literature_viability.csv",
+            "text/csv",
+            key="dl_viability",
+        )
+    if NATIVE_EXPORT_PATH.exists():
+        native = pd.read_csv(NATIVE_EXPORT_PATH)
+        st.subheader("All measurements (native units, includes inventory rows)")
+        st.dataframe(native.head(80), use_container_width=True, hide_index=True)
+    st.markdown("Mapped CSV used by the demo four-outcome model (includes simulator rows):")
     c1, c2, c3 = st.columns(3)
     c1.metric("CSV records", len(data))
     c2.metric("Literature-extracted", n_lit)

@@ -235,6 +235,134 @@ STUDIES: list[dict] = [
         "license": "CC-BY",
         "notes": "Bovine chondrocytes mixed outside HA-MA microstrands and bioprinted. Starting compression modulus 2.7 kPa. Myoblast-in-GelMA viabilities are a different cell type and are not stored. Day-21/42 moduli are ECM, not the starting gel.",
     },
+    {
+        "study_id": "hu2012",
+        "citation": "Hu et al., Acta Biomater. 2012",
+        "doi": "10.1016/j.actbio.2012.01.029",
+        "pmid": "22330279",
+        "year": 2012,
+        "journal": "Acta Biomaterialia",
+        "license": "publisher",
+        "notes": "Visible-light MeGC. Abstract pairs compressive modulus with encapsulated chondrocyte viability. Fulltext not OA.",
+    },
+    {
+        "study_id": "markstedt2015",
+        "citation": "Markstedt et al., Biomacromolecules 2015",
+        "doi": "10.1021/acs.biomac.5b00188",
+        "pmid": "25806996",
+        "year": 2015,
+        "journal": "Biomacromolecules",
+        "license": "publisher",
+        "notes": "Human chondrocytes in nanocellulose–alginate bioink. Abstract live/dead 73% day 1 and 86% day 7. Fulltext not OA.",
+    },
+    {
+        "study_id": "lindborg2015",
+        "citation": "Lindborg et al., Tissue Eng. Part A 2015",
+        "doi": "10.1089/ten.TEA.2014.0335",
+        "pmid": "25748146",
+        "year": 2015,
+        "journal": "Tissue Engineering Part A",
+        "license": "publisher",
+        "notes": "hMSC in chitosan–HA hydrocolloid. Elastic modulus 264±38 Pa. 48% viability in the first 24 h. Fulltext not OA.",
+    },
+    {
+        "study_id": "yang2020",
+        "citation": "Yang et al., J. Funct. Biomater. 2020",
+        "doi": "10.3390/jfb11010005",
+        "pmid": "31963629",
+        "year": 2020,
+        "journal": "Journal of Functional Biomaterials",
+        "pmcid": "PMC7151603",
+        "license": "CC-BY",
+        "notes": "Human P2 chondrocytes, agarose MACT. Young's from Table 1. No live/dead percent in text.",
+    },
+    {
+        "study_id": "snyder2014",
+        "citation": "Snyder et al., J. Biol. Eng. 2014",
+        "doi": "10.1186/1754-1611-8-10",
+        "pmid": "25061479",
+        "year": 2014,
+        "journal": "Journal of Biological Engineering",
+        "pmcid": "PMC4109069",
+        "license": "CC-BY",
+        "notes": "BMSC in fibrin/HA-MA. Compressive moduli vs fibrinogen and HA-MA. Live/dead qualitative only.",
+    },
+    {
+        "study_id": "kim2015",
+        "citation": "Kim et al., J. Biol. Eng. 2015",
+        "doi": "10.1186/1754-1611-9-1",
+        "pmid": "25745515",
+        "year": 2015,
+        "journal": "Journal of Biological Engineering",
+        "pmcid": "PMC4350967",
+        "license": "CC-BY",
+        "notes": "hSMSC in MeGC ± collagen II + conjugated TGF-β1. Live/dead >90% all gels at day 21; no mean percent.",
+    },
+    {
+        "study_id": "ingavle2012",
+        "citation": "Ingavle et al., J. Mater. Sci. Mater. Med. 2012",
+        "doi": "10.1007/s10856-011-4499-9",
+        "pmid": "22116661",
+        "year": 2012,
+        "journal": "Journal of Materials Science: Materials in Medicine",
+        "pmcid": "PMC3729881",
+        "license": "NIH public access",
+        "notes": "Agarose–PEGDA IPN ± methacrylated CS. Abstract: unmodified 35% viable at 6 weeks; CS-IPN more than 50%. Fulltext XML not available.",
+    },
+    {
+        "study_id": "zignego2014",
+        "citation": "Zignego et al., J. Biomech. 2014",
+        "doi": "10.1016/j.jbiomech.2013.10.051",
+        "pmid": "24275437",
+        "year": 2014,
+        "journal": "Journal of Biomechanics",
+        "pmcid": "PMC4014520",
+        "license": "publisher",
+        "notes": "4.5% agarose, primary human chondrocytes. Abstract: viability >95%. Native PCM 25–200 kPa is not the gel modulus.",
+    },
+    {
+        "study_id": "maneechan2026",
+        "citation": "Maneechan et al., Polymers 2026",
+        "doi": "10.3390/polym18111406",
+        "pmid": "42280615",
+        "year": 2026,
+        "journal": "Polymers",
+        "pmcid": "PMC13259354",
+        "license": "CC-BY",
+        "notes": "Chitosan–silk fibroin + Aloe/Mimosa, TGF-β3 loaded. Hydrated compressive 5.40±3.73 kPa. MTT 98.8% is transwell extract, not 3D live/dead, and is not stored as viability.",
+    },
+    {
+        "study_id": "lee2025",
+        "citation": "Lee et al., Gels 2025",
+        "doi": "10.3390/gels11110850",
+        "pmid": "41294535",
+        "year": 2025,
+        "journal": "Gels",
+        "pmcid": "PMC12652762",
+        "license": "CC-BY",
+        "notes": "DAS–collagen–heparin. Young's ~3 / ~30 / ~125 kPa by NaOH reconstitution. Live/dead qualitative with TGF-β3.",
+    },
+    {
+        "study_id": "rouillard2011",
+        "citation": "Rouillard et al., Tissue Eng. Part C 2011",
+        "doi": "10.1089/ten.TEC.2009.0582",
+        "pmid": "20704471",
+        "year": 2011,
+        "journal": "Tissue Engineering Part C",
+        "license": "publisher",
+        "notes": "Methacrylated alginate, bovine chondrocytes. VA-086 >85% viability; Irgacure 2959 below 70%. Aggregate moduli 10–20 kPa are a range, not paired to each initiator.",
+    },
+    {
+        "study_id": "nicodemus2011",
+        "citation": "Nicodemus, Skaalure & Bryant, Acta Biomater. 2011",
+        "doi": "10.1016/j.actbio.2010.08.021",
+        "pmid": "20804868",
+        "year": 2011,
+        "journal": "Acta Biomaterialia",
+        "pmcid": "PMC3014397",
+        "license": "NIH public access",
+        "notes": "Bovine chondrocytes in PEG, 25 d. Compressive moduli 60 / 320 / 590 kPa. GAG highest at lowest crosslinking. No live/dead percent in the abstract.",
+    },
 ]
 
 
@@ -1082,4 +1210,453 @@ def _queue_pass_experiments() -> list[dict]:
     return rows
 
 
-EXPERIMENTS: list[dict] = _bachmann_experiments() + _other_experiments() + _queue_pass_experiments()
+def _queue_pass_more() -> list[dict]:
+    """Second OA/abstract pass: published numbers only."""
+    rows = []
+
+    # Hu 2012 — visible-light MeGC, abstract pairs modulus with viability.
+    for tag, kpa, viab, extra in [
+        ("cq-600s", 2.8, 5.0, "CQ initiator, 600 s irradiation. Abstract: viability reduced to 5%."),
+        ("fr-600s", 4.4, 25.0, "FR initiator, 600 s. Abstract: viability reduced to 25%."),
+        ("rf-40s", None, 85.0, "RF initiator, 40 s. Abstract: 80–90% viability; stored as 85% midpoint of the stated range."),
+        ("rf-300s", 8.5, 85.0, "RF initiator, 300 s. Abstract: 8.5 kPa without reducing viability vs 40 s."),
+    ]:
+        rows.append(
+            {
+                "experiment_id": f"hu2012-megc-{tag}",
+                "study_id": "hu2012",
+                "material_class": "chitosan",
+                "material_detail": "Methacrylated glycol chitosan (MeGC), visible-light photocrosslink",
+                "crosslinking": "photocrosslink",
+                "stiffness_kpa": kpa,
+                "stiffness_method": None if kpa is None else "compressive_modulus_abstract",
+                "surface_chemistry": "native",
+                "has_adhesion_ligand": 0.5,
+                "cell_type": "articular_chondrocyte",
+                "culture_model": "3D_encapsulation",
+                "growth_factor": "none",
+                "extracted_from": "abstract",
+                "curator_confidence": "medium",
+                "notes": extra,
+                "measurements": [
+                    _m("viability_pct", viab, "%", evidence="numeric_text", notes=extra),
+                ],
+            }
+        )
+
+    # Markstedt 2015 — nanocellulose–alginate bioink.
+    for days, viab in [(1, 73.0), (7, 86.0)]:
+        rows.append(
+            {
+                "experiment_id": f"markstedt2015-nfc-alg-d{days}",
+                "study_id": "markstedt2015",
+                "material_class": "cellulose_alginate",
+                "material_detail": "Nanocellulose–alginate bioink, human chondrocytes bioprinted",
+                "crosslinking": "ionic",
+                "surface_chemistry": "native",
+                "has_adhesion_ligand": 0.5,
+                "cell_type": "articular_chondrocyte",
+                "species": "human",
+                "culture_model": "3D_bioprint",
+                "growth_factor": "none",
+                "culture_time_days": days,
+                "extracted_from": "abstract",
+                "curator_confidence": "high",
+                "notes": "Abstract live/dead after 1 and 7 days of 3D culture. Stiffness not in abstract.",
+                "measurements": [
+                    _m("viability_pct", viab, "%", evidence="numeric_text"),
+                ],
+            }
+        )
+
+    # Lindborg 2015 — chitosan–HA hydrocolloid.
+    rows.append(
+        {
+            "experiment_id": "lindborg2015-chitosan-ha-d1",
+            "study_id": "lindborg2015",
+            "material_class": "chitosan_HA",
+            "material_detail": "Chitosan–hyaluronan hydrogel-hydrocolloid hydrated with serum",
+            "crosslinking": "ionic",
+            "stiffness_kpa": 0.264,
+            "stiffness_sd_kpa": 0.038,
+            "stiffness_method": "elastic_modulus_Pa_to_kPa",
+            "surface_chemistry": "native",
+            "has_adhesion_ligand": 1.0,
+            "cell_type": "MSC",
+            "species": "human",
+            "culture_model": "3D_encapsulation",
+            "growth_factor": "none",
+            "culture_time_days": 1,
+            "extracted_from": "abstract",
+            "curator_confidence": "high",
+            "notes": "Abstract: 264±38 Pa formed in seconds; 48% viability during the first 24 h, then a steady state to day 14 (no later percent).",
+            "measurements": [
+                _m("viability_pct", 48.0, "%", evidence="numeric_text", notes="First 24 h only."),
+            ],
+        }
+    )
+
+    # Yang 2020 — agarose Young's series, MACT, no live/dead %.
+    for conc, kpa in [
+        (0.5, 0.49),
+        (1.0, 0.93),
+        (2.5, 3.30),
+        (5.0, 8.78),
+        (7.5, 14.60),
+        (10.0, 23.08),
+    ]:
+        tag = str(conc).replace(".", "p")
+        rows.append(
+            {
+                "experiment_id": f"yang2020-agarose-{tag}pct",
+                "study_id": "yang2020",
+                "material_class": "agarose",
+                "material_detail": f"{conc:g}% w/v agarose, matrix-assisted chondrocyte transplantation interface",
+                "crosslinking": "thermal",
+                "polymer_concentration_wt_pct": conc,
+                "stiffness_kpa": kpa,
+                "stiffness_method": "youngs_table1",
+                "surface_chemistry": "none",
+                "has_adhesion_ligand": 0.0,
+                "cell_type": "articular_chondrocyte",
+                "species": "human",
+                "culture_model": "3D_encapsulation",
+                "growth_factor": "none",
+                "passage": 2,
+                "extracted_from": "PMC7151603 Table 1 + results",
+                "curator_confidence": "high",
+                "notes": "Paper identifies 3.30 kPa (2.5%) as optimal integration. No live/dead percent in text.",
+                "measurements": [
+                    _m(
+                        "sgag_histology",
+                        0.8 if conc == 2.5 else (0.6 if conc <= 1.0 else 0.35),
+                        "ordinal",
+                        evidence="qualitative_text",
+                        notes="Relative cartilage–hydrogel integration ranking from the text, not µg.",
+                    ),
+                ],
+            }
+        )
+
+    # Snyder 2014 — fibrin/HA-MA compressive moduli.
+    for fib, ha, kpa, sd in [
+        (4.0, 0.0, 1.62, 0.6),
+        (4.0, 1.5, 4.19, 0.28),
+        (6.0, 0.0, 3.39, 0.91),
+        (6.0, 1.5, 6.76, 0.52),
+    ]:
+        ha_tag = "ha0" if ha == 0 else "ha15"
+        rows.append(
+            {
+                "experiment_id": f"snyder2014-fib{int(fib)}-{ha_tag}",
+                "study_id": "snyder2014",
+                "material_class": "fibrin_HA" if ha else "fibrin",
+                "material_detail": f"{fib:g} mg/mL fibrinogen + {ha:g} mg/mL HA-MA",
+                "crosslinking": "photocrosslink" if ha else "enzymatic",
+                "polymer_concentration_wt_pct": fib / 10.0,
+                "stiffness_kpa": kpa,
+                "stiffness_sd_kpa": sd,
+                "stiffness_method": "compressive_modulus",
+                "surface_chemistry": "native",
+                "has_adhesion_ligand": 1.0,
+                "cell_type": "MSC",
+                "species": "human",
+                "culture_model": "3D_encapsulation",
+                "growth_factor": "none",
+                "culture_time_days": 6,
+                "extracted_from": "PMC4109069 mechanical paragraph + live/dead",
+                "curator_confidence": "medium",
+                "notes": "Live/dead and PrestoBlue show a suitable 3D environment; no percent. HA-MA 0 vs 1.5 mg/mL from the reported range.",
+                "measurements": [
+                    _m(
+                        "viability_pct",
+                        None,
+                        "%",
+                        qualitative="high",
+                        evidence="qualitative_text",
+                        notes="Live/dead: increasing numbers of viable cells; no percent.",
+                    ),
+                ],
+            }
+        )
+
+    # Kim 2015 — MeGC ± Col II + TGF-β1, >90% at day 21.
+    for tag, gf, extra in [
+        ("megc", "none", "MeGC only."),
+        ("megc-col-tgf", "TGF_b1", "MeGC + collagen II + conjugated TGF-β1."),
+    ]:
+        rows.append(
+            {
+                "experiment_id": f"kim2015-{tag}-d21",
+                "study_id": "kim2015",
+                "material_class": "chitosan",
+                "material_detail": extra,
+                "crosslinking": "photocrosslink",
+                "surface_chemistry": "native",
+                "has_adhesion_ligand": 1.0 if "col" in tag else 0.5,
+                "cell_type": "MSC",
+                "species": "human",
+                "culture_model": "3D_encapsulation",
+                "growth_factor": gf,
+                "culture_time_days": 21,
+                "extracted_from": "PMC4350967 Live/Dead paragraph",
+                "curator_confidence": "medium",
+                "notes": "hSMSC. Live/dead >90% in all tested hydrogels at day 21; figure has a percent panel without a number in text.",
+                "measurements": [
+                    _m(
+                        "viability_pct",
+                        None,
+                        "%",
+                        qualitative="high_>90",
+                        evidence="qualitative_text",
+                    ),
+                ],
+            }
+        )
+
+    # Ingavle 2012 — agarose–PEGDA IPN ± CS.
+    rows.append(
+        {
+            "experiment_id": "ingavle2012-ipn-d42",
+            "study_id": "ingavle2012",
+            "material_class": "PEG",
+            "material_detail": "Agarose–PEGDA IPN unmodified",
+            "crosslinking": "photocrosslink",
+            "surface_chemistry": "none",
+            "has_adhesion_ligand": 0.0,
+            "cell_type": "articular_chondrocyte",
+            "culture_model": "3D_encapsulation",
+            "growth_factor": "none",
+            "culture_time_days": 42,
+            "extracted_from": "abstract",
+            "curator_confidence": "medium",
+            "notes": "Abstract: 35% of encapsulated chondrocytes remained viable at 6 weeks in the unmodified IPN.",
+            "measurements": [
+                _m("viability_pct", 35.0, "%", evidence="numeric_text", notes="Below the 40% regex harvest floor; this is a published live fraction."),
+            ],
+        }
+    )
+    rows.append(
+        {
+            "experiment_id": "ingavle2012-cs-ipn-d42",
+            "study_id": "ingavle2012",
+            "material_class": "PEG",
+            "material_detail": "Agarose–PEGDA IPN + ~0.5 wt% methacrylated chondroitin sulfate",
+            "crosslinking": "photocrosslink",
+            "surface_chemistry": "native",
+            "has_adhesion_ligand": 0.3,
+            "cell_type": "articular_chondrocyte",
+            "culture_model": "3D_encapsulation",
+            "growth_factor": "none",
+            "culture_time_days": 42,
+            "extracted_from": "abstract",
+            "curator_confidence": "medium",
+            "notes": "Abstract: more than 50% viable at 6 weeks. Stored as a floor label, not a live/dead mean.",
+            "measurements": [
+                _m(
+                    "viability_pct",
+                    None,
+                    "%",
+                    qualitative="floor_>50",
+                    evidence="qualitative_text",
+                    notes="Paper: more than 50%; not coded as 50% because it is a floor, not a mean.",
+                ),
+            ],
+        }
+    )
+
+    # Zignego 2014 — 4.5% agarose, >95%.
+    rows.append(
+        {
+            "experiment_id": "zignego2014-agarose-4p5-d3",
+            "study_id": "zignego2014",
+            "material_class": "agarose",
+            "material_detail": "4.5% agarose, high-stiffness gel for 10% compression of primary human chondrocytes",
+            "crosslinking": "thermal",
+            "polymer_concentration_wt_pct": 4.5,
+            "surface_chemistry": "none",
+            "has_adhesion_ligand": 0.0,
+            "cell_type": "articular_chondrocyte",
+            "species": "human",
+            "culture_model": "3D_encapsulation",
+            "growth_factor": "none",
+            "culture_time_days": 3,
+            "extracted_from": "abstract",
+            "curator_confidence": "medium",
+            "notes": "Abstract: >95% viability at 24 and 72 h. Native PCM 25–200 kPa is not stored as gel stiffness.",
+            "measurements": [
+                _m(
+                    "viability_pct",
+                    None,
+                    "%",
+                    qualitative="high_>95",
+                    evidence="qualitative_text",
+                ),
+            ],
+        }
+    )
+
+    # Maneechan 2026 — hydrated 5.40 kPa; MTT extract not stored as 3D viability.
+    rows.append(
+        {
+            "experiment_id": "maneechan2026-cs-silk-hydrated",
+            "study_id": "maneechan2026",
+            "material_class": "chitosan_silk",
+            "material_detail": "Chitosan–silk fibroin with Aloe vera and Mimosa, TGF-β3 adsorbed, freeze-dried then hydrated",
+            "crosslinking": "chemical",
+            "stiffness_kpa": 5.40,
+            "stiffness_sd_kpa": 3.73,
+            "stiffness_method": "unconfined_compression_hydrated",
+            "surface_chemistry": "native",
+            "has_adhesion_ligand": 1.0,
+            "cell_type": "articular_chondrocyte",
+            "culture_model": "3D_encapsulation",
+            "growth_factor": "TGF_b3",
+            "extracted_from": "PMC13259354 mechanical + MTT paragraphs",
+            "curator_confidence": "medium",
+            "notes": "Dry E 46.63 kPa not stored. MTT 98.8±1.5% at 24 h is transwell extract cytocompatibility, not 3D live/dead.",
+            "measurements": [
+                _m(
+                    "viability_pct",
+                    None,
+                    "%",
+                    qualitative="noncytotoxic_extract",
+                    evidence="qualitative_text",
+                    notes="Indirect MTT not different from control at 24 h; 72 h 112.9% is proliferation, not stored as viability.",
+                ),
+            ],
+        }
+    )
+
+    # Lee 2025 — DAS-collagen Young's ~3 / 30 / 125 kPa.
+    for tag, kpa, naoh in [("soft", 3.0, "0.25 N"), ("mid", 30.0, "0.5 N"), ("stiff", 125.0, "0.75 N")]:
+        rows.append(
+            {
+                "experiment_id": f"lee2025-dascol-{tag}",
+                "study_id": "lee2025",
+                "material_class": "collagen",
+                "material_detail": f"Dialdehyde starch cross-linked collagen–heparin, reconstituted with {naoh} NaOH",
+                "crosslinking": "chemical",
+                "stiffness_kpa": kpa,
+                "stiffness_method": "youngs_compression_approx",
+                "surface_chemistry": "native",
+                "has_adhesion_ligand": 1.0,
+                "cell_type": "articular_chondrocyte",
+                "culture_model": "3D_encapsulation",
+                "growth_factor": "TGF_b3",
+                "cell_density_million_per_ml": 2.0,
+                "extracted_from": "PMC12652762 compression + live/dead",
+                "curator_confidence": "medium",
+                "notes": "Paper reports ~3 / ~30 / ~125 kPa. Live/dead qualitative; TGF-β3 arm has more cells, no percent.",
+                "measurements": [
+                    _m(
+                        "viability_pct",
+                        None,
+                        "%",
+                        qualitative="high",
+                        evidence="qualitative_text",
+                    ),
+                ],
+            }
+        )
+
+    # Rouillard 2011 — photocrosslinked alginate, initiator-dependent viability floors.
+    rows.append(
+        {
+            "experiment_id": "rouillard2011-alg-va086",
+            "study_id": "rouillard2011",
+            "material_class": "alginate",
+            "material_detail": "Methacrylated alginate photocrosslinked with VA-086",
+            "crosslinking": "photocrosslink",
+            "stiffness_method": "aggregate_modulus_range_not_paired",
+            "surface_chemistry": "native",
+            "has_adhesion_ligand": 0.5,
+            "cell_type": "articular_chondrocyte",
+            "species": "bovine",
+            "culture_model": "3D_encapsulation",
+            "growth_factor": "none",
+            "extracted_from": "abstract",
+            "curator_confidence": "medium",
+            "notes": "Abstract: >85% viability with VA-086. Construct aggregate moduli 10–20 kPa are a range across 3D gels, not stored as a single Young's modulus.",
+            "measurements": [
+                _m(
+                    "viability_pct",
+                    None,
+                    "%",
+                    qualitative="high_>85",
+                    evidence="qualitative_text",
+                    notes="Paper: hydrogels with encapsulated bovine chondrocytes constructed with >85% viability using VA-086.",
+                ),
+            ],
+        }
+    )
+    rows.append(
+        {
+            "experiment_id": "rouillard2011-alg-irg2959",
+            "study_id": "rouillard2011",
+            "material_class": "alginate",
+            "material_detail": "Methacrylated alginate photocrosslinked with Irgacure 2959",
+            "crosslinking": "photocrosslink",
+            "surface_chemistry": "native",
+            "has_adhesion_ligand": 0.5,
+            "cell_type": "articular_chondrocyte",
+            "species": "bovine",
+            "culture_model": "3D_encapsulation",
+            "growth_factor": "none",
+            "extracted_from": "abstract",
+            "curator_confidence": "medium",
+            "notes": "Abstract: IRG2959 photogenerated radical leads to viabilities below 70% in the conditions tested. Not stored as 70% because it is a ceiling, not a mean.",
+            "measurements": [
+                _m(
+                    "viability_pct",
+                    None,
+                    "%",
+                    qualitative="below_70",
+                    evidence="qualitative_text",
+                ),
+            ],
+        }
+    )
+
+    # Nicodemus 2011 — PEG crosslinking density / compressive modulus series.
+    for tag, kpa, gag_rank, extra in [
+        ("soft", 60.0, 1.0, "Lowest crosslinking. GAG production greatest in this arm."),
+        ("mid", 320.0, 0.55, "Intermediate crosslinking. Matrix more pericellular."),
+        ("stiff", 590.0, 0.35, "Highest crosslinking. Collagen II / aggrecan staining decreased; MMP-1/13 elevated."),
+    ]:
+        rows.append(
+            {
+                "experiment_id": f"nicodemus2011-peg-{tag}",
+                "study_id": "nicodemus2011",
+                "material_class": "PEG",
+                "material_detail": f"PEG hydrogel, compressive modulus {kpa:g} kPa",
+                "crosslinking": "photocrosslink",
+                "stiffness_kpa": kpa,
+                "stiffness_method": "compressive_modulus",
+                "surface_chemistry": "none",
+                "has_adhesion_ligand": 0.0,
+                "cell_type": "articular_chondrocyte",
+                "species": "bovine",
+                "culture_model": "3D_encapsulation",
+                "growth_factor": "none",
+                "culture_time_days": 25,
+                "extracted_from": "abstract",
+                "curator_confidence": "high",
+                "notes": extra + " No live/dead percent in the abstract.",
+                "measurements": [
+                    _m(
+                        "sgag_histology",
+                        gag_rank,
+                        "ordinal",
+                        evidence="qualitative_text",
+                        notes="Within-paper GAG ranking from crosslinking, not µg.",
+                    ),
+                ],
+            }
+        )
+    return rows
+
+
+EXPERIMENTS: list[dict] = (
+    _bachmann_experiments() + _other_experiments() + _queue_pass_experiments() + _queue_pass_more()
+)

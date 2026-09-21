@@ -30,12 +30,30 @@ That last point is the answer to “later we add more cell variables”. Osteobl
 
 | Use | Table / view | Why |
 |---|---|---|
-| Viability regressor | `v_model_viability` | Only numeric live/dead % |
+| Viability regressor | `v_model_viability` | Hand-curated numeric live/dead % only (`study_id NOT LIKE 'pmid%'`) |
+| Inventory of auto-promoted abstracts | `v_auto_viability` | pmid* rows; **not** training labels |
 | Stiffness as a feature | experiments with `stiffness_kpa IS NOT NULL` | Complete-case or a missingness indicator |
 | Histology ordinals | measurements `*_histology` | Within-paper rank only; do not treat as µg/µg |
 | Simulated rows | **not in this database** | They are a software prior, not observations |
 | Amass `papers` | literature index / retrieval | Abstracts + identifiers |
 | `paper_extractions` | **not a model table** | Regex from abstracts; numbers are low-confidence |
+
+CSV exports: `data/literature_viability.csv` is the training table. `data/literature_native.csv` is the long-form measurement dump (includes inventory rows).
+
+## How to start using it
+
+1. Open `data/tissuelab.sqlite` (or the viability CSV) as the evidence table.
+2. Predict published live/dead from a gel in Streamlit **Predict** — that number comes from `v_model_viability`, with ± LOPO MAE.
+3. Read the nearest extracted papers, not the four-outcome radar, to pick the next gel.
+4. Keep extracting `data/extraction_queue.csv` into `src/tissuelab/curated.py`. Harvested abstracts are already in SQLite; do not harvest more.
+
+```bash
+PYTHONPATH=src python3 -m tissuelab.load_database
+PYTHONPATH=src python3 -m tissuelab.rank_papers
+PYTHONPATH=src python3 -m tissuelab.benchmark
+PYTHONPATH=src python3 -m tissuelab.train
+streamlit run app/streamlit_app.py
+```
 
 ## Evidence field
 

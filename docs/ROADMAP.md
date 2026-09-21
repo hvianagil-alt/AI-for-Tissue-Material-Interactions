@@ -4,7 +4,7 @@ The product question is unchanged:
 
 > Can this system change which hydrogel experiment a cartilage researcher runs next?
 
-8000 Amass papers are a **library**. They do not make the model work. A model that “works” needs labeled conditions: material × stiffness × cells × time → a number the lab actually measured. That table is still 47 experiments / 13 numeric viability rows.
+8000 Amass papers are a **library**. They do not make the model work. A model that “works” needs labeled conditions: material × stiffness × cells × time → a number the lab actually measured. That table is now **34 hand-curated studies / 110 experiments / 37 numeric live/dead rows from 13 papers**. Auto-promoted `pmid*` rows stay in SQLite as inventory and are **not** in the training view.
 
 ## What “MVP” means here (and what it does not)
 
@@ -31,7 +31,7 @@ Harvest more papers only after the top 250 queued items are extracted or rejecte
 
 There is **no** public `material × chondrocyte × outcome` CSV. BIOMATDB and OOCDB are search portals. The better source we added is **Europe PMC open fulltext** (free XML), used before paid Amass fulltext.
 
-Current snapshot: ~64 studies / ~120 experiments / ~86 numeric viability; ~8.5k papers (Amass + Europe PMC OA). Honest LOPO on ~56 papers: Ridge does **not** yet beat dummy. Count bars for 4 weeks are met; the MAE bar is not.
+Current snapshot: **34 hand studies / 110 hand experiments / 37 numeric viability (13 papers)**; 41 auto-promoted inventory studies; ~8.5k papers. Honest LOPO on those 13 papers: dummy MAE **17.2**, Ridge MAE **25.6**, R² **−2.6**, `mvp_pass` false. The count bar for week 1 is met on studies; the MAE bar is not. The product to start using is the evidence table + nearest extracted papers, not the Ridge point estimate.
 
 ## Step by step
 
@@ -92,8 +92,9 @@ Dummy LOPO is the competitor. A scientist using “GelMA ~25 kPa + TGF-β3” is
 
 ```bash
 python -m tissuelab.load_database    # curated + keep harvest
-python -m tissuelab.rank_papers      # fill extraction_queue
-python -m tissuelab.benchmark        # honest LOPO
+python -m tissuelab.rank_papers      # fill extraction_queue (skips extracted)
+python -m tissuelab.benchmark        # honest LOPO on v_model_viability
+python -m tissuelab.train            # demo XGBoost + literature Ridge
 ```
 
 Read the queue: `data/extraction_queue.csv`. Put new numbers only in `src/tissuelab/curated.py` (or a future curator UI), never in `paper_extractions`.

@@ -32,7 +32,9 @@ The Streamlit app already demos predict / inverse / next experiment. That is a *
 
 Curated rows live in `experiments` / `measurements`. Amass hits live in `papers`. Regex lives in `paper_extractions`. Simulator rows are **not** in SQLite.
 
-The next 200 rows come from `data/extraction_queue.csv`, typed by a human into `curated.py`.
+The next 200 rows come from `data/extraction_queue.csv`, typed by a human into `curated.py`. The queue excludes papers already linked to a hand-curated `study_id`.
+
+Train viability only on `v_model_viability` / `data/literature_viability.csv`. Auto-promoted `pmid*` rows are inventory.
 
 ## Model policy
 

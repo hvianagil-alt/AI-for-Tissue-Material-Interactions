@@ -15,6 +15,19 @@ def test_no_fake_porosity():
     assert all("porosity_pct" not in e or e["porosity_pct"] is None for e in EXPERIMENTS)
 
 
+def test_floors_are_not_training_labels():
+    floors = [
+        e for e in EXPERIMENTS
+        if e["experiment_id"] in {"ingavle2012-cs-ipn-d42", "rouillard2011-alg-va086", "rouillard2011-alg-irg2959"}
+    ]
+    assert floors
+    for exp in floors:
+        for meas in exp["measurements"]:
+            if meas["assay"] == "viability_pct":
+                assert meas.get("value") is None
+                assert meas.get("qualitative_label")
+
+
 def test_hand_curated_replaces_auto_promoted():
     from tissuelab.ingest_literature import load_promoted
     from tissuelab.load_database import drop_hand_overlapped_promoted
@@ -33,18 +46,29 @@ def test_hand_curated_replaces_auto_promoted():
         if str(e["study_id"]).startswith("pmid") and str(e["study_id"])[4:] in pmids
     ]
     assert leftover_exp == []
-    assert all(s.get("pmid") for s in STUDIES if s["study_id"] in {
+    require_pmid = {
         "paul2023", "perezdiaz2023", "ortega2024", "aitchison2024", "demori2025",
         "rojas2025", "levett2014", "sun2015", "zigon2019", "scalzone2019", "kessel2020",
-    })
+        "hu2012", "markstedt2015", "lindborg2015", "yang2020", "snyder2014", "kim2015",
+        "ingavle2012", "zignego2014", "maneechan2026", "lee2025", "rouillard2011",
+        "nicodemus2011",
+    }
+    assert all(s.get("pmid") for s in STUDIES if s["study_id"] in require_pmid)
 
 
-def test_database_quality_gates():
+def test_curated_viability_excludes_auto_promote():
+    from tissuelab.db import connect
+
     report = load(DB_PATH)
-    assert report["n_studies"] >= 8
+    assert report["n_hand_studies"] >= 30
+    assert report["n_numeric_viability"] >= 15
     assert report["n_experiments"] >= 40
-    assert report["n_numeric_viability"] >= 10
     assert report["percent_missing"]["porosity_pct"] == 100.0
     assert report["n_with_stiffness_kpa"] >= 20
-    # Honesty: most rows still lack a live/dead percent.
     assert report["n_numeric_viability"] < report["n_experiments"]
+    conn = connect(DB_PATH)
+    auto_in_view = conn.execute(
+        "SELECT COUNT(*) FROM v_model_viability WHERE study_id LIKE 'pmid%'"
+    ).fetchone()[0]
+    conn.close()
+    assert auto_in_view == 0
