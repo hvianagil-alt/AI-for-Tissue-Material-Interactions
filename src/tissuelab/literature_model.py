@@ -88,6 +88,81 @@ def _query_from_design(design: dict) -> dict:
     }
 
 
+COMPETITOR = {
+    "material_class": "GelMA",
+    "stiffness_kpa": 25.0,
+    "cell_type": "articular_chondrocyte",
+    "growth_factor": "TGF_b3",
+    "culture_time_days": 14,
+}
+
+
+def _coverage(frame: pd.DataFrame, material: str | None) -> dict:
+    n_total = int(len(frame))
+    n_kpa = int(frame["stiffness_kpa"].notna().sum()) if n_total else 0
+    sub = frame[frame["material_class"] == material] if material else frame.iloc[0:0]
+    return {
+        "n_total": n_total,
+        "n_studies": int(frame["study_id"].nunique()) if n_total else 0,
+        "n_with_kpa": n_kpa,
+        "pct_kpa_missing": round(100.0 * (1 - n_kpa / n_total), 0) if n_total else 100.0,
+        "n_material": int(len(sub)),
+        "n_material_with_kpa": int(sub["stiffness_kpa"].notna().sum()) if len(sub) else 0,
+    }
+
+
+def _chart_points(frame: pd.DataFrame, weights: np.ndarray, material: str | None) -> list[dict]:
+    out = []
+    w = weights if weights is not None and len(weights) == len(frame) else np.ones(len(frame))
+    for i, row in enumerate(frame.itertuples(index=False)):
+        kpa = getattr(row, "stiffness_kpa", None)
+        out.append(
+            {
+                "kpa": None if kpa is None or pd.isna(kpa) else float(kpa),
+                "viability_pct": float(row.viability_pct),
+                "material_class": row.material_class,
+                "same_material": bool(material and row.material_class == material),
+                "weight": round(float(w[i]), 3),
+                "study_id": row.study_id,
+            }
+        )
+    return out
+
+
+def _verdict(design: dict, mean: float | None, coverage: dict, competitor_mean: float | None, mae: float | None) -> str:
+    material = design.get("material_class") or "this gel"
+    kpa = design.get("stiffness_kpa")
+    kpa_s = f" ~{float(kpa):.0f} kPa" if kpa not in (None, "") else ""
+    n = coverage.get("n_material") or 0
+    n_kpa = coverage.get("n_material_with_kpa") or 0
+    if mean is None:
+        return "Ainda não há live/dead extraído para treinar um número."
+    if n == 0:
+        return (
+            f"Não há live/dead extraído para {material}. O valor mostrado pede emprestado a outros géis — "
+            "não o uses para escolher o próximo encapsulamento."
+        )
+    if n == 1:
+        extra = " A rigidez move o número sobretudo por empréstimo de outros materiais." if n_kpa == 0 else ""
+        return (
+            f"Há só 1 condição {material} na tabela.{extra} Trata {mean:.0f}% como uma âncora fraca; "
+            "abre os papers vizinhos."
+        )
+    band = f" (±{mae:.0f} pontos entre papers)" if mae else ""
+    vs = ""
+    if competitor_mean is not None:
+        diff = mean - competitor_mean
+        vs = (
+            f" Comparado com o protocolo típico GelMA 25 kPa + TGF-β3 ({competitor_mean:.0f}%), "
+            f"isto está {abs(diff):.0f} pontos {'acima' if diff > 0 else 'abaixo'}."
+        )
+    return (
+        f"Para {material}{kpa_s}, a literatura aponta para {mean:.0f}% live/dead{band}, "
+        f"com {n} condições extraídas ({n_kpa} com kPa).{vs} "
+        "Isto não substitui o teu próximo frasco."
+    )
+
+
 def predict_literature_viability(design: dict) -> dict:
     """Empirical-Bayes point estimate. Does not need the XGBoost joblib."""
     frame = load_curated_viability()
@@ -104,7 +179,12 @@ def predict_literature_viability(design: dict) -> dict:
     band = float(mae) if mae is not None else 12.0
     low = None if mean is None else float(np.clip(mean - band, 0, 100))
     high = None if mean is None else float(np.clip(mean + band, 0, 100))
-    similar = similar_published(design, k=5, weights=est.get("weights"))
+    similar = similar_published(design, k=5, weights=est.get("weights"), frame=frame)
+    coverage = _coverage(frame, design.get("material_class"))
+    competitor = shrinkage_estimate(COMPETITOR, frame)
+    competitor_mean = None if competitor["mean"] is None else round(float(competitor["mean"]), 1)
+    chart_points = _chart_points(frame, est.get("weights"), design.get("material_class"))
+    verdict = _verdict(design, None if mean is None else float(mean), coverage, competitor_mean, mae)
     return {
         "mean": None if mean is None else round(mean, 1),
         "low": None if low is None else round(low, 1),
@@ -118,6 +198,10 @@ def predict_literature_viability(design: dict) -> dict:
         "n_support": est["n_support"],
         "interval_is_lopo_mae": True,
         "knob_deltas": knob_deltas(query, frame),
+        "coverage": coverage,
+        "chart_points": chart_points,
+        "competitor": {"label": "GelMA 25 kPa + TGF-β3", "mean": competitor_mean},
+        "verdict": verdict,
         "lopo": {
             "n_studies": lopo.get("n_studies"),
             "n_rows": lopo.get("n_rows"),
@@ -187,25 +271,31 @@ def _notes(
     return notes
 
 
-def similar_published(design: dict, k: int = 5, weights: np.ndarray | None = None) -> list[dict]:
-    conn = connect(DB_PATH)
-    frame = pd.read_sql_query(
-        """
-        SELECT experiment_id, study_id, citation, doi, material_class, stiffness_kpa,
-               cell_type, growth_factor, culture_time_days, viability_pct
-        FROM v_model_viability
-        """,
-        conn,
-    )
-    conn.close()
+def similar_published(design: dict, k: int = 5, weights: np.ndarray | None = None, frame: pd.DataFrame | None = None) -> list[dict]:
+    if frame is None:
+        conn = connect(DB_PATH)
+        frame = pd.read_sql_query(
+            """
+            SELECT experiment_id, study_id, citation, doi, material_class, stiffness_kpa,
+                   cell_type, growth_factor, culture_time_days, viability_pct
+            FROM v_model_viability
+            """,
+            conn,
+        )
+        conn.close()
     if frame.empty:
         return []
     query = _query_from_design(design)
     if weights is None or len(weights) != len(frame):
         weights = shrinkage_estimate(query, frame)["weights"]
-    order = np.argsort(-weights)
+    want = str(query.get("material_class") or "")
+    mats = frame["material_class"].astype(str).to_numpy()
+    ranked = sorted(
+        range(len(frame)),
+        key=lambda i: (0 if mats[i] == want else 1, -float(weights[i])),
+    )
     out = []
-    for pos in order[:k]:
+    for pos in ranked[:k]:
         row = frame.iloc[int(pos)]
         out.append(
             {
