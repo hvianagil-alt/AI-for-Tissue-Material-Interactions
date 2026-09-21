@@ -51,7 +51,9 @@ def test_hand_curated_replaces_auto_promoted():
         "rojas2025", "levett2014", "sun2015", "zigon2019", "scalzone2019", "kessel2020",
         "hu2012", "markstedt2015", "lindborg2015", "yang2020", "snyder2014", "kim2015",
         "ingavle2012", "zignego2014", "maneechan2026", "lee2025", "rouillard2011",
-        "nicodemus2011",
+        "nicodemus2011", "park2013", "salinas2007", "mouser2017", "schneider2017",
+        "wang2014", "xu2013", "ye2026", "fathi2020", "lin2017", "galarraga2021",
+        "smith2013",
     }
     assert all(s.get("pmid") for s in STUDIES if s["study_id"] in require_pmid)
 
@@ -60,8 +62,9 @@ def test_curated_viability_excludes_auto_promote():
     from tissuelab.db import connect
 
     report = load(DB_PATH)
-    assert report["n_hand_studies"] >= 30
-    assert report["n_numeric_viability"] >= 15
+    assert report["n_hand_studies"] >= 40
+    assert report["n_numeric_viability"] >= 20
+    assert report.get("n_hand_viability_studies", 0) >= 15
     assert report["n_experiments"] >= 40
     assert report["percent_missing"]["porosity_pct"] == 100.0
     assert report["n_with_stiffness_kpa"] >= 20

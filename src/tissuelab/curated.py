@@ -363,6 +363,121 @@ STUDIES: list[dict] = [
         "license": "NIH public access",
         "notes": "Bovine chondrocytes in PEG, 25 d. Compressive moduli 60 / 320 / 590 kPa. GAG highest at lowest crosslinking. No live/dead percent in the abstract.",
     },
+    {
+        "study_id": "park2013",
+        "citation": "Park, Choi, Hu & Lee, Acta Biomater. 2013",
+        "doi": "10.1016/j.actbio.2012.08.033",
+        "pmid": "22935326",
+        "year": 2013,
+        "journal": "Acta Biomaterialia",
+        "license": "publisher",
+        "notes": "Visible-light MeGC ± HA, riboflavin. Abstract pairs irradiation time with viability and compressive modulus. 87–90 / 60–65 / ~80–87 stored as midpoints of the stated ranges.",
+    },
+    {
+        "study_id": "salinas2007",
+        "citation": "Salinas, Cole, Kasko & Anseth, Tissue Eng. 2007",
+        "doi": "10.1089/ten.2006.0126",
+        "pmid": "17417949",
+        "year": 2007,
+        "journal": "Tissue Engineering",
+        "license": "publisher",
+        "notes": "hMSC in PEG thiol-ene ± 5 mM RGDS. 75% is ATP viability in control (non-chondrogenic) medium, not live/dead. 0 mM RGDS viability fell without a percent.",
+    },
+    {
+        "study_id": "mouser2017",
+        "citation": "Mouser et al., Biofabrication 2017",
+        "doi": "10.1088/1758-5090/aa6265",
+        "pmid": "28229956",
+        "year": 2017,
+        "journal": "Biofabrication",
+        "pmcid": "PMC7116181",
+        "license": "publisher",
+        "notes": "Chondrocytes in pHPMA-lac-PEG ± HAMA 28 d. Young's 14–31 kPa increased with HAMA. 0.5% HAMA optimal for GAG/COL2. No live/dead percent. PCL co-print 3.5–4.6 MPa is the composite, not the gel.",
+    },
+    {
+        "study_id": "schneider2017",
+        "citation": "Schneider, Barnes & Bryant, Biotechnol. Bioeng. 2017",
+        "doi": "10.1002/bit.26320",
+        "pmid": "28436002",
+        "year": 2017,
+        "journal": "Biotechnology and Bioengineering",
+        "pmcid": "PMC5555637",
+        "license": "publisher",
+        "notes": "Bovine chondrocytes in photoclick PEG, 8 vs 46 kPa. Secretome paper; no live/dead percent.",
+    },
+    {
+        "study_id": "wang2014",
+        "citation": "Wang, Du & Toh, Biomaterials 2014",
+        "doi": "10.1016/j.biomaterials.2013.11.070",
+        "pmid": "24333028",
+        "year": 2014,
+        "journal": "Biomaterials",
+        "license": "publisher",
+        "notes": "Injectable gelatin-HPA. G′ 570–2750 Pa. Medium 1000 Pa highest sGAG and Col2/Col1. Stiffness stored as G′ in kPa, not Young's.",
+    },
+    {
+        "study_id": "xu2013",
+        "citation": "Xu et al., Biofabrication 2013",
+        "doi": "10.1088/1758-5082/5/1/015001",
+        "pmid": "23172542",
+        "year": 2013,
+        "journal": "Biofabrication",
+        "license": "publisher",
+        "notes": "Rabbit elastic chondrocytes inkjet-printed in fibrin-collagen, alternating PCL electrospin. >80% viable at 1 week — floor, not a mean.",
+    },
+    {
+        "study_id": "ye2026",
+        "citation": "Ye et al., Biofabrication 2026",
+        "doi": "10.1088/1758-5090/ae59b5",
+        "pmid": "41916393",
+        "year": 2026,
+        "journal": "Biofabrication",
+        "license": "publisher",
+        "notes": "GelMA reinforced with MEW PLCL-500. Viability remains above 90%. 72.6 MPa is the dry PLCL mesh, not gel Young's; 0.5 MPa tensile of the composite is not stored as stiffness_kpa.",
+    },
+    {
+        "study_id": "fathi2020",
+        "citation": "Fathi-Achachelouei, Keskin & Bat, J. Biomed. Mater. Res. B 2020",
+        "doi": "10.1002/jbm.b.34544",
+        "pmid": "31872975",
+        "year": 2020,
+        "journal": "Journal of Biomedical Materials Research Part B",
+        "license": "publisher",
+        "notes": "DPSC in silk fibroin/PEGDMA. Compressive 95.70±17.82 to 338.05±38.24 kPa. Highest viability in PEG10-SF8(1:1) without a percent. TGF-β1 + bFGF via PLGA NPs.",
+    },
+    {
+        "study_id": "lin2017",
+        "citation": "Sun, Lin et al., Acta Biomater. 2017",
+        "doi": "10.1016/j.actbio.2017.06.016",
+        "pmid": "28611002",
+        "year": 2017,
+        "journal": "Acta Biomaterialia",
+        "pmcid": "PMC5813286",
+        "license": "NIH public access",
+        "notes": "hBM-MSC in PLLA-PEG / PDLLA-PEG. >80% viability post fabrication is a floor. Young's series ~150 to ~1500 kPa is not paired to a per-gel percent. ~1500–1800 kPa is the high-modulus pair.",
+    },
+    {
+        "study_id": "galarraga2021",
+        "citation": "Galarraga et al., Biofabrication 2021",
+        "doi": "10.1088/1758-5090/ac3acb",
+        "pmid": "34788748",
+        "year": 2021,
+        "journal": "Biofabrication",
+        "pmcid": "PMC8943711",
+        "license": "publisher",
+        "notes": "MSC in NorHA. Starting gel ~2 kPa vs denser ~6–60 kPa. Day-56 ~350 kPa is ECM-matured and is not stored.",
+    },
+    {
+        "study_id": "smith2013",
+        "citation": "Smith Callahan et al., Acta Biomater. 2013",
+        "doi": "10.1016/j.actbio.2012.12.028",
+        "pmid": "23291491",
+        "year": 2013,
+        "journal": "Acta Biomaterialia",
+        "pmcid": "PMC3799765",
+        "license": "NIH public access",
+        "notes": "Human OA chondrocytes in RGD-PEGDM with a G′ gradient ~3.8–27 kPa. Lower modulus maintained cell number and phenotype. No live/dead percent.",
+    },
 ]
 
 
@@ -1657,6 +1772,550 @@ def _queue_pass_more() -> list[dict]:
     return rows
 
 
+def _queue_pass_three() -> list[dict]:
+    """Third queue pass: published numbers only, including two new live/dead means."""
+    rows = []
+
+    # Park 2013 — MeGC ± HA, irradiation time pairs modulus with viability.
+    rows.append(
+        {
+            "experiment_id": "park2013-megc-40s",
+            "study_id": "park2013",
+            "material_class": "chitosan",
+            "material_detail": "Methacrylated glycol chitosan, riboflavin, 40 s visible light",
+            "crosslinking": "photocrosslink",
+            "surface_chemistry": "native",
+            "has_adhesion_ligand": 0.5,
+            "cell_type": "articular_chondrocyte",
+            "culture_model": "3D_encapsulation",
+            "growth_factor": "none",
+            "extracted_from": "abstract",
+            "curator_confidence": "high",
+            "notes": "Minimum irradiation for stable gels. Abstract: 87–90% encapsulated chondrocyte viability. Modulus not given at 40 s.",
+            "measurements": [
+                _m(
+                    "viability_pct",
+                    88.5,
+                    "%",
+                    evidence="numeric_text",
+                    notes="Abstract 87–90%; stored as midpoint of the stated range.",
+                ),
+            ],
+        }
+    )
+    rows.append(
+        {
+            "experiment_id": "park2013-megc-600s",
+            "study_id": "park2013",
+            "material_class": "chitosan",
+            "material_detail": "MeGC, riboflavin, 600 s visible light",
+            "crosslinking": "photocrosslink",
+            "stiffness_kpa": 11.0,
+            "stiffness_method": "compressive_modulus",
+            "surface_chemistry": "native",
+            "has_adhesion_ligand": 0.5,
+            "cell_type": "articular_chondrocyte",
+            "culture_model": "3D_encapsulation",
+            "growth_factor": "none",
+            "extracted_from": "abstract",
+            "curator_confidence": "high",
+            "notes": "Long irradiation raised modulus to 11 kPa and dropped viability to 60–65%.",
+            "measurements": [
+                _m(
+                    "viability_pct",
+                    62.5,
+                    "%",
+                    evidence="numeric_text",
+                    notes="Abstract 60–65% at 600 s; stored as midpoint.",
+                ),
+            ],
+        }
+    )
+    rows.append(
+        {
+            "experiment_id": "park2013-megc-ha-600s",
+            "study_id": "park2013",
+            "material_class": "chitosan_HA",
+            "material_detail": "MeGC plus hyaluronic acid, riboflavin, 600 s",
+            "crosslinking": "photocrosslink",
+            "stiffness_kpa": 17.0,
+            "stiffness_method": "compressive_modulus",
+            "surface_chemistry": "native",
+            "has_adhesion_ligand": 1.0,
+            "cell_type": "articular_chondrocyte",
+            "culture_model": "3D_encapsulation",
+            "growth_factor": "none",
+            "extracted_from": "abstract",
+            "curator_confidence": "high",
+            "notes": "MeGC/HA 600 s: 17 kPa, viability 60–65% (same viability sentence as MeGC 600 s).",
+            "measurements": [
+                _m(
+                    "viability_pct",
+                    62.5,
+                    "%",
+                    evidence="numeric_text",
+                    notes="Abstract 60–65% at 600 s; stored as midpoint.",
+                ),
+            ],
+        }
+    )
+    rows.append(
+        {
+            "experiment_id": "park2013-megc-300s-d21",
+            "study_id": "park2013",
+            "material_class": "chitosan",
+            "material_detail": "MeGC, riboflavin, 300 s visible light",
+            "crosslinking": "photocrosslink",
+            "surface_chemistry": "native",
+            "has_adhesion_ligand": 0.5,
+            "cell_type": "articular_chondrocyte",
+            "culture_model": "3D_encapsulation",
+            "growth_factor": "none",
+            "culture_time_days": 21,
+            "extracted_from": "abstract",
+            "curator_confidence": "medium",
+            "notes": "300 s: rounded morphology and ~80–87% viability over 21 d. Modulus not reported for this arm.",
+            "measurements": [
+                _m(
+                    "viability_pct",
+                    83.5,
+                    "%",
+                    evidence="numeric_text",
+                    notes="Abstract ~80–87% over 21 days; stored as midpoint. Tilde in the paper.",
+                ),
+            ],
+        }
+    )
+
+    # Salinas 2007 — PEG ± RGDS, ATP viability.
+    rows.append(
+        {
+            "experiment_id": "salinas2007-peg-norgds",
+            "study_id": "salinas2007",
+            "material_class": "PEG",
+            "material_detail": "PEG mixed-mode thiol-ene, no RGDS",
+            "crosslinking": "photocrosslink",
+            "surface_chemistry": "none",
+            "has_adhesion_ligand": 0.0,
+            "cell_type": "MSC",
+            "species": "human",
+            "culture_model": "3D_encapsulation",
+            "growth_factor": "none",
+            "culture_time_days": 14,
+            "extracted_from": "abstract",
+            "curator_confidence": "medium",
+            "notes": "No cell–polymer interactions; ATP viability decreased over 14 d without a percent.",
+            "measurements": [
+                _m(
+                    "viability_pct",
+                    None,
+                    "%",
+                    qualitative="decreasing",
+                    evidence="qualitative_text",
+                    notes="ATP, not live/dead. Percent not published for 0 mM RGDS.",
+                ),
+            ],
+        }
+    )
+    rows.append(
+        {
+            "experiment_id": "salinas2007-peg-rgds-ctrl",
+            "study_id": "salinas2007",
+            "material_class": "PEG",
+            "material_detail": "PEG mixed-mode thiol-ene + 5 mM RGDS",
+            "crosslinking": "photocrosslink",
+            "surface_chemistry": "RGD",
+            "has_adhesion_ligand": 1.0,
+            "cell_type": "MSC",
+            "species": "human",
+            "culture_model": "3D_encapsulation",
+            "growth_factor": "none",
+            "culture_time_days": 14,
+            "extracted_from": "abstract",
+            "curator_confidence": "high",
+            "notes": "75% ATP viability in hMSC control medium, not chondrogenic medium.",
+            "measurements": [
+                _m(
+                    "viability_pct",
+                    75.0,
+                    "%",
+                    evidence="numeric_text",
+                    notes="ATP-based viability in control cultures, not live/dead.",
+                ),
+            ],
+        }
+    )
+    rows.append(
+        {
+            "experiment_id": "salinas2007-peg-rgds-chondro",
+            "study_id": "salinas2007",
+            "material_class": "PEG",
+            "material_detail": "PEG + 5 mM RGDS, chondrogenic medium + 5 ng/mL TGF-β",
+            "crosslinking": "photocrosslink",
+            "surface_chemistry": "RGD",
+            "has_adhesion_ligand": 1.0,
+            "cell_type": "MSC",
+            "species": "human",
+            "culture_model": "3D_encapsulation",
+            "growth_factor": "TGF_b1",
+            "culture_time_days": 14,
+            "extracted_from": "abstract",
+            "curator_confidence": "medium",
+            "notes": "Abstract: transforming growth factor beta, isoform not named. GAG twice 0 mM chondrogenic cultures. No viability percent for this arm.",
+            "measurements": [
+                _m(
+                    "sgag_histology",
+                    1.0,
+                    "ordinal",
+                    evidence="qualitative_text",
+                    notes="Within-paper: 2× GAG vs 0 mM RGDS chondrogenic; 7× vs control.",
+                ),
+            ],
+        }
+    )
+
+    # Mouser 2017 — pHPMA-lac-PEG ± HAMA, 14–31 kPa.
+    for tag, hama, kpa, gag, extra in [
+        ("hama0", 0.0, 14.0, 0.45, "HAMA-free. 14 kPa is the low end of the Young's range, which increased with HAMA."),
+        ("hama05", 0.5, None, 1.0, "0.5% HAMA optimal for GAG and collagen II. Stiffness between 14 and 31 kPa, not interpolated."),
+        ("hama1", 1.0, 31.0, 0.4, "1% HAMA increased fibrocartilage. 31 kPa is the high end of the Young's range."),
+    ]:
+        rows.append(
+            {
+                "experiment_id": f"mouser2017-phpma-{tag}-d28",
+                "study_id": "mouser2017",
+                "material_class": "PEG" if hama == 0 else "PEG_HA",
+                "material_detail": f"pHPMA-lac-PEG triblock + {hama:g}% w/w HAMA",
+                "crosslinking": "photocrosslink",
+                "stiffness_kpa": kpa,
+                "stiffness_method": None if kpa is None else "youngs_range_endpoint",
+                "surface_chemistry": "native" if hama else "none",
+                "has_adhesion_ligand": 1.0 if hama else 0.3,
+                "cell_type": "articular_chondrocyte",
+                "culture_model": "3D_encapsulation",
+                "growth_factor": "none",
+                "culture_time_days": 28,
+                "extracted_from": "abstract",
+                "curator_confidence": "medium",
+                "notes": extra + " PCL co-print 3.5–4.6 MPa not stored as gel modulus.",
+                "measurements": [
+                    _m(
+                        "sgag_histology",
+                        gag,
+                        "ordinal",
+                        evidence="qualitative_text",
+                        notes="Within-paper matrix ranking from HAMA dose, not µg.",
+                    ),
+                ],
+            }
+        )
+
+    # Schneider 2017 — PEG 8 vs 46 kPa.
+    for tag, kpa in [("soft", 8.0), ("stiff", 46.0)]:
+        rows.append(
+            {
+                "experiment_id": f"schneider2017-peg-{tag}",
+                "study_id": "schneider2017",
+                "material_class": "PEG",
+                "material_detail": f"Photoclickable PEG, compressive modulus {kpa:g} kPa",
+                "crosslinking": "photocrosslink",
+                "stiffness_kpa": kpa,
+                "stiffness_method": "compressive_modulus",
+                "surface_chemistry": "none",
+                "has_adhesion_ligand": 0.0,
+                "cell_type": "articular_chondrocyte",
+                "species": "bovine",
+                "culture_model": "3D_encapsulation",
+                "growth_factor": "none",
+                "extracted_from": "abstract",
+                "curator_confidence": "high",
+                "notes": "Secretome study. Free swelling vs loaded not split here. No live/dead percent.",
+                "measurements": [
+                    _m(
+                        "sgag_histology",
+                        0.7,
+                        "ordinal",
+                        evidence="qualitative_text",
+                        notes="Cartilage ECM including aggrecan and collagens II/VI increased with time; no µg.",
+                    ),
+                ],
+            }
+        )
+
+    # Wang 2014 — gelatin-HPA G′ series.
+    for tag, gpa, gag, extra in [
+        ("soft", 0.57, 0.45, "Low stiffness G′ = 570 Pa."),
+        ("mid", 1.0, 1.0, "Medium G′ = 1000 Pa: highest sGAG and Col2/Col1."),
+        ("stiff", 2.75, 0.4, "High stiffness G′ = 2750 Pa."),
+    ]:
+        rows.append(
+            {
+                "experiment_id": f"wang2014-gtnhpa-{tag}",
+                "study_id": "wang2014",
+                "material_class": "gelatin",
+                "material_detail": f"Gelatin-hydroxyphenylpropionic acid, G′ {gpa} kPa",
+                "crosslinking": "enzymatic",
+                "stiffness_kpa": gpa,
+                "stiffness_method": "rheology_G_prime",
+                "surface_chemistry": "native",
+                "has_adhesion_ligand": 1.0,
+                "cell_type": "articular_chondrocyte",
+                "culture_model": "3D_encapsulation",
+                "growth_factor": "none",
+                "extracted_from": "abstract",
+                "curator_confidence": "high",
+                "notes": extra + " G′ stored as kPa, not converted to Young's.",
+                "measurements": [
+                    _m(
+                        "sgag_histology",
+                        gag,
+                        "ordinal",
+                        evidence="qualitative_text",
+                        notes="Within-paper sGAG ranking from hydrogel stiffness.",
+                    ),
+                ],
+            }
+        )
+
+    # Xu 2013 — fibrin-collagen inkjet + PCL electrospin.
+    rows.append(
+        {
+            "experiment_id": "xu2013-fibrin-col-pcl-d7",
+            "study_id": "xu2013",
+            "material_class": "fibrin",
+            "material_detail": "Fibrin-collagen inkjet with alternating PCL electrospun fibers, 5-layer 1 mm construct",
+            "crosslinking": "enzymatic",
+            "surface_chemistry": "native",
+            "has_adhesion_ligand": 1.0,
+            "cell_type": "auricular_chondrocyte",
+            "species": "rabbit",
+            "culture_model": "3D_bioprint",
+            "growth_factor": "none",
+            "culture_time_days": 7,
+            "extracted_from": "abstract",
+            "curator_confidence": "medium",
+            "notes": "Rabbit elastic chondrocytes. >80% viable one week after printing. PCL fiber mechanics not stored as gel stiffness.",
+            "measurements": [
+                _m(
+                    "viability_pct",
+                    None,
+                    "%",
+                    qualitative="floor_>80",
+                    evidence="qualitative_text",
+                    notes="Paper: more than 80% viability at 1 week; not a live/dead mean.",
+                ),
+            ],
+        }
+    )
+
+    # Ye 2026 — GelMA + PLCL MEW, viability floor.
+    rows.append(
+        {
+            "experiment_id": "ye2026-gelma-plcl500",
+            "study_id": "ye2026",
+            "material_class": "GelMA",
+            "material_detail": "GelMA reinforced with melt-electrowritten PLCL, 500 µm pores",
+            "crosslinking": "photocrosslink",
+            "surface_chemistry": "native",
+            "has_adhesion_ligand": 1.0,
+            "cell_type": "articular_chondrocyte",
+            "culture_model": "3D_encapsulation",
+            "growth_factor": "none",
+            "extracted_from": "abstract",
+            "curator_confidence": "medium",
+            "notes": "Viability remains above 90%. 72.6 MPa elastic modulus is the PLCL mesh. Composite 0.5 MPa tensile not stored as stiffness_kpa.",
+            "measurements": [
+                _m(
+                    "viability_pct",
+                    None,
+                    "%",
+                    qualitative="high_>90",
+                    evidence="qualitative_text",
+                ),
+                _m(
+                    "morphology_spherical",
+                    1.0,
+                    "ordinal",
+                    evidence="qualitative_text",
+                    notes="Chondrocytes maintained a spherical phenotype.",
+                ),
+            ],
+        }
+    )
+
+    # Fathi 2020 — silk/PEGDMA modulus endpoints + PEG10-SF8 viability group.
+    for tag, kpa, sd, extra in [
+        ("soft", 95.70, 17.82, "Low end of the reported compressive-modulus range."),
+        ("stiff", 338.05, 38.24, "High end of the reported compressive-modulus range."),
+    ]:
+        rows.append(
+            {
+                "experiment_id": f"fathi2020-sf-pegdma-{tag}",
+                "study_id": "fathi2020",
+                "material_class": "PEG_silk",
+                "material_detail": "Silk fibroin 8% blended with PEGDMA (concentration varied)",
+                "crosslinking": "photocrosslink",
+                "stiffness_kpa": kpa,
+                "stiffness_sd_kpa": sd,
+                "stiffness_method": "compressive_modulus",
+                "surface_chemistry": "native",
+                "has_adhesion_ligand": 1.0,
+                "cell_type": "MSC",
+                "culture_model": "3D_encapsulation",
+                "growth_factor": "TGF_b1",
+                "extracted_from": "abstract",
+                "curator_confidence": "medium",
+                "notes": extra + " Dental pulp stem cells coded as MSC. Which PEGDMA/SF ratio produced each modulus is not in the abstract.",
+                "measurements": [
+                    _m(
+                        "viability_pct",
+                        None,
+                        "%",
+                        qualitative="not_reported_for_this_modulus",
+                        evidence="qualitative_text",
+                    ),
+                ],
+            }
+        )
+    rows.append(
+        {
+            "experiment_id": "fathi2020-peg10-sf8",
+            "study_id": "fathi2020",
+            "material_class": "PEG_silk",
+            "material_detail": "PEGDMA 10%–silk fibroin 8% (1:1), dual bFGF + TGF-β1 PLGA nanoparticles",
+            "crosslinking": "photocrosslink",
+            "surface_chemistry": "native",
+            "has_adhesion_ligand": 1.0,
+            "cell_type": "MSC",
+            "culture_model": "3D_encapsulation",
+            "growth_factor": "TGF_b1",
+            "extracted_from": "abstract",
+            "curator_confidence": "medium",
+            "notes": "Highest cell viability of the series; no percent. Dual GF increased DNA and GAG. Stiffness of this exact ratio not given.",
+            "measurements": [
+                _m(
+                    "viability_pct",
+                    None,
+                    "%",
+                    qualitative="highest_in_series",
+                    evidence="qualitative_text",
+                ),
+            ],
+        }
+    )
+
+    # Lin/Sun 2017 — PDLLA-PEG stiffness series, viability floor.
+    for tag, kpa, extra in [
+        ("150kpa", 150.0, "Low end of the Young's series studied (~150 kPa)."),
+        ("1500kpa", 1500.0, "High end of the Young's series (~1500 kPa). The 1500–1800 kPa pair is the high-modulus PLLA-PEG / PDLLA-PEG 1000 materials."),
+    ]:
+        rows.append(
+            {
+                "experiment_id": f"lin2017-pdlla-peg-{tag}",
+                "study_id": "lin2017",
+                "material_class": "PEG",
+                "material_detail": "Photocrosslinked PLLA-PEG / PDLLA-PEG 1000",
+                "crosslinking": "photocrosslink",
+                "stiffness_kpa": kpa,
+                "stiffness_method": "youngs_series_endpoint",
+                "surface_chemistry": "none",
+                "has_adhesion_ligand": 0.0,
+                "cell_type": "MSC",
+                "species": "human",
+                "culture_model": "3D_encapsulation",
+                "growth_factor": "none",
+                "extracted_from": "abstract",
+                "curator_confidence": "medium",
+                "notes": extra + " >80% viability post fabrication is a floor for the materials, not paired to each stiffness.",
+                "measurements": [
+                    _m(
+                        "viability_pct",
+                        None,
+                        "%",
+                        qualitative="floor_>80_post_fab",
+                        evidence="qualitative_text",
+                    ),
+                ],
+            }
+        )
+
+    # Galarraga 2021 — NorHA starting stiffness.
+    for tag, kpa, extra in [
+        ("soft", 2.0, "Loosely crosslinked NorHA. Abstract: enhanced cartilage formation vs denser gels."),
+        ("mid", 6.0, "Low end of the denser crosslinking range ~6–60 kPa."),
+        ("stiff", 60.0, "High end of the denser crosslinking range. Day-56 ~350 kPa is ECM and is not stored."),
+    ]:
+        rows.append(
+            {
+                "experiment_id": f"galarraga2021-norha-{tag}",
+                "study_id": "galarraga2021",
+                "material_class": "HA",
+                "material_detail": f"Norbornene-modified hyaluronic acid, starting ~{kpa:g} kPa",
+                "crosslinking": "photocrosslink",
+                "stiffness_kpa": kpa,
+                "stiffness_method": "compressive_modulus_approx",
+                "surface_chemistry": "native",
+                "has_adhesion_ligand": 1.0,
+                "cell_type": "MSC",
+                "culture_model": "3D_encapsulation",
+                "growth_factor": "none",
+                "extracted_from": "abstract",
+                "curator_confidence": "medium",
+                "notes": extra,
+                "measurements": [
+                    _m(
+                        "sgag_histology",
+                        1.0 if kpa == 2.0 else 0.35,
+                        "ordinal",
+                        evidence="qualitative_text",
+                        notes="Soft gels supported more cartilage than densely crosslinked gels.",
+                    ),
+                ],
+            }
+        )
+
+    # Smith Callahan 2013 — PEGDM G′ gradient endpoints.
+    for tag, kpa, extra in [
+        ("soft", 3.8, "Low-G′ end (~3800 Pa). Maintained cell number and CD14:CD90 phenotype; ECM ~200% higher."),
+        ("stiff", 27.0, "High-G′ end (~27000 Pa). Cell number and chondrogenic phenotype declined above 13.1 kPa."),
+    ]:
+        rows.append(
+            {
+                "experiment_id": f"smith2013-pegdm-{tag}",
+                "study_id": "smith2013",
+                "material_class": "PEG",
+                "material_detail": f"PEGDM + uniform RGD, G′ {kpa:g} kPa",
+                "crosslinking": "photocrosslink",
+                "stiffness_kpa": kpa,
+                "stiffness_method": "rheology_G_prime",
+                "surface_chemistry": "RGD",
+                "has_adhesion_ligand": 1.0,
+                "cell_type": "articular_chondrocyte",
+                "species": "human",
+                "culture_model": "3D_encapsulation",
+                "growth_factor": "none",
+                "culture_time_days": 21,
+                "extracted_from": "abstract",
+                "curator_confidence": "medium",
+                "notes": extra + " Human osteoarthritic chondrocytes. G′ stored as kPa.",
+                "measurements": [
+                    _m(
+                        "sgag_histology",
+                        1.0 if kpa < 10 else 0.4,
+                        "ordinal",
+                        evidence="qualitative_text",
+                        notes="Lower modulus: more ECM; not µg.",
+                    ),
+                ],
+            }
+        )
+    return rows
+
+
 EXPERIMENTS: list[dict] = (
-    _bachmann_experiments() + _other_experiments() + _queue_pass_experiments() + _queue_pass_more()
+    _bachmann_experiments()
+    + _other_experiments()
+    + _queue_pass_experiments()
+    + _queue_pass_more()
+    + _queue_pass_three()
 )

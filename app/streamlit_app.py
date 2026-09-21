@@ -132,6 +132,8 @@ def design_form(prefix: str, defaults: dict | None = None) -> dict:
                 "GelMA_HA",
                 "GelMA_chitosan",
                 "collagen_alginate",
+                "PEG_HA",
+                "PEG_silk",
             ],
             index=0,
             key=f"{prefix}_material",

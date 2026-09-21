@@ -44,6 +44,8 @@ VOCAB_MATERIALS = [
     ("cellulose_alginate", "composite", "Nanocellulose–alginate bioinks"),
     ("fibrin_HA", "composite", "Fibrin plus methacrylated hyaluronic acid"),
     ("chitosan_silk", "composite", "Chitosan–silk fibroin scaffolds"),
+    ("PEG_HA", "composite", "PEG or pHPMA-PEG hydrogels with methacrylated HA"),
+    ("PEG_silk", "composite", "Silk fibroin plus PEGDMA / PEG hydrogels"),
 ]
 
 VOCAB_ASSAYS = [

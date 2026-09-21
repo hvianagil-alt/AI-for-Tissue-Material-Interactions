@@ -36,3 +36,8 @@ markstedt2015-nfc-alg-d1,markstedt2015,"Markstedt et al., Biomacromolecules 2015
 markstedt2015-nfc-alg-d7,markstedt2015,"Markstedt et al., Biomacromolecules 2015",10.1021/acs.biomac.5b00188,cellulose_alginate,,,articular_chondrocyte,human,3D_bioprint,none,7.0,,,0.5,high,86.0,,numeric_text
 lindborg2015-chitosan-ha-d1,lindborg2015,"Lindborg et al., Tissue Eng. Part A 2015",10.1089/ten.TEA.2014.0335,chitosan_HA,0.264,,MSC,human,3D_encapsulation,none,1.0,,,1.0,high,48.0,,numeric_text
 ingavle2012-ipn-d42,ingavle2012,"Ingavle et al., J. Mater. Sci. Mater. Med. 2012",10.1007/s10856-011-4499-9,PEG,,,articular_chondrocyte,,3D_encapsulation,none,42.0,,,0.0,medium,35.0,,numeric_text
+park2013-megc-40s,park2013,"Park, Choi, Hu & Lee, Acta Biomater. 2013",10.1016/j.actbio.2012.08.033,chitosan,,,articular_chondrocyte,,3D_encapsulation,none,,,,0.5,high,88.5,,numeric_text
+park2013-megc-600s,park2013,"Park, Choi, Hu & Lee, Acta Biomater. 2013",10.1016/j.actbio.2012.08.033,chitosan,11.0,,articular_chondrocyte,,3D_encapsulation,none,,,,0.5,high,62.5,,numeric_text
+park2013-megc-ha-600s,park2013,"Park, Choi, Hu & Lee, Acta Biomater. 2013",10.1016/j.actbio.2012.08.033,chitosan_HA,17.0,,articular_chondrocyte,,3D_encapsulation,none,,,,1.0,high,62.5,,numeric_text
+park2013-megc-300s-d21,park2013,"Park, Choi, Hu & Lee, Acta Biomater. 2013",10.1016/j.actbio.2012.08.033,chitosan,,,articular_chondrocyte,,3D_encapsulation,none,21.0,,,0.5,medium,83.5,,numeric_text
+salinas2007-peg-rgds-ctrl,salinas2007,"Salinas, Cole, Kasko & Anseth, Tissue Eng. 2007",10.1089/ten.2006.0126,PEG,,,MSC,human,3D_encapsulation,none,14.0,,,1.0,high,75.0,,numeric_text

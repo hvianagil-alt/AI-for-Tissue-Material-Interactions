@@ -62,11 +62,11 @@ Open the app, go to **Predict**, keep the default GelMA ~25 kPa chondrocyte enca
 
 | Check | Value |
 |---|---|
-| Hand-curated studies | 34 |
-| Hand experiments | 110 |
-| Numeric live/dead (training) | 37 rows / 13 papers |
-| Dummy LOPO MAE | 17.2 |
-| Ridge LOPO MAE | 25.6 (does not beat dummy) |
+| Hand-curated studies | 45 |
+| Hand experiments | 137 |
+| Numeric live/dead (training) | 42 rows / 15 papers |
+| Dummy LOPO MAE | 16.5 |
+| Ridge LOPO MAE | 22.6 (does not beat dummy) |
 | Simulated XGBoost holdout R² | ~0.92 — **ignore** for science |
 
 The product is ready to **use as an evidence table**. It is not ready to claim a model that beats “GelMA ~25 kPa + TGF-β3”.

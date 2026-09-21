@@ -1,6 +1,6 @@
 {
-  "n_rows": 37,
-  "n_studies": 13,
+  "n_rows": 42,
+  "n_studies": 15,
   "studies": [
     "aitchison2024",
     "bachmann2020",
@@ -11,20 +11,22 @@
     "lindborg2015",
     "markstedt2015",
     "ortega2024",
+    "park2013",
     "perezdiaz2023",
     "rojas2025",
+    "salinas2007",
     "sun2015",
     "zhang2024"
   ],
-  "viability_mean": 78.40243243243243,
-  "viability_std": 24.371596788680673,
+  "viability_mean": 77.92595238095238,
+  "viability_std": 23.17423517400555,
   "dummy_lopo": {
-    "mae": 17.17367137320173,
-    "r2": -0.07676585246675405
+    "mae": 16.47041399752247,
+    "r2": -0.06500456892061357
   },
   "ridge_lopo": {
-    "mae": 25.552574359207714,
-    "r2": -2.5981753674990467
+    "mae": 22.61101033389934,
+    "r2": -2.0644926330966165
   },
   "pass_bar": {
     "description": "Ridge LOPO MAE at least 15% below dummy LOPO, R\u00b2 > 0, n_studies >= 15.",

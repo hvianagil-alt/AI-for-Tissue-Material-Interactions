@@ -4,7 +4,7 @@ The product question is unchanged:
 
 > Can this system change which hydrogel experiment a cartilage researcher runs next?
 
-8000 Amass papers are a **library**. They do not make the model work. A model that “works” needs labeled conditions: material × stiffness × cells × time → a number the lab actually measured. That table is now **34 hand-curated studies / 110 experiments / 37 numeric live/dead rows from 13 papers**. Auto-promoted `pmid*` rows stay in SQLite as inventory and are **not** in the training view.
+8000 Amass papers are a **library**. They do not make the model work. A model that “works” needs labeled conditions: material × stiffness × cells × time → a number the lab actually measured. That table is now **45 hand-curated studies / 137 experiments / 42 numeric live/dead rows from 15 papers**. Auto-promoted `pmid*` rows stay in SQLite as inventory and are **not** in the training view.
 
 ## What “MVP” means here (and what it does not)
 
@@ -31,7 +31,7 @@ Harvest more papers only after the top 250 queued items are extracted or rejecte
 
 There is **no** public `material × chondrocyte × outcome` CSV. BIOMATDB and OOCDB are search portals. The better source we added is **Europe PMC open fulltext** (free XML), used before paid Amass fulltext.
 
-Current snapshot: **34 hand studies / 110 hand experiments / 37 numeric viability (13 papers)**; 41 auto-promoted inventory studies; ~8.5k papers. Honest LOPO on those 13 papers: dummy MAE **17.2**, Ridge MAE **25.6**, R² **−2.6**, `mvp_pass` false. The count bar for week 1 is met on studies; the MAE bar is not. The product to start using is the evidence table + nearest extracted papers, not the Ridge point estimate.
+Current snapshot: **45 hand studies / 137 hand experiments / 42 numeric viability (15 papers)**; ~8.5k papers. Honest LOPO: dummy MAE **16.5**, Ridge MAE **22.6**, R² **−2.1**, `n_studies` 15, `mvp_pass` false. The first count bar (`n_studies ≥ 15`) is met; Ridge still loses to dummy. The product to start using is the evidence table + nearest extracted papers, not the Ridge point estimate.
 
 ## Step by step
 
