@@ -24,6 +24,8 @@ MATERIAL_PATTERNS: list[tuple[str, re.Pattern[str]]] = [
 
 CELL_PATTERNS: list[tuple[str, re.Pattern[str]]] = [
     ("articular_chondrocyte", re.compile(r"\b(?:articular chondrocytes?|chondrocytes?)\b", re.I)),
+    ("auricular_chondrocyte", re.compile(r"\bauricular chondrocytes?\b", re.I)),
+    ("adipose_MSC", re.compile(r"\b(?:adipose[- ]derived|hASCs?|hAdMSCs?|AD-hMSCs?)\b", re.I)),
     ("MSC", re.compile(r"\b(?:mesenchymal stem cells?|MSCs?|bone marrow stromal)\b", re.I)),
     ("ATDC5", re.compile(r"\bATDC5\b", re.I)),
     ("iPSC", re.compile(r"\b(?:iPSCs?|induced pluripotent)\b", re.I)),
@@ -70,6 +72,10 @@ COMPOSITE_MATERIALS = {
     frozenset({"fibrin", "alginate"}): "fibrin_alginate",
     frozenset({"PEG", "dextran"}): "PEG_dextran",
     frozenset({"silk_fibrin", "fibrin"}): "silk_fibrin",
+    frozenset({"GelMA", "chitosan"}): "GelMA_chitosan",
+    frozenset({"GelMA", "HA"}): "GelMA_HA",
+    frozenset({"chitosan", "gelatin", "PVA"}): "chitosan_gelatin_PVA",
+    frozenset({"collagen", "alginate"}): "collagen_alginate",
 }
 MATERIAL_PRIORITY = [
     "GelMA",
@@ -316,6 +322,10 @@ def pick_material(materials: list[str]) -> tuple[str | None, str | None]:
 def pick_cell(cells: list[str]) -> str | None:
     if "articular_chondrocyte" in cells:
         return "articular_chondrocyte"
+    if "auricular_chondrocyte" in cells:
+        return "auricular_chondrocyte"
+    if "adipose_MSC" in cells:
+        return "adipose_MSC"
     if "MSC" in cells or "iPSC" in cells:
         return "MSC"
     if "ATDC5" in cells:

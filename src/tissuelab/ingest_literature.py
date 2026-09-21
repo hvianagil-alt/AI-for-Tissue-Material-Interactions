@@ -42,13 +42,16 @@ def _citation(paper: dict) -> str:
     return f"{first} et al., {journal} {year}".strip()
 
 
-def _curated_dois() -> set[str]:
-    out = set()
+def _curated_ids() -> tuple[set[str], set[str]]:
+    dois: set[str] = set()
+    pmids: set[str] = set()
     for study in STUDIES:
         doi = normalize_doi(study.get("doi"))
         if doi:
-            out.add(doi)
-    return out
+            dois.add(doi)
+        if study.get("pmid"):
+            pmids.add(str(study["pmid"]))
+    return dois, pmids
 
 
 def _candidate_ids(conn) -> list[str]:
@@ -196,7 +199,7 @@ def ingest(path=DB_PATH, fetch=True) -> dict:
     load_dotenv()
     conn = connect(path)
     init_schema(conn)
-    curated = _curated_dois()
+    curated_dois, curated_pmids = _curated_ids()
     ids = _candidate_ids(conn)
     papers = {
         row["amass_id"]: dict(row)
@@ -244,7 +247,9 @@ def ingest(path=DB_PATH, fetch=True) -> dict:
         if not paper:
             continue
         doi = normalize_doi(paper.get("doi"))
-        if doi and doi in curated:
+        if doi and doi in curated_dois:
+            continue
+        if paper.get("pmid") and str(paper["pmid"]) in curated_pmids:
             continue
         bundle = promote_paper(paper, fulltexts.get(amass_id))
         if not bundle:

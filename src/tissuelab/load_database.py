@@ -12,6 +12,9 @@ from tissuelab.curated import EXPERIMENTS, STUDIES
 from tissuelab.db import connect, init_schema
 from tissuelab.ingest_literature import load_promoted
 from tissuelab.paths import DATA_DIR, DB_PATH, NATIVE_EXPORT_PATH, QUALITY_REPORT_PATH
+from tissuelab.rank_papers import normalize_doi
+
+STUDY_SKIP_KEYS = {"amass_id", "pmid"}
 
 HARVEST_TABLES = (
     "papers",
@@ -143,13 +146,65 @@ def restore_harvest(conn, snap: dict | None) -> None:
     conn.execute("PRAGMA foreign_keys = ON")
 
 
+def _hand_curated_keys() -> tuple[set[str], set[str], set[str]]:
+    dois: set[str] = set()
+    pmcids: set[str] = set()
+    pmids: set[str] = set()
+    for study in STUDIES:
+        doi = normalize_doi(study.get("doi"))
+        if doi:
+            dois.add(doi)
+        if study.get("pmcid"):
+            pmc = str(study["pmcid"]).upper()
+            if not pmc.startswith("PMC"):
+                pmc = "PMC" + pmc
+            pmcids.add(pmc)
+        if study.get("pmid"):
+            pmids.add(str(study["pmid"]))
+    return dois, pmcids, pmids
+
+
+def _normalize_pmcid(value) -> str | None:
+    if not value:
+        return None
+    pmc = str(value).upper()
+    if not pmc.startswith("PMC"):
+        pmc = "PMC" + pmc
+    return pmc
+
+
+def overlaps_hand_curated(study: dict, dois: set[str], pmcids: set[str], pmids: set[str]) -> bool:
+    """True when an auto-promoted pmid* row is the same paper as a hand study."""
+    sid = str(study.get("study_id") or "")
+    if sid.startswith("pmid") and sid[4:] in pmids:
+        return True
+    doi = normalize_doi(study.get("doi"))
+    if doi and doi in dois:
+        return True
+    pmc = _normalize_pmcid(study.get("pmcid"))
+    return bool(pmc and pmc in pmcids)
+
+
+def drop_hand_overlapped_promoted(studies: list[dict], experiments: list[dict]) -> tuple[list[dict], list[dict]]:
+    dois, pmcids, pmids = _hand_curated_keys()
+    kept_studies = []
+    skip_ids = set()
+    for study in studies:
+        if overlaps_hand_curated(study, dois, pmcids, pmids):
+            skip_ids.add(study["study_id"])
+            continue
+        kept_studies.append(study)
+    kept_experiments = [exp for exp in experiments if exp.get("study_id") not in skip_ids]
+    return kept_studies, kept_experiments
+
+
 def load(path=DB_PATH):
     snap = snapshot_harvest(path)
     if path.exists():
         path.unlink()
     conn = connect(path)
     init_schema(conn)
-    promoted_studies, promoted_experiments = load_promoted()
+    promoted_studies, promoted_experiments = drop_hand_overlapped_promoted(*load_promoted())
     all_studies = list(STUDIES) + promoted_studies
     all_experiments = list(EXPERIMENTS) + promoted_experiments
     seen_study = set()
@@ -157,7 +212,7 @@ def load(path=DB_PATH):
         if study["study_id"] in seen_study:
             continue
         seen_study.add(study["study_id"])
-        payload = {k: v for k, v in study.items() if k != "amass_id"}
+        payload = {k: v for k, v in study.items() if k not in STUDY_SKIP_KEYS}
         cols = ",".join(payload.keys())
         placeholders = ",".join(["?"] * len(payload))
         conn.execute(f"INSERT INTO studies ({cols}) VALUES ({placeholders})", tuple(payload.values()))

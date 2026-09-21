@@ -114,6 +114,127 @@ STUDIES: list[dict] = [
         "license": "publisher",
         "notes": "HA hydrogel degradation vs MSC neocartilage; stiffness not isolated.",
     },
+    {
+        "study_id": "paul2023",
+        "citation": "Paul et al., APL Bioeng. 2023",
+        "doi": "10.1063/5.0160472",
+        "pmid": "37692373",
+        "year": 2023,
+        "journal": "APL Bioengineering",
+        "pmcid": "PMC10492648",
+        "license": "CC-BY",
+        "notes": "Bovine P1 chondrocytes in 15% GelMA ± 1% glycol chitosan, TGF-β3 28 d. Live/dead >70% in text, no percent. Day-1 cell-laden E used as gel stiffness; day-28 E includes ECM.",
+    },
+    {
+        "study_id": "perezdiaz2023",
+        "citation": "Pérez-Díaz et al., Polymers 2023",
+        "doi": "10.3390/polym15193938",
+        "pmid": "37835986",
+        "year": 2023,
+        "journal": "Polymers",
+        "pmcid": "PMC10574893",
+        "license": "CC-BY",
+        "notes": "AD-hMSC seeded onto steam-sterilized Gel/CS/PVA 1:1:1, not 3D encapsulation. 87.16% is construct calcein at day 15. Monolayer 90/96% and autoclave 103.4 kPa are not gel modulus/viability.",
+    },
+    {
+        "study_id": "ortega2024",
+        "citation": "Ortega-Sánchez et al., Polymers 2024",
+        "doi": "10.3390/polym16040479",
+        "pmid": "38399857",
+        "year": 2024,
+        "journal": "Polymers",
+        "pmcid": "PMC10892533",
+        "license": "CC-BY",
+        "notes": "Human auricular chondrocytes injected into CS/Gel/PVA. Live/dead percents are 3D; MTT 100% is extract cytotoxicity and is not stored as viability.",
+    },
+    {
+        "study_id": "aitchison2024",
+        "citation": "Aitchison et al., Bioengineering 2024",
+        "doi": "10.3390/bioengineering11040329",
+        "pmid": "38671751",
+        "year": 2024,
+        "journal": "Bioengineering",
+        "pmcid": "PMC11048018",
+        "license": "CC-BY",
+        "notes": "C20A4 human chondrocyte line in alginate/PVA/gum arabic/hACM bioink. Live/dead intensity n=5. No Young's modulus in the paper.",
+    },
+    {
+        "study_id": "demori2025",
+        "citation": "De Mori et al., Gels 2025",
+        "doi": "10.3390/gels11030213",
+        "pmid": "40136918",
+        "year": 2025,
+        "journal": "Gels",
+        "pmcid": "PMC11941925",
+        "license": "CC-BY",
+        "notes": "hAdMSC in collagen I/alginate, no exogenous GF. Stiffness 5.75 vs 6.85 kPa from CaCl2. Viability given only as >95% or >75% floors, not a live/dead mean.",
+    },
+    {
+        "study_id": "rojas2025",
+        "citation": "Rojas-Murillo et al., Gels 2025",
+        "doi": "10.3390/gels12010035",
+        "pmid": "41590061",
+        "year": 2025,
+        "journal": "Gels",
+        "pmcid": "PMC12841122",
+        "license": "CC-BY",
+        "notes": "Human articular chondrocytes, fibrin vs fibrin+dACM+dAMM, 28 d Live/Dead. Percents published with tildes. No Young's modulus.",
+    },
+    {
+        "study_id": "levett2014",
+        "citation": "Levett et al., PLoS ONE 2014",
+        "doi": "10.1371/journal.pone.0113216",
+        "pmid": "25438040",
+        "year": 2014,
+        "journal": "PLoS ONE",
+        "pmcid": "PMC4249877",
+        "license": "CC-BY",
+        "notes": "Human OA P1 chondrocytes in 10% Gel-MA ± HA-MA, TGF-β3. Day-1 cell-laden compressive moduli stored as gel stiffness. Viability high at 28 d, no percent. Week-8 moduli are ECM-matured constructs.",
+    },
+    {
+        "study_id": "sun2015",
+        "citation": "Sun et al., Front. Bioeng. Biotechnol. 2015",
+        "doi": "10.3389/fbioe.2015.00115",
+        "pmid": "26347860",
+        "year": 2015,
+        "journal": "Frontiers in Bioengineering and Biotechnology",
+        "pmcid": "PMC4539543",
+        "license": "CC-BY",
+        "notes": "hASC in PSL mPDLLA-PEG/HA. Figure Live/Dead post-fab 81% (abstract 84% not used). Day-28 modulus is remaining scaffold after degradation, not ECM gain.",
+    },
+    {
+        "study_id": "zigon2019",
+        "citation": "Žigon-Branc et al., Tissue Eng. Part A 2019",
+        "doi": "10.1089/ten.tea.2018.0237",
+        "pmid": "30632465",
+        "year": 2019,
+        "journal": "Tissue Engineering Part A",
+        "pmcid": "PMC6784494",
+        "license": "NIH public access",
+        "notes": "hASC/hTERT microspheroids in Gel-MOD. Stiffness is rheology G′ (Pa→kPa), not Young's. Viability preserved 3–5 weeks, no percent.",
+    },
+    {
+        "study_id": "scalzone2019",
+        "citation": "Scalzone et al., Sci. Rep. 2019",
+        "doi": "10.1038/s41598-019-51070-7",
+        "pmid": "31601910",
+        "year": 2019,
+        "journal": "Scientific Reports",
+        "pmcid": "PMC6787336",
+        "license": "CC-BY",
+        "notes": "MSC in chitosan/BGP. Compressive E 36±4.0 kPa; equilibrium 17.4±0.8 kPa noted, not used as Young's substitute. Live/Dead day 1/3 qualitative.",
+    },
+    {
+        "study_id": "kessel2020",
+        "citation": "Kessel et al., Adv. Sci. 2020",
+        "doi": "10.1002/advs.202001419",
+        "pmid": "32999847",
+        "year": 2020,
+        "journal": "Advanced Science",
+        "pmcid": "PMC7509724",
+        "license": "CC-BY",
+        "notes": "Bovine chondrocytes mixed outside HA-MA microstrands and bioprinted. Starting compression modulus 2.7 kPa. Myoblast-in-GelMA viabilities are a different cell type and are not stored. Day-21/42 moduli are ECM, not the starting gel.",
+    },
 ]
 
 
@@ -574,4 +695,391 @@ def _other_experiments() -> list[dict]:
     return rows
 
 
-EXPERIMENTS: list[dict] = _bachmann_experiments() + _other_experiments()
+def _queue_pass_experiments() -> list[dict]:
+    """Hand extraction of OA fulltext from the ranked queue. Missing = omit."""
+    rows = []
+
+    # Paul 2023 — GelMA vs GelMA-GC. Live/dead >70% only; day-1 cell-laden E as gel stiffness.
+    for tag, material, detail, conc, kpa, sd, d28_e in [
+        ("gelma", "GelMA", "15% w/v GelMA, Ru/SPS 405 nm, free-swelling", 15.0, 118.1, 11.3, "166.8±20.2 kPa at day 28 (ECM-included, not stored as gel E)"),
+        ("gelma-gc", "GelMA_chitosan", "15% w/v GelMA + 1% w/v glycol chitosan, Ru/SPS 405 nm, free-swelling", 16.0, 148.3, 16.4, "283.7±10.9 kPa at day 28 (ECM-included, not stored as gel E)"),
+    ]:
+        rows.append(
+            {
+                "experiment_id": f"paul2023-{tag}-d28",
+                "study_id": "paul2023",
+                "material_class": material,
+                "material_detail": detail,
+                "crosslinking": "photocrosslink",
+                "polymer_concentration_wt_pct": conc,
+                "stiffness_kpa": kpa,
+                "stiffness_sd_kpa": sd,
+                "stiffness_method": "microindentation_youngs_day1_cell_laden",
+                "surface_chemistry": "native",
+                "has_adhesion_ligand": 1.0,
+                "cell_type": "articular_chondrocyte",
+                "species": "bovine",
+                "culture_model": "3D_encapsulation",
+                "growth_factor": "TGF_b3",
+                "culture_time_days": 28,
+                "cell_density_million_per_ml": 8.3,
+                "passage": 1,
+                "n_replicates": 4,
+                "extracted_from": "PMC10492648 methods + Fig 1/2 text",
+                "curator_confidence": "medium",
+                "notes": f"Viability described as >70% for embedded chondrocytes; no live/dead mean in text. {d28_e}",
+                "measurements": [
+                    _m(
+                        "viability_pct",
+                        None,
+                        "%",
+                        qualitative="high_>70",
+                        evidence="qualitative_text",
+                        notes="Abstract/results: >70% viability of embedded chondrocytes; figure has a percent panel without a number in text.",
+                    ),
+                ],
+            }
+        )
+
+    # Pérez-Díaz 2023 — surface-seeded AD-hMSC; only the 3D-construct calcein number.
+    rows.append(
+        {
+            "experiment_id": "perezdiaz2023-gelcspva-d15",
+            "study_id": "perezdiaz2023",
+            "material_class": "chitosan_gelatin_PVA",
+            "material_detail": "Gel/CS/PVA 1:1:1, freeze-dried, steam sterilized; cells seeded onto the hydrogel",
+            "crosslinking": "chemical",
+            "surface_chemistry": "native",
+            "has_adhesion_ligand": 1.0,
+            "cell_type": "adipose_MSC",
+            "species": "human",
+            "culture_model": "2D",
+            "growth_factor": "none",
+            "culture_time_days": 15,
+            "extracted_from": "PMC10574893 results 3.4 calcein on construct",
+            "curator_confidence": "high",
+            "notes": "Not 3D encapsulation. Monolayer 95.78/96% and autoclave 103.4 kPa omitted.",
+            "measurements": [
+                _m(
+                    "viability_pct",
+                    87.16,
+                    "%",
+                    evidence="numeric_text",
+                    notes="Calcein-AM on Gel/CS/PVA construct; 12.83% dead. Discussion also says 87%.",
+                ),
+            ],
+        }
+    )
+
+    # Ortega 2024 — auricular chondrocytes in CS/Gel/PVA; individual-cell Live/Dead.
+    for days, viab, cluster in [
+        (7, 98.8, 99.21),
+        (14, 98.69, 98.96),
+    ]:
+        rows.append(
+            {
+                "experiment_id": f"ortega2024-csgelpva-d{days}",
+                "study_id": "ortega2024",
+                "material_class": "chitosan_gelatin_PVA",
+                "material_detail": "CS/Gel/PVA 1:1:1 w/w, 2 wt%, freeze–thaw/freeze-dried, autoclaved; 5e5 cells injected into 8 mm discs",
+                "crosslinking": "chemical",
+                "polymer_concentration_wt_pct": 2.0,
+                "surface_chemistry": "native",
+                "has_adhesion_ligand": 1.0,
+                "cell_type": "auricular_chondrocyte",
+                "species": "human",
+                "culture_model": "3D_encapsulation",
+                "growth_factor": "none",
+                "culture_time_days": days,
+                "extracted_from": "PMC10892533 Fig 6 Live/Dead text",
+                "curator_confidence": "high",
+                "notes": f"Individual-cell Live/Dead {viab}%. Clusters {cluster}% (not a separate gel). MTT extract 100% at 72 h not stored.",
+                "measurements": [
+                    _m("viability_pct", viab, "%", evidence="numeric_text", notes=f"Individual cells; clusters {cluster}%."),
+                ],
+            }
+        )
+
+    # Aitchison 2024 — C20A4 in alginate + cartilage matrix bioink.
+    for days, viab in [(1, 87.2), (7, 76.4), (14, 85.9)]:
+        rows.append(
+            {
+                "experiment_id": f"aitchison2024-alginate-decm-d{days}",
+                "study_id": "aitchison2024",
+                "material_class": "alginate_dECM",
+                "material_detail": "20% w/v alginate + 5% gum arabic + 5% PVA + 5% human articular cartilage matrix powder",
+                "crosslinking": "ionic",
+                "polymer_concentration_wt_pct": 20.0,
+                "surface_chemistry": "native",
+                "has_adhesion_ligand": 1.0,
+                "cell_type": "articular_chondrocyte",
+                "species": "human",
+                "culture_model": "3D_bioprint",
+                "growth_factor": "none",
+                "culture_time_days": days,
+                "n_replicates": 5,
+                "extracted_from": "PMC11048018 results Live/Dead + Fig 4A",
+                "curator_confidence": "high",
+                "notes": "C20A4 immortalized human articular chondrocytes, not primary. Day 14 is 85.9% in results (abstract rounded 86%). Stiffness not reported.",
+                "measurements": [
+                    _m("viability_pct", viab, "%", evidence="numeric_text", n=5),
+                ],
+            }
+        )
+
+    # De Mori 2025 — two stiffnesses × four densities; viability only as floors.
+    for kpa, cacl2 in [(5.75, 60), (6.85, 100)]:
+        for dens in (1.0, 2.0, 4.0, 16.0):
+            if dens == 4.0:
+                qual, note = "high_>75", "Paper: 4e6/mL viability significantly lower in both gels but always higher than 75%."
+            else:
+                qual, note = "high_>95", "Paper: viability always above 95% except the 4e6/mL condition. 2D >98% not stored."
+            dens_tag = str(int(dens)) if dens != 1.0 else "1"
+            rows.append(
+                {
+                    "experiment_id": f"demori2025-{cacl2}mM-{dens_tag}e6",
+                    "study_id": "demori2025",
+                    "material_class": "collagen_alginate",
+                    "material_detail": f"Collagen I 0.5% mixed 1:1 with 5% alginate, crosslinked in {cacl2} mM CaCl2",
+                    "crosslinking": "ionic",
+                    "polymer_concentration_wt_pct": 2.75,
+                    "stiffness_kpa": kpa,
+                    "stiffness_method": "youngs_from_cacl2_formulation",
+                    "surface_chemistry": "native",
+                    "has_adhesion_ligand": 1.0,
+                    "cell_type": "adipose_MSC",
+                    "species": "human",
+                    "culture_model": "3D_encapsulation",
+                    "growth_factor": "none",
+                    "culture_time_days": 7,
+                    "cell_density_million_per_ml": dens,
+                    "passage": 3,
+                    "extracted_from": "PMC11941925 stiffness + viability paragraph",
+                    "curator_confidence": "medium",
+                    "notes": "No exogenous GF. 0.82 kPa formulation is from the prior paper, not this experiment. Live/Dead timepoint not given as a single day; day 7 is the morphology assay point.",
+                    "measurements": [
+                        _m("viability_pct", None, "%", qualitative=qual, evidence="qualitative_text", notes=note),
+                    ],
+                }
+            )
+
+    # Rojas 2025 — fibrin vs tricomposite Live/Dead (tildes in the paper).
+    for tag, material, detail, days, viab, sd, extra in [
+        ("fibrin", "fibrin", "Tisseel fibrin, 220 mg/mL fibrinogen chamber then 1:1 thrombin, 200 µL constructs", 14, 90.0, 3.2, "Paper: ~90 ± 3.2% through day 14."),
+        ("fibrin", "fibrin", "Tisseel fibrin, 220 mg/mL fibrinogen chamber then 1:1 thrombin, 200 µL constructs", 28, 95.0, None, "Paper: rose slightly to ~95% between days 14 and 28."),
+        ("tricomposite", "fibrin_dECM", "Fibrin + 1.5 mg dACM + 6 mg dAMM per fibrinogen chamber, 200 µL constructs", 14, 99.0, None, "Paper: ~99% throughout 28 days; also >98%."),
+        ("tricomposite", "fibrin_dECM", "Fibrin + 1.5 mg dACM + 6 mg dAMM per fibrinogen chamber, 200 µL constructs", 28, 99.0, None, "Paper: ~99% at all time points."),
+    ]:
+        rows.append(
+            {
+                "experiment_id": f"rojas2025-{tag}-d{days}",
+                "study_id": "rojas2025",
+                "material_class": material,
+                "material_detail": detail,
+                "crosslinking": "enzymatic",
+                "polymer_concentration_wt_pct": 11.0,
+                "surface_chemistry": "native",
+                "has_adhesion_ligand": 1.0,
+                "cell_type": "articular_chondrocyte",
+                "species": "human",
+                "culture_model": "3D_encapsulation",
+                "growth_factor": "none",
+                "culture_time_days": days,
+                "extracted_from": "PMC12841122 Fig 2k Live/Dead text",
+                "curator_confidence": "medium",
+                "notes": extra + " 1e6 cells added to fibrinogen chamber; final density after 1:1 mix not uniquely stated.",
+                "measurements": [
+                    _m("viability_pct", viab, "%", sd=sd, evidence="numeric_text", notes=extra),
+                ],
+            }
+        )
+
+    # Levett 2014 — Gel-MA ± 1% HA-MA; high viability, no percent; day-1 cell-laden E.
+    for ha, kpa, d56_note in [
+        (0, 29.0, "0% HA-MA cell-laden compressive modulus 66 kPa after 8 weeks (ECM; not stored as gel E)."),
+        (1, 41.0, "1% HA-MA cell-laden compressive modulus 147 kPa after 8 weeks (ECM; not stored as gel E)."),
+    ]:
+        rows.append(
+            {
+                "experiment_id": f"levett2014-gelma-ha{ha}-d28",
+                "study_id": "levett2014",
+                "material_class": "GelMA" if ha == 0 else "GelMA_HA",
+                "material_detail": f"10% w/v total polymer Gel-MA with {ha}% HA-MA, Irgacure 2959, 365 nm",
+                "crosslinking": "photocrosslink",
+                "polymer_concentration_wt_pct": 10.0,
+                "stiffness_kpa": kpa,
+                "stiffness_method": "unconfined_compression_day1_cell_laden",
+                "surface_chemistry": "native",
+                "has_adhesion_ligand": 1.0,
+                "cell_type": "articular_chondrocyte",
+                "species": "human",
+                "culture_model": "3D_encapsulation",
+                "growth_factor": "TGF_b3",
+                "culture_time_days": 28,
+                "cell_density_million_per_ml": 10.0,
+                "passage": 1,
+                "extracted_from": "PMC4249877 abstract moduli + viability paragraph",
+                "curator_confidence": "medium",
+                "notes": d56_note,
+                "measurements": [
+                    _m(
+                        "viability_pct",
+                        None,
+                        "%",
+                        qualitative="high",
+                        evidence="qualitative_text",
+                        notes="Viability not dependent on HA-MA concentration and was high in all groups after 28 days; no percent.",
+                    ),
+                ],
+            }
+        )
+
+    # Sun 2015 — PSL PDLLA-PEG/HA. Figure 81% post-fab, not abstract 84%.
+    for tag, gf, days, viab, kpa, kpa_sd, extra in [
+        ("postfab", "none", 0, 81.0, 780.0, 23.0, "Figure Live/Dead 81% after fabrication; abstract 84% not used. Modulus 780±23 kPa."),
+        ("ctrl-d28", "none", 28, 65.0, 240.0, 20.0, "Control medium day 28. Modulus fell with scaffold degradation, not ECM gain."),
+        ("tgf-d28", "TGF_b3", 28, 77.0, 238.0, 25.0, "TGF-β3 group day 28. Abstract rounded modulus to 240 kPa; figure 238±25 kPa used."),
+    ]:
+        rows.append(
+            {
+                "experiment_id": f"sun2015-pdlapegha-{tag}",
+                "study_id": "sun2015",
+                "material_class": "PDLLA_PEG_HA",
+                "material_detail": "mPDLLA-PEG 30% w/v + mHA 0.5% w/v, LAP 0.6%, visible-light PSL",
+                "crosslinking": "photocrosslink",
+                "polymer_concentration_wt_pct": 30.0,
+                "stiffness_kpa": kpa,
+                "stiffness_sd_kpa": kpa_sd,
+                "stiffness_method": "unconfined_compression_10pct",
+                "surface_chemistry": "native",
+                "has_adhesion_ligand": 1.0,
+                "cell_type": "adipose_MSC",
+                "species": "human",
+                "culture_model": "3D_encapsulation",
+                "growth_factor": gf,
+                "culture_time_days": days,
+                "cell_density_million_per_ml": 4.0,
+                "extracted_from": "PMC4539543 Fig 3I/Fig 8 + results text",
+                "curator_confidence": "high",
+                "notes": extra,
+                "measurements": [
+                    _m("viability_pct", viab, "%", evidence="numeric_text", notes=extra),
+                ],
+            }
+        )
+
+    # Žigon-Branc 2019 — Gel-MOD G′ as kPa (storage modulus, not Young's).
+    for conc, gprime, sd in [
+        (5.0, 0.538, 0.091),
+        (7.5, 3.584, 0.146),
+        (10.0, 7.263, 0.287),
+    ]:
+        tag = str(conc).replace(".", "p")
+        rows.append(
+            {
+                "experiment_id": f"zigon2019-gelmod-{tag}pct",
+                "study_id": "zigon2019",
+                "material_class": "GelMA",
+                "material_detail": f"{conc:g} wt% Gel-MOD (methacrylated gelatin), photoencapsulated hASC/hTERT microspheroids",
+                "crosslinking": "photocrosslink",
+                "polymer_concentration_wt_pct": conc,
+                "stiffness_kpa": gprime,
+                "stiffness_sd_kpa": sd,
+                "stiffness_method": "rheology_storage_modulus_Gprime",
+                "surface_chemistry": "native",
+                "has_adhesion_ligand": 1.0,
+                "cell_type": "adipose_MSC",
+                "species": "human",
+                "culture_model": "3D_encapsulation",
+                "growth_factor": "none",
+                "culture_time_days": 21,
+                "extracted_from": "PMC6784494 Table 2 G′ + Live/Dead paragraph",
+                "curator_confidence": "medium",
+                "notes": "G′ stored in kPa; do not treat as Young's modulus (paper does not convert). Chondrogenic-medium arm is gene/histology; viability is qualitative in all media.",
+                "measurements": [
+                    _m(
+                        "viability_pct",
+                        None,
+                        "%",
+                        qualitative="preserved_3to5_weeks",
+                        evidence="qualitative_text",
+                        notes="Confocal Live/Dead: all tested hydrogels supported viability over 3–5 weeks; no percent.",
+                    ),
+                ],
+            }
+        )
+
+    # Scalzone 2019 — chitosan/BGP MSC-laden gel.
+    rows.append(
+        {
+            "experiment_id": "scalzone2019-chbgp-msc-d3",
+            "study_id": "scalzone2019",
+            "material_class": "chitosan",
+            "material_detail": "Chitosan 2.5% w/v ionically crosslinked with β-glycerophosphate",
+            "crosslinking": "ionic",
+            "polymer_concentration_wt_pct": 2.5,
+            "stiffness_kpa": 36.0,
+            "stiffness_sd_kpa": 4.0,
+            "stiffness_method": "unconfined_compression_youngs",
+            "surface_chemistry": "native",
+            "has_adhesion_ligand": 0.5,
+            "cell_type": "MSC",
+            "species": "human",
+            "culture_model": "3D_encapsulation",
+            "growth_factor": "none",
+            "culture_time_days": 3,
+            "cell_density_million_per_ml": 2.0,
+            "extracted_from": "PMC6787336 mechanical + Live/Dead day 1/3",
+            "curator_confidence": "medium",
+            "notes": "Equilibrium Young's 17.4±0.8 kPa after 1000 s; compressive E stored. Chondrocyte spheroids were seeded on top in a co-culture arm, not this row.",
+            "measurements": [
+                _m(
+                    "viability_pct",
+                    None,
+                    "%",
+                    qualitative="high",
+                    evidence="qualitative_text",
+                    notes="Live/Dead day 1 and 3: encapsulated MSCs viable with round morphology; no percent.",
+                ),
+            ],
+        }
+    )
+
+    # Kessel 2020 — bovine chondrocytes outside HA-MA microstrands. Starting gel 2.7 kPa.
+    for days, viab, sd, stiff, stiff_sd, extra in [
+        (1, 90.1, 0.6, 2.7, 0.3, "Day 1 after printing. Starting compression modulus 2.7±0.3 kPa."),
+        (7, 92.3, 1.1, 2.7, 0.3, "Starting gel modulus retained as the material property; construct E not yet the 212 kPa ECM value."),
+        (21, 92.6, 2.0, None, None, "Construct compression modulus 212±83.7 kPa at day 21 is ECM, not stored as gel stiffness. Day 42 780.2±218.4 kPa likewise omitted."),
+    ]:
+        rows.append(
+            {
+                "experiment_id": f"kessel2020-hama-microstrands-d{days}",
+                "study_id": "kessel2020",
+                "material_class": "HA",
+                "material_detail": "2% w/v HA-MA entangled microstrands (Med, 40 µm); chondrocytes in the interstitial phase, bioprinted",
+                "crosslinking": "photocrosslink",
+                "polymer_concentration_wt_pct": 2.0,
+                "stiffness_kpa": stiff,
+                "stiffness_sd_kpa": stiff_sd,
+                "stiffness_method": None if stiff is None else "unconfined_compression_fresh_print",
+                "surface_chemistry": "native",
+                "has_adhesion_ligand": 0.7,
+                "cell_type": "articular_chondrocyte",
+                "species": "bovine",
+                "culture_model": "3D_bioprint",
+                "growth_factor": "none",
+                "culture_time_days": days,
+                "passage": 3,
+                "n_replicates": 3,
+                "extracted_from": "PMC7509724 Fig 6A/7C chondrocyte arm",
+                "curator_confidence": "high",
+                "notes": extra + " Myoblast-in-GelMA 93% numbers not stored. Pre-print 95.3±0.5% is the unprinted cell mix, not a gel condition.",
+                "measurements": [
+                    _m("viability_pct", viab, "%", sd=sd, evidence="numeric_text", n=3, notes=extra),
+                ],
+            }
+        )
+    return rows
+
+
+EXPERIMENTS: list[dict] = _bachmann_experiments() + _other_experiments() + _queue_pass_experiments()

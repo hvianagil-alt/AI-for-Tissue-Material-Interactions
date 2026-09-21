@@ -8,7 +8,9 @@ from tissuelab.paths import DB_PATH, SCHEMA_SQL_PATH
 
 VOCAB_CELL_TYPES = [
     ("articular_chondrocyte", "cartilage", "Primary or expanded articular chondrocytes"),
+    ("auricular_chondrocyte", "cartilage", "Primary auricular (elastic cartilage) chondrocytes"),
     ("MSC", "stromal", "Bone-marrow or otherwise unspecified MSCs in a cartilage protocol"),
+    ("adipose_MSC", "stromal", "Adipose-derived MSCs / ASCs in a cartilage protocol"),
     ("ATDC5", "cartilage", "Murine ATDC5 chondrogenic cell line"),
 ]
 
@@ -32,6 +34,13 @@ VOCAB_MATERIALS = [
     ("gellan", "polysaccharide", None),
     ("gelatin_alginate", "composite", None),
     ("fibrin_alginate", "composite", None),
+    ("GelMA_chitosan", "composite", "GelMA plus glycol chitosan"),
+    ("GelMA_HA", "composite", "GelMA / gelatin-methacrylamide plus HA-MA"),
+    ("chitosan_gelatin_PVA", "composite", "CS/Gel/PVA freeze–thaw hydrogels"),
+    ("alginate_dECM", "composite", "Alginate bioink with processed cartilage matrix"),
+    ("collagen_alginate", "composite", "Collagen I / alginate blends"),
+    ("fibrin_dECM", "composite", "Fibrin plus decellularized cartilage and/or amnion matrix"),
+    ("PDLLA_PEG_HA", "synthetic", "Methacrylated PDLLA-PEG with HA, PSL scaffolds"),
 ]
 
 VOCAB_ASSAYS = [

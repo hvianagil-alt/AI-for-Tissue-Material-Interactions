@@ -1,17 +1,24 @@
 {
-  "n_studies": 64,
-  "n_experiments": 120,
-  "n_measurements": 164,
-  "n_numeric_viability": 86,
-  "n_with_stiffness_kpa": 39,
+  "n_studies": 66,
+  "n_experiments": 133,
+  "n_measurements": 177,
+  "n_numeric_viability": 83,
+  "n_with_stiffness_kpa": 55,
   "experiments_per_study": {
+    "aitchison2024": 3,
     "bachmann2020": 18,
     "bryant2004": 3,
     "chung2009": 2,
     "daly2016": 4,
     "dekosky2010": 3,
+    "demori2025": 8,
+    "kessel2020": 3,
+    "levett2014": 2,
     "li2016": 3,
     "ma2012": 5,
+    "ortega2024": 2,
+    "paul2023": 2,
+    "perezdiaz2023": 1,
     "pmid17148854": 1,
     "pmid17208295": 1,
     "pmid17417949": 1,
@@ -24,7 +31,6 @@
     "pmid24275437": 1,
     "pmid24770944": 1,
     "pmid25806996": 1,
-    "pmid26347860": 3,
     "pmid26841115": 1,
     "pmid27106636": 1,
     "pmid27171342": 1,
@@ -35,9 +41,7 @@
     "pmid28586346": 1,
     "pmid28611002": 1,
     "pmid30607337": 1,
-    "pmid30632465": 1,
     "pmid32033151": 1,
-    "pmid32999847": 1,
     "pmid33367226": 1,
     "pmid34821730": 1,
     "pmid34970927": 1,
@@ -46,17 +50,11 @@
     "pmid36253092": 1,
     "pmid36826873": 2,
     "pmid37177235": 1,
-    "pmid37692373": 1,
-    "pmid37835986": 3,
     "pmid38002439": 1,
     "pmid38247769": 3,
-    "pmid38399857": 3,
-    "pmid38671751": 3,
     "pmid38782958": 2,
     "pmid39590040": 1,
-    "pmid40136918": 2,
     "pmid41018627": 1,
-    "pmid41590061": 2,
     "pmid41745025": 1,
     "pmid41783803": 3,
     "pmid41867564": 2,
@@ -65,31 +63,37 @@
     "pmid41954185": 1,
     "pmid42306631": 1,
     "pmid42502817": 1,
+    "rojas2025": 4,
+    "scalzone2019": 1,
     "schuh2012": 2,
     "sridhar2015": 2,
+    "sun2015": 3,
     "thomas2017": 2,
-    "zhang2024": 3
+    "zhang2024": 3,
+    "zigon2019": 3
   },
   "experiments_per_cell_type": {
-    "MSC": 30,
-    "articular_chondrocyte": 90
+    "MSC": 31,
+    "adipose_MSC": 15,
+    "articular_chondrocyte": 85,
+    "auricular_chondrocyte": 2
   },
   "measurements_per_assay": {
     "col2_col1_ratio": 2,
     "dna_fold_vs_day0": 7,
     "morphology_spherical": 17,
     "sgag_histology": 36,
-    "viability_pct": 102
+    "viability_pct": 115
   },
   "measurements_per_evidence": {
-    "numeric_text": 88,
-    "qualitative_text": 76
+    "numeric_text": 85,
+    "qualitative_text": 92
   },
   "percent_missing": {
-    "stiffness_kpa": 67.5,
-    "polymer_concentration_wt_pct": 71.7,
-    "species": 10.0,
-    "passage": 80.8,
+    "stiffness_kpa": 58.6,
+    "polymer_concentration_wt_pct": 51.1,
+    "species": 9.0,
+    "passage": 71.4,
     "porosity_pct": 100.0
   },
   "modeling_notes": [
@@ -104,6 +108,6 @@
   "n_amass_papers": 8473,
   "n_amass_extractions": 23257,
   "n_extraction_queue": 250,
-  "n_mvp_relevant_papers": 2023,
-  "n_auto_promoted_studies": 53
+  "n_mvp_relevant_papers": 2012,
+  "n_auto_promoted_studies": 44
 }
