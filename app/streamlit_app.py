@@ -261,7 +261,19 @@ tab_predict, tab_inverse, tab_next, tab_data, tab_about = st.tabs(
 )
 
 with tab_predict:
-    st.markdown("Enter a hydrogel and biological context. Published viability comes from hand-curated live/dead %. The four-outcome radar is still a demo prior.")
+    st.markdown(
+        "Pick the hydrogel you would actually run. **Literature viability** and the nearest extracted papers "
+        "update as you change the form — that is the scientific output. The four-outcome radar below is a demo prior."
+    )
+    with st.expander("How to use this tab"):
+        st.markdown(
+            """
+1. Keep GelMA ~25 kPa the first time, then switch hydrogel (fibrin, HA, alginate, chitosan).
+2. Read the published live/dead mean and the ± LOPO MAE band — not as your next flask, as a literature lookup.
+3. Open the nearest extracted papers (DOI) and decide the next gel from those, not from the radar.
+4. If the gel has no live/dead rows, the app falls back to the global mean and says so.
+            """
+        )
     design = design_form("predict")
     lit = literature_for(
         design["material_class"],

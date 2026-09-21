@@ -32,25 +32,26 @@ The point of the MVP is not “AI for biology”. It is:
 
 The **source of truth for science** is `data/tissuelab.sqlite` (see `docs/DATA_MODEL.md`). Start with `data/literature_viability.csv` (`v_model_viability`: hand-curated live/dead % only). Amass harvest lives in `papers` (~8.5k BiomedCore records). Regex candidates in `paper_extractions` and auto-promoted `pmid*` rows are **not** training labels. The mixed CSV + simulator is only a software prior.
 
-## Quick start
+## Use it now
+
+You do **not** need an Amass key, and you do **not** need to train anything. The labeled SQLite table is already in the repo. Step-by-step: [`docs/USE.md`](docs/USE.md).
 
 ```bash
 python3 -m venv .venv
-source .venv/bin/activate
-pip install -e ".[dev]"
-
-PYTHONPATH=src python -m tissuelab.load_database
-PYTHONPATH=src python -m tissuelab.rank_papers
-PYTHONPATH=src python -m tissuelab.benchmark
-PYTHONPATH=src python -m tissuelab.train
-pytest -q
-
-streamlit run app/streamlit_app.py
-# API
-uvicorn app.api:app --reload --port 8000
+source .venv/bin/activate          # Windows: .venv\Scripts\activate
+pip install -e .
+tissuelab-app
 ```
 
-Open the app, go to **Predict**, keep the default GelMA ~25 kPa chondrocyte encapsulation. Literature viability and nearest extracted papers run automatically. The four-outcome radar is still a simulator-informed demo and is skipped if the XGBoost joblib is not on disk.
+Opens [http://localhost:8501](http://localhost:8501). Open **Predict**, leave GelMA ~25 kPa, and read **literature viability** plus the nearest extracted papers. That is the product. The four-outcome radar is a simulator demo (skipped if the gitignored XGBoost joblib is missing).
+
+Optional:
+
+```bash
+streamlit run app/streamlit_app.py           # same app, no console script
+uvicorn app.api:app --reload --port 8000     # POST /predict
+pip install -e ".[dev]" && pytest -q         # tests
+```
 
 ## How to read the numbers
 

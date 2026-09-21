@@ -48,11 +48,16 @@ CSV exports: `data/literature_viability.csv` is the training table. `data/litera
 4. Keep extracting `data/extraction_queue.csv` into `src/tissuelab/curated.py`. Harvested abstracts are already in SQLite; do not harvest more.
 
 ```bash
-PYTHONPATH=src python3 -m tissuelab.load_database
-PYTHONPATH=src python3 -m tissuelab.rank_papers
-PYTHONPATH=src python3 -m tissuelab.benchmark
-PYTHONPATH=src python3 -m tissuelab.train
-streamlit run app/streamlit_app.py
+pip install -e .
+tissuelab-app
+```
+
+Rebuild only if you changed `curated.py`:
+
+```bash
+python3 -m tissuelab.load_database
+python3 -m tissuelab.rank_papers
+python3 -m tissuelab.benchmark
 ```
 
 ## Evidence field

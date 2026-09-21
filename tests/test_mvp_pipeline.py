@@ -2,6 +2,14 @@ from tissuelab.benchmark import leave_one_paper_out
 from tissuelab.rank_papers import is_review, normalize_doi, score_paper
 
 
+def test_serve_points_at_checked_in_app_and_db():
+    from tissuelab.paths import DB_PATH, ROOT
+
+    assert (ROOT / "app" / "streamlit_app.py").exists()
+    assert DB_PATH.exists()
+    assert (ROOT / "docs" / "USE.md").exists()
+
+
 def test_doi_normalize():
     assert normalize_doi("https://doi.org/10.3389/fbioe.2020.00373") == "10.3389/fbioe.2020.00373"
 
