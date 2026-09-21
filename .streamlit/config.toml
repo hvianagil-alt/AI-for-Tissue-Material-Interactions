@@ -4,6 +4,13 @@ gatherUsageStats = false
 [client]
 showErrorDetails = true
 
+[server]
+address = "0.0.0.0"
+port = 8501
+headless = true
+enableCORS = false
+enableXsrfProtection = false
+
 [theme]
 base = "dark"
 primaryColor = "#3ecfb2"

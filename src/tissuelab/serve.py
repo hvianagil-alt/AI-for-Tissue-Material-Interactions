@@ -23,6 +23,8 @@ def main() -> None:
         raise SystemExit(1)
     env = os.environ.copy()
     env["STREAMLIT_BROWSER_GATHER_USAGE_STATS"] = "false"
+    # Bind all interfaces so Cursor/VS Code port-forward and localhost both work.
+    # CORS/XSRF off: Streamlit otherwise RST's proxied websocket upgrades.
     raise SystemExit(
         subprocess.call(
             [
@@ -31,6 +33,16 @@ def main() -> None:
                 "streamlit",
                 "run",
                 str(app),
+                "--server.address",
+                "0.0.0.0",
+                "--server.port",
+                "8501",
+                "--server.headless",
+                "true",
+                "--server.enableCORS",
+                "false",
+                "--server.enableXsrfProtection",
+                "false",
                 "--browser.gatherUsageStats",
                 "false",
             ],

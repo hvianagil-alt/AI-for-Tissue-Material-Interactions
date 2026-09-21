@@ -13,6 +13,8 @@ tissuelab-app
 
 The browser opens at [http://localhost:8501](http://localhost:8501). If it does not, paste that URL yourself.
 
+If the browser shows `ERR_CONNECTION_RESET` / `-101`, Streamlit was bound only to `127.0.0.1` (Cursor’s preview talks to the VM IP). Restart with `tissuelab-app` (binds `0.0.0.0:8501`) and reload. Confirm from a terminal: `curl -s http://127.0.0.1:8501/_stcore/health` should print `ok`.
+
 Equivalent without the console script:
 
 ```bash
