@@ -4,7 +4,9 @@ The Streamlit holdout R² is mostly simulated data. This script is the number
 the product has to beat: dummy mean, grouped by study_id, native live/dead %.
 
 Ridge is reported for honesty. The deployed estimator is the LOPO winner
-among dummy and material-class mean — Ridge overfits this table.
+among dummy, material-class mean, and empirical-Bayes shrinkage.
+Ridge overfits this table. Shrinkage lets stiffness / time / TGF move the
+point estimate without a neural net.
 """
 
 from __future__ import annotations
@@ -23,6 +25,7 @@ from sklearn.preprocessing import OneHotEncoder, StandardScaler
 
 from tissuelab.db import connect
 from tissuelab.paths import DB_PATH, HONEST_METRICS_PATH
+from tissuelab.shrinkage import lopo_shrinkage_predictions
 
 FEATURES_NUM = ["stiffness_kpa", "polymer_concentration_wt_pct", "culture_time_days"]
 FEATURES_CAT = ["material_class", "cell_type"]
@@ -109,16 +112,18 @@ def leave_one_paper_out(frame: pd.DataFrame) -> dict:
         ridge.fit(x[train], y[train])
         ridge_pred[test.values] = ridge.predict(x[test])
     material_pred = _lopo_group_mean(frame, y, "material_class")
+    shrinkage_pred = lopo_shrinkage_predictions(frame)
     dummy_lopo = _scores(y, dummy_pred)
     ridge_lopo = _scores(y, ridge_pred)
     material_mean_lopo = _scores(y, material_pred)
+    shrinkage_lopo = _scores(y, shrinkage_pred)
     dummy_mae = dummy_lopo["mae"]
-    if material_mean_lopo["mae"] < dummy_mae:
-        deployed = "material_mean"
-        deployed_lopo = material_mean_lopo
-    else:
-        deployed = "dummy"
-        deployed_lopo = dummy_lopo
+    candidates = [
+        ("dummy", dummy_lopo),
+        ("material_mean", material_mean_lopo),
+        ("shrinkage", shrinkage_lopo),
+    ]
+    deployed, deployed_lopo = min(candidates, key=lambda item: item[1]["mae"])
     report = {
         "n_rows": int(len(frame)),
         "n_studies": int(frame["study_id"].nunique()),
@@ -128,12 +133,14 @@ def leave_one_paper_out(frame: pd.DataFrame) -> dict:
         "dummy_lopo": dummy_lopo,
         "ridge_lopo": ridge_lopo,
         "material_mean_lopo": material_mean_lopo,
+        "shrinkage_lopo": shrinkage_lopo,
         "deployed_estimator": deployed,
         "deployed_lopo": deployed_lopo,
         "pass_bar": {
             "description": (
                 "Deployed tabular estimator LOPO MAE at least 15% below dummy LOPO, "
-                "R² > 0, n_studies >= 15. Ridge is reported but not served."
+                "R² > 0, n_studies >= 15. Ridge is reported but not served. "
+                "Shrinkage is empirical Bayes (kernel + material prior), not a neural net."
             ),
             "dummy_mae_target_ratio": 0.85,
             "min_studies": 15,
@@ -142,7 +149,7 @@ def leave_one_paper_out(frame: pd.DataFrame) -> dict:
             "This is the MVP scientific metric on hand-curated live/dead only. Simulated holdout R² is not.",
             "Auto-promoted pmid* rows are excluded from this split.",
             "Do not add unpaired regex hits to inflate n_rows.",
-            "Deployed estimator is the LOPO winner among dummy and material-class mean. Ridge overfits this table.",
+            "Deployed estimator is the LOPO winner among dummy, material-class mean, and shrinkage. Ridge overfits this table.",
         ],
         "status": "baseline",
     }

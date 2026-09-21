@@ -11,6 +11,7 @@ import pandas as pd
 from tissuelab.benchmark import FEATURES_CAT, FEATURES_NUM, leave_one_paper_out, load_viability
 from tissuelab.db import connect
 from tissuelab.paths import DB_PATH, HONEST_METRICS_PATH, LITERATURE_MODEL_PATH
+from tissuelab.shrinkage import N0, knob_deltas, shrinkage_estimate
 
 
 def load_curated_viability(path=DB_PATH) -> pd.DataFrame:
@@ -28,14 +29,6 @@ def _material_mean_estimate(design: dict, frame: pd.DataFrame) -> tuple[float | 
     return float(frame["viability_pct"].mean()), "global_mean", int(len(frame))
 
 
-def _point_estimate(design: dict, frame: pd.DataFrame, deployed: str | None) -> tuple[float | None, str, int]:
-    if frame.empty:
-        return None, "empty", 0
-    if deployed == "material_mean":
-        return _material_mean_estimate(design, frame)
-    return float(frame["viability_pct"].mean()), "dummy", int(len(frame))
-
-
 def _lopo_cached(frame: pd.DataFrame) -> dict:
     if HONEST_METRICS_PATH.exists():
         try:
@@ -45,7 +38,7 @@ def _lopo_cached(frame: pd.DataFrame) -> dict:
         fresh = (
             report.get("n_rows") == int(len(frame))
             and report.get("n_studies") == int(frame["study_id"].nunique())
-            and "material_mean_lopo" in report
+            and "shrinkage_lopo" in report
             and "deployed_estimator" in report
         )
         if fresh:
@@ -83,32 +76,48 @@ def load_literature_model():
     return train_literature_viability()
 
 
+def _query_from_design(design: dict) -> dict:
+    kpa = design.get("stiffness_kpa")
+    days = design.get("culture_time_days")
+    return {
+        "material_class": design.get("material_class"),
+        "cell_type": design.get("cell_type"),
+        "growth_factor": design.get("growth_factor") or "none",
+        "stiffness_kpa": None if kpa in (None, "") else float(kpa),
+        "culture_time_days": None if days in (None, "") else float(days),
+    }
+
+
 def predict_literature_viability(design: dict) -> dict:
-    """Point estimate from the deployed LOPO estimator. Does not need the XGBoost joblib."""
+    """Empirical-Bayes point estimate. Does not need the XGBoost joblib."""
     frame = load_curated_viability()
     lopo = _lopo_cached(frame)
-    deployed = lopo.get("deployed_estimator")
-    mean, estimator, n_support = _point_estimate(design, frame, deployed)
-    if mean is not None:
-        mean = float(np.clip(mean, 0, 100))
+    query = _query_from_design(design)
+    est = shrinkage_estimate(query, frame)
+    mean = est["mean"]
     deployed_lopo = lopo.get("deployed_lopo") or {}
     dummy_lopo = lopo.get("dummy_lopo") or {}
     ridge_lopo = lopo.get("ridge_lopo") or {}
     material_lopo = lopo.get("material_mean_lopo") or {}
-    mae = deployed_lopo.get("mae")
-    if mae is None:
-        mae = dummy_lopo.get("mae")
+    shrinkage_lopo = lopo.get("shrinkage_lopo") or {}
+    mae = (shrinkage_lopo.get("mae") if shrinkage_lopo else None) or deployed_lopo.get("mae") or dummy_lopo.get("mae")
     band = float(mae) if mae is not None else 12.0
     low = None if mean is None else float(np.clip(mean - band, 0, 100))
     high = None if mean is None else float(np.clip(mean + band, 0, 100))
-    similar = similar_published(design, k=5)
+    similar = similar_published(design, k=5, weights=est.get("weights"))
     return {
         "mean": None if mean is None else round(mean, 1),
         "low": None if low is None else round(low, 1),
         "high": None if high is None else round(high, 1),
-        "estimator": estimator,
-        "n_support": n_support,
+        "local": None if est["local"] is None else round(est["local"], 1),
+        "prior": None if est["prior"] is None else round(est["prior"], 1),
+        "n_eff": round(float(est["n_eff"]), 1),
+        "local_weight": round(float(est["local_weight"]), 3),
+        "prior_strength": N0,
+        "estimator": est["estimator"],
+        "n_support": est["n_support"],
         "interval_is_lopo_mae": True,
+        "knob_deltas": knob_deltas(query, frame),
         "lopo": {
             "n_studies": lopo.get("n_studies"),
             "n_rows": lopo.get("n_rows"),
@@ -117,7 +126,9 @@ def predict_literature_viability(design: dict) -> dict:
             "ridge_r2": ridge_lopo.get("r2"),
             "material_mean_mae": material_lopo.get("mae"),
             "material_mean_r2": material_lopo.get("r2"),
-            "deployed_estimator": deployed,
+            "shrinkage_mae": shrinkage_lopo.get("mae"),
+            "shrinkage_r2": shrinkage_lopo.get("r2"),
+            "deployed_estimator": lopo.get("deployed_estimator"),
             "deployed_mae": deployed_lopo.get("mae"),
             "deployed_r2": deployed_lopo.get("r2"),
             "beats_dummy": lopo.get("beats_dummy"),
@@ -125,7 +136,15 @@ def predict_literature_viability(design: dict) -> dict:
             "mvp_pass": lopo.get("mvp_pass"),
         },
         "similar": similar,
-        "notes": _notes(lopo, estimator=estimator, n_support=n_support, material=design.get("material_class")),
+        "notes": _notes(
+            lopo,
+            estimator=est["estimator"],
+            n_support=est["n_support"],
+            material=design.get("material_class"),
+            n_eff=est["n_eff"],
+            local=est["local"],
+            prior=est["prior"],
+        ),
     }
 
 
@@ -134,27 +153,33 @@ def _notes(
     estimator: str | None = None,
     n_support: int | None = None,
     material: str | None = None,
+    n_eff: float | None = None,
+    local: float | None = None,
+    prior: float | None = None,
 ) -> list[str]:
-    deployed = lopo.get("deployed_estimator") or estimator or "material_mean"
-    label = str(deployed).replace("_", " ")
     notes = [
         "Trained only on hand-curated live/dead percents (no pmid* auto-promote, no simulator).",
-        f"Point estimate is the {label} of published live/dead % (unseen gels fall back to the global mean).",
-        "Interval is ± leave-one-paper-out MAE of the deployed estimator, not a biological confidence interval.",
+        "Point estimate is empirical Bayes: a kernel over published conditions, shrunk toward the material-class mean. Not a neural net.",
+        "Interval is ± leave-one-paper-out MAE of shrinkage, not a biological confidence interval.",
     ]
-    if estimator == "global_mean" and material:
+    if estimator == "shrinkage_global_prior" and material:
         notes.append(
-            f"No published live/dead rows for {material} in the training table — showing the global mean."
+            f"No published live/dead rows for {material} — prior is the global mean, pulled by similar gels."
         )
-    elif n_support and material and estimator == "material_mean":
-        notes.append(f"Based on {n_support} published {material} live/dead rows.")
+    elif n_support and material:
+        notes.append(f"Material prior from {n_support} published {material} live/dead rows.")
+    if local is not None and prior is not None and n_eff is not None:
+        notes.append(
+            f"Matched-condition mean {local:.1f}% shrunk toward prior {prior:.1f}% "
+            f"(effective n={n_eff:.1f}, prior strength n0={N0:.0f})."
+        )
     if not lopo.get("beats_dummy"):
         notes.append(
             "Does not yet beat a dummy mean — use nearest extracted papers, not the point estimate, to pick a gel."
         )
     elif not lopo.get("mvp_pass"):
         notes.append(
-            f"{label.capitalize()} beats dummy on LOPO MAE but has not met the MVP bar "
+            "Shrinkage beats dummy on LOPO MAE but has not met the MVP bar "
             "(15% better, R²>0, n_studies≥15). Use nearest extracted papers to choose the next gel."
         )
     else:
@@ -162,7 +187,7 @@ def _notes(
     return notes
 
 
-def similar_published(design: dict, k: int = 5) -> list[dict]:
+def similar_published(design: dict, k: int = 5, weights: np.ndarray | None = None) -> list[dict]:
     conn = connect(DB_PATH)
     frame = pd.read_sql_query(
         """
@@ -175,24 +200,13 @@ def similar_published(design: dict, k: int = 5) -> list[dict]:
     conn.close()
     if frame.empty:
         return []
-    want_mat = design.get("material_class")
-    want_kpa = design.get("stiffness_kpa")
-    want_cell = design.get("cell_type")
-    scored = []
-    for _, row in frame.iterrows():
-        score = 0.0
-        if want_mat and row["material_class"] == want_mat:
-            score += 3.0
-        if want_cell and row["cell_type"] == want_cell:
-            score += 1.0
-        if want_kpa is not None and pd.notna(row["stiffness_kpa"]):
-            score += max(0.0, 2.0 - abs(float(row["stiffness_kpa"]) - float(want_kpa)) / 20.0)
-        else:
-            score += 0.2
-        scored.append((score, row))
-    scored.sort(key=lambda item: (-item[0], abs((item[1]["viability_pct"] or 0) - 90)))
+    query = _query_from_design(design)
+    if weights is None or len(weights) != len(frame):
+        weights = shrinkage_estimate(query, frame)["weights"]
+    order = np.argsort(-weights)
     out = []
-    for score, row in scored[:k]:
+    for pos in order[:k]:
+        row = frame.iloc[int(pos)]
         out.append(
             {
                 "experiment_id": row["experiment_id"],
@@ -203,11 +217,11 @@ def similar_published(design: dict, k: int = 5) -> list[dict]:
                 "cell_type": None if pd.isna(row.get("cell_type")) else row.get("cell_type"),
                 "stiffness_kpa": None if pd.isna(row["stiffness_kpa"]) else float(row["stiffness_kpa"]),
                 "viability_pct": float(row["viability_pct"]),
-                "growth_factor": row.get("growth_factor"),
+                "growth_factor": None if pd.isna(row.get("growth_factor")) else row.get("growth_factor"),
                 "culture_time_days": None
                 if pd.isna(row["culture_time_days"])
                 else float(row["culture_time_days"]),
-                "match_score": round(float(score), 2),
+                "match_score": round(float(weights[int(pos)]), 3),
             }
         )
     return out

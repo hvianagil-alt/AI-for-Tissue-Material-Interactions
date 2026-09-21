@@ -200,6 +200,7 @@ def _lopo_mae_label(literature: dict) -> str:
     return {
         "material_mean": "LOPO MAE (material mean)",
         "dummy": "LOPO MAE (dummy)",
+        "shrinkage": "LOPO MAE (shrinkage)",
     }.get(deployed, "LOPO MAE")
 
 
@@ -209,7 +210,7 @@ def show_literature(literature: dict) -> None:
         st.warning("No hand-curated live/dead rows yet. Run `python -m tissuelab.load_database`.")
         return
     c1, c2, c3 = st.columns(3)
-    c1.metric("Literature viability", f"{literature['mean']:.0f}%", f"{literature['low']:.0f}–{literature['high']:.0f}")
+    c1.metric("Literature viability", f"{literature['mean']:.1f}%", f"{literature['low']:.1f}–{literature['high']:.1f}")
     lopo = literature.get("lopo") or {}
     mae = lopo.get("deployed_mae")
     c2.metric(_lopo_mae_label(literature), f"{mae:.1f}" if mae is not None else "—")

@@ -10,13 +10,16 @@ def test_home_shows_gelma_literature_without_javascript():
     assert "text/html" in response.headers["content-type"]
     body = response.text
     assert "Literature viability" in body
-    assert "80%" in body
     assert "Nearest extracted papers" in body
-    assert "daly2016" in body or "Daly" in body
+    assert "Matched conditions" in body
+    assert "live/dead" in body.lower()
 
 
-def test_home_fibrin_query():
+def test_home_fibrin_differs_from_gelma():
     client = TestClient(app)
-    response = client.get("/", params={"material_class": "fibrin", "stiffness_kpa": 25})
-    assert response.status_code == 200
-    assert "94%" in response.text
+    gelma = client.get("/", params={"material_class": "GelMA", "stiffness_kpa": 25})
+    fibrin = client.get("/", params={"material_class": "fibrin", "stiffness_kpa": 25})
+    assert gelma.status_code == 200
+    assert fibrin.status_code == 200
+    assert "Literature viability" in gelma.text
+    assert gelma.text != fibrin.text

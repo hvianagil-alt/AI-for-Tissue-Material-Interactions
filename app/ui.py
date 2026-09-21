@@ -46,21 +46,47 @@ def _papers_table(rows: list[dict]) -> str:
             cite = f'<a href="https://doi.org/{escape(doi)}" target="_blank" rel="noreferrer">{cite}</a>'
         kpa = row.get("stiffness_kpa")
         kpa_s = "—" if kpa is None else f"{kpa:.1f}"
+        gf = row.get("growth_factor") or "—"
+        score = row.get("match_score")
+        score_s = "" if score is None else f"{score:.2f}"
         body.append(
             "<tr>"
             f"<td>{cite}</td>"
             f"<td>{escape(str(row.get('material_class') or ''))}</td>"
             f"<td>{escape(str(row.get('cell_type') or ''))}</td>"
+            f"<td>{escape(str(gf))}</td>"
             f"<td>{kpa_s}</td>"
             f"<td>{float(row['viability_pct']):.0f}%</td>"
+            f"<td>{score_s}</td>"
             "</tr>"
         )
     return (
         "<table><thead><tr>"
-        "<th>Paper</th><th>Gel</th><th>Cells</th><th>kPa</th><th>Live/dead</th>"
+        "<th>Paper</th><th>Gel</th><th>Cells</th><th>GF</th><th>kPa</th><th>Live/dead</th><th>Weight</th>"
         "</tr></thead><tbody>"
         + "".join(body)
         + "</tbody></table>"
+    )
+
+
+def _delta_table(deltas: list[dict]) -> str:
+    if not deltas:
+        return ""
+    rows = []
+    for item in deltas:
+        delta = item.get("delta") or 0.0
+        sign = f"+{delta:.1f}" if delta > 0 else f"{delta:.1f}"
+        hypo = " <span class='muted'>(if switched on)</span>" if item.get("hypothetical") else ""
+        rows.append(
+            f"<tr><td>{escape(item['feature'])}</td><td>{sign} pp</td><td class='muted'>{escape(str(item.get('note') or ''))}{hypo}</td></tr>"
+        )
+    return (
+        "<h2>How the knobs pulled this number</h2>"
+        "<table><thead><tr><th>Variable</th><th>Pull</th><th></th></tr></thead><tbody>"
+        + "".join(rows)
+        + "</tbody></table>"
+        "<p class='muted'>Pull is the change in the shrunk estimate when that variable is ignored. "
+        "A 0.0 means this table has no leverage for that knob yet.</p>"
     )
 
 
@@ -77,10 +103,17 @@ def render_predict_page(
     low = literature.get("low")
     high = literature.get("high")
     lopo = literature.get("lopo") or {}
-    mae = lopo.get("deployed_mae")
-    mean_s = "—" if mean is None else f"{mean:.0f}%"
-    band_s = "" if mean is None else f"{low:.0f}–{high:.0f}"
+    mae = lopo.get("shrinkage_mae") or lopo.get("deployed_mae")
+    mean_s = "—" if mean is None else f"{mean:.1f}%"
+    band_s = "" if mean is None else f"{low:.1f}–{high:.1f}"
     mae_s = "—" if mae is None else f"{mae:.1f}"
+    local = literature.get("local")
+    prior = literature.get("prior")
+    n_eff = literature.get("n_eff")
+    local_w = literature.get("local_weight")
+    local_s = "—" if local is None else f"{local:.1f}%"
+    prior_s = "—" if prior is None else f"{prior:.1f}%"
+    trust_s = "—" if local_w is None else f"{100 * float(local_w):.0f}%"
     notes = "".join(f"<li>{escape(note)}</li>" for note in (literature.get("notes") or []))
     return f"""<!DOCTYPE html>
 <html lang="en">
@@ -98,30 +131,30 @@ def render_predict_page(
     label {{ display:flex; flex-direction:column; gap:6px; font-size: 0.85rem; color:#9db0c8; }}
     select, input {{ background:#0b1220; color:#e8eef7; border:1px solid #2a3b55; border-radius:8px; padding:8px 10px; }}
     button {{ grid-column: 1 / -1; background:#3ecfb2; color:#07231d; border:0; border-radius:8px; padding:10px 14px; font-weight:700; cursor:pointer; }}
-    .metrics {{ display:grid; grid-template-columns: repeat(3, 1fr); gap:12px; margin: 22px 0; }}
+    .metrics {{ display:grid; grid-template-columns: repeat(4, 1fr); gap:12px; margin: 22px 0; }}
     .card {{ background:#152033; border-radius:12px; padding:16px; }}
     .card b {{ display:block; color:#9db0c8; font-size:0.8rem; font-weight:600; margin-bottom:6px; }}
-    .card span {{ font-size:1.8rem; color:#3ecfb2; font-weight:700; }}
+    .card span {{ font-size:1.6rem; color:#3ecfb2; font-weight:700; }}
     .card em {{ display:block; color:#9db0c8; font-style:normal; margin-top:4px; }}
-    table {{ width:100%; border-collapse: collapse; background:#152033; border-radius:12px; overflow:hidden; }}
+    table {{ width:100%; border-collapse: collapse; background:#152033; border-radius:12px; overflow:hidden; margin-bottom: 18px; }}
     th, td {{ text-align:left; padding:10px 12px; border-bottom:1px solid #243044; font-size:0.92rem; }}
     th {{ color:#9db0c8; font-weight:600; }}
     a {{ color:#3ecfb2; }}
     .muted {{ color:#9db0c8; }}
     ul {{ color:#c5d4e8; }}
-    @media (max-width: 700px) {{ .metrics {{ grid-template-columns: 1fr; }} }}
+    @media (max-width: 900px) {{ .metrics {{ grid-template-columns: 1fr 1fr; }} }}
   </style>
 </head>
 <body>
   <main>
     <h1>TissueLab AI</h1>
-    <p class="sub">Hydrogel → chondrocyte. Literature live/dead from the hand-curated table. This page works in the Cursor browser (no Streamlit websocket).</p>
-    <form method="get" action="/">
+    <p class="sub">Change hydrogel, stiffness, cells, TGF, or days — the viability number is a shrinkage estimator over published live/dead, not a flat material average. No Streamlit websocket.</p>
+    <form method="get" action="/" id="predict-form">
       <label>Hydrogel
         <select name="material_class" onchange="this.form.submit()">{_options(MATERIALS, material_class)}</select>
       </label>
       <label>Stiffness (kPa)
-        <input type="number" name="stiffness_kpa" min="0.5" max="200" step="0.5" value="{stiffness_kpa}"/>
+        <input type="number" name="stiffness_kpa" min="0.5" max="200" step="0.5" value="{stiffness_kpa}" onchange="this.form.submit()"/>
       </label>
       <label>Cell type
         <select name="cell_type" onchange="this.form.submit()">{_options(CELL_TYPES, cell_type)}</select>
@@ -130,15 +163,18 @@ def render_predict_page(
         <select name="growth_factor" onchange="this.form.submit()">{_options(GROWTH_FACTORS, growth_factor)}</select>
       </label>
       <label>Culture time (days)
-        <input type="number" name="culture_time_days" min="1" max="42" step="1" value="{int(culture_time_days)}"/>
+        <input type="number" name="culture_time_days" min="1" max="42" step="1" value="{int(culture_time_days)}" onchange="this.form.submit()"/>
       </label>
       <button type="submit">Update prediction</button>
     </form>
     <div class="metrics">
-      <div class="card"><b>Literature viability</b><span>{escape(mean_s)}</span><em>{escape(band_s)}</em></div>
-      <div class="card"><b>LOPO MAE</b><span>{escape(mae_s)}</span><em>{escape(str(lopo.get("deployed_estimator") or "material_mean"))}</em></div>
-      <div class="card"><b>Papers in split</b><span>{escape(str(lopo.get("n_studies") or "—"))}</span><em>hand-curated live/dead</em></div>
+      <div class="card"><b>Literature viability</b><span>{escape(mean_s)}</span><em>{escape(band_s)} ± LOPO MAE</em></div>
+      <div class="card"><b>Matched conditions</b><span>{escape(local_s)}</span><em>kernel mean before shrink</em></div>
+      <div class="card"><b>Material prior</b><span>{escape(prior_s)}</span><em>class mean, n={escape(str(literature.get("n_support") or "—"))}</em></div>
+      <div class="card"><b>Local evidence</b><span>{escape(trust_s)}</span><em>n_eff={escape(str(n_eff) if n_eff is not None else "—")} / n0={escape(str(int(literature.get("prior_strength") or 12)))}</em></div>
     </div>
+    <p class="muted">LOPO MAE (shrinkage) {escape(mae_s)} on {escape(str(lopo.get("n_studies") or "—"))} papers. Dummy {escape(f"{lopo['dummy_mae']:.1f}" if lopo.get("dummy_mae") is not None else "—")}. Ridge is not served.</p>
+    {_delta_table(literature.get("knob_deltas") or [])}
     <h2>Nearest extracted papers</h2>
     {_papers_table(literature.get("similar") or [])}
     <h2>How to read this</h2>

@@ -31,7 +31,7 @@ Harvest more papers only after the top 250 queued items are extracted or rejecte
 
 There is **no** public `material × chondrocyte × outcome` CSV. BIOMATDB and OOCDB are search portals. The better source we added is **Europe PMC open fulltext** (free XML), used before paid Amass fulltext.
 
-Current snapshot: **53 hand studies / 156 hand experiments / 42 numeric viability (15 papers)**; ~8.5k papers. Honest LOPO: dummy MAE **16.5**, material-mean MAE **16.4** (deployed), Ridge MAE **22.6** (not served), R² still negative, `n_studies` 15, `mvp_pass` false. The first count bar (`n_studies ≥ 15`) is met; the deployed estimator barely beats dummy. Remaining queue papers mostly lack a live/dead mean in prose (floors, ECM-matured moduli, or the wrong tissue).
+Current snapshot: **53 hand studies / 156 hand experiments / 42 numeric viability (15 papers)**; ~8.5k papers. Deployed estimator is **empirical-Bayes shrinkage** (kernel over published conditions, shrunk to the material mean) — not Ridge, not a neural net. It beats dummy under LOPO (~15.8 vs 16.5) so stiffness / TGF / time move the number. R² is still ~0, `mvp_pass` false. The 15% MAE bar needs more live/dead rows, not more AI.
 
 ## Step by step
 

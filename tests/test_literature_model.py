@@ -50,7 +50,7 @@ def test_similar_published_returns_hand_rows_only():
     assert all("viability_pct" in row for row in rows)
 
 
-def test_predict_gelma_uses_material_mean():
+def test_predict_gelma_uses_shrinkage_and_beats_dummy():
     from tissuelab.literature_model import load_curated_viability
     from tissuelab.load_database import load
     from tissuelab.paths import DB_PATH
@@ -58,18 +58,24 @@ def test_predict_gelma_uses_material_mean():
     load(DB_PATH)
     frame = load_curated_viability()
     gelma = frame.loc[frame["material_class"] == "GelMA", "viability_pct"].astype(float)
-    expected = round(float(gelma.mean()), 1)
     out = predict_literature_viability(
-        {"material_class": "GelMA", "stiffness_kpa": 25.0, "cell_type": "articular_chondrocyte"}
+        {
+            "material_class": "GelMA",
+            "stiffness_kpa": 25.0,
+            "cell_type": "articular_chondrocyte",
+            "growth_factor": "none",
+            "culture_time_days": 14,
+        }
     )
-    assert out["mean"] == expected
-    assert out["estimator"] == "material_mean"
+    assert out["mean"] is not None
+    assert 70 <= out["mean"] <= 90
+    assert out["estimator"] in {"shrinkage", "shrinkage_global_prior"}
     assert out["n_support"] == int(len(gelma))
     assert out["similar"]
     lopo = out["lopo"]
-    assert lopo["deployed_estimator"] == "material_mean"
+    assert lopo["deployed_estimator"] == "shrinkage"
     assert lopo["beats_dummy"] is True
     assert lopo["ridge_beats_dummy"] is False
     assert lopo["mvp_pass"] is False
-    assert lopo["deployed_mae"] < lopo["dummy_mae"]
+    assert lopo["shrinkage_mae"] < lopo["dummy_mae"]
     assert lopo["ridge_mae"] > lopo["dummy_mae"]

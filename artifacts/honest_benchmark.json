@@ -32,13 +32,17 @@
     "mae": 16.38413614163614,
     "r2": -0.08767321626330471
   },
-  "deployed_estimator": "material_mean",
+  "shrinkage_lopo": {
+    "mae": 15.75770306231539,
+    "r2": -0.028765107093234654
+  },
+  "deployed_estimator": "shrinkage",
   "deployed_lopo": {
-    "mae": 16.38413614163614,
-    "r2": -0.08767321626330471
+    "mae": 15.75770306231539,
+    "r2": -0.028765107093234654
   },
   "pass_bar": {
-    "description": "Deployed tabular estimator LOPO MAE at least 15% below dummy LOPO, R\u00b2 > 0, n_studies >= 15. Ridge is reported but not served.",
+    "description": "Deployed tabular estimator LOPO MAE at least 15% below dummy LOPO, R\u00b2 > 0, n_studies >= 15. Ridge is reported but not served. Shrinkage is empirical Bayes (kernel + material prior), not a neural net.",
     "dummy_mae_target_ratio": 0.85,
     "min_studies": 15
   },
@@ -46,7 +50,7 @@
     "This is the MVP scientific metric on hand-curated live/dead only. Simulated holdout R\u00b2 is not.",
     "Auto-promoted pmid* rows are excluded from this split.",
     "Do not add unpaired regex hits to inflate n_rows.",
-    "Deployed estimator is the LOPO winner among dummy and material-class mean. Ridge overfits this table."
+    "Deployed estimator is the LOPO winner among dummy, material-class mean, and shrinkage. Ridge overfits this table."
   ],
   "status": "baseline",
   "beats_dummy": true,

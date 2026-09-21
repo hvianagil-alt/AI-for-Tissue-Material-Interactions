@@ -55,9 +55,9 @@ pip install -e ".[dev]" && pytest -q
 
 ## How to read the numbers
 
-- **Literature viability** is the material-class mean of published live/dead % in `v_model_viability` (unseen gels fall back to the global mean). The band is ± leave-one-paper-out MAE of that estimator, not a biological CI.
+- **Literature viability** is empirical Bayes: a kernel over published live/dead, shrunk toward the material-class mean. Changing stiffness, TGF, cells, or days moves the number. Unseen gels fall back toward the global mean. The band is ± leave-one-paper-out MAE, not a biological CI.
 - **Proliferation / differentiation / ECM** in the radar are mapped 0–100 scores plus a simulator prior. Do not cite them as measurements.
-- Material-class mean **barely** beats a dummy mean under LOPO. Ridge loses and is **not** served. Use nearest extracted papers to choose the next gel.
+- Shrinkage **beats** a dummy mean under LOPO (~15.8 vs 16.5). Ridge loses and is **not** served. The MVP bar (15% better than dummy, R²>0) is still unmet. Use nearest extracted papers to choose the next gel.
 
 ### Current baseline
 
@@ -67,7 +67,8 @@ pip install -e ".[dev]" && pytest -q
 | Hand experiments | 156 |
 | Numeric live/dead (training) | 42 rows / 15 papers |
 | Dummy LOPO MAE | 16.5 |
-| Material-mean LOPO MAE | 16.4 (deployed; barely beats dummy) |
+| Shrinkage LOPO MAE | ~15.8 (deployed) |
+| Material-mean LOPO MAE | 16.4 |
 | Ridge LOPO MAE | 22.6 (not deployed) |
 | Simulated XGBoost holdout R² | ~0.92 — **ignore** for science |
 
