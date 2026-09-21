@@ -1,0 +1,32 @@
+{
+  "n_rows": 13,
+  "n_studies": 3,
+  "studies": [
+    "bachmann2020",
+    "daly2016",
+    "zhang2024"
+  ],
+  "viability_mean": 80.28769230769231,
+  "viability_std": 24.315212712019797,
+  "dummy_lopo": {
+    "mae": 13.904786324786322,
+    "r2": -0.09299843766951521
+  },
+  "ridge_lopo": {
+    "mae": 23.294475025208744,
+    "r2": -1.951851656261859
+  },
+  "pass_bar": {
+    "description": "Ridge LOPO MAE at least 15% below dummy LOPO, R\u00b2 > 0, n_studies >= 15.",
+    "dummy_mae_target_ratio": 0.85,
+    "min_studies": 15
+  },
+  "notes": [
+    "This is the MVP scientific metric. Simulated holdout R\u00b2 is not.",
+    "Negative R\u00b2 with n=13 is expected: too few papers, strong study effects.",
+    "Do not add regex abstract % into v_model_viability to inflate this number."
+  ],
+  "status": "baseline",
+  "beats_dummy": false,
+  "mvp_pass": false
+}

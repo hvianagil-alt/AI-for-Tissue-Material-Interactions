@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import json
 import sys
 from pathlib import Path
 
@@ -15,7 +16,7 @@ import plotly.graph_objects as go
 import streamlit as st
 
 from tissuelab.inverse import candidate_rationale, inverse_design
-from tissuelab.paths import DATASET_PATH, MODEL_PATH
+from tissuelab.paths import DATASET_PATH, HONEST_METRICS_PATH, EXTRACTION_QUEUE_PATH, MODEL_PATH, QUALITY_REPORT_PATH
 from tissuelab.predict import predict_design
 from tissuelab.protocol import protocol_from_row
 from tissuelab.recommend import recommend_experiments, recommendation_reason
@@ -278,11 +279,33 @@ with tab_next:
 with tab_data:
     n_lit = int((data["source"] == "literature").sum())
     n_sim = int((data["source"] == "simulated_literature_informed").sum())
+    quality = json.loads(QUALITY_REPORT_PATH.read_text()) if QUALITY_REPORT_PATH.exists() else {}
+    honest = json.loads(HONEST_METRICS_PATH.read_text()) if HONEST_METRICS_PATH.exists() else {}
+    c1, c2, c3, c4 = st.columns(4)
+    c1.metric("SQLite papers", quality.get("n_amass_papers", "—"))
+    c2.metric("Curated experiments", quality.get("n_experiments", n_lit))
+    c3.metric("Numeric viability", quality.get("n_numeric_viability", "—"))
+    c4.metric("Extraction queue", quality.get("n_extraction_queue", "—"))
+    st.caption(
+        "Papers are a library. The model only learns from curated numeric measurements. "
+        "Simulator rows in the CSV below are a prior, not observations."
+    )
+    if honest:
+        st.subheader("Honest metric (leave-one-paper-out viability)")
+        d1, d2, d3 = st.columns(3)
+        d1.metric("Dummy LOPO MAE", f"{honest['dummy_lopo']['mae']:.1f}" if "dummy_lopo" in honest else "—")
+        d2.metric("Ridge LOPO MAE", f"{honest['ridge_lopo']['mae']:.1f}" if "ridge_lopo" in honest else "—")
+        d3.metric("MVP pass", "yes" if honest.get("mvp_pass") else "not yet")
+        st.caption(honest.get("pass_bar", {}).get("description", ""))
+    if EXTRACTION_QUEUE_PATH.exists():
+        queue = pd.read_csv(EXTRACTION_QUEUE_PATH)
+        st.subheader("Next papers to extract")
+        st.dataframe(queue.head(25), use_container_width=True, hide_index=True)
+    st.markdown("Mapped CSV used by the demo model (includes simulator rows):")
     c1, c2, c3 = st.columns(3)
-    c1.metric("Records", len(data))
+    c1.metric("CSV records", len(data))
     c2.metric("Literature-extracted", n_lit)
     c3.metric("Simulator-generated", n_sim)
-    st.caption("Literature rows are mapped from published hydrogel–chondrocyte studies. Simulator rows follow those same directional relationships with noise.")
     st.dataframe(data.head(50), use_container_width=True, hide_index=True)
     st.download_button("Download full CSV", data.to_csv(index=False), "hydrogel_chondrocyte_records.csv", "text/csv")
     left, right = st.columns(2)
@@ -333,12 +356,17 @@ with relatively consistent readouts (live/dead, DNA, sGAG, COL2A1).
 
 **Do not over-interpret the numbers.** Many literature outcomes were mapped onto 0–100 scores
 when papers reported qualitative histology or relative gene expression. The simulator is a
-prior, not a replacement for wet-lab data.
+prior, not a replacement for wet-lab data. The number that matters is leave-one-paper-out
+viability (`artifacts/honest_benchmark.json`), not simulated holdout R².
 
-See `docs/LANDSCAPE.md` for competitors, datasets, and why this vertical was chosen.
+See `docs/ROADMAP.md` for the path from this table to a lab-changing product, and
+`docs/LANDSCAPE.md` for competitors.
         """
     )
+    if HONEST_METRICS_PATH.exists():
+        st.subheader("Honest LOPO viability")
+        st.json(json.loads(HONEST_METRICS_PATH.read_text()))
     holdout = model.metrics.get("xgboost_holdout", {})
     if holdout:
-        st.subheader("Current holdout metrics")
+        st.subheader("Simulated-holdout metrics (not the product bar)")
         st.json(holdout)

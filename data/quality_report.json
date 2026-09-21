@@ -48,5 +48,7 @@
     "Amass papers live in `papers`; regex hits in `paper_extractions` are not training labels."
   ],
   "n_amass_papers": 8062,
-  "n_amass_extractions": 22276
+  "n_amass_extractions": 22276,
+  "n_extraction_queue": 250,
+  "n_mvp_relevant_papers": 1941
 }

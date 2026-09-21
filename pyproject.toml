@@ -29,6 +29,8 @@ tissuelab-build-dataset = "tissuelab.build_dataset:main"
 tissuelab-train = "tissuelab.train:main"
 tissuelab-load-database = "tissuelab.load_database:main"
 tissuelab-harvest-amass = "tissuelab.harvest_amass:main"
+tissuelab-rank-papers = "tissuelab.rank_papers:main"
+tissuelab-benchmark = "tissuelab.benchmark:main"
 
 [tool.setuptools.packages.find]
 where = ["src"]

@@ -6,8 +6,11 @@
 ONE tissue          cartilage
 ONE material class  hydrogels
 ONE cell context    articular chondrocytes (MSCs allowed as a feature)
-FOUR outcomes       viability, proliferation, differentiation, ECM
+ONE training label  numeric viability %  (other assays stay in the DB)
+SUCCESS TEST        leave-one-paper-out vs dummy mean  (see docs/ROADMAP.md)
 ```
+
+The Streamlit app already demos predict / inverse / next experiment. That is a **UI MVP**. The scientific MVP is a labeled table large enough that inverse design is not just the simulator talking to itself.
 
 ## User flow implemented
 
@@ -23,15 +26,16 @@ FOUR outcomes       viability, proliferation, differentiation, ECM
 - Microscopy-native models
 - Laboratory robot closed loop
 - LLM-only extraction in production (seed records were curated)
+- Training on Amass abstracts or regex percentages
 
 ## Data policy
 
-Every row has `source` ∈ {`literature`, `simulated_literature_informed`}.
-Literature rows list `imputed_fields` when a value was mapped from text or a typical protocol default (e.g. porosity rarely reported).
+Curated rows live in `experiments` / `measurements`. Amass hits live in `papers`. Regex lives in `paper_extractions`. Simulator rows are **not** in SQLite.
 
-Do not train a “production” model on simulator labels and then hide that fact.
+The next 200 rows come from `data/extraction_queue.csv`, typed by a human into `curated.py`.
 
 ## Model policy
 
 Start tabular (Ridge, RF, XGBoost). Quantile XGBoost for uncertainty.
+The number on the box is **LOPO viability**, not simulated holdout R².
 Gaussian Processes and mechanistic residuals are the Phase 4/physics+data step, not v0.1.

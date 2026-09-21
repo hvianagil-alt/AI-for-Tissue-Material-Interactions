@@ -142,6 +142,49 @@ CREATE INDEX IF NOT EXISTS idx_papers_doi ON papers(doi);
 CREATE INDEX IF NOT EXISTS idx_extract_amass ON paper_extractions(amass_id);
 CREATE INDEX IF NOT EXISTS idx_extract_field ON paper_extractions(field);
 
+-- Ranked work queue: which harvested papers to extract into experiments next.
+-- Scores are retrieval ranks, not scientific measurements.
+CREATE TABLE IF NOT EXISTS paper_scores (
+    amass_id                 TEXT PRIMARY KEY REFERENCES papers(amass_id) ON DELETE CASCADE,
+    score                    REAL NOT NULL,
+    is_review                INTEGER NOT NULL DEFAULT 0,
+    is_mvp_relevant          INTEGER NOT NULL DEFAULT 0,
+    already_curated          INTEGER NOT NULL DEFAULT 0,
+    has_chondrocyte          INTEGER NOT NULL DEFAULT 0,
+    has_msc                  INTEGER NOT NULL DEFAULT 0,
+    has_mapped_material      INTEGER NOT NULL DEFAULT 0,
+    has_viability_number     INTEGER NOT NULL DEFAULT 0,
+    has_stiffness_number     INTEGER NOT NULL DEFAULT 0,
+    n_materials              INTEGER NOT NULL DEFAULT 0,
+    reasons                  TEXT,
+    scored_at                TEXT
+);
+
+CREATE TABLE IF NOT EXISTS extraction_queue (
+    amass_id        TEXT PRIMARY KEY REFERENCES papers(amass_id) ON DELETE CASCADE,
+    rank            INTEGER NOT NULL,
+    score           REAL NOT NULL,
+    status          TEXT NOT NULL DEFAULT 'queued',
+    why             TEXT,
+    pmid            TEXT,
+    doi             TEXT,
+    title           TEXT,
+    year            INTEGER,
+    journal         TEXT,
+    citation_count  INTEGER,
+    has_fulltext    INTEGER
+);
+
+CREATE TABLE IF NOT EXISTS study_paper_links (
+    study_id    TEXT NOT NULL REFERENCES studies(study_id) ON DELETE CASCADE,
+    amass_id    TEXT NOT NULL REFERENCES papers(amass_id) ON DELETE CASCADE,
+    matched_on  TEXT NOT NULL,
+    PRIMARY KEY (study_id, amass_id)
+);
+
+CREATE INDEX IF NOT EXISTS idx_queue_rank ON extraction_queue(rank);
+CREATE INDEX IF NOT EXISTS idx_scores_mvp ON paper_scores(is_mvp_relevant, score);
+
 -- Modeling view: one row per experiment, viability only when a number was published.
 CREATE VIEW IF NOT EXISTS v_model_viability AS
 SELECT

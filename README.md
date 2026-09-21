@@ -40,6 +40,8 @@ pip install -e ".[dev]"
 python -m tissuelab.load_database
 # optional: Amass literature harvest (requires AMASS_API_KEY in .env)
 python -m tissuelab.harvest_amass
+python -m tissuelab.rank_papers
+python -m tissuelab.benchmark
 python -m tissuelab.build_dataset
 python -m tissuelab.train
 pytest -q
@@ -69,7 +71,7 @@ Quantile bands are the model saying it does not know. Wide intervals should chan
 | Random Forest | 6.4 | 0.84 |
 | **XGBoost** | **4.6** | **0.92** |
 
-That holdout is mostly simulated data, so it only proves the pipeline learned the prior. The honest test — train on the simulator, evaluate on 31 literature rows — is **MAE 13.4 / R² 0.11**. Viability (real %) transfers better (R² 0.59) than the mapped differentiation/ECM indices. Closing that gap is the real project, not a larger neural net.
+That holdout is mostly simulated data, so it only proves the pipeline learned the prior. The honest test is `python -m tissuelab.benchmark` (leave-one-paper-out on numeric viability). Simulated holdout **MAE 13.4 / R² 0.11** on 31 mapped literature rows is the old mixed-CSV check — still not the product metric.
 
 ## Project layout
 
@@ -81,13 +83,23 @@ docs/              landscape, MVP notes
 tests/             schema, simulator biology checks, model vs dummy, inverse design
 ```
 
-## Next (weeks 2–4)
+## Next (the actual MVP)
 
-1. Replace mapped scores with paper-native units where possible (sGAG/DNA, % live, 2^-ΔΔCt).
-2. Expand literature extraction beyond the seed 30 records (target 500+ real rows).
-3. Leave-one-paper-out evaluation as the main metric, not simulated holdout.
-4. Add a single wet-lab validation loop (one stiffness series in GelMA or fibrin).
-5. Only then widen to bone scaffolds or nanoparticle–tumour delivery.
+See `docs/ROADMAP.md`. In short: **do not grow the paper harvest**. Extract the ranked queue into labeled experiments, then beat a dummy model under leave-one-paper-out on live/dead %.
+
+```bash
+python -m tissuelab.rank_papers
+python -m tissuelab.benchmark
+```
+
+| Horizon | Bar |
+|---|---|
+| 4 weeks | ≥ 25 papers, ≥ 80 numeric viability rows, LOPO MAE 15% better than dummy |
+| 3 months | one wet-lab stiffness series held out |
+| 12 months | paid pilots only if a PI changed the next gel |
+
+Commands for the current stack stay below. The mixed CSV + simulator is only a software prior.
+
 
 ## Working thesis
 

@@ -12,7 +12,14 @@ from tissuelab.curated import EXPERIMENTS, STUDIES
 from tissuelab.db import connect, init_schema
 from tissuelab.paths import DATA_DIR, DB_PATH, NATIVE_EXPORT_PATH, QUALITY_REPORT_PATH
 
-HARVEST_TABLES = ("papers", "paper_extractions", "harvest_log")
+HARVEST_TABLES = (
+    "papers",
+    "paper_extractions",
+    "harvest_log",
+    "paper_scores",
+    "extraction_queue",
+    "study_paper_links",
+)
 
 EXP_COLUMNS = [
     "experiment_id",
@@ -85,6 +92,11 @@ def quality_report(conn) -> dict:
     if "papers" in tables:
         report["n_amass_papers"] = conn.execute("SELECT COUNT(*) FROM papers").fetchone()[0]
         report["n_amass_extractions"] = conn.execute("SELECT COUNT(*) FROM paper_extractions").fetchone()[0]
+    if "extraction_queue" in tables:
+        report["n_extraction_queue"] = conn.execute("SELECT COUNT(*) FROM extraction_queue").fetchone()[0]
+        report["n_mvp_relevant_papers"] = conn.execute(
+            "SELECT COUNT(*) FROM paper_scores WHERE is_mvp_relevant = 1"
+        ).fetchone()[0]
     return report
 
 

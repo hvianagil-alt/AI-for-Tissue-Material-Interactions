@@ -21,6 +21,8 @@ studies 1──* experiments 1──* measurements
 - **measurements** — long form: `(assay, value, unit, evidence)`. Viability, sGAG, COL2/COL1, ALP (bone, later) are rows, not columns.
 - **papers** — Amass BiomedCore harvest (title, abstract, identifiers). Not a training table.
 - **paper_extractions** — regex candidates from title+abstract. Low-confidence numbers stay here; they are **not** copied into `measurements`.
+- **paper_scores / extraction_queue** — which harvested papers to read next. A rank, not a measurement.
+- **study_paper_links** — curated `study_id` ↔ Amass `amass_id` when DOI/PMCID matches.
 
 That last point is the answer to “later we add more cell variables”. Osteoblast ALP is a new **assay + cell_type**, not a new column that breaks chondrocyte models. Filter `cell_type = articular_chondrocyte` and `assay = viability_pct` for the MVP.
 
