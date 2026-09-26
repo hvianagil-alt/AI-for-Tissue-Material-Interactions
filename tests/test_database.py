@@ -71,6 +71,7 @@ def test_hand_curated_replaces_auto_promoted():
         "zielinska2023", "gvaramia2024", "galarraga2023", "weitkamp2023",
         "kudva2017", "diazpayno2022", "loveland2026",
         "windisch2023", "zhang2023pva",
+        "fang2024",
     }
     assert all(s.get("pmid") for s in STUDIES if s["study_id"] in require_pmid)
 
@@ -371,6 +372,23 @@ def test_queue_pass_sixteen_gold_is_numeric_and_honest():
     z7 = by_id["zhang2023pva-algpba-pva-mchond-d7"]
     assert z7["measurements"][0]["value"] == 80.0
     assert "zhang2023pva-l929" not in by_id
+
+
+def test_queue_pass_seventeen_gold_is_numeric_and_honest():
+    by_id = {e["experiment_id"]: e for e in EXPERIMENTS}
+    g5 = by_id["fang2024-gelma-5pct-bms-d1"]
+    assert g5["cell_type"] == "MSC"
+    assert g5["material_class"] == "GelMA"
+    assert g5["polymer_concentration_wt_pct"] == 5.0
+    assert g5["measurements"][0]["value"] == 83.6
+    assert g5.get("stiffness_kpa") is None
+    assert g5.get("cell_density_million_per_ml") is None
+    g10 = by_id["fang2024-gelma-10pct-bms-d1"]
+    assert g10["measurements"][0]["value"] == 74.8
+    assert g10["culture_model"] == "3D_encapsulation"
+    assert by_id["fang2024-gelma-10pct-bms-d4"]["measurements"][0]["value"] == 87.7
+    assert "fang2024-gelma-5pct-bms-d4" not in by_id
+    assert "fang2024-ncg-cck8" not in by_id
 
 
 def test_curated_viability_excludes_auto_promote():

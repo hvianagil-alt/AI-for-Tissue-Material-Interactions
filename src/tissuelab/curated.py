@@ -1191,6 +1191,22 @@ STUDIES: list[dict] = [
             "H2O2 oxidative-stress arm not stored. G′ 0.28→1.44 kPa is storage modulus, not Young's."
         ),
     },
+    {
+        "study_id": "fang2024",
+        "citation": "Fang et al., Biomacromolecules 2024",
+        "doi": "10.1021/acs.biomac.3c00923",
+        "pmid": "38263676",
+        "year": 2024,
+        "journal": "Biomacromolecules",
+        "pmcid": "PMC10865342",
+        "license": "ACS AuthorChoice",
+        "notes": (
+            "Rat BMSC 1e6 mixed into commercial GelMA 5% and 10%, 405 nm photocrosslink in a curing ring. "
+            "AM/PI day 1: 83.6±1.0% (5%) and 74.8±1.5% (10%). Day-4 93.9% (5%) is a >90% recovery and is not stored. "
+            "Day-4 10% 87.7% stored. Day-7 percent not quoted. CCK-8 Ncg cytotoxicity is 2D and is not stored. "
+            "No starting Young's. Gel volume not quoted so density is unknown. IVD in vivo arm not stored."
+        ),
+    },
 ]
 
 
@@ -5519,6 +5535,51 @@ def _queue_pass_sixteen() -> list[dict]:
     return rows
 
 
+def _queue_pass_seventeen() -> list[dict]:
+    """GelMA 5 vs 10% MSC encapsulation deaths (Fang 2024 AM/PI)."""
+    rows = []
+    for conc, day, val, sd, extra in (
+        (5.0, 1.0, 83.6, 1.0, "Paper: 83.6 ± 1.0% day 1 in 5% GelMA."),
+        (10.0, 1.0, 74.8, 1.5, "Paper: 74.8 ± 1.5% day 1 in 10% GelMA."),
+        (10.0, 4.0, 87.7, 1.0, "Paper: 87.7 ± 1.0% day 4 in 10% GelMA."),
+    ):
+        tag = f"{int(conc)}pct"
+        rows.append(
+            {
+                "experiment_id": f"fang2024-gelma-{tag}-bms-d{int(day)}",
+                "study_id": "fang2024",
+                "material_class": "GelMA",
+                "material_detail": f"{int(conc)}% w/v commercial GelMA, 405 nm photocrosslink in a curing ring",
+                "crosslinking": "photocrosslink",
+                "polymer_concentration_wt_pct": conc,
+                "surface_chemistry": "native",
+                "has_adhesion_ligand": 1.0,
+                "cell_type": "MSC",
+                "species": "rat",
+                "culture_model": "3D_encapsulation",
+                "growth_factor": "none",
+                "culture_time_days": day,
+                "chemical_modification": "methacrylated",
+                "architecture": "bulk_hydrogel",
+                "application": "nucleus_pulposus",
+                "live_dead_kit": "calcein_propidium",
+                "n_replicates": 3,
+                "extracted_from": f"PMC10865342 Fig. 6 {int(conc)}% GelMA BMSC AM/PI day {int(day)}",
+                "curator_confidence": "high",
+                "notes": (
+                    f"Rat BMSC, 1e6 cells mixed into gel (volume not quoted). "
+                    f"AM/PI {val}±{sd}% day {int(day)} in {int(conc)}% GelMA. {extra} "
+                    "Day-4 5% 93.9% recovery not stored. Day-7 percent not quoted. "
+                    "CCK-8 Ncg is 2D and is not stored. No starting Young's. IVD in vivo not stored."
+                ),
+                "measurements": [
+                    _m("viability_pct", val, "%", sd=sd, evidence="numeric_text", n=3, notes=extra)
+                ],
+            }
+        )
+    return rows
+
+
 EXPERIMENTS: list[dict] = (
     _bachmann_experiments()
     + _other_experiments()
@@ -5540,4 +5601,5 @@ EXPERIMENTS: list[dict] = (
     + _queue_pass_fourteen()
     + _queue_pass_fifteen()
     + _queue_pass_sixteen()
+    + _queue_pass_seventeen()
 )

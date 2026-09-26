@@ -19,7 +19,7 @@ The point of the MVP is not “AI for biology”. It is:
 |---|---|
 | SQLite experimental DB (`studies` / `experiments` / `measurements`) | Done — `data/tissuelab.sqlite` |
 | Hand-curated live/dead training view (`v_model_viability`) | Done — `data/literature_viability.csv` |
-| Literature viability (empirical Bayes ± adaptive LOPO band) | Done (served; 60 papers, shrinkage LOPO MAE 11.45 vs dummy 11.38, R² −0.027; MVP 15% bar still unmet) |
+| Literature viability (empirical Bayes ± adaptive LOPO band) | Done (served; 61 papers, shrinkage LOPO MAE 11.36 vs dummy 11.27, R² −0.028; MVP 15% bar still unmet) |
 | HTML product: Protocol / Lookup / Table / Compare / CSV | Done — English default |
 | Buyable-minimal plan | `docs/BMP.md` |
 | How to train the viability model (videos → this table) | `docs/ML_PLAN.md` |
@@ -68,17 +68,17 @@ pip install -e ".[dev]" && pytest -q
 
 | Check | Value |
 |---|---|
-| Hand-curated studies | 99 |
-| Hand experiments | 286 |
-| Numeric live/dead (training) | 166 rows / 60 papers |
+| Hand-curated studies | 100 |
+| Hand experiments | 289 |
+| Numeric live/dead (training) | 169 rows / 61 papers |
 | Served model parameters | 57 (11 locked kernel + 46 gel×cell means) |
 | Beginning target | 100 independent live/dead papers |
 | Harvested papers tagged | 12024 (2317 training-relevant) |
-| Dummy LOPO MAE | 11.38 |
-| Shrinkage LOPO MAE | 11.45 (deployed; dummy slightly ahead this snapshot, R² −0.027) |
-| Material-mean LOPO MAE | 12.70 |
-| Ridge LOPO MAE | 12.41 (not deployed) |
-| HGB LOPO MAE | 12.92 (eligible at ≥40 papers; still not served) |
+| Dummy LOPO MAE | 11.27 |
+| Shrinkage LOPO MAE | 11.36 (deployed; dummy slightly ahead this snapshot, R² −0.028) |
+| Material-mean LOPO MAE | 12.52 |
+| Ridge LOPO MAE | 12.21 (not deployed) |
+| HGB LOPO MAE | 12.75 (eligible at ≥40 papers; still not served) |
 | Simulated XGBoost holdout R² | ~0.92 — **ignore** for science |
 
 The product is ready to **use as Protocol**: cells + job → extracted protocol + papers. Lookup is the evidence card. It is not ready to claim a model that beats “GelMA ~25 kPa + TGF-β3”.

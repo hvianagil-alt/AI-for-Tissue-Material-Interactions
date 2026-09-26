@@ -1,12 +1,12 @@
 {
-  "n_rows": 166,
-  "n_studies": 60,
+  "n_rows": 169,
+  "n_studies": 61,
   "served_parameters": 57,
   "served_locked_hyperparameters": 11,
   "served_empirical_priors": 46,
   "budget": {
-    "n_rows": 166,
-    "n_studies": 60,
+    "n_rows": 169,
+    "n_studies": 61,
     "n_materials": 27,
     "n_cell_types": 6,
     "n_with_kpa": 51,
@@ -30,17 +30,18 @@
     "what_to_add_first": "studies"
   },
   "random_split_ridge": {
-    "mae": 12.175796757298421,
-    "r2": -0.1326427671857604,
-    "train_mae": 7.717569119017286,
-    "n_train": 132,
+    "mae": 12.183277311564716,
+    "r2": -0.06429711361310386,
+    "train_mae": 7.88659583455603,
+    "n_train": 135,
     "n_test": 34,
     "test_papers": [
-      "akkineni2022",
       "bachmann2020",
       "carvalho2025",
+      "fang2024",
       "gatenholm2020",
-      "gu2020",
+      "gvaramia2024",
+      "hosseini2025",
       "kessel2020",
       "kilian2020",
       "liu2025",
@@ -49,40 +50,36 @@
       "martyniak2023",
       "orabi2023",
       "park2013",
-      "perriergroult2026",
-      "petta2024",
       "poldervaart2017",
-      "sarsenova2022",
       "scalzone2022",
       "setayeshmehr2021",
-      "windisch2023",
+      "weitkamp2023",
       "xie2022",
       "yi2019",
-      "yin2023",
       "zhang2024",
       "zielinska2023"
     ]
   },
   "ridge_lopo": {
-    "mae": 12.41156867726321,
-    "r2": -0.14698977393291268,
+    "mae": 12.212953836900944,
+    "r2": -0.13827367124083612,
     "n_coefficients": 41
   },
   "dummy_lopo": {
-    "mae": 11.38264393237797,
-    "r2": -0.023024095876052364
+    "mae": 11.270494645249741,
+    "r2": -0.0225788257908901
   },
   "material_mean_lopo": {
-    "mae": 12.70346639874321,
-    "r2": -0.16722281503165504
+    "mae": 12.51634568170101,
+    "r2": -0.16067058900310105
   },
   "shrinkage_lopo": {
-    "mae": 11.449971498055115,
-    "r2": -0.026960278219105405
+    "mae": 11.364093966076016,
+    "r2": -0.028498790260946816
   },
   "hgb_lopo": {
-    "mae": 12.921177688983258,
-    "r2": -0.16379828566568388
+    "mae": 12.752172970845633,
+    "r2": -0.15769045408161908
   },
   "deployed_estimator": "shrinkage",
   "mvp_pass": 0,

@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-09-26T22:42:41Z",
+  "generated_at": "2026-09-26T22:54:18Z",
   "gold_path": "train_gold.csv",
   "silver_path": "train_silver.csv",
   "papers_uniform_path": "papers_uniform.csv",
@@ -85,8 +85,8 @@
     "papers_uniform.csv tags every harvested paper with the same chemistry/structure/application vocab.",
     "training_relevant=1 on a paper is a retrieval flag, not a viability label."
   ],
-  "n_gold_rows": 166,
-  "n_gold_studies": 60,
+  "n_gold_rows": 169,
+  "n_gold_studies": 61,
   "n_silver_rows": 69,
   "n_papers_tagged": 12024,
   "n_training_relevant_papers": 2317
