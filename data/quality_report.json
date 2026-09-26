@@ -1,12 +1,12 @@
 {
   "n_studies": 107,
-  "n_experiments": 248,
-  "n_measurements": 302,
+  "n_experiments": 251,
+  "n_measurements": 305,
   "n_numeric_viability": 62,
   "n_auto_promoted_viability": 70,
   "n_hand_studies": 59,
   "n_hand_viability_studies": 20,
-  "n_with_stiffness_kpa": 107,
+  "n_with_stiffness_kpa": 110,
   "experiments_per_study": {
     "aitchison2024": 3,
     "bachmann2020": 18,
@@ -95,7 +95,7 @@
     "pmid42306631": 1,
     "pmid42434726": 2,
     "pmid42502817": 1,
-    "poldervaart2017": 2,
+    "poldervaart2017": 5,
     "rojas2025": 4,
     "rouillard2011": 2,
     "salinas2007": 3,
@@ -118,7 +118,7 @@
   },
   "experiments_per_cell_type": {
     "ATDC5": 1,
-    "MSC": 55,
+    "MSC": 58,
     "adipose_MSC": 23,
     "articular_chondrocyte": 158,
     "auricular_chondrocyte": 7,
@@ -130,17 +130,17 @@
     "dna_fold_vs_day0": 7,
     "morphology_spherical": 23,
     "sgag_histology": 72,
-    "viability_pct": 198
+    "viability_pct": 201
   },
   "measurements_per_evidence": {
     "numeric_text": 134,
-    "qualitative_text": 168
+    "qualitative_text": 171
   },
   "percent_missing": {
-    "stiffness_kpa": 56.9,
-    "polymer_concentration_wt_pct": 63.3,
-    "species": 18.1,
-    "passage": 80.2,
+    "stiffness_kpa": 56.2,
+    "polymer_concentration_wt_pct": 62.5,
+    "species": 17.9,
+    "passage": 80.5,
     "porosity_pct": 100.0
   },
   "modeling_notes": [
@@ -152,8 +152,8 @@
     "Amass papers live in `papers`; regex hits in `paper_extractions` are not training labels.",
     "Auto-promoted pmid* studies are inventory only; they are excluded from v_model_viability."
   ],
-  "n_amass_papers": 9659,
-  "n_amass_extractions": 27896,
+  "n_amass_papers": 11850,
+  "n_amass_extractions": 38108,
   "n_extraction_queue": 250,
   "n_mvp_relevant_papers": 2146,
   "n_paper_analyses": 9659,
