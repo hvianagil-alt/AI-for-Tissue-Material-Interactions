@@ -45,13 +45,13 @@ pip install -e .
 tissuelab-app
 ```
 
-Opens [http://localhost:8501](http://localhost:8501) as a **plain HTML** product. Say which cells you have and what you want this week; it ranks extracted protocols and searches papers. English by default; `?lang=pt` for Portuguese. `/lookup` is the old evidence card if you already picked a gel. `/table` is the CSV you would email a colleague.
+Opens [http://127.0.0.1:8501](http://127.0.0.1:8501) as a **plain HTML** product. Say which cells you have and what you want this week; it ranks extracted protocols and searches papers. English by default; `?lang=pt` for Portuguese. If Chrome refuses `localhost`, that is IPv6 — use 127.0.0.1. `/lookup` is the old evidence card if you already picked a gel. `/table` is the CSV you would email a colleague.
 
 Optional:
 
 ```bash
 streamlit run app/streamlit_app.py --server.port 8502   # radar demo; needs websocket
-uvicorn app.api:app --host 0.0.0.0 --port 8501          # same UI as tissuelab-app
+uvicorn app.api:app --host :: --port 8501          # prefer: tissuelab-app (IPv4+IPv6)
 pip install -e ".[dev]" && pytest -q
 ```
 

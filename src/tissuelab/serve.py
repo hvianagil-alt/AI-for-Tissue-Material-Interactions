@@ -1,12 +1,30 @@
-"""Launch the TissueLab Predict UI in a browser (plain HTTP, no Streamlit websocket)."""
+"""Launch the TissueLab HTML UI (plain HTTP, no Streamlit websocket)."""
 
 from __future__ import annotations
 
 import os
-import subprocess
+import socket
 import sys
 
 from tissuelab.paths import DB_PATH, ROOT
+
+PORT = 8501
+
+
+def _dual_stack_socket(port: int) -> socket.socket:
+    """One socket that accepts both 127.0.0.1 and ::1.
+
+    Chrome resolves localhost to ::1 first. Cursor's port forward often uses
+    127.0.0.1. uvicorn --host 0.0.0.0 is IPv4-only; --host :: is IPv6-only.
+    """
+    sock = socket.socket(socket.AF_INET6, socket.SOCK_STREAM)
+    sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+    try:
+        sock.setsockopt(socket.IPPROTO_IPV6, socket.IPV6_V6ONLY, 0)
+    except OSError:
+        pass
+    sock.bind(("::", port))
+    return sock
 
 
 def main() -> None:
@@ -17,25 +35,25 @@ def main() -> None:
             file=sys.stderr,
         )
         raise SystemExit(1)
-    env = os.environ.copy()
-    env.setdefault("PYTHONPATH", str(ROOT / "src"))
-    print("TissueLab Predict: http://localhost:8501/", flush=True)
-    raise SystemExit(
-        subprocess.call(
-            [
-                sys.executable,
-                "-m",
-                "uvicorn",
-                "app.api:app",
-                "--host",
-                "0.0.0.0",
-                "--port",
-                "8501",
-            ],
-            cwd=ROOT,
-            env=env,
-        )
+    os.environ.setdefault("PYTHONPATH", str(ROOT / "src"))
+    os.chdir(ROOT)
+    if str(ROOT / "src") not in sys.path:
+        sys.path.insert(0, str(ROOT / "src"))
+    if str(ROOT) not in sys.path:
+        sys.path.insert(0, str(ROOT))
+
+    sock = _dual_stack_socket(PORT)
+    print(f"TissueLab: http://127.0.0.1:{PORT}/  and  http://localhost:{PORT}/", flush=True)
+
+    import uvicorn
+
+    config = uvicorn.Config(
+        "app.api:app",
+        fd=sock.fileno(),
+        log_level="info",
+        proxy_headers=True,
     )
+    raise SystemExit(uvicorn.Server(config).run())
 
 
 if __name__ == "__main__":

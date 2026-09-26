@@ -11,7 +11,7 @@ pip install -e .
 tissuelab-app
 ```
 
-The browser opens at [http://localhost:8501](http://localhost:8501). This is a **plain HTML** Predict page (no Streamlit websocket), so the Cursor Simple Browser and Chrome can both open it.
+The browser opens at [http://127.0.0.1:8501](http://127.0.0.1:8501). This is a **plain HTML** Protocol page (no Streamlit websocket), so the Cursor Simple Browser and Chrome can both open it. If Chrome says `ERR_CONNECTION_REFUSED` on `localhost`, use **127.0.0.1** — Chrome tries IPv6 (`::1`) first.
 
 In Cursor: open the **Ports** panel, find **8501**, and click the globe / Open in Browser. Or paste `http://localhost:8501/` in Cursor’s Simple Browser.
 
