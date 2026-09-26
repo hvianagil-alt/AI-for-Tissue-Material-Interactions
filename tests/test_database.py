@@ -73,6 +73,7 @@ def test_hand_curated_replaces_auto_promoted():
         "windisch2023", "zhang2023pva",
         "fang2024",
         "burchak2022",
+        "martinezgarcia2021", "read2023", "kolan2019",
     }
     assert all(s.get("pmid") for s in STUDIES if s["study_id"] in require_pmid)
 
@@ -407,6 +408,30 @@ def test_queue_pass_eighteen_gold_is_numeric_and_honest():
     assert med["culture_time_days"] == 2.0
     assert "burchak2022-gelnb-high-print" not in by_id
     assert "burchak2022-mts" not in by_id
+
+
+def test_queue_pass_nineteen_gold_is_numeric_and_honest():
+    by_id = {e["experiment_id"]: e for e in EXPERIMENTS}
+    g15d7 = by_id["martinezgarcia2021-gelma-15pct-iadsc-d7"]
+    assert g15d7["cell_type"] == "adipose_MSC"
+    assert g15d7["material_class"] == "GelMA"
+    assert g15d7["measurements"][0]["value"] == 37.46
+    assert g15d7["stiffness_kpa"] == 214.50
+    assert by_id["martinezgarcia2021-gelma-15pct-iadsc-d14"]["measurements"][0]["value"] == 24.34
+    assert by_id["martinezgarcia2021-gelma-10pct-iadsc-d14"]["measurements"][0]["value"] == 76.0
+    assert "martinezgarcia2021-gelma-15pct-iadsc-d0" not in by_id
+    alg = by_id["read2023-alg1-tc28-print-d1"]
+    assert alg["cell_type"] == "articular_chondrocyte"
+    assert alg["culture_model"] == "3D_bioprint"
+    assert alg["measurements"][0]["value"] == 75.0
+    assert alg.get("stiffness_kpa") is None
+    assert "read2023-alg1cnc1" not in by_id
+    k7 = by_id["kolan2019-alg-gel-asc-d7"]
+    assert k7["material_class"] == "gelatin_alginate"
+    assert k7["measurements"][0]["value"] == 64.0
+    assert by_id["kolan2019-alg-gel-asc-d0"]["measurements"][0]["value"] == 81.0
+    assert "kolan2019-glass" not in by_id
+    assert "boretti2024" not in {e["study_id"] for e in EXPERIMENTS}
 
 
 def test_curated_viability_excludes_auto_promote():

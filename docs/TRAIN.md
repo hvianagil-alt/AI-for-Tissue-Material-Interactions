@@ -66,4 +66,4 @@ python3 -m tissuelab.teach_model     # a aula, split errado vs certo
 
 Não há botão Train na UI. Não há GPU. `LeaveOneGroupOut(groups=study_id)` é o treino a sério — está em `src/tissuelab/benchmark.py`.
 
-HGB é calculado no LOPO mas só entra no conjunto de deploy a ≥ 40 papers (`papers_needed_trees`). A 62 papers o mixed/shrinkage já é o estimador estável; nesta tabela o dummy fica ligeiramente à frente em MAE (11.17 vs 11.26) mas a app continua a servir `shrinkage_estimate`. O começo de confiança do produto é **100 papers** (`papers_needed_beginning`), não 40, e 2000 gold não entra esta semana. Até lá, extrair papers no bairro dos géis que já tens é treinar.
+HGB é calculado no LOPO mas só entra no conjunto de deploy a ≥ 40 papers (`papers_needed_trees`). A 65 papers o mixed/shrinkage já é o estimador estável; nesta tabela o dummy fica ligeiramente à frente em MAE (11.56 vs 11.69) mas a app continua a servir `shrinkage_estimate`. O começo de confiança do produto é **100 papers** (`papers_needed_beginning`), não 40, e 2000 gold não entra esta semana. Até lá, extrair papers no bairro dos géis que já tens é treinar.

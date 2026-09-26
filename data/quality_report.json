@@ -1,12 +1,12 @@
 {
-  "n_studies": 148,
-  "n_experiments": 360,
-  "n_measurements": 414,
-  "n_numeric_viability": 171,
+  "n_studies": 151,
+  "n_experiments": 367,
+  "n_measurements": 421,
+  "n_numeric_viability": 178,
   "n_auto_promoted_viability": 69,
-  "n_hand_studies": 101,
-  "n_hand_viability_studies": 62,
-  "n_with_stiffness_kpa": 136,
+  "n_hand_studies": 104,
+  "n_hand_viability_studies": 65,
+  "n_with_stiffness_kpa": 140,
   "experiments_per_study": {
     "aitchison2024": 3,
     "akkineni2022": 6,
@@ -45,6 +45,7 @@
     "kihara2026": 2,
     "kilian2020": 5,
     "kim2015": 2,
+    "kolan2019": 2,
     "kudva2017": 2,
     "kudva2018": 3,
     "lan2021": 2,
@@ -61,6 +62,7 @@
     "ma2012": 5,
     "maneechan2026": 1,
     "markstedt2015": 2,
+    "martinezgarcia2021": 4,
     "martyniak2023": 6,
     "mckinney2019": 1,
     "mcmillan2025": 2,
@@ -124,6 +126,7 @@
     "pmid42306631": 1,
     "pmid42434726": 2,
     "poldervaart2017": 5,
+    "read2023": 1,
     "ren2016": 1,
     "rojas2025": 4,
     "rouillard2011": 2,
@@ -160,8 +163,8 @@
   "experiments_per_cell_type": {
     "ATDC5": 4,
     "MSC": 94,
-    "adipose_MSC": 33,
-    "articular_chondrocyte": 192,
+    "adipose_MSC": 39,
+    "articular_chondrocyte": 193,
     "auricular_chondrocyte": 16,
     "cartilage_progenitor": 1,
     "nasal_chondrocyte": 20
@@ -171,17 +174,17 @@
     "dna_fold_vs_day0": 7,
     "morphology_spherical": 23,
     "sgag_histology": 72,
-    "viability_pct": 310
+    "viability_pct": 317
   },
   "measurements_per_evidence": {
-    "numeric_text": 242,
+    "numeric_text": 249,
     "qualitative_text": 172
   },
   "percent_missing": {
-    "stiffness_kpa": 62.2,
-    "polymer_concentration_wt_pct": 45.8,
-    "species": 12.5,
-    "passage": 66.9,
+    "stiffness_kpa": 61.9,
+    "polymer_concentration_wt_pct": 45.0,
+    "species": 12.3,
+    "passage": 67.6,
     "porosity_pct": 100.0
   },
   "modeling_notes": [

@@ -1,22 +1,22 @@
 {
-  "n_rows": 171,
-  "n_studies": 62,
-  "served_parameters": 58,
+  "n_rows": 178,
+  "n_studies": 65,
+  "served_parameters": 59,
   "served_locked_hyperparameters": 11,
-  "served_empirical_priors": 47,
+  "served_empirical_priors": 48,
   "budget": {
-    "n_rows": 171,
-    "n_studies": 62,
+    "n_rows": 178,
+    "n_studies": 65,
     "n_materials": 28,
     "n_cell_types": 6,
-    "n_with_kpa": 52,
-    "rows_per_paper": 2.76,
+    "n_with_kpa": 56,
+    "rows_per_paper": 2.74,
     "dummy_parameters": 1,
     "material_mean_parameters": 28,
     "ridge_parameters_guess": 37,
     "served_locked_hyperparameters": 11,
-    "served_empirical_priors": 47,
-    "served_parameters": 58,
+    "served_empirical_priors": 48,
+    "served_parameters": 59,
     "starter_feature_count": 9,
     "papers_needed_ridge": 90,
     "papers_needed_mixed": 25,
@@ -30,62 +30,62 @@
     "what_to_add_first": "studies"
   },
   "random_split_ridge": {
-    "mae": 11.755559688253886,
-    "r2": -0.11245980915347675,
-    "train_mae": 7.928895688640809,
-    "n_train": 136,
-    "n_test": 35,
+    "mae": 11.940725583415242,
+    "r2": -0.1304976022530282,
+    "train_mae": 8.529051831911545,
+    "n_train": 142,
+    "n_test": 36,
     "test_papers": [
       "aitchison2024",
       "akkineni2022",
       "bachmann2020",
-      "carvalho2025",
+      "fang2024",
+      "garciaaponte2025",
       "gatenholm2020",
-      "jodat2020",
+      "hosseini2025",
+      "jovic2024",
       "kessel2020",
       "kilian2020",
+      "kudva2017",
       "liu2025",
-      "loveland2026",
+      "lopezmarcial2022",
       "markstedt2015",
       "martyniak2023",
       "mcmillan2025",
       "orabi2023",
+      "pangjantuk2024",
       "park2013",
       "pei2023",
-      "perriergroult2026",
       "poldervaart2017",
-      "ren2016",
       "sarsenova2022",
       "setayeshmehr2021",
       "visscher2018",
-      "weitkamp2023",
       "xie2022",
-      "yi2019",
-      "yin2023",
-      "zhang2024",
-      "zielinska2023"
+      "zeng2023",
+      "zhang2023pva",
+      "zhang2024"
     ]
   },
   "ridge_lopo": {
-    "mae": 12.10115289638845,
-    "r2": -0.12617739900713998,
+    "mae": 13.47928886592258,
+    "r2": -0.7147886270072266,
     "n_coefficients": 42
   },
   "dummy_lopo": {
-    "mae": 11.171703398706512,
-    "r2": -0.022292383606827615
+    "mae": 11.557965778287633,
+    "r2": -0.021143394804303828
   },
   "material_mean_lopo": {
-    "mae": 12.402908621019812,
-    "r2": -0.16057871758308795
+    "mae": 12.501649145329027,
+    "r2": -0.13318006052061282
   },
   "shrinkage_lopo": {
-    "mae": 11.264849694490396,
-    "r2": -0.028382462665887065
+    "mae": 11.690711698529784,
+    "r2": -0.04874893128542257
   },
   "hgb_lopo": {
-    "mae": 12.526750315883948,
-    "r2": -0.1521897908901697
+    "mae": 12.606101773949137,
+    "r2": -0.1367052957350905
   },
   "deployed_estimator": "shrinkage",
   "mvp_pass": 0,

@@ -1225,6 +1225,52 @@ STUDIES: list[dict] = [
             "G′ 0.21–1.38 kPa is storage modulus and is not stored as Young's."
         ),
     },
+    {
+        "study_id": "martinezgarcia2021",
+        "citation": "Martinez-Garcia et al., Int. J. Mol. Sci. 2021",
+        "doi": "10.3390/ijms221810153",
+        "pmid": "34576318",
+        "year": 2021,
+        "journal": "International Journal of Molecular Sciences",
+        "pmcid": "PMC8468163",
+        "license": "CC-BY",
+        "notes": (
+            "Immortalized human iADSC13 P19–23, 2e6/ml in 5/10/15% GelMA, 0.5% LAP, 405 nm 5 min (cast, mould removed). "
+            "Calcein-AM/PI: 15% 37.46% day 7 and 24.34% day 14; 10% median 76% day 14; 5% median 84% day 14. "
+            "Day-0 98/93/90.1% floors not stored. Starting cell-free E 6.94 / 72.08 / 214.50 kPa. "
+            "No TGF. Independent of fang2024 (rat BMSC, no kPa)."
+        ),
+    },
+    {
+        "study_id": "read2023",
+        "citation": "Read et al., Pharmaceutics 2023",
+        "doi": "10.3390/pharmaceutics15102432",
+        "pmid": "37896192",
+        "year": 2023,
+        "journal": "Pharmaceutics",
+        "pmcid": "PMC10609932",
+        "license": "CC-BY",
+        "notes": (
+            "TC28a2 immortalized articular chondrocytes 2e6/ml printed in 1% alginate, 150 mM CaCl2. "
+            "ImageJ live/dead estimated 75% Alg1 post-print (24 h). Alg1CNC1 94% not stored. "
+            "Manual encapsulate above 70% floor not stored. Print pressure is not Young's. G′ difference is not starting E."
+        ),
+    },
+    {
+        "study_id": "kolan2019",
+        "citation": "Kolan et al., Int. J. Bioprint. 2019",
+        "doi": "10.18063/ijb.v5i2.2.204",
+        "pmid": "32596547",
+        "year": 2019,
+        "journal": "International Journal of Bioprinting",
+        "pmcid": "PMC7310267",
+        "license": "CC-BY-NC",
+        "notes": (
+            "Human ASC P2–P6 2e6/ml printed in 3% alginate + 3% gelatin, 0.3 M CaCl2. "
+            "Calcein/EthD-1 bioink-only 81±9% day 0 and 64% day 7. "
+            "Bioactive-glass/PCL arms not stored. No starting Young's. No TGF."
+        ),
+    },
 ]
 
 
@@ -5664,6 +5710,163 @@ def _queue_pass_eighteen() -> list[dict]:
     return rows
 
 
+def _queue_pass_nineteen() -> list[dict]:
+    """GelMA concentration deaths with starting E; alginate print 75%; Alg-Gel print 64%."""
+    rows = []
+    for conc, day, val, sd, kpa, ksd, extra, conf in (
+        (
+            5.0,
+            14.0,
+            84.0,
+            None,
+            6.94,
+            1.89,
+            "Paper: median cell viability in 5% GelMA decreased from 98% at 0 d to 84% after 14 d.",
+            "medium",
+        ),
+        (
+            10.0,
+            14.0,
+            76.0,
+            None,
+            72.08,
+            9.50,
+            "Paper: median cell viability in 10% GelMA decreased from 93% at 0 d to 76% at 14 d.",
+            "medium",
+        ),
+        (
+            15.0,
+            7.0,
+            37.46,
+            None,
+            214.50,
+            24.53,
+            "Paper: 15% GelMA viability decreased from 90.1% at 0 d to 37.46% at 7 d.",
+            "high",
+        ),
+        (
+            15.0,
+            14.0,
+            24.34,
+            None,
+            214.50,
+            24.53,
+            "Paper: 15% GelMA viability 24.34% at 14 d.",
+            "high",
+        ),
+    ):
+        meas_kw = {"evidence": "numeric_text", "n": 3, "notes": extra}
+        if sd is not None:
+            meas_kw["sd"] = sd
+        rows.append(
+            {
+                "experiment_id": f"martinezgarcia2021-gelma-{int(conc)}pct-iadsc-d{int(day)}",
+                "study_id": "martinezgarcia2021",
+                "material_class": "GelMA",
+                "material_detail": f"{int(conc)}% w/v GelMA, 0.5% w/v LAP, 405 nm 7 mW/cm2 5 min (cast, mould removed)",
+                "crosslinking": "photocrosslink",
+                "polymer_concentration_wt_pct": conc,
+                "stiffness_kpa": kpa,
+                "stiffness_sd_kpa": ksd,
+                "stiffness_method": "unconfined_compression_youngs_cell_free_d0",
+                "surface_chemistry": "native",
+                "has_adhesion_ligand": 1.0,
+                "cell_type": "adipose_MSC",
+                "species": "human",
+                "culture_model": "3D_encapsulation",
+                "growth_factor": "none",
+                "culture_time_days": day,
+                "cell_density_million_per_ml": 2.0,
+                "chemical_modification": "methacrylated",
+                "architecture": "bulk_hydrogel",
+                "application": "in_vitro_cartilage",
+                "live_dead_kit": "calcein_propidium",
+                "n_replicates": 3,
+                "extracted_from": f"PMC8468163 Fig. 5b {int(conc)}% GelMA iADSC day {int(day)}",
+                "curator_confidence": conf,
+                "notes": (
+                    f"Immortalized iADSC13 P19–23, 2e6/ml. Live/dead {val}% day {int(day)} in {int(conc)}% GelMA. "
+                    f"{extra} Starting cell-free E {kpa}±{ksd} kPa. Day-0 floors not stored. No TGF."
+                ),
+                "measurements": [_m("viability_pct", val, "%", **meas_kw)],
+            }
+        )
+    rows.append(
+        {
+            "experiment_id": "read2023-alg1-tc28-print-d1",
+            "study_id": "read2023",
+            "material_class": "alginate",
+            "material_detail": "1% w/v alginate, 150 mM CaCl2, extrusion-printed into agarose bath",
+            "crosslinking": "ionic",
+            "polymer_concentration_wt_pct": 1.0,
+            "surface_chemistry": "none",
+            "has_adhesion_ligand": 0.0,
+            "cell_type": "articular_chondrocyte",
+            "species": "human",
+            "culture_model": "3D_bioprint",
+            "growth_factor": "none",
+            "culture_time_days": 1.0,
+            "cell_density_million_per_ml": 2.0,
+            "chemical_modification": "unmodified",
+            "architecture": "3d_printed",
+            "application": "bioprinting",
+            "live_dead_kit": "calcein_ethidium",
+            "extracted_from": "PMC10609932 Fig. 6b Alg1 bioprint ImageJ live/dead",
+            "curator_confidence": "medium",
+            "notes": (
+                "TC28a2 immortalized articular chondrocytes, 2e6/ml. Paper: estimated 75% Alg1 post-print. "
+                "Alg1CNC1 94% not stored. Manual above 70% floor not stored. Print pressure is not Young's."
+            ),
+            "measurements": [
+                _m(
+                    "viability_pct",
+                    75.0,
+                    "%",
+                    evidence="numeric_text",
+                    notes="Paper: estimated 75% bioprinted Alg1.",
+                )
+            ],
+        }
+    )
+    for day, val, sd, extra in (
+        (0.0, 81.0, 9.0, "Paper: bioink-only scaffolds 81±9% after crosslinking."),
+        (7.0, 64.0, None, "Paper: Alg-Gel hydrogel decreased from 81% to 64% on day 7."),
+    ):
+        meas_kw = {"evidence": "numeric_text", "notes": extra}
+        if sd is not None:
+            meas_kw["sd"] = sd
+        rows.append(
+            {
+                "experiment_id": f"kolan2019-alg-gel-asc-d{int(day)}",
+                "study_id": "kolan2019",
+                "material_class": "gelatin_alginate",
+                "material_detail": "3% w/v alginate + 3% w/v gelatin type B, 0.3 M CaCl2 10 min, printed",
+                "crosslinking": "ionic",
+                "polymer_concentration_wt_pct": 6.0,
+                "surface_chemistry": "native",
+                "has_adhesion_ligand": 1.0,
+                "cell_type": "adipose_MSC",
+                "species": "human",
+                "culture_model": "3D_bioprint",
+                "growth_factor": "none",
+                "culture_time_days": day,
+                "cell_density_million_per_ml": 2.0,
+                "chemical_modification": "unmodified",
+                "architecture": "3d_printed",
+                "application": "bioprinting",
+                "live_dead_kit": "calcein_ethidium",
+                "extracted_from": f"PMC7310267 Alg-Gel bioink-only live/dead day {int(day)}",
+                "curator_confidence": "medium",
+                "notes": (
+                    f"Human ASC P2–P6, 2e6/ml. Live/dead {val}% day {int(day)}. {extra} "
+                    "Bioactive-glass/PCL arms not stored. No starting Young's. No TGF."
+                ),
+                "measurements": [_m("viability_pct", val, "%", **meas_kw)],
+            }
+        )
+    return rows
+
+
 EXPERIMENTS: list[dict] = (
     _bachmann_experiments()
     + _other_experiments()
@@ -5687,4 +5890,5 @@ EXPERIMENTS: list[dict] = (
     + _queue_pass_sixteen()
     + _queue_pass_seventeen()
     + _queue_pass_eighteen()
+    + _queue_pass_nineteen()
 )
