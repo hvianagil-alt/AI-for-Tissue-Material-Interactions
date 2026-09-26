@@ -34,7 +34,7 @@ Typical kPa = median published kPa on that gel × cell. Days = 14 (encapsulate) 
 
 ## When to grow the table
 
-Grow the gold table if the winner is qualitative-only for that cell, or if print/matrix has fewer than 2 papers. Next honest n is ~40 papers with numeric live/dead + starting-gel kPa when published. Do not harvest more Amass abstracts to move a viability number, and do not promote regex/silver into gold. Articular GelMA numeric live/dead is still the hole; the honest sentence is the product until a paper reports a mean.
+Grow the gold table by extracting neighborhood papers (same gels/cells as rows you already have), not a random harvest. Beginning target is **100 independent live/dead papers**. 40 is only the HGB report gate. Do not harvest more Amass abstracts to move a viability number, and do not promote regex/silver into gold.
 
 ## Not this pass
 

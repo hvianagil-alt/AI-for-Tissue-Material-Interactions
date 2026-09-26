@@ -19,7 +19,7 @@ The point of the MVP is not “AI for biology”. It is:
 |---|---|
 | SQLite experimental DB (`studies` / `experiments` / `measurements`) | Done — `data/tissuelab.sqlite` |
 | Hand-curated live/dead training view (`v_model_viability`) | Done — `data/literature_viability.csv` |
-| Literature viability (empirical Bayes ± adaptive LOPO band) | Done (served; this batch shrinkage MAE is slightly worse than dummy; R² still < 0) |
+| Literature viability (empirical Bayes ± adaptive LOPO band) | Done (served; 32 papers, shrinkage LOPO MAE 10.8 vs dummy 12.4, R² 0.12; MVP 15% bar still unmet) |
 | HTML product: Protocol / Lookup / Table / Compare / CSV | Done — English default |
 | Buyable-minimal plan | `docs/BMP.md` |
 | How to train the viability model (videos → this table) | `docs/ML_PLAN.md` |
@@ -35,7 +35,7 @@ The point of the MVP is not “AI for biology”. It is:
 | Streamlit app + FastAPI | Done |
 | Competitor / dataset landscape | `docs/LANDSCAPE.md` |
 
-The **source of truth for science** is `data/tissuelab.sqlite` (see `docs/DATA_MODEL.md`). Train on `data/train_gold.csv` (hand-curated live/dead % plus chemistry / architecture / application). Harvested papers live in `papers` (~9.7k records, tagged in `data/papers_uniform.csv`). Regex candidates and auto-promoted `pmid*` rows are **not** training labels.
+The **source of truth for science** is `data/tissuelab.sqlite` (see `docs/DATA_MODEL.md`). Train on `data/train_gold.csv` (hand-curated live/dead % plus chemistry / architecture / application). Harvested papers live in `papers` (~12k records, tagged in `data/papers_uniform.csv`) — that is the searchable library, not the model’s n. Regex candidates and auto-promoted `pmid*` rows are **not** training labels. There is no 2000-study model to turn on.
 
 ## Use it now
 
@@ -62,21 +62,23 @@ pip install -e ".[dev]" && pytest -q
 
 - The kernel’s global n_eff is ~30 for every query — the number that matters is **effective n on this gel**.
 - **Proliferation / differentiation / ECM** in the radar are mapped 0–100 scores plus a simulator prior. Do not cite them as measurements.
-- Lookup serves **empirical-Bayes shrinkage**, never a dummy mean and never a tree until ≥40 papers. HGB can look better on this split (MAE 12.3 vs dummy 13.3) and has already reversed once — it stays report-only. The MVP bar (15% better than dummy, R²>0) is still unmet.
+- Lookup serves **empirical-Bayes shrinkage** (**42 parameters**: 11 locked kernel hyperparameters + 31 gel×cell means), never a dummy mean and never a tree until ≥40 papers. HGB can look better on a small split and has already reversed — it stays report-only. Beginning target is **100 papers**. The MVP bar (15% better than dummy, R²>0) is still unmet.
 
 ### Current baseline
 
 | Check | Value |
 |---|---|
-| Hand-curated studies | 64 |
-| Hand experiments | ~260 |
-| Numeric live/dead (training) | 75 rows / 25 papers |
+| Hand-curated studies | 71 |
+| Hand experiments | ~280 |
+| Numeric live/dead (training) | 94 rows / 32 papers |
+| Served model parameters | 42 (11 locked kernel + 31 gel×cell means) |
+| Beginning target | 100 independent live/dead papers |
 | Harvested papers tagged | 12024 (2317 training-relevant) |
-| Dummy LOPO MAE | 13.32 |
-| Shrinkage LOPO MAE | 13.60 (deployed; does not beat dummy this split) |
-| Material-mean LOPO MAE | 15.26 |
-| Ridge LOPO MAE | 16.42 (not deployed) |
-| HGB LOPO MAE | 12.35 (reported only; trees need ≥40 papers) |
+| Dummy LOPO MAE | 12.44 |
+| Shrinkage LOPO MAE | 10.82 (deployed; beats dummy, R² 0.12) |
+| Material-mean LOPO MAE | 12.98 |
+| Ridge LOPO MAE | 13.40 (not deployed) |
+| HGB LOPO MAE | 12.07 (reported only; trees need ≥40 papers) |
 | Simulated XGBoost holdout R² | ~0.92 — **ignore** for science |
 
 The product is ready to **use as Protocol**: cells + job → extracted protocol + papers. Lookup is the evidence card. It is not ready to claim a model that beats “GelMA ~25 kPa + TGF-β3”.

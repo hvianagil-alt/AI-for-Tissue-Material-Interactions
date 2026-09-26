@@ -268,7 +268,7 @@ def run_lesson(*, verbose: bool = True) -> dict:
         "    3. NÃO mais variáveis agora. Cada coluna extra (passagem, densidade, porosidade)\n"
         "       é mais um parâmetro com 15 labs. O Ridge já perde por isso.\n"
         "    4. Kit do ensaio (calceína vs MTT) só quando estiver preenchido — senão misturas y.\n"
-        "    5. NÃO mais abstracts da harvest. 8.5k papers sem número extraído não treinam nada.\n\n"
+        "    5. NÃO mais abstracts da harvest. ~12k papers sem número extraído não treinam nada.\n\n"
         f"  Começo de confiança (Ridge-scale): {budget['papers_needed_beginning']} papers. "
         f"Hoje {budget['n_studies']}.\n"
         f"  Gate para o próximo modelo (mixed / Ridge de novo): "

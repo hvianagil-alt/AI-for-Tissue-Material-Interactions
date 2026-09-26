@@ -31,7 +31,7 @@ Harvest more papers only after the top 250 queued items are extracted or rejecte
 
 There is **no** public `material × chondrocyte × outcome` CSV. BIOMATDB and OOCDB are search portals. The better source we added is **Europe PMC open fulltext** (free XML), used before paid Amass fulltext.
 
-Current snapshot: hand-curated live/dead in `data/train_gold.csv` (split by `study_id`); harvested papers tagged in `data/papers_uniform.csv`. Deployed estimator is **empirical-Bayes shrinkage** (kernel over published conditions, shrunk to the material mean) — not Ridge, not a neural net. Chemistry / architecture / application are match-only kernel bonuses. R² is still ~0, `mvp_pass` false. The 15% MAE bar needs more independent live/dead papers, not more AI.
+Current snapshot: hand-curated live/dead in `data/train_gold.csv` (**94 numeric rows / 32 papers**); harvested papers tagged in `data/papers_uniform.csv` (**12 024**, library not labels). Deployed estimator is **empirical-Bayes shrinkage** — not Ridge, not HGB, not a neural net. There is no 2000-study model. R² is still ~0.12, `mvp_pass` false. The 15% MAE bar needs more independent live/dead papers, not more AI.
 
 How to grow that estimator without copying a random-split materials notebook: `docs/ML_PLAN.md` (mixed models + LOPO + Afflerbach workflow, mapped onto this table). If you have never trained a model, start with `docs/TRAIN.md` (`python3 -m tissuelab.teach_model`).
 
@@ -46,7 +46,7 @@ How to grow that estimator without copying a random-split materials notebook: `d
 
 ### Weeks 1–4 — extract, do not model-shop
 
-Work the queue top-down (`data/extraction_queue.csv`). Target **40 papers → ~200 experimental conditions**, of which **≥ 80 numeric viability** and **≥ 60 with stiffness_kPa**. One paper is one `studies` row; each gel/timepoint is an `experiments` row. Missing values stay `NULL`.
+Work the queue top-down (`data/extraction_queue.csv`), preferring papers in the same gel×cell neighborhood as existing gold. Target **100 papers as the beginning of a working predictor** (~Ridge-scale). 40 papers is only the tree report gate. One paper is one `studies` row; each gel/timepoint is an `experiments` row. Missing values stay `NULL`.
 
 Time: ~1.5–3 h per paper if you only take tables/text (not figure-digitizing). 40 papers ≈ **two focused weeks**.
 

@@ -1,66 +1,79 @@
 {
-  "n_rows": 75,
-  "n_studies": 25,
+  "n_rows": 94,
+  "n_studies": 32,
+  "served_parameters": 42,
+  "served_locked_hyperparameters": 11,
+  "served_empirical_priors": 31,
   "budget": {
-    "n_rows": 75,
-    "n_studies": 25,
+    "n_rows": 94,
+    "n_studies": 32,
     "n_materials": 20,
     "n_cell_types": 5,
-    "n_with_kpa": 26,
-    "rows_per_paper": 3.0,
+    "n_with_kpa": 29,
+    "rows_per_paper": 2.94,
     "dummy_parameters": 1,
     "material_mean_parameters": 20,
     "ridge_parameters_guess": 28,
+    "served_locked_hyperparameters": 11,
+    "served_empirical_priors": 31,
+    "served_parameters": 42,
     "starter_feature_count": 9,
     "papers_needed_ridge": 90,
     "papers_needed_mixed": 25,
     "papers_needed_trees": 40,
+    "papers_needed_beginning": 100,
     "have_enough_for_dummy": 1,
     "have_enough_for_mixed": 1,
     "have_enough_for_ridge": 0,
     "have_enough_for_trees": 0,
+    "have_enough_for_beginning": 0,
     "what_to_add_first": "studies"
   },
   "random_split_ridge": {
-    "mae": 12.373274817579311,
-    "r2": -1.697859976554576,
-    "train_mae": 8.05891263806082,
-    "n_train": 60,
-    "n_test": 15,
+    "mae": 10.671663857622907,
+    "r2": 0.1639602039309529,
+    "train_mae": 7.415680160862061,
+    "n_train": 75,
+    "n_test": 19,
     "test_papers": [
+      "aitchison2024",
+      "bachmann2020",
       "gatenholm2020",
-      "jovic2026",
-      "kessel2020",
+      "hu2012",
+      "jovic2024",
+      "lan2021",
       "markstedt2015",
-      "martyniak2023",
-      "mcmillan2025",
-      "park2013",
+      "perezdiaz2023",
+      "perriergroult2026",
+      "poldervaart2017",
+      "ren2016",
       "rojas2025",
-      "salinas2007",
       "scalzone2022",
-      "zhang2024"
+      "xie2022",
+      "zhang2024",
+      "ziverec2026"
     ]
   },
   "ridge_lopo": {
-    "mae": 16.415656245055374,
-    "r2": -0.8948878862053573,
+    "mae": 13.39857437322124,
+    "r2": -0.23905754550370806,
     "n_coefficients": 33
   },
   "dummy_lopo": {
-    "mae": 13.322089556678783,
-    "r2": -0.04455258925213634
+    "mae": 12.442959696612506,
+    "r2": -0.03523412717003649
   },
   "material_mean_lopo": {
-    "mae": 15.256186476508004,
-    "r2": -0.23879155430086607
+    "mae": 12.981720981250707,
+    "r2": -0.0562795927209625
   },
   "shrinkage_lopo": {
-    "mae": 13.59794943328593,
-    "r2": -0.08292575100468191
+    "mae": 10.820551670280135,
+    "r2": 0.12325236646621462
   },
   "hgb_lopo": {
-    "mae": 12.349942545426337,
-    "r2": 0.15472848809655715
+    "mae": 12.069254041922713,
+    "r2": 0.11714660953497924
   },
   "deployed_estimator": "shrinkage",
   "mvp_pass": 0,
@@ -72,10 +85,10 @@
       "stiffness_kpa": 5.0,
       "culture_time_days": 21.0
     },
-    "predicted_viability_pct": 91.6,
+    "predicted_viability_pct": 91.2,
     "material_prior": 94.0,
-    "local_kernel": 81.7,
-    "n_eff_same_material": 2.86,
+    "local_kernel": 81.9,
+    "n_eff_same_material": 3.55,
     "estimator": "shrinkage"
   },
   "what_to_add_first": "more independent papers with numeric live/dead",

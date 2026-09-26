@@ -60,6 +60,7 @@ def test_hand_curated_replaces_auto_promoted():
         "ziverec2026", "visscher2018", "mcmillan2025",
         "lan2022", "scalzone2022",
         "lan2021", "jovic2024", "hosseini2025", "boere2015",
+        "ren2016", "zeng2023", "perriergroult2026",
     }
     assert all(s.get("pmid") for s in STUDIES if s["study_id"] in require_pmid)
 
@@ -148,6 +149,26 @@ def test_queue_pass_eight_gold_is_numeric_and_honest():
     assert ha.get("stiffness_kpa") is None
     peg = by_id["boere2015-pnc-peg-1p5h"]
     assert peg["measurements"][0]["value"] == 43.0
+
+
+def test_queue_pass_nine_neighborhood_gold_is_numeric_and_honest():
+    by_id = {e["experiment_id"]: e for e in EXPERIMENTS}
+    ren = by_id["ren2016-col2-print-d1"]
+    assert ren["cell_type"] == "articular_chondrocyte"
+    assert ren["species"] == "rabbit"
+    assert ren["measurements"][0]["value"] == 93.0
+    assert ren.get("stiffness_kpa") is None
+    zeng = by_id["zeng2023-gelma-bnc-d1"]
+    assert zeng["cell_type"] == "auricular_chondrocyte"
+    assert zeng["stiffness_kpa"] == 49.94
+    assert zeng["measurements"][0]["value"] == 96.81
+    assert by_id["zeng2023-gelma-bnc-d7"].get("stiffness_kpa") is None
+    fib = by_id["perriergroult2026-fibrin-nasal-d21"]
+    assert fib["cell_type"] == "nasal_chondrocyte"
+    assert fib["material_class"] == "fibrin"
+    assert fib["growth_factor"] == "none"
+    assert fib["measurements"][0]["value"] == 71.0
+    assert "BIT" in fib["notes"]
 
 
 def test_curated_viability_excludes_auto_promote():

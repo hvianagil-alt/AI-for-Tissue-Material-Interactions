@@ -1,15 +1,19 @@
 {
-  "n_rows": 75,
-  "n_studies": 25,
+  "n_rows": 94,
+  "n_studies": 32,
   "studies": [
     "aitchison2024",
     "bachmann2020",
+    "boere2015",
     "daly2016",
     "gatenholm2020",
+    "hosseini2025",
     "hu2012",
     "ingavle2012",
+    "jovic2024",
     "jovic2026",
     "kessel2020",
+    "lan2021",
     "lan2022",
     "lindborg2015",
     "markstedt2015",
@@ -18,42 +22,45 @@
     "ortega2024",
     "park2013",
     "perezdiaz2023",
+    "perriergroult2026",
     "poldervaart2017",
+    "ren2016",
     "rojas2025",
     "salinas2007",
     "scalzone2022",
     "sun2015",
     "visscher2018",
     "xie2022",
+    "zeng2023",
     "zhang2024",
     "ziverec2026"
   ],
-  "viability_mean": 79.59479999999999,
-  "viability_std": 19.058307925232317,
+  "viability_mean": 80.81680851063831,
+  "viability_std": 18.051797945349147,
   "dummy_lopo": {
-    "mae": 13.322089556678783,
-    "r2": -0.04455258925213634
+    "mae": 12.442959696612506,
+    "r2": -0.03523412717003649
   },
   "ridge_lopo": {
-    "mae": 16.415656245055374,
-    "r2": -0.8948878862053573
+    "mae": 13.39857437322124,
+    "r2": -0.23905754550370806
   },
   "hgb_lopo": {
-    "mae": 12.349942545426337,
-    "r2": 0.15472848809655715
+    "mae": 12.069254041922713,
+    "r2": 0.11714660953497924
   },
   "material_mean_lopo": {
-    "mae": 15.256186476508004,
-    "r2": -0.23879155430086607
+    "mae": 12.981720981250707,
+    "r2": -0.0562795927209625
   },
   "shrinkage_lopo": {
-    "mae": 13.59794943328593,
-    "r2": -0.08292575100468191
+    "mae": 10.820551670280135,
+    "r2": 0.12325236646621462
   },
   "deployed_estimator": "shrinkage",
   "deployed_lopo": {
-    "mae": 13.59794943328593,
-    "r2": -0.08292575100468191
+    "mae": 10.820551670280135,
+    "r2": 0.12325236646621462
   },
   "papers_needed_trees": 40,
   "pass_bar": {
@@ -69,7 +76,7 @@
     "Deployed estimator is the LOPO winner among dummy, material-class mean, and shrinkage; dummy is never served (shrinkage stays if dummy would win). Ridge overfits this table. HGB is computed every run but eligible to deploy only at >=40 papers."
   ],
   "status": "baseline",
-  "beats_dummy": false,
+  "beats_dummy": true,
   "ridge_beats_dummy": false,
   "hgb_beats_dummy": true,
   "mvp_pass": false

@@ -50,7 +50,7 @@ Ordem do que falta:
 2. **Dentro** desses papers, condições que mexam em kPa, TGF, dias, encapsular vs print. Seis linhas do Bachmann não valem seis papers.
 3. **Não** mais variáveis agora (passagem, densidade, porosidade). O Ridge já tem demasiados coeficientes para 15 labs e **perde** para a média.
 4. Kit do ensaio (calceína vs MTT) só quando estiver preenchido — senão misturas o y.
-5. **Não** mais abstracts Amass. 8.5k papers sem número extraído não treinam nada.
+5. **Não** mais abstracts Amass. ~12k papers colhidas sem live/dead extraído à mão não treinam nada. 2000 no modelo não é um botão — o n é papers com número na tabela ouro.
 
 ## O ciclo real neste repo
 
@@ -66,4 +66,4 @@ python3 -m tissuelab.teach_model     # a aula, split errado vs certo
 
 Não há botão Train na UI. Não há GPU. `LeaveOneGroupOut(groups=study_id)` é o treino a sério — está em `src/tissuelab/benchmark.py`.
 
-HGB é calculado no LOPO mas só entra no conjunto de deploy a ≥ 40 papers (`papers_needed_trees`). A 25 papers o mixed/shrinkage é o estimador estável; a app continua a servir `shrinkage_estimate`. O começo de confiança do produto é **100 papers** (`papers_needed_beginning`), não 40. Até lá, extrair papers no bairro dos géis que já tens é treinar.
+HGB é calculado no LOPO mas só entra no conjunto de deploy a ≥ 40 papers (`papers_needed_trees`). A 32 papers o mixed/shrinkage já é o estimador estável (e nesta tabela bate o dummy); a app continua a servir `shrinkage_estimate`. O começo de confiança do produto é **100 papers** (`papers_needed_beginning`), não 40, e 2000 gold não entra esta semana. Até lá, extrair papers no bairro dos géis que já tens é treinar.

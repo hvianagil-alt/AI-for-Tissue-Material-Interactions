@@ -729,6 +729,39 @@ STUDIES: list[dict] = [
         "license": "NIH public access",
         "notes": "Equine P2 stifle chondrocytes, 5e6/ml, in PNC–HA vs PNC–PEG plotted into pHMGCL–NHS fiber reinforcement. Live/dead 1.5 h: HA 90±9%, PEG 43±23%. G′ ~9 kPa at 3 h is not paired to the 1.5 h viability rows. Composite Young's 645 kPa is the thermoplastic, not gel E.",
     },
+    {
+        "study_id": "ren2016",
+        "citation": "Ren et al., BMC Musculoskelet. Disord. 2016",
+        "doi": "10.1186/s12891-016-1130-8",
+        "pmid": "27439428",
+        "year": 2016,
+        "journal": "BMC Musculoskeletal Disorders",
+        "pmcid": "PMC4955200",
+        "license": "CC-BY",
+        "notes": "Rabbit P3 articular chondrocytes in 10% w/v collagen II, layer-by-layer print. Live/dead Calcein/PI day 1 after fabrication 93±3%; groups A/B/C and gradient vs homogeneous not different. Trypan 98±1% is flask, not stored. No starting gel E.",
+    },
+    {
+        "study_id": "zeng2023",
+        "citation": "Zeng et al., Int. J. Bioprint. 2023",
+        "doi": "10.18063/ijb.v9i1.631",
+        "pmid": "36636133",
+        "year": 2023,
+        "journal": "International Journal of Bioprinting",
+        "pmcid": "PMC9830992",
+        "license": "CC-BY",
+        "notes": "Rabbit P2 auricular chondrocytes, 1e7/ml, in 10% GelMA + 0.375% BNC, 0.25% LAP, printed. Live/dead d1/d4/d7 96.81±1.54 / 96.12±0.66 / 97.34±1.45%. GelMA-only viability not different (no separate %). Starting E 49.94±2.78 kPa on d1 BNC/GelMA; week-4+ in vivo moduli are ECM and are not stored.",
+    },
+    {
+        "study_id": "perriergroult2026",
+        "citation": "Perrier-Groult et al., Regen. Biomater. 2026",
+        "doi": "10.1093/rb/rbag122",
+        "pmid": "42404412",
+        "year": 2026,
+        "journal": "Regenerative Biomaterials",
+        "pmcid": "PMC13331287",
+        "license": "CC-BY",
+        "notes": "Human nasal chondrocytes, 2e6/ml, in 10 mg/mL fibrinogen + 0.4 U/mL thrombin inside 3D-printed silicone. Live/dead after 3 weeks maturation: mean 71% (donors 65–79%). BIT cocktail is not TGF-β3. No gel E stored.",
+    },
 ]
 
 
@@ -3748,6 +3781,111 @@ def _queue_pass_eight() -> list[dict]:
     return rows
 
 
+def _queue_pass_nine() -> list[dict]:
+    """Neighborhood OA live/dead next to existing gold: collagen print, GelMA+BNC auricular, fibrin nasal."""
+    rows = []
+    rows.append(
+        {
+            "experiment_id": "ren2016-col2-print-d1",
+            "study_id": "ren2016",
+            "material_class": "collagen",
+            "material_detail": "10% w/v swine collagen type II, 25G, 20 mm/s, 37 °C 30 min",
+            "crosslinking": "thermal",
+            "polymer_concentration_wt_pct": 10.0,
+            "surface_chemistry": "native",
+            "has_adhesion_ligand": 1.0,
+            "cell_type": "articular_chondrocyte",
+            "species": "rabbit",
+            "culture_model": "3D_bioprint",
+            "growth_factor": "none",
+            "culture_time_days": 1.0,
+            "cell_density_million_per_ml": 10.0,
+            "passage": 3,
+            "chemical_modification": "unmodified",
+            "architecture": "3d_printed",
+            "application": "bioprinting",
+            "live_dead_kit": "calcein_ethidium",
+            "n_replicates": 3,
+            "extracted_from": "PMC4955200 Fig. 4a live/dead day 1 after fabrication",
+            "curator_confidence": "high",
+            "notes": (
+                "Rabbit P3 articular, FBS/DMEM, no TGF. Average live/dead 93±3% day 1; "
+                "5/10/20e6 and gradient vs homogeneous were not different. "
+                "Trypan 98±1% is flask, not stored."
+            ),
+            "measurements": [_m("viability_pct", 93.0, "%", sd=3.0, evidence="numeric_text")],
+        }
+    )
+    for day, val, sd in ((1.0, 96.81, 1.54), (4.0, 96.12, 0.66), (7.0, 97.34, 1.45)):
+        row = {
+            "experiment_id": f"zeng2023-gelma-bnc-d{int(day)}",
+            "study_id": "zeng2023",
+            "material_class": "GelMA",
+            "material_detail": "10% w/v GelMA + 0.375% w/v bacterial nanocellulose, 0.25% LAP",
+            "crosslinking": "photocrosslink",
+            "polymer_concentration_wt_pct": 10.0,
+            "surface_chemistry": "native",
+            "has_adhesion_ligand": 1.0,
+            "cell_type": "auricular_chondrocyte",
+            "species": "rabbit",
+            "culture_model": "3D_bioprint",
+            "growth_factor": "none",
+            "culture_time_days": day,
+            "cell_density_million_per_ml": 10.0,
+            "passage": 2,
+            "chemical_modification": "methacrylated",
+            "architecture": "3d_printed",
+            "application": "auricular",
+            "live_dead_kit": "calcein_ethidium",
+            "extracted_from": f"PMC9830992 Fig. 5B BNC/GelMA live/dead day {int(day)}",
+            "curator_confidence": "high",
+            "notes": (
+                "Rabbit P2 auricular, 1e7/ml. BNC/GelMA live/dead "
+                f"{val}±{sd}% day {int(day)}. GelMA-only viability not different (no separate %). "
+                "In vivo week-4+ Young's are ECM-matured and are not stored."
+            ),
+            "measurements": [_m("viability_pct", val, "%", sd=sd, evidence="numeric_text")],
+        }
+        if day == 1.0:
+            row["stiffness_kpa"] = 49.94
+            row["stiffness_sd_kpa"] = 2.78
+            row["stiffness_method"] = "unconfined_compression_youngs_starting_bnc_gelma"
+        rows.append(row)
+    rows.append(
+        {
+            "experiment_id": "perriergroult2026-fibrin-nasal-d21",
+            "study_id": "perriergroult2026",
+            "material_class": "fibrin",
+            "material_detail": (
+                "10 mg/mL human fibrinogen + 0.4 U/mL thrombin in 3D-printed silicone septum"
+            ),
+            "crosslinking": "enzymatic",
+            "polymer_concentration_wt_pct": 1.0,
+            "surface_chemistry": "native",
+            "has_adhesion_ligand": 1.0,
+            "cell_type": "nasal_chondrocyte",
+            "species": "human",
+            "culture_model": "3D_encapsulation",
+            "growth_factor": "none",
+            "culture_time_days": 21.0,
+            "cell_density_million_per_ml": 2.0,
+            "chemical_modification": "unmodified",
+            "architecture": "3d_printed",
+            "application": "nasal",
+            "live_dead_kit": "calcein_ethidium",
+            "n_replicates": 3,
+            "extracted_from": "PMC13331287 Fig. 6E–F live/dead after 3 weeks maturation",
+            "curator_confidence": "high",
+            "notes": (
+                "Human nasal chondrocytes, 2e6/ml. Mean live/dead 71% after 3 weeks "
+                "(three donors 65–79%). BIT cocktail is not TGF-β3."
+            ),
+            "measurements": [_m("viability_pct", 71.0, "%", evidence="numeric_text", n=3)],
+        }
+    )
+    return rows
+
+
 EXPERIMENTS: list[dict] = (
     _bachmann_experiments()
     + _other_experiments()
@@ -3761,4 +3899,5 @@ EXPERIMENTS: list[dict] = (
     + _queue_pass_six()
     + _queue_pass_seven()
     + _queue_pass_eight()
+    + _queue_pass_nine()
 )

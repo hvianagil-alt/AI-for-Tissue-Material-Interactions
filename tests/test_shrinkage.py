@@ -1,7 +1,14 @@
 """Knob-response and LOPO checks for the shrinkage estimator."""
 
 from tissuelab.literature_model import predict_literature_viability
-from tissuelab.shrinkage import shrinkage_estimate
+from tissuelab.shrinkage import N_LOCKED_HYPERPARAMETERS, LOCKED_HYPERPARAMETERS, PAPERS_NEEDED_BEGINNING, shrinkage_estimate
+
+
+def test_served_model_parameter_count_is_locked():
+    assert N_LOCKED_HYPERPARAMETERS == 11
+    assert len(LOCKED_HYPERPARAMETERS) == 11
+    assert PAPERS_NEEDED_BEGINNING == 100
+    assert "N0" in LOCKED_HYPERPARAMETERS
 
 
 def _q(**kwargs):
