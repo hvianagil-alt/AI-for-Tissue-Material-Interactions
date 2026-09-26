@@ -12,6 +12,11 @@ def test_home_is_a_protocol_for_my_cells():
     assert "Fibrin" in body
     assert "Find protocol" in body
     assert "Literature for this question" in body
+    assert "served model has" in body
+    assert "Beginning target" in body
+    assert "tree report gate" in body
+    assert "harvested papers (library)" in body
+    assert "extracted live/dead papers" in body
     assert 'lang="en"' in body
     assert 'href="/lookup' in body
     assert 'href="/table' in body
@@ -50,6 +55,8 @@ def test_lookup_still_looks_up_a_picked_gel():
     assert "stiffness (kPa)" in body
     assert "rigidez" not in body
     assert "How this number is made" in body
+    assert "served parameters" in body
+    assert "beginning target" in body
 
 
 def test_lookup_fibrin_differs_from_gelma():
@@ -71,6 +78,8 @@ def test_table_is_hand_curated_only():
     body = response.text
     assert "Extracted live/dead table" in body
     assert "pmid" not in body.lower() or "pmid*" in body
+    assert "served shrinkage model" in body
+    assert "Beginning target" in body
     csv_response = client.get("/export.csv")
     assert csv_response.status_code == 200
     assert "material_class" in csv_response.text.splitlines()[0]
@@ -81,7 +90,12 @@ def test_library_page_loads():
     client = TestClient(app)
     response = client.get("/library")
     assert response.status_code == 200
-    assert "chemistry" in response.text.lower() or "química" in response.text.lower()
+    body = response.text
+    assert "chemistry" in body.lower() or "química" in body.lower()
+    assert "Two tables:" in body
+    assert "beginning target" in body.lower()
+    assert "parameters" in body.lower()
+    assert "harvested papers tagged" in body
     assert "/library" in client.get("/").text
 
 

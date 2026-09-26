@@ -600,6 +600,8 @@ def render_predict_page(
           <span>published {escape(range_s)}</span>
           <span>{escape(str(miss))}% of numeric table missing kPa</span>
           <span>vs GelMA+TGF {escape(vs_s)} ({escape(delta_s)})</span>
+          <span>{escape(str(literature.get('served_parameters') or '—'))} served parameters</span>
+          <span>beginning target {escape(str(literature.get('papers_needed_beginning') or 100))} papers</span>
         </div>
       </div>
       <div class="card">
@@ -644,6 +646,7 @@ def render_table_page(
     material_class: str | None,
     lang: str = "en",
     all_materials: list[str] | None = None,
+    corpus: dict | None = None,
 ) -> str:
     lang = normalize_lang(lang)
     mats = all_materials or sorted({r["material_class"] for r in rows if r.get("material_class")})
@@ -675,9 +678,30 @@ def render_table_page(
         )
     n_num = sum(1 for r in rows if r.get("viability_pct") is not None)
     n_qual = len(rows) - n_num
+    corpus = corpus or {}
+    n_gold = int(corpus.get("n_gold_studies") or 0)
+    n_gold_rows = int(corpus.get("n_gold_rows") or 0)
+    n_lib = int(corpus.get("n_harvested") or 0)
+    n_params = int(corpus.get("served_parameters") or 0)
+    n_locked = int(corpus.get("served_locked_hyperparameters") or 0)
+    n_priors = int(corpus.get("served_empirical_priors") or 0)
+    want = int(corpus.get("papers_needed_beginning") or 100)
+    lib_bit = f" {n_lib:,} harvested papers are a searchable library, not training labels." if n_lib else ""
+    lib_bit_pt = f" {n_lib:,} artigos colhidos são biblioteca pesquisável, não labels." if n_lib else ""
+    sub = (
+        f"Gold table: {n_gold} papers with hand-extracted numeric live/dead ({n_gold_rows} rows) train the served shrinkage model "
+        f"({n_params} parameters: {n_locked} locked kernel hyperparameters + {n_priors} gel×cell means). "
+        f"Beginning target is {want} independent live/dead papers.{lib_bit} "
+        "There is no 2000-study switch. Yellow pills are floors or “high” — not means. Auto-promoted abstracts are not here."
+        if lang != "pt"
+        else f"Tabela ouro: {n_gold} artigos com live/dead numérico extraído ({n_gold_rows} linhas) treinam o shrinkage "
+        f"({n_params} parâmetros: {n_locked} hiperparâmetros fechados + {n_priors} médias gel×célula). "
+        f"Começo de confiança: {want} papers.{lib_bit_pt} "
+        "Não há um interruptor de 2000 estudos. Pílulas amarelas são floors, não médias. Abstracts auto-promovidos não entram."
+    )
     body = f"""
     <h1>Extracted live/dead table</h1>
-    <p class="sub">This is the product: every hand-curated viability row. Yellow pills are floors or “high” — not means. Numeric rows train the Predict number. Auto-promoted abstracts are not here.</p>
+    <p class="sub">{escape(sub)}</p>
     <form method="get" action="/table" style="display:flex;gap:12px;align-items:end;flex-wrap:wrap;margin:12px 0 18px">
       <input type="hidden" name="lang" value="{lang}"/>
       <label>Filter hydrogel

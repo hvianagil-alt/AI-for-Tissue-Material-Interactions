@@ -85,3 +85,7 @@ def test_predict_gelma_uses_shrinkage_lookup():
     assert lopo["ridge_beats_dummy"] is False
     assert lopo["mvp_pass"] is False
     assert lopo["ridge_mae"] > lopo["dummy_mae"]
+    assert out["served_locked_hyperparameters"] == 11
+    assert out["served_parameters"] == out["served_locked_hyperparameters"] + out["served_empirical_priors"]
+    assert out["papers_needed_beginning"] == 100
+    assert any("parameters" in note.lower() for note in out["notes"])

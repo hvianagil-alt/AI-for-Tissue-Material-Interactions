@@ -685,6 +685,50 @@ STUDIES: list[dict] = [
         "license": "CC-BY",
         "notes": "hTERT-immortalized BMSC line predifferentiated 21 d (TGF-β3), then printed at P15 in 2% GGMA ± 5% Manuka honey, 0.1% LAP, 365 nm. Paper reports dead-cell fractions from Hoechst/EthBr; live = 100−dead. GGMA 2.0±0.5% / 1.8±0.4% dead at d1/d3; GGMA-MH 9.5±3.5% / 18±6.0%. G* ~730/1042 Pa is approximate and is not stored. Viability days used FBS medium, not TGF.",
     },
+    {
+        "study_id": "lan2021",
+        "citation": "Lan et al., FASEB J. 2021",
+        "doi": "10.1096/fj.202002081R",
+        "pmid": "33595884",
+        "year": 2021,
+        "journal": "The FASEB Journal",
+        "pmcid": "PMC12266318",
+        "license": "CC-BY",
+        "notes": "Human P2 nasoseptal chondrocytes in 2 wt% Lifeink 200 collagen, FRESH-printed. Live/dead day 3 in TGF-β3 medium: 20G 95±1%, 22G 81±3%. Printing pressure 30/50 kPa is not Young's modulus. Independent of Lan 2022 J. Tissue Eng.",
+    },
+    {
+        "study_id": "jovic2024",
+        "citation": "Jovic et al., Front. Bioeng. Biotechnol. 2024",
+        "doi": "10.3389/fbioe.2024.1360089",
+        "pmid": "38558791",
+        "year": 2024,
+        "journal": "Frontiers in Bioengineering and Biotechnology",
+        "pmcid": "PMC10978724",
+        "license": "CC-BY",
+        "notes": "Human P2 nasoseptal chondrocytes encapsulated in 75:25 NCB 3 wt%:alginate 2.5% w/v, 0.5 M CaCl2 5 min, 3e6/ml. Live/dead means static vs orbital shaking, day 1 and 14. Low-glucose DMEM + 10% FBS, no exogenous TGF. Independent of Jovic 2026 NCA print.",
+    },
+    {
+        "study_id": "hosseini2025",
+        "citation": "Hosseini et al., J. Funct. Biomater. 2025",
+        "doi": "10.3390/jfb16120451",
+        "pmid": "41440628",
+        "year": 2025,
+        "journal": "Journal of Functional Biomaterials",
+        "pmcid": "PMC12734296",
+        "license": "CC-BY",
+        "notes": "Lonza NHAC-kn P4 in CELLINK alginate–NFC bioink, directional CaCl2 gradient. Starting E 39.8±6.6 kPa top vs 60.6±10.9 kPa bottom. Live/dead day 1/28 by zone. Day-28 kPa not stored (ion leach / culture). Middle-zone E not reported.",
+    },
+    {
+        "study_id": "boere2015",
+        "citation": "Boere et al., J. Mater. Chem. B 2015",
+        "doi": "10.1039/c5tb01645b",
+        "pmid": "32263038",
+        "year": 2015,
+        "journal": "Journal of Materials Chemistry B",
+        "pmcid": "PMC7116180",
+        "license": "NIH public access",
+        "notes": "Equine P2 stifle chondrocytes, 5e6/ml, in PNC–HA vs PNC–PEG plotted into pHMGCL–NHS fiber reinforcement. Live/dead 1.5 h: HA 90±9%, PEG 43±23%. G′ ~9 kPa at 3 h is not paired to the 1.5 h viability rows. Composite Young's 645 kPa is the thermoplastic, not gel E.",
+    },
 ]
 
 
@@ -3532,6 +3576,178 @@ def _queue_pass_seven() -> list[dict]:
     return rows
 
 
+def _queue_pass_eight() -> list[dict]:
+    """OA fulltext live/dead: Lan 2021 collagen print, Jovic 2024 NCA encapsulate, Hosseini 2025 gradient print, Boere 2015 PNC-HA/PEG."""
+    rows = []
+    for tag, gauge, val, sd in (
+        ("20g", "20G", 95.0, 1.0),
+        ("22g", "22G", 81.0, 3.0),
+    ):
+        rows.append(
+            {
+                "experiment_id": f"lan2021-col-print-{tag}-d3",
+                "study_id": "lan2021",
+                "material_class": "collagen",
+                "material_detail": f"Lifeink 200 type I collagen 2 wt%, FRESH gelatin bath, {gauge} needle",
+                "crosslinking": "thermal",
+                "polymer_concentration_wt_pct": 2.0,
+                "surface_chemistry": "native",
+                "has_adhesion_ligand": 1.0,
+                "cell_type": "nasal_chondrocyte",
+                "species": "human",
+                "culture_model": "3D_bioprint",
+                "growth_factor": "TGF_b3",
+                "culture_time_days": 3.0,
+                "cell_density_million_per_ml": 10.0,
+                "passage": 2,
+                "chemical_modification": "unmodified",
+                "architecture": "3d_printed",
+                "application": "nasal",
+                "live_dead_kit": "calcein_ethidium",
+                "extracted_from": f"PMC12266318 Fig. 3B {gauge} live/dead day 3",
+                "curator_confidence": "high",
+                "notes": (
+                    f"Human P2 nasoseptal, 1e7/ml. Day-3 live/dead after chondrogenic medium with 10 ng/mL TGF-β3. "
+                    f"{gauge} {val}±{sd}%. Printing pressure 30/50 kPa is not Young's modulus."
+                ),
+                "measurements": [_m("viability_pct", val, "%", sd=sd, evidence="numeric_text")],
+            }
+        )
+    for tag, shake, day, val, sd in (
+        ("static", "static well plate", 1.0, 77.6, 5.6),
+        ("dynamic", "orbital shaker 500 rpm", 1.0, 91.5, 5.9),
+        ("static", "static well plate", 14.0, 82.6, 3.7),
+        ("dynamic", "orbital shaker 500 rpm", 14.0, 94.0, 1.4),
+    ):
+        rows.append(
+            {
+                "experiment_id": f"jovic2024-nca-{tag}-d{int(day)}",
+                "study_id": "jovic2024",
+                "material_class": "cellulose_alginate",
+                "material_detail": (
+                    "75 mL NCB 3 wt% + 25 mL 2.5% w/v alginate, 0.5 M CaCl2 5 min; "
+                    f"{shake}"
+                ),
+                "crosslinking": "ionic",
+                "polymer_concentration_wt_pct": 2.88,
+                "surface_chemistry": "native",
+                "has_adhesion_ligand": 0.5,
+                "cell_type": "nasal_chondrocyte",
+                "species": "human",
+                "culture_model": "3D_encapsulation",
+                "growth_factor": "none",
+                "culture_time_days": day,
+                "cell_density_million_per_ml": 3.0,
+                "passage": 2,
+                "chemical_modification": "unmodified",
+                "architecture": "bulk_hydrogel",
+                "application": "nasal",
+                "live_dead_kit": "calcein_ethidium",
+                "n_replicates": 3,
+                "extracted_from": f"PMC10978724 Fig. 6 live/dead {tag} day {int(day)}",
+                "curator_confidence": "high",
+                "notes": (
+                    "Human P2 nasoseptal, 3e6/ml, low-glucose DMEM + 10% FBS, no TGF. "
+                    f"Live/dead {tag} day {int(day)} {val}±{sd}%. Autoclave 100 kPa is sterilization, not Young's."
+                ),
+                "measurements": [_m("viability_pct", val, "%", sd=sd, evidence="numeric_text", n=3)],
+            }
+        )
+    for zone, kpa, d1, d1sd, d28, d28sd in (
+        ("top", 39.8, 93.4, 0.7, 83.6, 8.4),
+        ("mid", None, 91.0, 2.6, 83.2, 4.3),
+        ("bot", 60.6, 84.1, 4.4, 82.9, 4.8),
+    ):
+        kpa_sd = 6.6 if zone == "top" else (10.9 if zone == "bot" else None)
+        for day, val, sd in ((1.0, d1, d1sd), (28.0, d28, d28sd)):
+            row = {
+                "experiment_id": f"hosseini2025-nca-{zone}-d{int(day)}",
+                "study_id": "hosseini2025",
+                "material_class": "cellulose_alginate",
+                "material_detail": (
+                    "CELLINK alginate–cellulose nanofibril bioink, BIO-X, 27G, directional CaCl2 gradient; "
+                    f"{zone} zone"
+                ),
+                "crosslinking": "ionic",
+                "surface_chemistry": "native",
+                "has_adhesion_ligand": 0.5,
+                "cell_type": "articular_chondrocyte",
+                "species": "human",
+                "culture_model": "3D_bioprint",
+                "growth_factor": "none",
+                "culture_time_days": day,
+                "cell_density_million_per_ml": 5.0,
+                "passage": 4,
+                "chemical_modification": "unmodified",
+                "architecture": "3d_printed",
+                "application": "bioprinting",
+                "live_dead_kit": "calcein_ethidium",
+                "n_replicates": 3,
+                "extracted_from": f"PMC12734296 Fig. 2B {zone} day {int(day)}",
+                "curator_confidence": "high",
+                "notes": (
+                    "Lonza NHAC-kn P4, 5e6/ml, Lonza chondrocyte differentiation medium (TGF not named). "
+                    f"Live/dead {zone} day {int(day)} {val}±{sd}%. "
+                    "Day-28 kPa omitted (culture leach). Middle-zone starting E not reported."
+                ),
+                "measurements": [_m("viability_pct", val, "%", sd=sd, evidence="numeric_text", n=3)],
+            }
+            if day == 1.0 and kpa is not None:
+                row["stiffness_kpa"] = kpa
+                row["stiffness_sd_kpa"] = kpa_sd
+                row["stiffness_method"] = "unconfined_compression_youngs_starting_gradient"
+            rows.append(row)
+    for tag, material, detail, conc, val, sd in (
+        (
+            "ha",
+            "HA",
+            "7.5 wt% PNC + 1.6 wt% HA-NHS in pHMGCL-NHS fiber-reinforced print",
+            9.1,
+            90.0,
+            9.0,
+        ),
+        (
+            "peg",
+            "PEG",
+            "7.5 wt% PNC + 3.8 wt% PEG-NHS in pHMGCL-NHS fiber-reinforced print",
+            11.3,
+            43.0,
+            23.0,
+        ),
+    ):
+        rows.append(
+            {
+                "experiment_id": f"boere2015-pnc-{tag}-1p5h",
+                "study_id": "boere2015",
+                "material_class": material,
+                "material_detail": detail,
+                "crosslinking": "chemical",
+                "polymer_concentration_wt_pct": conc,
+                "surface_chemistry": "native" if tag == "ha" else "none",
+                "has_adhesion_ligand": 0.7 if tag == "ha" else 0.0,
+                "cell_type": "articular_chondrocyte",
+                "species": "equine",
+                "culture_model": "3D_bioprint",
+                "growth_factor": "none",
+                "culture_time_days": 0.0,
+                "cell_density_million_per_ml": 5.0,
+                "passage": 2,
+                "chemical_modification": "unmodified",
+                "architecture": "3d_printed",
+                "application": "bioprinting",
+                "live_dead_kit": "calcein_ethidium",
+                "extracted_from": "PMC7116180 Fig. 7 live/dead 1.5 h",
+                "curator_confidence": "high",
+                "notes": (
+                    f"Equine P2 stifle chondrocytes, 5e6/ml. Live/dead 1.5 h after mixing: {val}±{sd}%. "
+                    "G′ ~9 kPa at 3 h is not paired. Composite Young's 645 kPa is thermoplastic, not gel E."
+                ),
+                "measurements": [_m("viability_pct", val, "%", sd=sd, evidence="numeric_text")],
+            }
+        )
+    return rows
+
+
 EXPERIMENTS: list[dict] = (
     _bachmann_experiments()
     + _other_experiments()
@@ -3544,4 +3760,5 @@ EXPERIMENTS: list[dict] = (
     + _queue_pass_five()
     + _queue_pass_six()
     + _queue_pass_seven()
+    + _queue_pass_eight()
 )

@@ -158,6 +158,7 @@ def render_protocol_page(
     search: dict,
     lang: str = "en",
     live: bool = False,
+    corpus: dict | None = None,
 ) -> str:
     lang = normalize_lang(lang)
     intent = result["intent"]
@@ -250,11 +251,35 @@ def render_protocol_page(
     papers_h = "Papers extraídos para abrir" if pt else "Extracted papers to open"
     also_h = "Outros na tabela" if pt else "Others in the table"
     search_h = "A literatura para esta pergunta" if pt else "Literature for this question"
-    search_sub = (
-        "Isto é uma busca nas 8 mil papers já colhidas — não é um modelo a escrever o protocolo."
-        if pt
-        else "This is a search of the 8k harvested papers — not a model writing your protocol."
-    )
+    corpus = corpus or {}
+    n_gold = int(corpus.get("n_gold_studies") or 0)
+    n_lib = int(corpus.get("n_harvested") or 0)
+    n_params = int(corpus.get("served_parameters") or 0)
+    n_locked = int(corpus.get("served_locked_hyperparameters") or 0)
+    n_priors = int(corpus.get("served_empirical_priors") or 0)
+    want = int(corpus.get("papers_needed_beginning") or 100)
+    if n_gold and n_lib:
+        search_sub = (
+            f"Isto é uma busca nos {n_lib:,} artigos colhidos (biblioteca). "
+            f"O modelo servido tem {n_params} parâmetros "
+            f"({n_locked} hiperparâmetros fechados + {n_priors} médias gel×célula) "
+            f"e treina em {n_gold} artigos extraídos com live/dead numérico. "
+            f"O começo de confiança é {want} papers — 40 é só o gate das árvores. "
+            f"Não há botão para 2000 estudos."
+            if pt
+            else f"This searches the {n_lib:,} harvested papers (library). "
+            f"The served model has {n_params} parameters "
+            f"({n_locked} locked kernel hyperparameters + {n_priors} gel×cell means) "
+            f"and trains on {n_gold} extracted live/dead papers. "
+            f"Beginning target is {want} papers — 40 is only the tree report gate. "
+            f"There is no 2000-study switch."
+        )
+    else:
+        search_sub = (
+            "Isto é uma busca na biblioteca de papers colhidas — não é um modelo a escrever o protocolo."
+            if pt
+            else "This is a search of the harvested paper library — not a model writing your protocol."
+        )
     epmc_h = "Europe PMC (ao vivo)" if pt else "Europe PMC (live)"
     why_h = "Porquê este" if pt else "Why this one"
     evidence = "Ver o cartão de evidência" if pt else "Open the evidence card"
@@ -373,16 +398,31 @@ def _count_table(counts: dict, lang: str) -> str:
 def render_library_page(*, stats: dict, lang: str = "en") -> str:
     pt = lang == "pt"
     title = "Paper library — chemistry, structure, application" if not pt else "Biblioteca — química, estrutura, aplicação"
-    lead = (
-        "Every harvested paper is tagged with the same labels before anything is trained. "
-        "Numbers in this page are paper counts, not live/dead. Training still uses the extracted table."
-        if not pt
-        else "Cada paper da harvest leva as mesmas etiquetas antes de treinar. "
-        "Estes números são papers, não live/dead. O treino continua a ser a tabela extraída."
-    )
     n = stats.get("n_analyzed") or 0
     rel = stats.get("n_training_relevant") or 0
     viab = stats.get("n_with_viability") or 0
+    n_gold = stats.get("n_gold_studies") or 0
+    n_gold_rows = stats.get("n_gold_rows") or 0
+    n_lib = stats.get("n_harvested") or n
+    n_params = stats.get("served_parameters") or 0
+    n_locked = stats.get("served_locked_hyperparameters") or 0
+    n_priors = stats.get("served_empirical_priors") or 0
+    want = stats.get("papers_needed_beginning") or 100
+    lead = (
+        f"Two tables: {n_gold} papers with hand-extracted numeric live/dead train the viability model "
+        f"({n_gold_rows} conditions). Served shrinkage has {n_params} parameters "
+        f"({n_locked} locked kernel hyperparameters + {n_priors} gel×cell means). "
+        f"Beginning target is {want} independent papers — 40 is only the tree report gate. "
+        f"{n_lib:,} harvested papers are a searchable library — tags, not training labels. "
+        "There is no 2000-study model to turn on."
+        if not pt
+        else f"Duas tabelas: {n_gold} artigos com live/dead numérico extraído treinam o modelo "
+        f"({n_gold_rows} condições). O shrinkage servido tem {n_params} parâmetros "
+        f"({n_locked} hiperparâmetros fechados + {n_priors} médias gel×célula). "
+        f"Começo de confiança: {want} papers — 40 é só o gate das árvores. "
+        f"{n_lib:,} artigos colhidos são biblioteca pesquisável — etiquetas, não labels. "
+        "Não existe um modelo de 2000 estudos para ligar."
+    )
     by_app = stats.get("by_application") or {}
     by_chem = stats.get("by_chemistry") or {}
     by_arch = stats.get("by_architecture") or {}
@@ -395,7 +435,7 @@ def render_library_page(*, stats: dict, lang: str = "en") -> str:
     body = f"""
     <h1>{escape(title)}</h1>
     <p class="sub">{escape(lead)}</p>
-    <p class="stat">{n} papers tagged · {rel} relevant to train next · {viab} with a viability % in the abstract</p>
+    <p class="stat">{n_lib:,} harvested papers tagged · {n_gold} extracted live/dead papers ({n_gold_rows} rows) · {rel} tagged training-relevant (search flag, not a label) · {viab} with a viability % in the abstract</p>
     <h2>{app_h}</h2>
     {app_table}
     <h2>{chem_h}</h2>

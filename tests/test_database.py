@@ -59,6 +59,7 @@ def test_hand_curated_replaces_auto_promoted():
         "gatenholm2020", "jovic2026", "poldervaart2017",
         "ziverec2026", "visscher2018", "mcmillan2025",
         "lan2022", "scalzone2022",
+        "lan2021", "jovic2024", "hosseini2025", "boere2015",
     }
     assert all(s.get("pmid") for s in STUDIES if s["study_id"] in require_pmid)
 
@@ -118,6 +119,35 @@ def test_queue_pass_seven_gold_is_numeric_and_honest():
     assert mh["measurements"][0]["value"] == 82.0
     assert mh["measurements"][0]["value_sd"] == 6.0
     assert "100−dead" in mh["notes"] or "100-dead" in mh["notes"]
+
+
+def test_queue_pass_eight_gold_is_numeric_and_honest():
+    by_id = {e["experiment_id"]: e for e in EXPERIMENTS}
+    lan = by_id["lan2021-col-print-20g-d3"]
+    assert lan["cell_type"] == "nasal_chondrocyte"
+    assert lan["measurements"][0]["value"] == 95.0
+    assert lan["growth_factor"] == "TGF_b3"
+    assert lan.get("stiffness_kpa") is None
+    assert by_id["lan2021-col-print-22g-d3"]["measurements"][0]["value"] == 81.0
+    jov = by_id["jovic2024-nca-static-d1"]
+    assert jov["cell_type"] == "nasal_chondrocyte"
+    assert jov["culture_model"] == "3D_encapsulation"
+    assert jov["measurements"][0]["value"] == 77.6
+    assert jov["growth_factor"] == "none"
+    assert by_id["jovic2024-nca-dynamic-d14"]["measurements"][0]["value"] == 94.0
+    top = by_id["hosseini2025-nca-top-d1"]
+    assert top["cell_type"] == "articular_chondrocyte"
+    assert top["stiffness_kpa"] == 39.8
+    assert top["measurements"][0]["value"] == 93.4
+    assert by_id["hosseini2025-nca-bot-d1"]["stiffness_kpa"] == 60.6
+    assert by_id["hosseini2025-nca-mid-d1"].get("stiffness_kpa") is None
+    assert by_id["hosseini2025-nca-top-d28"].get("stiffness_kpa") is None
+    ha = by_id["boere2015-pnc-ha-1p5h"]
+    assert ha["species"] == "equine"
+    assert ha["measurements"][0]["value"] == 90.0
+    assert ha.get("stiffness_kpa") is None
+    peg = by_id["boere2015-pnc-peg-1p5h"]
+    assert peg["measurements"][0]["value"] == 43.0
 
 
 def test_curated_viability_excludes_auto_promote():

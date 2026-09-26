@@ -38,8 +38,10 @@ A tabela limpa para o próximo `fit` está em `data/train_gold.csv`. Papers da h
 |---|---|---|
 | Dummy (sempre a média) | 1 | já tens |
 | Média por gel | ~1 por família | cada gel em ≥ 2 papers |
-| Shrinkage / mixed model | intercepto por paper + ~5 slopes | **25** (hoje 15) |
-| Ridge / árvores | ~7 features × 10 papers/feature | **~70** |
+| Shrinkage servido | 11 hiperparâmetros fechados + 1 média por gel×célula | o que a app usa agora |
+| Mixed model | intercepto por paper + ~5 slopes | **25** |
+| Árvores (HGB, só relato) | muitas folhas | **40** (não é o começo do produto) |
+| Ridge / começo de confiança | ~9 features × 10 papers/feature | **100** |
 | Rede neural / GPT | milhares | não é este problema |
 
 Ordem do que falta:
@@ -64,4 +66,4 @@ python3 -m tissuelab.teach_model     # a aula, split errado vs certo
 
 Não há botão Train na UI. Não há GPU. `LeaveOneGroupOut(groups=study_id)` é o treino a sério — está em `src/tissuelab/benchmark.py`.
 
-HGB é calculado no LOPO mas só entra no conjunto de deploy a ≥ 40 papers (`papers_needed_trees`). A 25 papers o mixed/shrinkage é o estimador estável; a app continua a servir `shrinkage_estimate`. Até lá, extrair papers é treinar.
+HGB é calculado no LOPO mas só entra no conjunto de deploy a ≥ 40 papers (`papers_needed_trees`). A 25 papers o mixed/shrinkage é o estimador estável; a app continua a servir `shrinkage_estimate`. O começo de confiança do produto é **100 papers** (`papers_needed_beginning`), não 40. Até lá, extrair papers no bairro dos géis que já tens é treinar.

@@ -27,7 +27,11 @@ from tissuelab.benchmark import (
     load_viability,
 )
 from tissuelab.paths import ARTIFACTS_DIR
-from tissuelab.shrinkage import shrinkage_estimate
+from tissuelab.shrinkage import (
+    N_LOCKED_HYPERPARAMETERS,
+    PAPERS_NEEDED_BEGINNING,
+    shrinkage_estimate,
+)
 
 TEACH_METRICS_PATH = ARTIFACTS_DIR / "teach_model.json"
 
@@ -103,9 +107,12 @@ def data_budget(frame: pd.DataFrame) -> dict:
     dummy_params = 1
     material_params = n_materials
     ridge_params = n_materials + n_cells + len(FEATURES_NUM)
+    n_priors = int(frame.groupby(["material_class", "cell_type"]).ngroups) if n_rows else 0
+    served_params = N_LOCKED_HYPERPARAMETERS + n_priors
     want_ridge = PAPERS_PER_FEATURE * len(STARTER_FEATURES)
     want_mixed = 25
     want_trees = PAPERS_NEEDED_TREES
+    want_beginning = PAPERS_NEEDED_BEGINNING
     return {
         "n_rows": n_rows,
         "n_studies": n_studies,
@@ -116,14 +123,19 @@ def data_budget(frame: pd.DataFrame) -> dict:
         "dummy_parameters": dummy_params,
         "material_mean_parameters": material_params,
         "ridge_parameters_guess": ridge_params,
+        "served_locked_hyperparameters": N_LOCKED_HYPERPARAMETERS,
+        "served_empirical_priors": n_priors,
+        "served_parameters": served_params,
         "starter_feature_count": len(STARTER_FEATURES),
         "papers_needed_ridge": want_ridge,
         "papers_needed_mixed": want_mixed,
         "papers_needed_trees": want_trees,
+        "papers_needed_beginning": want_beginning,
         "have_enough_for_dummy": n_studies >= 3,
         "have_enough_for_mixed": n_studies >= want_mixed,
         "have_enough_for_ridge": n_studies >= want_ridge,
         "have_enough_for_trees": n_studies >= want_trees,
+        "have_enough_for_beginning": n_studies >= want_beginning,
         "what_to_add_first": "studies",
     }
 
@@ -210,7 +222,9 @@ def run_lesson(*, verbose: bool = True) -> dict:
         f"  média por gel              MAE {material['mae']:.1f}   R² {material['r2']:.3f}   "
         f"parâmetros {budget['material_mean_parameters']}\n"
         f"  shrinkage (servido)        MAE {shrink['mae']:.1f}   R² {shrink['r2']:.3f}   "
-        f"N0={12} (não é fit() por query)\n"
+        f"{budget['served_parameters']} parâmetros "
+        f"({budget['served_locked_hyperparameters']} hiperparâmetros fechados + "
+        f"{budget['served_empirical_priors']} médias gel×célula)\n"
         f"  Ridge LOPO                 MAE {ridge_lopo['mae']:.1f}   R² {ridge_lopo['r2']:.3f}   "
         f"perde — memoriza o paper\n"
         f"  HGB (relatado, não servido até {budget['papers_needed_trees']} papers)  "
@@ -239,10 +253,13 @@ def run_lesson(*, verbose: bool = True) -> dict:
         f"  Parâmetros vs papers (hoje {budget['n_studies']} estudos, {budget['n_rows']} condições):\n"
         f"    dummy              {budget['dummy_parameters']} parâmetro     → já podes (e já tens)\n"
         f"    média por gel      {budget['material_mean_parameters']} parâmetros      → cada gel precisa de ≥2 papers\n"
+        f"    shrinkage servido  {budget['served_parameters']} parâmetros "
+        f"({budget['served_locked_hyperparameters']} kernel + {budget['served_empirical_priors']} priors)\n"
         f"    mixed / shrinkage  intercepto por paper + 5 slopes → começa a ser estável a "
         f"{budget['papers_needed_mixed']} papers\n"
         f"    Ridge / árvores    ~{budget['starter_feature_count']} features × "
         f"{PAPERS_PER_FEATURE} papers/feature → ~{budget['papers_needed_ridge']} papers\n"
+        f"    começo de produto  {budget['papers_needed_beginning']} papers (não 40 — 40 é só o gate das árvores)\n"
         f"    rede neural        milhares de parâmetros → não é este problema\n\n"
         "  Ordem do que falta, da mais útil para a mais prejudicial:\n"
         "    1. MAIS ESTUDOS (papers independentes com live/dead numérico). Isto é o n.\n"
@@ -252,10 +269,13 @@ def run_lesson(*, verbose: bool = True) -> dict:
         "       é mais um parâmetro com 15 labs. O Ridge já perde por isso.\n"
         "    4. Kit do ensaio (calceína vs MTT) só quando estiver preenchido — senão misturas y.\n"
         "    5. NÃO mais abstracts da harvest. 8.5k papers sem número extraído não treinam nada.\n\n"
+        f"  Começo de confiança (Ridge-scale): {budget['papers_needed_beginning']} papers. "
+        f"Hoje {budget['n_studies']}.\n"
         f"  Gate para o próximo modelo (mixed / Ridge de novo): "
         f"{budget['papers_needed_mixed']} papers e ~80 live/dead.\n"
-        f"  Gate para árvores: {budget['papers_needed_trees']} papers.\n"
+        f"  Gate para árvores: {budget['papers_needed_trees']} papers (relato, não deploy).\n"
         f"  Hoje mixed? {'sim' if budget['have_enough_for_mixed'] else 'não — extrai papers primeiro'}.\n"
+        f"  Hoje começo 100? {'sim' if budget['have_enough_for_beginning'] else 'não — continua a extrair o bairro dos géis que já tens'}.\n"
         f"  Hoje Ridge/árvores? {'sim' if budget['have_enough_for_ridge'] else 'não'}.",
         verbose=verbose,
     )
@@ -274,6 +294,9 @@ def run_lesson(*, verbose: bool = True) -> dict:
     report = {
         "n_rows": budget["n_rows"],
         "n_studies": budget["n_studies"],
+        "served_parameters": budget["served_parameters"],
+        "served_locked_hyperparameters": budget["served_locked_hyperparameters"],
+        "served_empirical_priors": budget["served_empirical_priors"],
         "budget": budget,
         "random_split_ridge": random_scores,
         "ridge_lopo": ridge_lopo,

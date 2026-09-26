@@ -26,6 +26,7 @@ from tissuelab.predict import predict_design
 from tissuelab.protocol_finder import find_protocol
 from tissuelab.recommend import recommend_experiments
 from tissuelab.schema import DesignInput, TARGETS
+from tissuelab.shrinkage import N_LOCKED_HYPERPARAMETERS, PAPERS_NEEDED_BEGINNING
 from tissuelab.train import load_model
 
 from app.protocol_ui import render_library_page, render_protocol_page
@@ -64,6 +65,39 @@ class InverseRequest(BaseModel):
 class RecommendRequest(BaseModel):
     objective: str = Field(default="ecm_deposition_score")
     n: int = 5
+
+
+def _corpus_counts() -> dict:
+    """Gold = extracted live/dead papers. Harvest = searchable library, not training n."""
+    out = {
+        "n_gold_studies": 0,
+        "n_gold_rows": 0,
+        "n_harvested": 0,
+        "served_locked_hyperparameters": N_LOCKED_HYPERPARAMETERS,
+        "served_empirical_priors": 0,
+        "served_parameters": N_LOCKED_HYPERPARAMETERS,
+        "papers_needed_beginning": PAPERS_NEEDED_BEGINNING,
+    }
+    conn = connect(DB_PATH)
+    try:
+        views = {r[0] for r in conn.execute("SELECT name FROM sqlite_master WHERE type='view'").fetchall()}
+        tables = {r[0] for r in conn.execute("SELECT name FROM sqlite_master WHERE type='table'").fetchall()}
+        if "v_model_viability" in views:
+            gold = conn.execute(
+                "SELECT COUNT(DISTINCT study_id), COUNT(*) FROM v_model_viability"
+            ).fetchone()
+            out["n_gold_studies"] = int(gold[0] or 0)
+            out["n_gold_rows"] = int(gold[1] or 0)
+            n_priors = conn.execute(
+                "SELECT COUNT(*) FROM (SELECT DISTINCT material_class, cell_type FROM v_model_viability)"
+            ).fetchone()[0]
+            out["served_empirical_priors"] = int(n_priors or 0)
+            out["served_parameters"] = N_LOCKED_HYPERPARAMETERS + int(n_priors or 0)
+        if "papers" in tables:
+            out["n_harvested"] = int(conn.execute("SELECT COUNT(*) FROM papers").fetchone()[0] or 0)
+    finally:
+        conn.close()
+    return out
 
 
 def _clamp_design(material_class: str, stiffness_kpa: float, cell_type: str, growth_factor: str, culture_time_days: int):
@@ -108,7 +142,9 @@ def home(
     )
     gel = result["protocol"]["material_class"]
     search = search_question(cell_type, goal, gel, live=bool(live))
-    return render_protocol_page(result=result, search=search, lang=lang, live=bool(live))
+    return render_protocol_page(
+        result=result, search=search, lang=lang, live=bool(live), corpus=_corpus_counts()
+    )
 
 
 @app.get("/lookup", response_class=HTMLResponse)
@@ -136,7 +172,9 @@ def table(
     filtered = rows
     if want:
         filtered = [row for row in rows if row.get("material_class") == want]
-    return render_table_page(filtered, want or None, lang=lang, all_materials=all_materials)
+    return render_table_page(
+        filtered, want or None, lang=lang, all_materials=all_materials, corpus=_corpus_counts()
+    )
 
 
 @app.get("/export.csv")
@@ -200,6 +238,7 @@ def library(lang: str = Query(default="en")):
             stats["by_architecture"] = dict(
                 conn.execute("SELECT architecture, COUNT(*) FROM paper_analyses GROUP BY 1").fetchall()
             )
+        stats.update(_corpus_counts())
     finally:
         conn.close()
     return render_library_page(stats=stats, lang=lang)

@@ -26,6 +26,23 @@ W_ARCH_MATCH = 1.10
 MISSING_KPA = 0.70
 MISSING_DAYS = 0.80
 
+LOCKED_HYPERPARAMETERS = {
+    "N0": N0,
+    "TAU_KPA": TAU_KPA,
+    "TAU_DAYS": TAU_DAYS,
+    "MISMATCH_MATERIAL": MISMATCH_MATERIAL,
+    "W_CELL_MATCH": W_CELL_MATCH,
+    "W_GF_MATCH": W_GF_MATCH,
+    "W_MODEL_MATCH": W_MODEL_MATCH,
+    "W_CHEM_MATCH": W_CHEM_MATCH,
+    "W_ARCH_MATCH": W_ARCH_MATCH,
+    "MISSING_KPA": MISSING_KPA,
+    "MISSING_DAYS": MISSING_DAYS,
+}
+N_LOCKED_HYPERPARAMETERS = len(LOCKED_HYPERPARAMETERS)
+# Ridge-scale beginning for a working predictor. 40 is only the HGB report gate.
+PAPERS_NEEDED_BEGINNING = 100
+
 
 def _col_str(frame: pd.DataFrame, col: str, default: str = "") -> np.ndarray:
     if col not in frame.columns:

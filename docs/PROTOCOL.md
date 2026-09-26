@@ -18,7 +18,7 @@ SciFinder answers “papers about GelMA”. It does not answer “for *my* artic
 
 - Home = that question. One recommended protocol, 2–3 papers, what not to run.
 - Lookup (`/lookup`) = the old evidence card, for when they already picked a gel. Charts and LOPO live behind `<details>`.
-- Search = keyword retrieval over the 8k harvested papers, then Europe PMC if they ask. Hits are tagged *already extracted* or *not in the table*. No generated methods.
+- Search = keyword retrieval over the harvested paper library (~12k), then Europe PMC if they ask. Hits are tagged *already extracted* or *not in the table*. No generated methods. The viability model trains only on the extracted live/dead gold table — not on the 12k harvest, and there is no 2000-study model to turn on.
 - Rank only on hand-curated rows. Do not average ordinal sGAG. Do not promote `pmid*` regex. Do not use the simulator recommender.
 - GelMA stays on the page as the **field default**, even when it loses. That is the decision a PI is actually making.
 
@@ -34,7 +34,7 @@ Typical kPa = median published kPa on that gel × cell. Days = 14 (encapsulate) 
 
 ## When to grow the table
 
-Grow the table if the winner is qualitative-only for that cell, or if print/matrix has fewer than 2 papers. Do not harvest 1000 abstracts to move a 79.9% GelMA number. Articular GelMA numeric live/dead is still the hole; the honest sentence is the product until a paper reports a mean.
+Grow the gold table if the winner is qualitative-only for that cell, or if print/matrix has fewer than 2 papers. Next honest n is ~40 papers with numeric live/dead + starting-gel kPa when published. Do not harvest more Amass abstracts to move a viability number, and do not promote regex/silver into gold. Articular GelMA numeric live/dead is still the hole; the honest sentence is the product until a paper reports a mean.
 
 ## Not this pass
 

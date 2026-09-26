@@ -11,7 +11,7 @@ import pandas as pd
 from tissuelab.benchmark import FEATURES_CAT, FEATURES_NUM, PAPERS_NEEDED_TREES, leave_one_paper_out, load_viability
 from tissuelab.db import connect
 from tissuelab.paths import DB_PATH, HONEST_METRICS_PATH, LITERATURE_MODEL_PATH
-from tissuelab.shrinkage import N0, knob_deltas, shrinkage_estimate
+from tissuelab.shrinkage import N0, N_LOCKED_HYPERPARAMETERS, PAPERS_NEEDED_BEGINNING, knob_deltas, shrinkage_estimate
 
 
 def load_curated_viability(path=DB_PATH) -> pd.DataFrame:
@@ -383,6 +383,9 @@ def predict_literature_viability(design: dict) -> dict:
     dummy_mae = dummy_lopo.get("mae")
     target_mae = None if dummy_mae is None else round(float(dummy_mae) * 0.85, 2)
     next_read = _pick_next_read(design, similar, also_extracted)
+    n_priors = (
+        int(frame.groupby(["material_class", "cell_type"]).ngroups) if not frame.empty else 0
+    )
     return {
         "mean": None if mean is None else round(mean, 1),
         "low": None if low is None else round(low, 1),
@@ -441,6 +444,10 @@ def predict_literature_viability(design: dict) -> dict:
             "target_mae": target_mae,
             "viability_std": global_sd,
         },
+        "served_locked_hyperparameters": N_LOCKED_HYPERPARAMETERS,
+        "served_empirical_priors": n_priors,
+        "served_parameters": N_LOCKED_HYPERPARAMETERS + n_priors,
+        "papers_needed_beginning": PAPERS_NEEDED_BEGINNING,
         "similar": similar,
         "notes": _notes(
             lopo,
@@ -451,6 +458,9 @@ def predict_literature_viability(design: dict) -> dict:
             n_eff_same=n_eff_same,
             local=est["local"],
             prior=est["prior"],
+            served_parameters=N_LOCKED_HYPERPARAMETERS + n_priors,
+            n_locked=N_LOCKED_HYPERPARAMETERS,
+            n_priors=n_priors,
         ),
     }
 
@@ -464,6 +474,9 @@ def _notes(
     n_eff_same: float | None = None,
     local: float | None = None,
     prior: float | None = None,
+    served_parameters: int | None = None,
+    n_locked: int | None = None,
+    n_priors: int | None = None,
 ) -> list[str]:
     notes = [
         "Trained only on hand-curated live/dead (no pmid* auto-promote, no simulator).",
@@ -471,6 +484,16 @@ def _notes(
         "The band is never narrower than leave-one-paper-out MAE; it widens if the gel is thin, heterogeneous, or borrowing kPa. Not a biological confidence interval.",
         "We do not Huber/median away 5% live/dead: those are gels that kill cells, not noise.",
     ]
+    if served_parameters is not None:
+        locked = n_locked if n_locked is not None else N_LOCKED_HYPERPARAMETERS
+        priors = n_priors if n_priors is not None else max(0, int(served_parameters) - int(locked))
+        n_studies = lopo.get("n_studies") or 0
+        notes.append(
+            f"Served model has {served_parameters} parameters "
+            f"({locked} locked kernel hyperparameters + {priors} gel×cell empirical means). "
+            f"Beginning target is {PAPERS_NEEDED_BEGINNING} independent live/dead papers "
+            f"(today {n_studies}). 40 is only the tree report gate, not a working Ridge."
+        )
     if estimator == "shrinkage_global_prior" and material:
         notes.append(
             f"No published live/dead for {material} — the prior is the global mean, pulled by similar gels."
