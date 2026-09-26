@@ -64,7 +64,7 @@ def score_paper(
     if is_rev:
         score -= 18
         reasons.append("review")
-    if "articular_chondrocyte" in cells:
+    if "articular_chondrocyte" in cells or "nasal_chondrocyte" in cells:
         score += 25
         reasons.append("chondrocyte")
     if "MSC" in cells:
@@ -101,7 +101,13 @@ def score_paper(
         not is_rev
         and not already_curated
         and has_scaffold
-        and (has_cartilage or "articular_chondrocyte" in cells or "MSC" in cells)
+        and (
+            has_cartilage
+            or "articular_chondrocyte" in cells
+            or "nasal_chondrocyte" in cells
+            or "auricular_chondrocyte" in cells
+            or "MSC" in cells
+        )
         and bool(materials or has_viability_number or has_stiffness_number)
     )
     if mvp:

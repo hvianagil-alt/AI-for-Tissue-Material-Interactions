@@ -27,7 +27,7 @@ MaterialClass = Literal[
 ]
 
 Crosslinking = Literal["photocrosslink", "ionic", "enzymatic", "thermal", "chemical"]
-CellType = Literal["articular_chondrocyte", "MSC"]
+CellType = Literal["articular_chondrocyte", "auricular_chondrocyte", "nasal_chondrocyte", "MSC"]
 Species = Literal["human", "bovine", "porcine", "rabbit"]
 CultureModel = Literal["3D_encapsulation", "3D_bioprint", "2D"]
 GrowthFactor = Literal["none", "TGF_b1", "TGF_b3"]

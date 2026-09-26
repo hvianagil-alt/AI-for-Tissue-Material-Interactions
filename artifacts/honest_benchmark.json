@@ -1,12 +1,14 @@
 {
-  "n_rows": 52,
-  "n_studies": 17,
+  "n_rows": 62,
+  "n_studies": 20,
   "studies": [
     "aitchison2024",
     "bachmann2020",
     "daly2016",
+    "gatenholm2020",
     "hu2012",
     "ingavle2012",
+    "jovic2026",
     "kessel2020",
     "lindborg2015",
     "markstedt2015",
@@ -14,38 +16,39 @@
     "ortega2024",
     "park2013",
     "perezdiaz2023",
+    "poldervaart2017",
     "rojas2025",
     "salinas2007",
     "sun2015",
     "xie2022",
     "zhang2024"
   ],
-  "viability_mean": 78.13730769230769,
-  "viability_std": 21.802823267028355,
+  "viability_mean": 78.1232258064516,
+  "viability_std": 20.368992488519304,
   "dummy_lopo": {
-    "mae": 15.934431685885055,
-    "r2": -0.062244614581311586
+    "mae": 14.647475196545603,
+    "r2": -0.050924903118998444
   },
   "ridge_lopo": {
-    "mae": 18.386755159508933,
-    "r2": -0.2733224522969313
+    "mae": 20.76191049341005,
+    "r2": -2.257441912047719
   },
   "hgb_lopo": {
-    "mae": 13.680991157934756,
-    "r2": 0.24168861530996943
+    "mae": 11.929755296267382,
+    "r2": 0.24346785561500162
   },
   "material_mean_lopo": {
-    "mae": 17.491726147816983,
-    "r2": -0.23476604710278304
+    "mae": 16.953273531773714,
+    "r2": -0.3049483672025517
   },
   "shrinkage_lopo": {
-    "mae": 15.922809746238118,
-    "r2": -0.0932742027256348
+    "mae": 14.565165991556162,
+    "r2": -0.08205200106499522
   },
   "deployed_estimator": "shrinkage",
   "deployed_lopo": {
-    "mae": 15.922809746238118,
-    "r2": -0.0932742027256348
+    "mae": 14.565165991556162,
+    "r2": -0.08205200106499522
   },
   "pass_bar": {
     "description": "Deployed tabular estimator LOPO MAE at least 15% below dummy LOPO, R\u00b2 > 0, n_studies >= 15. Ridge/HGB are reported; HGB may deploy only at n_studies>=25. Shrinkage is empirical Bayes (kernel + material prior), not a neural net.",

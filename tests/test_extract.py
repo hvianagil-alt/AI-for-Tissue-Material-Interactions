@@ -30,6 +30,25 @@ def test_off_target_cell_line_is_not_promoted():
     assert rows == []
 
 
+def test_nasoseptal_is_not_mapped_to_articular():
+    from tissuelab.extract import pick_cell, cells_in
+
+    cells = cells_in("Human nasoseptal chondrocytes in a nanocellulose alginate bioink.")
+    assert "nasal_chondrocyte" in cells
+    assert pick_cell(cells) == "nasal_chondrocyte"
+
+
+def test_placeholder_amass_key_is_rejected(monkeypatch):
+    monkeypatch.setenv("AMASS_API_KEY", "amass_cole_aqui")
+    from tissuelab.harvest_amass import api_key
+
+    try:
+        api_key()
+    except SystemExit:
+        return
+    raise AssertionError("placeholder key must not be accepted")
+
+
 def test_extract_conditions_pairs_sentence_numbers():
     rows = extract_conditions(
         "GelMA cartilage hydrogel",

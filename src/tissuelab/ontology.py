@@ -48,6 +48,8 @@ APP_PATTERNS: list[tuple[str, re.Pattern[str]]] = [
     ("osteochondral", re.compile(r"\bosteochondral\b", re.I)),
     ("meniscus", re.compile(r"\bmeniscus\b", re.I)),
     ("auricular", re.compile(r"\bauricular\b|\bear cartilage\b", re.I)),
+    ("nasal", re.compile(r"\b(?:nasoseptal|nasal septum|septal cartilage|nasal chondrocytes?)\b", re.I)),
+    ("bone", re.compile(r"\b(?:bone tissue engineering|osteogen(?:ic|icity)|osteogenicity)\b", re.I)),
     ("nucleus_pulposus", re.compile(r"\bnucleus pulposus\b|\bintervertebral\b", re.I)),
     ("tracheal", re.compile(r"\btrachea", re.I)),
     ("in_vivo_repair", re.compile(r"\b(?:in vivo|animal model|rabbit knee|subcutaneous)\b", re.I)),
@@ -149,6 +151,8 @@ def tag_experiment(exp: dict, study: dict | None = None) -> dict:
         cell = str(out.get("cell_type") or "")
         if cell == "auricular_chondrocyte":
             out["application"] = "auricular"
+        elif cell == "nasal_chondrocyte":
+            out["application"] = "nasal"
         elif out.get("culture_model") == "3D_bioprint":
             out["application"] = "bioprinting"
         else:
@@ -163,6 +167,13 @@ def training_relevant(analysis: dict, *, has_hydrogel: bool, has_cartilage_cell:
     if analysis.get("is_review_like"):
         return False
     app = analysis.get("application")
-    if app in {"meniscus", "nucleus_pulposus", "tracheal", "drug_delivery"} and not has_cartilage_cell:
+    if app in {"meniscus", "nucleus_pulposus", "tracheal", "drug_delivery", "bone"} and not has_cartilage_cell:
         return False
-    return bool(has_hydrogel and has_cartilage_cell and (has_viability or app in {"in_vitro_cartilage", "bioprinting", "osteochondral", "auricular"}))
+    return bool(
+        has_hydrogel
+        and has_cartilage_cell
+        and (
+            has_viability
+            or app in {"in_vitro_cartilage", "bioprinting", "osteochondral", "auricular", "nasal"}
+        )
+    )

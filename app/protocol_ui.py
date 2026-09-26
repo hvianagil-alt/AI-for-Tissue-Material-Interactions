@@ -48,6 +48,7 @@ def _cell_sel(selected: str, lang: str) -> str:
     labels_pt = {
         "articular_chondrocyte": "Condrócito articular",
         "auricular_chondrocyte": "Condrócito auricular",
+        "nasal_chondrocyte": "Condrócito nasoseptal",
         "MSC": "MSC",
         "adipose_MSC": "MSC do tecido adiposo",
     }

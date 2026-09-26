@@ -1,15 +1,15 @@
 # Training pack
 
-Generated 2026-09-26T18:34:45Z.
+Generated 2026-09-26T18:50:44Z.
 
 | File | Rows | Use |
 |---|---|---|
-| `train_gold.csv` | 52 conditions / 17 papers | **Train** viability. Split by `split_group`. |
-| `train_silver.csv` | 71 auto rows | Review queue only. **Do not train.** |
+| `train_gold.csv` | 62 conditions / 20 papers | **Train** viability. Split by `split_group`. |
+| `train_silver.csv` | 70 auto rows | Review queue only. **Do not train.** |
 | `papers_uniform.csv` | 9659 papers (2094 training_relevant) | Chemistry / architecture / application tags. |
 | `feature_codebook.json` | vocab | Same labels the analyzer used. |
 
-Gold chemistry filled on 52/52 rows.
+Gold chemistry filled on 62/62 rows.
 
 ```python
 import pandas as pd

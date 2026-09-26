@@ -1,12 +1,12 @@
 {
-  "n_studies": 105,
-  "n_experiments": 239,
-  "n_measurements": 293,
-  "n_numeric_viability": 52,
-  "n_auto_promoted_viability": 71,
-  "n_hand_studies": 56,
-  "n_hand_viability_studies": 17,
-  "n_with_stiffness_kpa": 104,
+  "n_studies": 107,
+  "n_experiments": 248,
+  "n_measurements": 302,
+  "n_numeric_viability": 62,
+  "n_auto_promoted_viability": 70,
+  "n_hand_studies": 59,
+  "n_hand_viability_studies": 20,
+  "n_with_stiffness_kpa": 107,
   "experiments_per_study": {
     "aitchison2024": 3,
     "bachmann2020": 18,
@@ -22,9 +22,11 @@
     "duchi2017": 2,
     "fathi2020": 3,
     "galarraga2021": 3,
+    "gatenholm2020": 5,
     "hu2012": 4,
     "ingavle2012": 2,
     "jooybar2019": 2,
+    "jovic2026": 3,
     "kessel2020": 3,
     "kim2015": 2,
     "kudva2018": 3,
@@ -58,7 +60,6 @@
     "pmid27566509": 1,
     "pmid27612810": 1,
     "pmid28536614": 1,
-    "pmid28586346": 1,
     "pmid30607337": 1,
     "pmid32033151": 1,
     "pmid33367226": 1,
@@ -94,6 +95,7 @@
     "pmid42306631": 1,
     "pmid42434726": 2,
     "pmid42502817": 1,
+    "poldervaart2017": 2,
     "rojas2025": 4,
     "rouillard2011": 2,
     "salinas2007": 3,
@@ -116,28 +118,29 @@
   },
   "experiments_per_cell_type": {
     "ATDC5": 1,
-    "MSC": 53,
+    "MSC": 55,
     "adipose_MSC": 23,
-    "articular_chondrocyte": 154,
+    "articular_chondrocyte": 158,
     "auricular_chondrocyte": 7,
-    "cartilage_progenitor": 1
+    "cartilage_progenitor": 1,
+    "nasal_chondrocyte": 3
   },
   "measurements_per_assay": {
     "col2_col1_ratio": 2,
     "dna_fold_vs_day0": 7,
     "morphology_spherical": 23,
     "sgag_histology": 72,
-    "viability_pct": 189
+    "viability_pct": 198
   },
   "measurements_per_evidence": {
-    "numeric_text": 125,
+    "numeric_text": 134,
     "qualitative_text": 168
   },
   "percent_missing": {
-    "stiffness_kpa": 56.5,
-    "polymer_concentration_wt_pct": 61.9,
-    "species": 18.8,
-    "passage": 81.6,
+    "stiffness_kpa": 56.9,
+    "polymer_concentration_wt_pct": 63.3,
+    "species": 18.1,
+    "passage": 80.2,
     "porosity_pct": 100.0
   },
   "modeling_notes": [
@@ -189,5 +192,5 @@
     "tyramine": 38,
     "unmodified": 8285
   },
-  "n_auto_promoted_studies": 49
+  "n_auto_promoted_studies": 48
 }

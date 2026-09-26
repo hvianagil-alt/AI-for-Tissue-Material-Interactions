@@ -48,3 +48,16 @@ def test_tag_experiment_does_not_methacrylate_agarose_from_gelma_notes():
     assert tagged["chemical_modification"] == "methacrylated"
     assert tagged["architecture"] == "bulk_hydrogel"
     assert tagged["application"] == "in_vitro_cartilage"
+
+
+def test_nasal_chondrocyte_tags_nasal_application():
+    tagged = tag_experiment(
+        {
+            "material_class": "cellulose_alginate",
+            "culture_model": "3D_bioprint",
+            "cell_type": "nasal_chondrocyte",
+            "notes": "Nasoseptal chondrocytes in NCA bioink.",
+        }
+    )
+    assert tagged["application"] == "nasal"
+    assert tagged["architecture"] == "3d_printed"

@@ -597,6 +597,39 @@ STUDIES: list[dict] = [
         "license": "CC-BY",
         "notes": "Microtia auricular chondrocytes in GelMA DLP prints ± chondrocyte microtissues. Live/dead means at day 1/10/20. No starting Young's modulus for the GelMA control.",
     },
+    {
+        "study_id": "gatenholm2020",
+        "citation": "Gatenholm et al., Cartilage 2020",
+        "doi": "10.1177/1947603520903788",
+        "pmid": "32070108",
+        "year": 2020,
+        "journal": "Cartilage",
+        "pmcid": "PMC8721610",
+        "license": "Sage OA via PMC",
+        "notes": "Human articular P1 chondrocytes in 80:20 NFC:A, INKREDIBLE, NC-200. 98% is before printing. Printed d3/d5/d7/d14. Pellet 72% is not a hydrogel and is not stored. Printing pressure 5 kPa is not Young's modulus.",
+    },
+    {
+        "study_id": "jovic2026",
+        "citation": "Jovic et al., J. Funct. Biomater. 2026",
+        "doi": "10.3390/jfb17040163",
+        "pmid": "42042269",
+        "year": 2026,
+        "journal": "Journal of Functional Biomaterials",
+        "pmcid": "PMC13117296",
+        "license": "CC-BY",
+        "notes": "Human nasoseptal chondrocytes in 75:25 NCA bioink, 22G INKREDIBLE. Live/dead: printed 1 h 81.9%, printed 24 h 61%, unprinted-in-gel 24 h 79.6%. E=52.6 kPa from prior NCA characterization, not DMA in this paper. Density 3e6/ml.",
+    },
+    {
+        "study_id": "poldervaart2017",
+        "citation": "Poldervaart et al., PLoS ONE 2017",
+        "doi": "10.1371/journal.pone.0177628",
+        "pmid": "28586346",
+        "year": 2017,
+        "journal": "PLoS ONE",
+        "pmcid": "PMC5460858",
+        "license": "CC-BY",
+        "notes": "Human BM-MSC in 1–3% w/v MeHA (Irgacure 2959). Fig 3A live/dead averages 73.6±6.4% d1 and 64.4±12.2% d21 across concentrations; 1% gels disintegrated before d21. Per-% means only in the figure — not stored. Bone/osteogenicity protocol; viability is MSC in MeHA molds, not cartilage. Table 1 E after UV is not attached to the mixed viability rows.",
+    },
 ]
 
 
@@ -3001,6 +3034,182 @@ def _chemistry_pass_experiments() -> list[dict]:
     return rows
 
 
+def _queue_pass_five() -> list[dict]:
+    """OA fulltext live/dead: NFC:A articular print, NCA nasoseptal print, MeHA MSC molds."""
+    rows = []
+    rows.append(
+        {
+            "experiment_id": "gatenholm2020-nfc-alg-preprint",
+            "study_id": "gatenholm2020",
+            "material_class": "cellulose_alginate",
+            "material_detail": "80:20 NFC:A bioink, cells mixed, NC-200 before extrusion",
+            "crosslinking": "ionic",
+            "surface_chemistry": "native",
+            "has_adhesion_ligand": 0.5,
+            "cell_type": "articular_chondrocyte",
+            "species": "human",
+            "culture_model": "3D_encapsulation",
+            "growth_factor": "none",
+            "culture_time_days": 0,
+            "cell_density_million_per_ml": 20.0,
+            "passage": 1,
+            "chemical_modification": "unmodified",
+            "architecture": "bulk_hydrogel",
+            "application": "bioprinting",
+            "live_dead_kit": "NC-200",
+            "extracted_from": "PMC8721610 Fig. 5A + results (before printing)",
+            "curator_confidence": "high",
+            "notes": "NC-200 before printing, not post-print d0 live/dead. 20e6/ml, P1 articular.",
+            "measurements": [_m("viability_pct", 98.0, "%", evidence="numeric_text")],
+        }
+    )
+    for day, val in ((3.0, 88.0), (5.0, 81.0), (7.0, 81.0), (14.0, 72.0)):
+        rows.append(
+            {
+                "experiment_id": f"gatenholm2020-nfc-alg-d{int(day)}",
+                "study_id": "gatenholm2020",
+                "material_class": "cellulose_alginate",
+                "material_detail": "80:20 NFC:A, INKREDIBLE, 410 µm nozzle, 100 mM CaCl2 5 min",
+                "crosslinking": "ionic",
+                "surface_chemistry": "native",
+                "has_adhesion_ligand": 0.5,
+                "cell_type": "articular_chondrocyte",
+                "species": "human",
+                "culture_model": "3D_bioprint",
+                "growth_factor": "TGF_b3",
+                "culture_time_days": day,
+                "cell_density_million_per_ml": 20.0,
+                "passage": 1,
+                "chemical_modification": "unmodified",
+                "architecture": "3d_printed",
+                "application": "bioprinting",
+                "live_dead_kit": "NC-200",
+                "extracted_from": "PMC8721610 Fig. 5A + results text",
+                "curator_confidence": "high",
+                "notes": "Printed NC-200. Chondrogenic medium (TGF-β1 + TGF-β3) after 2 d recovery. d5 and d7 both 81% (ns). Printing pressure 5 kPa is not stored as modulus.",
+                "measurements": [_m("viability_pct", val, "%", evidence="numeric_text")],
+            }
+        )
+    rows.append(
+        {
+            "experiment_id": "jovic2026-nca-printed-1h",
+            "study_id": "jovic2026",
+            "material_class": "cellulose_alginate",
+            "material_detail": "75:25 nanocellulose–alginate (NCA), 22G CELLINK INKREDIBLE, 30 kPa",
+            "crosslinking": "ionic",
+            "stiffness_kpa": 52.6,
+            "stiffness_method": "elastic_modulus_prior_NCA_paper",
+            "surface_chemistry": "native",
+            "has_adhesion_ligand": 0.5,
+            "cell_type": "nasal_chondrocyte",
+            "species": "human",
+            "culture_model": "3D_bioprint",
+            "growth_factor": "none",
+            "culture_time_days": 0,
+            "cell_density_million_per_ml": 3.0,
+            "chemical_modification": "unmodified",
+            "architecture": "3d_printed",
+            "application": "nasal",
+            "live_dead_kit": "calcein_ethidium",
+            "extracted_from": "PMC13117296 Fig. 3B printed 1 h (Day 0)",
+            "curator_confidence": "high",
+            "notes": "Nasoseptal chondrocytes, not articular/auricular. 81.9% immediately post-print. E=52.6 kPa cited from prior NCA characterization.",
+            "measurements": [_m("viability_pct", 81.9, "%", evidence="numeric_text")],
+        }
+    )
+    rows.append(
+        {
+            "experiment_id": "jovic2026-nca-printed-24h",
+            "study_id": "jovic2026",
+            "material_class": "cellulose_alginate",
+            "material_detail": "75:25 NCA, 22G INKREDIBLE, same print as 1 h row",
+            "crosslinking": "ionic",
+            "stiffness_kpa": 52.6,
+            "stiffness_method": "elastic_modulus_prior_NCA_paper",
+            "surface_chemistry": "native",
+            "has_adhesion_ligand": 0.5,
+            "cell_type": "nasal_chondrocyte",
+            "species": "human",
+            "culture_model": "3D_bioprint",
+            "growth_factor": "none",
+            "culture_time_days": 1,
+            "cell_density_million_per_ml": 3.0,
+            "chemical_modification": "unmodified",
+            "architecture": "3d_printed",
+            "application": "nasal",
+            "live_dead_kit": "calcein_ethidium",
+            "extracted_from": "PMC13117296 Fig. 3B printed 24 h (Day 1)",
+            "curator_confidence": "high",
+            "notes": "Printed 61% at 24 h; delayed death after shear, not immediate post-print drop.",
+            "measurements": [_m("viability_pct", 61.0, "%", evidence="numeric_text")],
+        }
+    )
+    rows.append(
+        {
+            "experiment_id": "jovic2026-nca-unprinted-24h",
+            "study_id": "jovic2026",
+            "material_class": "cellulose_alginate",
+            "material_detail": "75:25 NCA hemisphere, 1 mL syringe no nozzle (unprinted control)",
+            "crosslinking": "ionic",
+            "stiffness_kpa": 52.6,
+            "stiffness_method": "elastic_modulus_prior_NCA_paper",
+            "surface_chemistry": "native",
+            "has_adhesion_ligand": 0.5,
+            "cell_type": "nasal_chondrocyte",
+            "species": "human",
+            "culture_model": "3D_encapsulation",
+            "growth_factor": "none",
+            "culture_time_days": 1,
+            "cell_density_million_per_ml": 3.0,
+            "chemical_modification": "unmodified",
+            "architecture": "bulk_hydrogel",
+            "application": "nasal",
+            "live_dead_kit": "calcein_ethidium",
+            "extracted_from": "PMC13117296 Fig. 3B unprinted 24 h",
+            "curator_confidence": "high",
+            "notes": "Same NCA gel without extrusion shear. Unprinted 1 h percent is not in the text.",
+            "measurements": [_m("viability_pct", 79.6, "%", evidence="numeric_text")],
+        }
+    )
+    for day, val, sd in ((1.0, 73.6, 6.4), (21.0, 64.4, 12.2)):
+        rows.append(
+            {
+                "experiment_id": f"poldervaart2017-meha-encap-d{int(day)}",
+                "study_id": "poldervaart2017",
+                "material_class": "HA",
+                "material_detail": "MeHA 1–3% w/v + 0.1% Irgacure 2959, UV mold (not the printed 3% scaffolds)",
+                "crosslinking": "photocrosslink",
+                "surface_chemistry": "native",
+                "has_adhesion_ligand": 0.5,
+                "tissue": "bone",
+                "cell_type": "MSC",
+                "species": "human",
+                "culture_model": "3D_encapsulation",
+                "growth_factor": "none",
+                "culture_time_days": day,
+                "cell_density_million_per_ml": 2.0,
+                "chemical_modification": "methacrylated",
+                "architecture": "bulk_hydrogel",
+                "application": "bone",
+                "live_dead_kit": "calcein_ethidium",
+                "modification_degree_pct": 6.3,
+                "n_replicates": 3,
+                "extracted_from": "PMC5460858 Fig. 3A average across MeHA concentrations",
+                "curator_confidence": "medium",
+                "notes": (
+                    "Average MSC live/dead across 1–3% w/v; concentration not stored as a single mean. "
+                    "1% gels disintegrated by d21 so that timepoint excludes 1%. "
+                    "Per-% means only in the figure. Bone/osteogenicity protocol. "
+                    "Table 1 E after UV (1% 1.3, 2% 6.3, 2.5% 6.8, 3% 10.6 kPa) is not attached."
+                ),
+                "measurements": [
+                    _m("viability_pct", val, "%", sd=sd, evidence="numeric_text", n=3)
+                ],
+            }
+        )
+    return rows
+
+
 EXPERIMENTS: list[dict] = (
     _bachmann_experiments()
     + _other_experiments()
@@ -3010,4 +3219,5 @@ EXPERIMENTS: list[dict] = (
     + _queue_pass_four()
     + _bmp_pass_experiments()
     + _chemistry_pass_experiments()
+    + _queue_pass_five()
 )

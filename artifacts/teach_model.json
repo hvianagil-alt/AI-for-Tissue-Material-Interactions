@@ -1,16 +1,16 @@
 {
-  "n_rows": 52,
-  "n_studies": 17,
+  "n_rows": 62,
+  "n_studies": 20,
   "budget": {
-    "n_rows": 52,
-    "n_studies": 17,
+    "n_rows": 62,
+    "n_studies": 20,
     "n_materials": 18,
-    "n_cell_types": 4,
-    "n_with_kpa": 23,
-    "rows_per_paper": 3.06,
+    "n_cell_types": 5,
+    "n_with_kpa": 26,
+    "rows_per_paper": 3.1,
     "dummy_parameters": 1,
     "material_mean_parameters": 18,
-    "ridge_parameters_guess": 25,
+    "ridge_parameters_guess": 26,
     "starter_feature_count": 9,
     "papers_needed_ridge": 90,
     "papers_needed_mixed": 25,
@@ -22,36 +22,38 @@
     "what_to_add_first": "studies"
   },
   "random_split_ridge": {
-    "mae": 16.36668283422133,
-    "r2": -0.37781383651333766,
-    "train_mae": 7.889600740597557,
-    "n_train": 41,
-    "n_test": 11,
+    "mae": 12.035496305984367,
+    "r2": 0.18554775006097857,
+    "train_mae": 8.518997763660696,
+    "n_train": 49,
+    "n_test": 13,
     "test_papers": [
       "bachmann2020",
       "daly2016",
       "hu2012",
       "kessel2020",
+      "lindborg2015",
       "markstedt2015",
-      "park2013"
+      "martyniak2023",
+      "xie2022"
     ]
   },
   "ridge_lopo": {
-    "mae": 18.386755159508933,
-    "r2": -0.2733224522969313,
-    "n_coefficients": 29
+    "mae": 20.76191049341005,
+    "r2": -2.257441912047719,
+    "n_coefficients": 30
   },
   "dummy_lopo": {
-    "mae": 15.934431685885055,
-    "r2": -0.062244614581311586
+    "mae": 14.647475196545603,
+    "r2": -0.050924903118998444
   },
   "material_mean_lopo": {
-    "mae": 17.491726147816983,
-    "r2": -0.23476604710278304
+    "mae": 16.953273531773714,
+    "r2": -0.3049483672025517
   },
   "shrinkage_lopo": {
-    "mae": 15.922809746238118,
-    "r2": -0.0932742027256348
+    "mae": 14.565165991556162,
+    "r2": -0.08205200106499522
   },
   "deployed_estimator": "shrinkage",
   "mvp_pass": 0,
@@ -65,7 +67,7 @@
     },
     "predicted_viability_pct": 91.6,
     "material_prior": 94.0,
-    "local_kernel": 81.7,
+    "local_kernel": 81.3,
     "n_eff_same_material": 2.86,
     "estimator": "shrinkage"
   },

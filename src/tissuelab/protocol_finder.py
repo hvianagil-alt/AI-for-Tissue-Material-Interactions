@@ -285,6 +285,7 @@ def find_protocol(
     if cell_type not in {
         "articular_chondrocyte",
         "auricular_chondrocyte",
+        "nasal_chondrocyte",
         "MSC",
         "adipose_MSC",
     }:

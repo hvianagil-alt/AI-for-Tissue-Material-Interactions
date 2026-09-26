@@ -56,8 +56,27 @@ def test_hand_curated_replaces_auto_promoted():
         "smith2013", "jooybar2019", "kudva2018", "choy2017", "levato2017",
         "cigan2016", "byers2008", "pahoff2019", "chawla2012", "duchi2017",
         "martyniak2023", "xie2022",
+        "gatenholm2020", "jovic2026", "poldervaart2017",
     }
     assert all(s.get("pmid") for s in STUDIES if s["study_id"] in require_pmid)
+
+
+def test_queue_pass_five_gold_is_numeric_and_honest():
+    by_id = {e["experiment_id"]: e for e in EXPERIMENTS}
+    pre = by_id["gatenholm2020-nfc-alg-preprint"]
+    assert pre["measurements"][0]["value"] == 98.0
+    assert "before printing" in pre["notes"].lower()
+    assert by_id["gatenholm2020-nfc-alg-d5"]["measurements"][0]["value"] == 81.0
+    printed = by_id["jovic2026-nca-printed-24h"]
+    assert printed["cell_type"] == "nasal_chondrocyte"
+    assert printed["measurements"][0]["value"] == 61.0
+    assert printed["cell_density_million_per_ml"] == 3.0
+    pold = by_id["poldervaart2017-meha-encap-d1"]
+    assert pold["cell_type"] == "MSC"
+    assert pold.get("polymer_concentration_wt_pct") is None
+    assert pold.get("stiffness_kpa") is None
+    assert pold["measurements"][0]["value"] == 73.6
+    assert pold["application"] == "bone"
 
 
 def test_curated_viability_excludes_auto_promote():

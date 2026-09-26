@@ -57,12 +57,14 @@ MATERIAL_LABELS = {
 CELL_TYPES = [
     "articular_chondrocyte",
     "auricular_chondrocyte",
+    "nasal_chondrocyte",
     "MSC",
     "adipose_MSC",
 ]
 CELL_LABELS = {
     "articular_chondrocyte": "Articular chondrocyte",
     "auricular_chondrocyte": "Auricular chondrocyte",
+    "nasal_chondrocyte": "Nasoseptal chondrocyte",
     "MSC": "Mesenchymal stem cells (MSC)",
     "adipose_MSC": "Adipose-derived MSC",
 }

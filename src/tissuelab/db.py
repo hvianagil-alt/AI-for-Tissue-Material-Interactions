@@ -9,6 +9,7 @@ from tissuelab.paths import DB_PATH, SCHEMA_SQL_PATH
 VOCAB_CELL_TYPES = [
     ("articular_chondrocyte", "cartilage", "Primary or expanded articular chondrocytes"),
     ("auricular_chondrocyte", "cartilage", "Primary auricular (elastic cartilage) chondrocytes"),
+    ("nasal_chondrocyte", "cartilage", "Nasoseptal / hyaline nasal chondrocytes; not articular or auricular"),
     ("MSC", "stromal", "Bone-marrow or otherwise unspecified MSCs in a cartilage protocol"),
     ("adipose_MSC", "stromal", "Adipose-derived MSCs / ASCs in a cartilage protocol"),
     ("ATDC5", "cartilage", "Murine ATDC5 chondrogenic cell line"),

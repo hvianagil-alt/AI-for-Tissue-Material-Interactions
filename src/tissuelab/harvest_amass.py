@@ -28,22 +28,31 @@ MIN_SLEEP_S = 1.15
 
 
 def load_dotenv() -> None:
-    path = ROOT / ".env"
-    if not path.exists():
-        return
-    for line in path.read_text().splitlines():
-        line = line.strip()
-        if not line or line.startswith("#") or "=" not in line:
+    """Load `.env` first, then fill gaps from `.env.example`.
+
+    Live keys belong in `.env` (gitignored). `.env.example` is the fallback
+    the PI actually edits when they have not created `.env` yet.
+    """
+    for name in (".env", ".env.example"):
+        path = ROOT / name
+        if not path.exists():
             continue
-        key, value = line.split("=", 1)
-        os.environ.setdefault(key.strip(), value.strip().strip("'").strip('"'))
+        for line in path.read_text().splitlines():
+            line = line.strip()
+            if not line or line.startswith("#") or "=" not in line:
+                continue
+            key, value = line.split("=", 1)
+            os.environ.setdefault(key.strip(), value.strip().strip("'").strip('"'))
 
 
 def api_key() -> str:
     load_dotenv()
     key = os.environ.get("AMASS_API_KEY", "").strip()
-    if not key or not key.startswith("amass_") or "cole_aqui" in key:
-        raise SystemExit("AMASS_API_KEY missing or still a placeholder. Put it in .env.")
+    if not key or not key.startswith("amass_") or "cole_aqui" in key.lower():
+        raise SystemExit(
+            "AMASS_API_KEY missing or still the example placeholder. "
+            "Put the real amass_… token in .env (gitignored) or .env.example."
+        )
     return key
 
 

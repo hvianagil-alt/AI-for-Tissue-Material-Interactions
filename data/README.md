@@ -25,7 +25,7 @@ python -m tissuelab.training_pack     # rewrite train_gold.csv / papers_uniform.
 python -m tissuelab.benchmark
 ```
 
-Harvest BiomedCore (needs `AMASS_API_KEY` in `.env`; billed search):
+Harvest BiomedCore (needs `AMASS_API_KEY` in `.env` or `.env.example`; billed search):
 
 ```bash
 python -m tissuelab.harvest_amass

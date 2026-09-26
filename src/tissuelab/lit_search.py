@@ -15,6 +15,7 @@ from tissuelab.paths import DB_PATH
 CELL_TERMS = {
     "articular_chondrocyte": ("chondrocyte", "articular cartilage"),
     "auricular_chondrocyte": ("auricular chondrocyte", "chondrocyte"),
+    "nasal_chondrocyte": ("nasoseptal chondrocyte", "nasal chondrocyte", "septal cartilage"),
     "MSC": ("mesenchymal stem", "MSC chondrogen"),
     "adipose_MSC": ("adipose stem", "ADSC", "ASC chondro"),
 }

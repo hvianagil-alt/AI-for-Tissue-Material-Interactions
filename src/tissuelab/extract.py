@@ -25,8 +25,9 @@ MATERIAL_PATTERNS: list[tuple[str, re.Pattern[str]]] = [
 ]
 
 CELL_PATTERNS: list[tuple[str, re.Pattern[str]]] = [
-    ("articular_chondrocyte", re.compile(r"\b(?:articular chondrocytes?|chondrocytes?)\b", re.I)),
+    ("nasal_chondrocyte", re.compile(r"\b(?:nasoseptal|nasal(?:septal)?|septal) chondrocytes?\b", re.I)),
     ("auricular_chondrocyte", re.compile(r"\bauricular chondrocytes?\b", re.I)),
+    ("articular_chondrocyte", re.compile(r"\b(?:articular chondrocytes?|chondrocytes?)\b", re.I)),
     ("adipose_MSC", re.compile(r"\b(?:adipose[- ]derived|hASCs?|hAdMSCs?|AD-hMSCs?)\b", re.I)),
     ("MSC", re.compile(r"\b(?:mesenchymal stem cells?|MSCs?|bone marrow stromal)\b", re.I)),
     ("ATDC5", re.compile(r"\bATDC5\b", re.I)),
@@ -343,10 +344,12 @@ def pick_material(materials: list[str]) -> tuple[str | None, str | None]:
 
 
 def pick_cell(cells: list[str]) -> str | None:
-    if "articular_chondrocyte" in cells:
-        return "articular_chondrocyte"
+    if "nasal_chondrocyte" in cells:
+        return "nasal_chondrocyte"
     if "auricular_chondrocyte" in cells:
         return "auricular_chondrocyte"
+    if "articular_chondrocyte" in cells:
+        return "articular_chondrocyte"
     if "adipose_MSC" in cells:
         return "adipose_MSC"
     if "MSC" in cells or "iPSC" in cells:
