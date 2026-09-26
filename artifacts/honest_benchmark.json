@@ -1,6 +1,6 @@
 {
-  "n_rows": 62,
-  "n_studies": 20,
+  "n_rows": 75,
+  "n_studies": 25,
   "studies": [
     "aitchison2024",
     "bachmann2020",
@@ -10,48 +10,53 @@
     "ingavle2012",
     "jovic2026",
     "kessel2020",
+    "lan2022",
     "lindborg2015",
     "markstedt2015",
     "martyniak2023",
+    "mcmillan2025",
     "ortega2024",
     "park2013",
     "perezdiaz2023",
     "poldervaart2017",
     "rojas2025",
     "salinas2007",
+    "scalzone2022",
     "sun2015",
+    "visscher2018",
     "xie2022",
-    "zhang2024"
+    "zhang2024",
+    "ziverec2026"
   ],
-  "viability_mean": 78.1232258064516,
-  "viability_std": 20.368992488519304,
+  "viability_mean": 79.59479999999999,
+  "viability_std": 19.058307925232317,
   "dummy_lopo": {
-    "mae": 14.647475196545603,
-    "r2": -0.050924903118998444
+    "mae": 13.322089556678783,
+    "r2": -0.04455258925213634
   },
   "ridge_lopo": {
-    "mae": 20.76191049341005,
-    "r2": -2.257441912047719
+    "mae": 16.415656245055374,
+    "r2": -0.8948878862053573
   },
   "hgb_lopo": {
-    "mae": 11.929755296267382,
-    "r2": 0.24346785561500162
+    "mae": 12.349942545426337,
+    "r2": 0.15472848809655715
   },
   "material_mean_lopo": {
-    "mae": 16.953273531773714,
-    "r2": -0.3049483672025517
+    "mae": 15.256186476508004,
+    "r2": -0.23879155430086607
   },
   "shrinkage_lopo": {
-    "mae": 14.565165991556162,
-    "r2": -0.08205200106499522
+    "mae": 13.59794943328593,
+    "r2": -0.08292575100468191
   },
   "deployed_estimator": "shrinkage",
   "deployed_lopo": {
-    "mae": 14.565165991556162,
-    "r2": -0.08205200106499522
+    "mae": 13.59794943328593,
+    "r2": -0.08292575100468191
   },
   "pass_bar": {
-    "description": "Deployed tabular estimator LOPO MAE at least 15% below dummy LOPO, R\u00b2 > 0, n_studies >= 15. Ridge/HGB are reported; HGB may deploy only at n_studies>=25. Shrinkage is empirical Bayes (kernel + material prior), not a neural net.",
+    "description": "Deployed tabular estimator LOPO MAE at least 15% below dummy LOPO, R\u00b2 > 0, n_studies >= 15. Ridge/HGB are reported; HGB may deploy only at n_studies>=40. Shrinkage is empirical Bayes (kernel + material prior), not a neural net. Dummy is never served.",
     "dummy_mae_target_ratio": 0.85,
     "min_studies": 15
   },
@@ -59,10 +64,10 @@
     "This is the MVP scientific metric on hand-curated live/dead only. Simulated holdout R\u00b2 is not.",
     "Auto-promoted pmid* rows are excluded from this split.",
     "Do not add unpaired regex hits to inflate n_rows.",
-    "Deployed estimator is the LOPO winner among dummy, material-class mean, and shrinkage. Ridge overfits this table. HGB is eligible only at >=25 papers."
+    "Deployed estimator is the LOPO winner among material-class mean and shrinkage (never dummy). Ridge overfits this table. HGB is reported only until >=40 papers."
   ],
   "status": "baseline",
-  "beats_dummy": true,
+  "beats_dummy": false,
   "ridge_beats_dummy": false,
   "hgb_beats_dummy": true,
   "mvp_pass": false

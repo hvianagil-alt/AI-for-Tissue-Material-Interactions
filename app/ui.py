@@ -9,7 +9,7 @@ from app.shell import normalize_lang, render_shell
 MATERIAL_GROUPS = [
     (
         "Gels a PI already runs",
-        ["GelMA", "fibrin", "HA", "alginate", "chitosan", "PEG", "collagen"],
+        ["GelMA", "fibrin", "HA", "alginate", "chitosan", "PEG", "collagen", "gellan"],
     ),
     (
         "Extracted composites",
@@ -44,6 +44,7 @@ MATERIAL_LABELS = {
     "agarose": "Agarose",
     "cellulose_alginate": "Cellulose + alginate",
     "collagen": "Collagen",
+    "gellan": "Gellan (GGMA)",
     "fibrin_dECM": "Fibrin + dECM",
     "alginate_dECM": "Alginate + dECM",
     "chitosan_gelatin_PVA": "Chitosan + gelatin + PVA",

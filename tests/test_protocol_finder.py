@@ -13,6 +13,8 @@ def test_articular_alive_prefers_fibrin_over_gelma():
     assert gelma["same_mean"] is not None
     assert gelma["same_mean"] < out["same_mean"]
     assert "GelMA" in out["why"]
+    assert out["recipe"]
+    assert out["recipe"].get("material_class") == "fibrin"
 
 
 def test_print_uses_a_printed_gel():
@@ -34,3 +36,18 @@ def test_msc_does_not_crash():
     out = find_protocol(cell_type="MSC", goal="alive")
     assert out["protocol"]["material_class"]
     assert out["protocol"]["cell_type"] == "MSC"
+
+
+def test_nasal_print_returns_extracted_recipe():
+    out = find_protocol(cell_type="nasal_chondrocyte", goal="print", how="print")
+    assert out["protocol"]["cell_type"] == "nasal_chondrocyte"
+    assert out["recipe"]
+    assert out["recipe"].get("culture_model") == "3D_bioprint" or out["n_print_same"] >= 1
+    assert out["recipe"].get("doi")
+    assert out["intent"]["site"] == "any"
+
+
+def test_site_filter_nasal_does_not_crash():
+    out = find_protocol(cell_type="nasal_chondrocyte", goal="alive", site="nasal")
+    assert out["intent"]["site"] == "nasal"
+    assert out["protocol"]["material_class"]

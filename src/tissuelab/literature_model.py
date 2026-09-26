@@ -347,6 +347,7 @@ def predict_literature_viability(design: dict) -> dict:
     ridge_lopo = lopo.get("ridge_lopo") or {}
     material_lopo = lopo.get("material_mean_lopo") or {}
     shrinkage_lopo = lopo.get("shrinkage_lopo") or {}
+    hgb_lopo = lopo.get("hgb_lopo") or {}
     mae = (shrinkage_lopo.get("mae") if shrinkage_lopo else None) or deployed_lopo.get("mae") or dummy_lopo.get("mae")
     coverage = _coverage(frame, design.get("material_class"))
     n_eff_same = float(est.get("n_eff_same") or 0.0)
@@ -423,6 +424,9 @@ def predict_literature_viability(design: dict) -> dict:
             "material_mean_r2": material_lopo.get("r2"),
             "shrinkage_mae": shrinkage_lopo.get("mae"),
             "shrinkage_r2": shrinkage_lopo.get("r2"),
+            "hgb_mae": hgb_lopo.get("mae"),
+            "hgb_r2": hgb_lopo.get("r2"),
+            "hgb_beats_dummy": lopo.get("hgb_beats_dummy"),
             "deployed_estimator": lopo.get("deployed_estimator"),
             "deployed_mae": deployed_lopo.get("mae"),
             "deployed_r2": deployed_lopo.get("r2"),
@@ -617,8 +621,11 @@ def list_viability_evidence(path=DB_PATH) -> list[dict]:
     frame = pd.read_sql_query(
         """
         SELECT e.experiment_id, e.study_id, s.citation, s.doi, s.year,
-               e.material_class, e.stiffness_kpa, e.cell_type, e.species,
+               e.material_class, e.material_detail, e.stiffness_kpa, e.cell_type, e.species,
                e.growth_factor, e.culture_time_days, e.culture_model,
+               e.polymer_concentration_wt_pct, e.crosslinking,
+               e.cell_density_million_per_ml, e.architecture, e.application,
+               e.chemical_modification,
                m.value AS viability_pct, m.value_sd, m.qualitative_label,
                m.evidence, m.notes
         FROM experiments e
@@ -645,12 +652,33 @@ def list_viability_evidence(path=DB_PATH) -> list[dict]:
                 "doi": None if pd.isna(getattr(row, "doi", None)) else row.doi,
                 "year": None if year is None or pd.isna(year) else int(year),
                 "material_class": row.material_class,
+                "material_detail": None
+                if pd.isna(getattr(row, "material_detail", None))
+                else row.material_detail,
                 "stiffness_kpa": None if kpa is None or pd.isna(kpa) else float(kpa),
                 "cell_type": None if pd.isna(getattr(row, "cell_type", None)) else row.cell_type,
                 "species": None if pd.isna(getattr(row, "species", None)) else row.species,
                 "growth_factor": None if pd.isna(getattr(row, "growth_factor", None)) else row.growth_factor,
                 "culture_time_days": None if days is None or pd.isna(days) else float(days),
                 "culture_model": None if pd.isna(getattr(row, "culture_model", None)) else row.culture_model,
+                "polymer_concentration_wt_pct": None
+                if pd.isna(getattr(row, "polymer_concentration_wt_pct", None))
+                else float(row.polymer_concentration_wt_pct),
+                "crosslinking": None
+                if pd.isna(getattr(row, "crosslinking", None))
+                else row.crosslinking,
+                "cell_density_million_per_ml": None
+                if pd.isna(getattr(row, "cell_density_million_per_ml", None))
+                else float(row.cell_density_million_per_ml),
+                "architecture": None
+                if pd.isna(getattr(row, "architecture", None))
+                else row.architecture,
+                "application": None
+                if pd.isna(getattr(row, "application", None))
+                else row.application,
+                "chemical_modification": None
+                if pd.isna(getattr(row, "chemical_modification", None))
+                else row.chemical_modification,
                 "viability_pct": None if viab is None or pd.isna(viab) else float(viab),
                 "viability_sd": None
                 if pd.isna(getattr(row, "value_sd", None))

@@ -3,10 +3,11 @@
 The Streamlit holdout R² is mostly simulated data. This script is the number
 the product has to beat: dummy mean, grouped by study_id, native live/dead %.
 
-Ridge is reported for honesty. The deployed estimator is the LOPO winner
-among dummy, material-class mean, and empirical-Bayes shrinkage.
-Ridge overfits this table. Shrinkage lets stiffness / time / TGF move the
-point estimate without a neural net.
+Ridge and HistGradientBoosting are reported for honesty. Lookup always
+serves empirical-Bayes shrinkage (kernel + material prior). Dummy is never
+deployed. HGB may enter the deploy candidate set only at n_studies >= 40
+(same gate as teach_model.papers_needed_trees). At 25 papers a slightly
+better HGB LOPO MAE is the same overfit pattern that reversed at n=23.
 """
 
 from __future__ import annotations
@@ -30,6 +31,9 @@ from tissuelab.shrinkage import lopo_shrinkage_predictions
 
 FEATURES_NUM = ["stiffness_kpa", "polymer_concentration_wt_pct", "culture_time_days"]
 FEATURES_CAT = ["material_class", "cell_type", "growth_factor", "culture_model"]
+# Trees need ~40 independent papers before LOPO HGB is eligible to deploy.
+# Mixed/shrinkage is the stable served estimator at 25 papers.
+PAPERS_NEEDED_TREES = 40
 
 
 def load_viability(path=DB_PATH) -> pd.DataFrame:
@@ -143,14 +147,17 @@ def leave_one_paper_out(frame: pd.DataFrame) -> dict:
     shrinkage_lopo = _scores(y, shrinkage_pred)
     dummy_mae = dummy_lopo["mae"]
     n_studies = int(frame["study_id"].nunique())
+    # Dummy is the bar, never the product. Lookup stays shrinkage. Trees wait for 40 papers
+    # (HGB beating dummy at n=17–25 has already reversed once).
     candidates = [
-        ("dummy", dummy_lopo),
         ("material_mean", material_mean_lopo),
         ("shrinkage", shrinkage_lopo),
     ]
-    if n_studies >= 25:
+    if n_studies >= PAPERS_NEEDED_TREES:
         candidates.append(("hgb", hgb_lopo))
     deployed, deployed_lopo = min(candidates, key=lambda item: item[1]["mae"])
+    if deployed == "dummy":
+        deployed, deployed_lopo = "shrinkage", shrinkage_lopo
     report = {
         "n_rows": int(len(frame)),
         "n_studies": n_studies,
@@ -167,8 +174,8 @@ def leave_one_paper_out(frame: pd.DataFrame) -> dict:
         "pass_bar": {
             "description": (
                 "Deployed tabular estimator LOPO MAE at least 15% below dummy LOPO, "
-                "R² > 0, n_studies >= 15. Ridge/HGB are reported; HGB may deploy only at n_studies>=25. "
-                "Shrinkage is empirical Bayes (kernel + material prior), not a neural net."
+                "R² > 0, n_studies >= 15. Ridge/HGB are reported; HGB may deploy only at n_studies>=40. "
+                "Shrinkage is empirical Bayes (kernel + material prior), not a neural net. Dummy is never served."
             ),
             "dummy_mae_target_ratio": 0.85,
             "min_studies": 15,
@@ -177,7 +184,7 @@ def leave_one_paper_out(frame: pd.DataFrame) -> dict:
             "This is the MVP scientific metric on hand-curated live/dead only. Simulated holdout R² is not.",
             "Auto-promoted pmid* rows are excluded from this split.",
             "Do not add unpaired regex hits to inflate n_rows.",
-            "Deployed estimator is the LOPO winner among dummy, material-class mean, and shrinkage. Ridge overfits this table. HGB is eligible only at >=25 papers.",
+            "Deployed estimator is the LOPO winner among material-class mean and shrinkage (never dummy). Ridge overfits this table. HGB is reported only until >=40 papers.",
         ],
         "status": "baseline",
     }

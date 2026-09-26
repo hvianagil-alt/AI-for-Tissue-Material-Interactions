@@ -630,6 +630,61 @@ STUDIES: list[dict] = [
         "license": "CC-BY",
         "notes": "Human BM-MSC in 1–3% w/v MeHA (Irgacure 2959). Fig 3A live/dead averages 73.6±6.4% d1 and 64.4±12.2% d21 across concentrations; 1% gels disintegrated before d21. Per-% means only in the figure — not stored. Bone/osteogenicity protocol; viability is MSC in MeHA molds, not cartilage. Table 1 E after UV is not attached to the mixed viability rows.",
     },
+    {
+        "study_id": "ziverec2026",
+        "citation": "Ziverec et al., Mater. Today Bio 2026",
+        "doi": "10.1016/j.mtbio.2026.103434",
+        "pmid": "42502817",
+        "year": 2026,
+        "journal": "Materials Today Bio",
+        "pmcid": "PMC13400962",
+        "license": "CC-BY-NC",
+        "notes": "Human nasoseptal chondrocytes in 4% alginate mixed 2:1 with cells (final ~2.7% w/v), BIT cocktail. Unmodified alginate 71% live at day 7 (Fig. 3C). THP-alginate 80–85% is a range, not stored as a mean. Young's modulus only in SI 7A, not stored.",
+    },
+    {
+        "study_id": "visscher2018",
+        "citation": "Visscher et al., J. Biomed. Mater. Res. B 2018",
+        "doi": "10.1002/jbm.b.34264",
+        "pmid": "30383916",
+        "year": 2018,
+        "journal": "Journal of Biomedical Materials Research Part B",
+        "pmcid": "PMC6587956",
+        "license": "CC-BY-NC",
+        "notes": "Goat auricular P3 chondrocytes in 3 wt% alginate beads, 4e6/ml. LIVE/DEAD day 21: 82.67±2% proliferation medium vs 82.40±2% +TGF-β1. 6 vs 3.5 kPa at day 21 is ECM-matured, not starting gel modulus.",
+    },
+    {
+        "study_id": "mcmillan2025",
+        "citation": "McMillan et al., Biomater. Sci. 2025",
+        "doi": "10.1039/d4bm01251h",
+        "pmid": "39886992",
+        "year": 2025,
+        "journal": "Biomaterials Science",
+        "pmcid": "PMC11784027",
+        "license": "CC-BY",
+        "notes": "Ferret BM-MSC in 10% w/w GelMA ± PCL co-print, LAP, 405 nm 15 s. Live/dead day 1: 83.5±8.7% GelMA vs 76.6±9.7% GelMA/PCL. Cell density for Fig. 3 not stated (5/10/20e6 used in a separate disc series). Airway LTR model, not articular cartilage.",
+    },
+    {
+        "study_id": "lan2022",
+        "citation": "Lan et al., J. Tissue Eng. 2022",
+        "doi": "10.1177/20417314221086368",
+        "pmid": "35599742",
+        "year": 2022,
+        "journal": "Journal of Tissue Engineering",
+        "pmcid": "PMC9122109",
+        "license": "CC-BY-NC",
+        "notes": "Human P2 nasoseptal chondrocytes in Lifeink 200 type I collagen, FRESH-printed (INKREDIBLE+, gelatin bath). Live/dead: 85.5±3.9% d1, 93.9±2.3% w3, 93.8±3.1% w6, 87.9±4.9% w9 (n=3 donors). Serum-free chondrogenic medium is ITS/dex/ascorbate/proline, no TGF-β. Week 3–9 bending moduli are ECM-matured and are not stored.",
+    },
+    {
+        "study_id": "scalzone2022",
+        "citation": "Scalzone et al., Mater. Today Bio 2022",
+        "doi": "10.1016/j.mtbio.2022.100287",
+        "pmid": "35647514",
+        "year": 2022,
+        "journal": "Materials Today Bio",
+        "pmcid": "PMC9130107",
+        "license": "CC-BY",
+        "notes": "hTERT-immortalized BMSC line predifferentiated 21 d (TGF-β3), then printed at P15 in 2% GGMA ± 5% Manuka honey, 0.1% LAP, 365 nm. Paper reports dead-cell fractions from Hoechst/EthBr; live = 100−dead. GGMA 2.0±0.5% / 1.8±0.4% dead at d1/d3; GGMA-MH 9.5±3.5% / 18±6.0%. G* ~730/1042 Pa is approximate and is not stored. Viability days used FBS medium, not TGF.",
+    },
 ]
 
 
@@ -3256,6 +3311,227 @@ def _queue_pass_five() -> list[dict]:
     return rows
 
 
+def _queue_pass_six() -> list[dict]:
+    """OA fulltext live/dead: nasal alginate, goat auricular alginate, ferret MSC GelMA print."""
+    rows = []
+    rows.append(
+        {
+            "experiment_id": "ziverec2026-alg-unmod-d7",
+            "study_id": "ziverec2026",
+            "material_class": "alginate",
+            "material_detail": "4% w/v alginate mixed 2:1 with cells (final ~2.7%), 180 mM CaCl2 15 min, no peptide",
+            "crosslinking": "ionic",
+            "polymer_concentration_wt_pct": 2.67,
+            "surface_chemistry": "native",
+            "has_adhesion_ligand": 0.0,
+            "cell_type": "nasal_chondrocyte",
+            "species": "human",
+            "culture_model": "3D_encapsulation",
+            "growth_factor": "none",
+            "culture_time_days": 7,
+            "cell_density_million_per_ml": 4.0,
+            "chemical_modification": "unmodified",
+            "architecture": "bulk_hydrogel",
+            "application": "nasal",
+            "live_dead_kit": "calcein_ethidium",
+            "n_replicates": 4,
+            "extracted_from": "PMC13400962 Fig. 3C unmodified alginate",
+            "curator_confidence": "high",
+            "notes": "BIT cocktail (BMP-2/ITS/T3), not TGF-β3. 71% live at day 7. THP gels 80–85% are a range and are not stored as a mean.",
+            "measurements": [_m("viability_pct", 71.0, "%", evidence="numeric_text", n=4)],
+        }
+    )
+    rows.append(
+        {
+            "experiment_id": "ziverec2026-alg-thp-d7",
+            "study_id": "ziverec2026",
+            "material_class": "alginate",
+            "material_detail": "THP-functionalized alginate (GPP10 / GFOGER / VWFIII), same 2:1 mix",
+            "crosslinking": "ionic",
+            "polymer_concentration_wt_pct": 2.67,
+            "surface_chemistry": "RGD",
+            "has_adhesion_ligand": 1.0,
+            "cell_type": "nasal_chondrocyte",
+            "species": "human",
+            "culture_model": "3D_encapsulation",
+            "growth_factor": "none",
+            "culture_time_days": 7,
+            "cell_density_million_per_ml": 4.0,
+            "chemical_modification": "rgd_conjugated",
+            "architecture": "bulk_hydrogel",
+            "application": "nasal",
+            "live_dead_kit": "calcein_ethidium",
+            "n_replicates": 4,
+            "extracted_from": "PMC13400962 Fig. 3C THP-alginate range",
+            "curator_confidence": "high",
+            "notes": "80–85% live across THPs. Range, not a single mean. Contrast for the 71% unmodified row.",
+            "measurements": [
+                _m(
+                    "viability_pct",
+                    None,
+                    "%",
+                    qualitative="range_80_85",
+                    evidence="qualitative_text",
+                    notes="Paper: 80% to 85% of NCs were alive. Not stored as 82.5%.",
+                )
+            ],
+        }
+    )
+    for tag, gf, val, extra in (
+        ("prolif", "none", 82.67, "Proliferation medium (FBS), no TGF."),
+        ("tgfb1", "TGF_b1", 82.40, "Chondrogenic medium + 10 ng/mL TGF-β1 + ITS."),
+    ):
+        rows.append(
+            {
+                "experiment_id": f"visscher2018-alg-bead-{tag}-d21",
+                "study_id": "visscher2018",
+                "material_class": "alginate",
+                "material_detail": "3 wt% Pronova SLG100 alginate beads, 21G into 102 mM CaCl2",
+                "crosslinking": "ionic",
+                "polymer_concentration_wt_pct": 3.0,
+                "surface_chemistry": "native",
+                "has_adhesion_ligand": 0.0,
+                "cell_type": "auricular_chondrocyte",
+                "species": "goat",
+                "culture_model": "3D_encapsulation",
+                "growth_factor": gf,
+                "culture_time_days": 21,
+                "cell_density_million_per_ml": 4.0,
+                "passage": 3,
+                "chemical_modification": "unmodified",
+                "architecture": "bulk_hydrogel",
+                "application": "auricular",
+                "live_dead_kit": "calcein_ethidium",
+                "n_replicates": 4,
+                "extracted_from": "PMC6587956 Fig. 4B day-21 LIVE/DEAD",
+                "curator_confidence": "high",
+                "notes": extra + " Day-21 6 vs 3.5 kPa is ECM-matured and is not stored as starting modulus.",
+                "measurements": [_m("viability_pct", val, "%", sd=2.0, evidence="numeric_text", n=4)],
+            }
+        )
+    for tag, pcl, val, sd in (
+        ("gelma", 0, 83.5, 8.7),
+        ("gelma-pcl", 1, 76.6, 9.7),
+    ):
+        rows.append(
+            {
+                "experiment_id": f"mcmillan2025-{tag}-d1",
+                "study_id": "mcmillan2025",
+                "material_class": "GelMA",
+                "material_detail": (
+                    "10% w/w GelMA, 0.25% LAP, 405 nm 15 s, CELLINK"
+                    + (" co-printed with 25 kDa PCL strands" if pcl else ", no PCL")
+                ),
+                "crosslinking": "photocrosslink",
+                "polymer_concentration_wt_pct": 10.0,
+                "surface_chemistry": "native",
+                "has_adhesion_ligand": 1.0,
+                "cell_type": "MSC",
+                "species": "ferret",
+                "culture_model": "3D_bioprint",
+                "growth_factor": "none",
+                "culture_time_days": 1,
+                "chemical_modification": "methacrylated",
+                "architecture": "3d_printed",
+                "application": "tracheal",
+                "live_dead_kit": "calcein_ethidium",
+                "modification_degree_pct": 50.0,
+                "extracted_from": "PMC11784027 Fig. 3B–C day 1 live/dead",
+                "curator_confidence": "high",
+                "notes": (
+                    "Ferret BM-MSC, airway LTR model. Day-1 viability is in growth medium before TGF-β1. "
+                    "Print pressure 10–60 kPa is not Young's modulus. Fig. 3 density not stated."
+                ),
+                "measurements": [_m("viability_pct", val, "%", sd=sd, evidence="numeric_text")],
+            }
+        )
+    return rows
+
+
+def _queue_pass_seven() -> list[dict]:
+    """OA fulltext live/dead: nasal collagen FRESH print, GGMA ± Manuka honey MSC print."""
+    rows = []
+    for day, val, sd, label in (
+        (1.0, 85.5, 3.9, "day 1"),
+        (21.0, 93.9, 2.3, "3 weeks"),
+        (42.0, 93.8, 3.1, "6 weeks"),
+        (63.0, 87.9, 4.9, "9 weeks"),
+    ):
+        rows.append(
+            {
+                "experiment_id": f"lan2022-col-print-d{int(day)}",
+                "study_id": "lan2022",
+                "material_class": "collagen",
+                "material_detail": "Lifeink 200 type I collagen 3.5 wt%, 1:10 mix, FRESH gelatin bath, INKREDIBLE+",
+                "crosslinking": "thermal",
+                "polymer_concentration_wt_pct": 3.5,
+                "surface_chemistry": "native",
+                "has_adhesion_ligand": 1.0,
+                "cell_type": "nasal_chondrocyte",
+                "species": "human",
+                "culture_model": "3D_bioprint",
+                "growth_factor": "none",
+                "culture_time_days": day,
+                "cell_density_million_per_ml": 8.75,
+                "passage": 2,
+                "chemical_modification": "unmodified",
+                "architecture": "3d_printed",
+                "application": "nasal",
+                "live_dead_kit": "calcein_ethidium",
+                "n_replicates": 3,
+                "extracted_from": f"PMC9122109 Fig. 3 live/dead {label}",
+                "curator_confidence": "high",
+                "notes": (
+                    f"Human P2 nasoseptal, 8.75e6/ml. Serum-free chondrogenic (ITS/dex/ascorbate/proline), no TGF-β. "
+                    f"Live/dead {label} {val}±{sd}%. Week 3–9 bending moduli are ECM-matured and are not stored."
+                ),
+                "measurements": [_m("viability_pct", val, "%", sd=sd, evidence="numeric_text", n=3)],
+            }
+        )
+    for tag, honey, day, dead, sd in (
+        ("ggma", 0, 1.0, 2.0, 0.5),
+        ("ggma", 0, 3.0, 1.8, 0.4),
+        ("ggma-mh", 1, 1.0, 9.5, 3.5),
+        ("ggma-mh", 1, 3.0, 18.0, 6.0),
+    ):
+        live = round(100.0 - dead, 1)
+        rows.append(
+            {
+                "experiment_id": f"scalzone2022-{tag}-d{int(day)}",
+                "study_id": "scalzone2022",
+                "material_class": "gellan",
+                "material_detail": (
+                    "2% w/v GGMA, 0.1% LAP, 365 nm up to 10 min, then medium cations"
+                    + (", 5% w/v Manuka honey" if honey else ", no honey")
+                ),
+                "crosslinking": "photocrosslink",
+                "polymer_concentration_wt_pct": 2.0,
+                "surface_chemistry": "native",
+                "has_adhesion_ligand": 0.0,
+                "cell_type": "MSC",
+                "species": "human",
+                "culture_model": "3D_bioprint",
+                "growth_factor": "none",
+                "culture_time_days": day,
+                "cell_density_million_per_ml": 7.0,
+                "passage": 15,
+                "chemical_modification": "methacrylated",
+                "architecture": "3d_printed",
+                "application": "bioprinting",
+                "live_dead_kit": "hoechst_ethidium",
+                "extracted_from": f"PMC9130107 Fig. 5 {tag} day {int(day)} dead-cell fraction",
+                "curator_confidence": "high",
+                "notes": (
+                    "hTERT BMSC line, 21 d TGF-β3 predifferentiation, printed at P15 in FBS medium. "
+                    f"Paper reported {dead}±{sd}% dead (Hoechst/EthBr); live stored as 100−dead = {live}±{sd}%. "
+                    "G* ~730/1042 Pa is approximate and is not stored."
+                ),
+                "measurements": [_m("viability_pct", live, "%", sd=sd, evidence="numeric_text")],
+            }
+        )
+    return rows
+
+
 EXPERIMENTS: list[dict] = (
     _bachmann_experiments()
     + _other_experiments()
@@ -3266,4 +3542,6 @@ EXPERIMENTS: list[dict] = (
     + _bmp_pass_experiments()
     + _chemistry_pass_experiments()
     + _queue_pass_five()
+    + _queue_pass_six()
+    + _queue_pass_seven()
 )

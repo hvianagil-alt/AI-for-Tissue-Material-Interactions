@@ -23,6 +23,13 @@ TGF = [
     ("none", "No TGF-β3", "Sem TGF-β3"),
     ("TGF_b3", "We have TGF-β3", "Temos TGF-β3"),
 ]
+SITES = [
+    ("any", "Any job in the table", "Qualquer aplicação da tabela"),
+    ("nasal", "Nasal / septum", "Nasal / septo"),
+    ("osteoarthritis", "Osteoarthritis", "Osteoartrite"),
+    ("auricular", "Auricular / ear", "Auricular / orelha"),
+    ("bioprinting", "Bioprinting", "Bioimpressão"),
+]
 STOCK = [
     ("any", "Any gel in the table", "Qualquer gel da tabela"),
     ("GelMA", "We stock GelMA", "Temos GelMA"),
@@ -31,6 +38,7 @@ STOCK = [
     ("alginate", "We stock alginate", "Temos alginato"),
     ("chitosan", "We stock chitosan", "Temos quitosano"),
     ("collagen", "We stock collagen", "Temos colagénio"),
+    ("gellan", "We stock gellan", "Temos gellan"),
     ("gelatin_alginate", "We stock gelatin–alginate", "Temos gelatina–alginato"),
 ]
 
@@ -69,6 +77,47 @@ def _doi(row: dict) -> str:
     if pmid:
         return f'<a href="https://pubmed.ncbi.nlm.nih.gov/{escape(str(pmid))}" target="_blank" rel="noreferrer">{cite}</a>'
     return cite
+
+
+def _recipe_box(recipe: dict | None, lang: str) -> str:
+    if not recipe:
+        return ""
+    pt = lang == "pt"
+    bits = []
+    detail = recipe.get("material_detail")
+    if detail:
+        bits.append(escape(str(detail)))
+    wt = recipe.get("polymer_concentration_wt_pct")
+    if wt is not None:
+        bits.append(f"{float(wt):g} wt%")
+    if recipe.get("crosslinking"):
+        bits.append(escape(str(recipe["crosslinking"])))
+    dens = recipe.get("cell_density_million_per_ml")
+    if dens is not None:
+        bits.append(f"{float(dens):g}e6/ml")
+    if recipe.get("architecture"):
+        bits.append(escape(str(recipe["architecture"]).replace("_", " ")))
+    if recipe.get("application"):
+        bits.append(escape(str(recipe["application"]).replace("_", " ")))
+    if recipe.get("chemical_modification") and recipe["chemical_modification"] != "unmodified":
+        bits.append(escape(str(recipe["chemical_modification"]).replace("_", " ")))
+    viab = recipe.get("viability_pct")
+    if viab is not None:
+        bits.append(f"{float(viab):.0f}% live/dead")
+    meta = " · ".join(bits)
+    cite = _doi(recipe)
+    title = "Receita extraída (abre o paper)" if pt else "Extracted recipe (open the paper)"
+    note = (
+        "Isto é a condição publicada, não um protocolo escrito de novo."
+        if pt
+        else "This is the published condition, not a rewritten methods section."
+    )
+    return (
+        f"<aside class='recipe'><h3>{escape(title)}</h3>"
+        f"<p>{cite}</p>"
+        f"<p class='meta'>{meta}</p>"
+        f"<p class='muted'>{escape(note)}</p></aside>"
+    )
 
 
 def _paper_line(row: dict) -> str:
@@ -116,10 +165,16 @@ def render_protocol_page(
     pt = lang == "pt"
     gel = _label(MATERIAL_LABELS, proto["material_class"])
     gf = _label(GF_LABELS, proto["growth_factor"])
-    kpa = proto["stiffness_kpa"]
+    kpa = proto.get("stiffness_kpa")
     days = proto["culture_time_days"]
     kicker = "Esta semana, corre" if pt else "This week, run"
-    headline = f"{gel} · ~{kpa:.0f} kPa · {days:.0f} days · {gf}"
+    parts = [gel]
+    if kpa is not None:
+        parts.append(f"~{float(kpa):.0f} kPa")
+    if days not in (None, ""):
+        parts.append(f"{float(days):.0f} days")
+    parts.append(gf)
+    headline = " · ".join(parts)
     if result["n_same_numeric"] and result["same_mean"] is not None:
         stat = (
             f"Live/dead extraído nestas células: {result['same_mean']:.0f}%"
@@ -175,6 +230,7 @@ def render_protocol_page(
             "how": intent["how"],
             "tgf": intent["tgf"],
             "stock": intent["stock"],
+            "site": intent.get("site") or "any",
             "lang": lang,
         }
     )
@@ -182,7 +238,7 @@ def render_protocol_page(
     lookup_qs = urlencode(
         {
             "material_class": proto["material_class"],
-            "stiffness_kpa": proto["stiffness_kpa"],
+            "stiffness_kpa": proto["stiffness_kpa"] if proto.get("stiffness_kpa") is not None else 25,
             "cell_type": proto["cell_type"],
             "growth_factor": proto["growth_factor"],
             "culture_time_days": proto["culture_time_days"],
@@ -243,7 +299,10 @@ def render_protocol_page(
     .query { font-size:0.82rem; color:#7f8ea3; }
     .live { display:inline-block; margin-top:10px; color:#e8eef7; border:1px solid #2a3b55; border-radius:8px; padding:6px 10px; text-decoration:none; font-size:0.9rem; }
     .live:hover { border-color:#3ecfb2; color:#3ecfb2; }
-    .foot { margin-top:28px; }
+    .recipe { margin: 16px 0 0; padding: 14px 16px; border:1px solid #1d5c52; border-radius:12px; background:#0f1c22; }
+    .recipe h3 { margin:0 0 8px; font-size:0.82rem; text-transform:uppercase; letter-spacing:0.06em; color:#3ecfb2; }
+    .recipe .meta { color:#e8eef7; margin: 0 0 8px; }
+    .recipe .muted { margin:0; font-size:0.82rem; color:#8fa3bb; }
     @media (max-width: 700px) { .ask fieldset { grid-template-columns: 1fr; } .answer h1 { font-size:1.35rem; } }
     """
     legend = "O que vais fazer esta semana" if pt else "What you are doing this week"
@@ -271,6 +330,9 @@ def render_protocol_page(
         <label>{escape(fridge_l)}
           <select name="stock" onchange="this.form.submit()">{_sel(STOCK, intent['stock'], lang)}</select>
         </label>
+        <label>{'Aplicação' if pt else 'Use'}
+          <select name="site" onchange="this.form.submit()">{_sel(SITES, intent.get('site') or 'any', lang)}</select>
+        </label>
         <button type="submit">{escape(find_lab)}</button>
       </fieldset>
     </form>
@@ -278,6 +340,7 @@ def render_protocol_page(
       <p class="kicker">{escape(kicker)}</p>
       <h1>{escape(headline)}</h1>
       <p class="stat">{escape(stat)}</p>
+      {_recipe_box(result.get("recipe"), lang)}
       {why_block}
       <p><a href="/lookup?{escape(lookup_qs)}">{escape(evidence)}</a></p>
     </section>

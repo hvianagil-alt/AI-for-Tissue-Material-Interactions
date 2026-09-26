@@ -17,7 +17,15 @@ from sklearn.linear_model import Ridge
 from sklearn.metrics import mean_absolute_error, r2_score
 from sklearn.model_selection import LeaveOneGroupOut, train_test_split
 
-from tissuelab.benchmark import FEATURES_CAT, FEATURES_NUM, _pipe, _scores, leave_one_paper_out, load_viability
+from tissuelab.benchmark import (
+    FEATURES_CAT,
+    FEATURES_NUM,
+    PAPERS_NEEDED_TREES,
+    _pipe,
+    _scores,
+    leave_one_paper_out,
+    load_viability,
+)
 from tissuelab.paths import ARTIFACTS_DIR
 from tissuelab.shrinkage import shrinkage_estimate
 
@@ -97,7 +105,7 @@ def data_budget(frame: pd.DataFrame) -> dict:
     ridge_params = n_materials + n_cells + len(FEATURES_NUM)
     want_ridge = PAPERS_PER_FEATURE * len(STARTER_FEATURES)
     want_mixed = 25
-    want_trees = 40
+    want_trees = PAPERS_NEEDED_TREES
     return {
         "n_rows": n_rows,
         "n_studies": n_studies,

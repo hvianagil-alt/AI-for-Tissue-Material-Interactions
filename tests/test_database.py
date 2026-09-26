@@ -57,6 +57,8 @@ def test_hand_curated_replaces_auto_promoted():
         "cigan2016", "byers2008", "pahoff2019", "chawla2012", "duchi2017",
         "martyniak2023", "xie2022",
         "gatenholm2020", "jovic2026", "poldervaart2017",
+        "ziverec2026", "visscher2018", "mcmillan2025",
+        "lan2022", "scalzone2022",
     }
     assert all(s.get("pmid") for s in STUDIES if s["study_id"] in require_pmid)
 
@@ -81,6 +83,41 @@ def test_queue_pass_five_gold_is_numeric_and_honest():
     assert e_row["stiffness_kpa"] == 6.3
     assert e_row["stiffness_sd_kpa"] == 1.2
     assert e_row["measurements"][0].get("value") is None
+
+
+def test_queue_pass_six_gold_is_numeric_and_honest():
+    by_id = {e["experiment_id"]: e for e in EXPERIMENTS}
+    ziv = by_id["ziverec2026-alg-unmod-d7"]
+    assert ziv["cell_type"] == "nasal_chondrocyte"
+    assert ziv["measurements"][0]["value"] == 71.0
+    thp = by_id["ziverec2026-alg-thp-d7"]
+    assert thp["measurements"][0].get("value") is None
+    vis = by_id["visscher2018-alg-bead-prolif-d21"]
+    assert vis["cell_type"] == "auricular_chondrocyte"
+    assert vis["measurements"][0]["value"] == 82.67
+    assert vis.get("stiffness_kpa") is None
+    mcm = by_id["mcmillan2025-gelma-d1"]
+    assert mcm["measurements"][0]["value"] == 83.5
+    assert mcm["species"] == "ferret"
+
+
+def test_queue_pass_seven_gold_is_numeric_and_honest():
+    by_id = {e["experiment_id"]: e for e in EXPERIMENTS}
+    lan = by_id["lan2022-col-print-d1"]
+    assert lan["cell_type"] == "nasal_chondrocyte"
+    assert lan["measurements"][0]["value"] == 85.5
+    assert lan["measurements"][0]["value_sd"] == 3.9
+    assert lan.get("stiffness_kpa") is None
+    assert lan["growth_factor"] == "none"
+    assert by_id["lan2022-col-print-d21"]["measurements"][0]["value"] == 93.9
+    ggma = by_id["scalzone2022-ggma-d1"]
+    assert ggma["cell_type"] == "MSC"
+    assert ggma["measurements"][0]["value"] == 98.0
+    assert ggma.get("stiffness_kpa") is None
+    mh = by_id["scalzone2022-ggma-mh-d3"]
+    assert mh["measurements"][0]["value"] == 82.0
+    assert mh["measurements"][0]["value_sd"] == 6.0
+    assert "100−dead" in mh["notes"] or "100-dead" in mh["notes"]
 
 
 def test_curated_viability_excludes_auto_promote():

@@ -62,21 +62,21 @@ pip install -e ".[dev]" && pytest -q
 
 - The kernel’s global n_eff is ~30 for every query — the number that matters is **effective n on this gel**.
 - **Proliferation / differentiation / ECM** in the radar are mapped 0–100 scores plus a simulator prior. Do not cite them as measurements.
-- Shrinkage **beats** a dummy mean under LOPO (15.92 vs 15.93). Ridge loses and is **not** served. HistGradientBoosting looks better on this split (MAE 13.7) but is **not** deployed until ≥25 papers. The MVP bar (15% better than dummy, R²>0) is still unmet.
+- Lookup serves **empirical-Bayes shrinkage**, never a dummy mean and never a tree until ≥40 papers. HGB can look better on this split (MAE 12.3 vs dummy 13.3) and has already reversed once — it stays report-only. The MVP bar (15% better than dummy, R²>0) is still unmet.
 
 ### Current baseline
 
 | Check | Value |
 |---|---|
-| Hand-curated studies | 56 |
-| Hand experiments | ~220 |
-| Numeric live/dead (training) | 52 rows / 17 papers |
-| Harvested papers tagged | 9659 (2094 training-relevant) |
-| Dummy LOPO MAE | 15.93 |
-| Shrinkage LOPO MAE | 15.92 (deployed) |
-| Material-mean LOPO MAE | 17.5 |
-| Ridge LOPO MAE | 18.4 (not deployed) |
-| HGB LOPO MAE | 13.7 (reported only; n_studies < 25) |
+| Hand-curated studies | 64 |
+| Hand experiments | ~260 |
+| Numeric live/dead (training) | 75 rows / 25 papers |
+| Harvested papers tagged | 12024 (2317 training-relevant) |
+| Dummy LOPO MAE | 13.32 |
+| Shrinkage LOPO MAE | 13.60 (deployed; does not beat dummy this split) |
+| Material-mean LOPO MAE | 15.26 |
+| Ridge LOPO MAE | 16.42 (not deployed) |
+| HGB LOPO MAE | 12.35 (reported only; trees need ≥40 papers) |
 | Simulated XGBoost holdout R² | ~0.92 — **ignore** for science |
 
 The product is ready to **use as Protocol**: cells + job → extracted protocol + papers. Lookup is the evidence card. It is not ready to claim a model that beats “GelMA ~25 kPa + TGF-β3”.

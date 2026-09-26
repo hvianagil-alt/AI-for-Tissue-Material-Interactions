@@ -91,6 +91,7 @@ def home(
     how: str = Query(default="encapsulate"),
     tgf: str = Query(default="either"),
     stock: str = Query(default="any"),
+    site: str = Query(default="any"),
     live: bool = Query(default=False),
     lang: str = Query(default="en"),
 ):
@@ -102,6 +103,7 @@ def home(
         how=how,
         tgf=tgf,
         stock=stock,
+        site=site,
         lang=lang,
     )
     gel = result["protocol"]["material_class"]

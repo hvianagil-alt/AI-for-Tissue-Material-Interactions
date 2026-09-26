@@ -15,6 +15,7 @@ from tissuelab.shrinkage import shrinkage_estimate
 GOALS = ("alive", "print", "matrix")
 HOW = ("encapsulate", "print", "either")
 TGF_CHOICES = ("either", "none", "TGF_b3")
+SITES = ("any", "nasal", "osteoarthritis", "auricular", "bioprinting")
 
 LAB_GELS = [
     "fibrin",
@@ -36,6 +37,7 @@ LAB_GELS = [
     "chitosan_gelatin_PVA",
     "PDLLA_PEG_HA",
     "GelMA_chitosan",
+    "gellan",
 ]
 
 FIELD_DEFAULT = "GelMA"
@@ -137,13 +139,55 @@ def _score(stats: dict, goal: str, how: str) -> float:
     return round(base, 2)
 
 
-def _typical_kpa(stats: dict, how: str) -> float:
-    default = 8.0 if how == "print" else 25.0
-    return round(_median(stats.get("kpas") or [], default), 1)
+def _typical_kpa(stats: dict, how: str) -> float | None:
+    kpas = stats.get("kpas") or []
+    if kpas:
+        return round(_median(kpas, kpas[0]), 1)
+    return None
 
 
 def _typical_days(how: str) -> int:
     return 7 if how == "print" else 14
+
+
+def _pick_recipe(stats: dict, how: str) -> dict | None:
+    """The extracted condition a PI can actually open — not a median of the gel family."""
+    rows = list(stats.get("numeric_rows") or []) or list(stats.get("all_rows") or [])
+    if not rows:
+        return None
+    want_print = how == "print"
+
+    def key(row: dict):
+        printed = row.get("culture_model") == "3D_bioprint"
+        return (
+            0 if row.get("viability_pct") is not None else 1,
+            0 if printed == want_print else 1,
+            0 if row.get("polymer_concentration_wt_pct") is not None else 1,
+            0 if row.get("stiffness_kpa") is not None else 1,
+            -(row.get("year") or 0),
+        )
+
+    row = sorted(rows, key=key)[0]
+    return {
+        "experiment_id": row.get("experiment_id"),
+        "study_id": row.get("study_id"),
+        "citation": row.get("citation") or row.get("study_id"),
+        "doi": row.get("doi"),
+        "material_class": row.get("material_class"),
+        "material_detail": row.get("material_detail"),
+        "polymer_concentration_wt_pct": row.get("polymer_concentration_wt_pct"),
+        "crosslinking": row.get("crosslinking"),
+        "cell_density_million_per_ml": row.get("cell_density_million_per_ml"),
+        "architecture": row.get("architecture"),
+        "application": row.get("application"),
+        "chemical_modification": row.get("chemical_modification"),
+        "stiffness_kpa": row.get("stiffness_kpa"),
+        "growth_factor": row.get("growth_factor") or "none",
+        "culture_time_days": row.get("culture_time_days"),
+        "culture_model": row.get("culture_model"),
+        "viability_pct": row.get("viability_pct"),
+        "qualitative_label": row.get("qualitative_label"),
+    }
 
 
 def _pick_gf(stats: dict, tgf: str) -> str:
@@ -252,11 +296,15 @@ def _paper_payload(rows: list[dict], limit: int = 3) -> list[dict]:
                 "doi": row.get("doi"),
                 "year": row.get("year"),
                 "material_class": row.get("material_class"),
+                "material_detail": row.get("material_detail"),
                 "cell_type": row.get("cell_type"),
                 "stiffness_kpa": row.get("stiffness_kpa"),
                 "growth_factor": row.get("growth_factor") or "none",
                 "culture_time_days": row.get("culture_time_days"),
                 "culture_model": row.get("culture_model"),
+                "architecture": row.get("architecture"),
+                "application": row.get("application"),
+                "polymer_concentration_wt_pct": row.get("polymer_concentration_wt_pct"),
                 "viability_pct": row.get("viability_pct"),
                 "qualitative_label": row.get("qualitative_label"),
             }
@@ -273,6 +321,7 @@ def find_protocol(
     how: str = "encapsulate",
     tgf: str = "either",
     stock: str = "any",
+    site: str = "any",
     lang: str = "en",
     path=DB_PATH,
 ) -> dict:
@@ -282,6 +331,8 @@ def find_protocol(
         how = "encapsulate"
     if tgf not in TGF_CHOICES:
         tgf = "either"
+    if site not in SITES:
+        site = "any"
     if cell_type not in {
         "articular_chondrocyte",
         "auricular_chondrocyte",
@@ -292,6 +343,8 @@ def find_protocol(
         cell_type = "articular_chondrocyte"
 
     evidence = list_viability_evidence(path)
+    if site != "any":
+        evidence = [r for r in evidence if r.get("application") == site]
     numeric = load_viability(path)
     sgag = _sgag_index(path)
 
@@ -328,15 +381,26 @@ def find_protocol(
     field = next((s for s in ranked if s["material_class"] == FIELD_DEFAULT), None)
 
     gf = _pick_gf(winner, tgf)
-    kpa = _typical_kpa(winner, how)
-    days = _typical_days(how)
+    recipe = _pick_recipe(winner, how)
+    if recipe:
+        if tgf == "either":
+            gf = recipe.get("growth_factor") or gf
+        kpa = recipe.get("stiffness_kpa")
+        days = recipe.get("culture_time_days") or _typical_days(how)
+        culture_model = recipe.get("culture_model") or (
+            "3D_bioprint" if how == "print" else "3D_encapsulation"
+        )
+    else:
+        kpa = _typical_kpa(winner, how)
+        days = _typical_days(how)
+        culture_model = "3D_bioprint" if how == "print" else "3D_encapsulation"
     query = {
         "material_class": winner["material_class"],
         "cell_type": cell_type,
         "growth_factor": gf,
         "stiffness_kpa": kpa,
         "culture_time_days": days,
-        "culture_model": "3D_bioprint" if how == "print" else "3D_encapsulation",
+        "culture_model": culture_model,
     }
     est = shrinkage_estimate(query, numeric) if not numeric.empty else {"mean": None, "n_eff_same": 0}
 
@@ -366,6 +430,7 @@ def find_protocol(
         "how": how,
         "tgf": tgf,
         "stock": stock or "any",
+        "site": site,
     }
     return {
         "intent": intent,
@@ -375,8 +440,9 @@ def find_protocol(
             "culture_time_days": days,
             "growth_factor": gf,
             "cell_type": cell_type,
-            "culture_model": "3D_bioprint" if how == "print" else "3D_encapsulation",
+            "culture_model": culture_model,
         },
+        "recipe": recipe,
         "same_mean": winner["same_mean"],
         "same_min": winner["same_min"],
         "n_same_numeric": winner["n_same_numeric"],

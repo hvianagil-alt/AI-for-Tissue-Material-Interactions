@@ -1,59 +1,62 @@
 {
-  "n_rows": 62,
-  "n_studies": 20,
+  "n_rows": 75,
+  "n_studies": 25,
   "budget": {
-    "n_rows": 62,
-    "n_studies": 20,
-    "n_materials": 18,
+    "n_rows": 75,
+    "n_studies": 25,
+    "n_materials": 20,
     "n_cell_types": 5,
     "n_with_kpa": 26,
-    "rows_per_paper": 3.1,
+    "rows_per_paper": 3.0,
     "dummy_parameters": 1,
-    "material_mean_parameters": 18,
-    "ridge_parameters_guess": 26,
+    "material_mean_parameters": 20,
+    "ridge_parameters_guess": 28,
     "starter_feature_count": 9,
     "papers_needed_ridge": 90,
     "papers_needed_mixed": 25,
     "papers_needed_trees": 40,
     "have_enough_for_dummy": 1,
-    "have_enough_for_mixed": 0,
+    "have_enough_for_mixed": 1,
     "have_enough_for_ridge": 0,
     "have_enough_for_trees": 0,
     "what_to_add_first": "studies"
   },
   "random_split_ridge": {
-    "mae": 12.035496305984367,
-    "r2": 0.18554775006097857,
-    "train_mae": 8.518997763660696,
-    "n_train": 49,
-    "n_test": 13,
+    "mae": 12.373274817579311,
+    "r2": -1.697859976554576,
+    "train_mae": 8.05891263806082,
+    "n_train": 60,
+    "n_test": 15,
     "test_papers": [
-      "bachmann2020",
-      "daly2016",
-      "hu2012",
+      "gatenholm2020",
+      "jovic2026",
       "kessel2020",
-      "lindborg2015",
       "markstedt2015",
       "martyniak2023",
-      "xie2022"
+      "mcmillan2025",
+      "park2013",
+      "rojas2025",
+      "salinas2007",
+      "scalzone2022",
+      "zhang2024"
     ]
   },
   "ridge_lopo": {
-    "mae": 20.76191049341005,
-    "r2": -2.257441912047719,
-    "n_coefficients": 30
+    "mae": 16.415656245055374,
+    "r2": -0.8948878862053573,
+    "n_coefficients": 33
   },
   "dummy_lopo": {
-    "mae": 14.647475196545603,
-    "r2": -0.050924903118998444
+    "mae": 13.322089556678783,
+    "r2": -0.04455258925213634
   },
   "material_mean_lopo": {
-    "mae": 16.953273531773714,
-    "r2": -0.3049483672025517
+    "mae": 15.256186476508004,
+    "r2": -0.23879155430086607
   },
   "shrinkage_lopo": {
-    "mae": 14.565165991556162,
-    "r2": -0.08205200106499522
+    "mae": 13.59794943328593,
+    "r2": -0.08292575100468191
   },
   "deployed_estimator": "shrinkage",
   "mvp_pass": 0,
@@ -67,7 +70,7 @@
     },
     "predicted_viability_pct": 91.6,
     "material_prior": 94.0,
-    "local_kernel": 81.3,
+    "local_kernel": 81.7,
     "n_eff_same_material": 2.86,
     "estimator": "shrinkage"
   },
