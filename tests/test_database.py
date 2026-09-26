@@ -72,6 +72,7 @@ def test_hand_curated_replaces_auto_promoted():
         "kudva2017", "diazpayno2022", "loveland2026",
         "windisch2023", "zhang2023pva",
         "fang2024",
+        "burchak2022",
     }
     assert all(s.get("pmid") for s in STUDIES if s["study_id"] in require_pmid)
 
@@ -389,6 +390,23 @@ def test_queue_pass_seventeen_gold_is_numeric_and_honest():
     assert by_id["fang2024-gelma-10pct-bms-d4"]["measurements"][0]["value"] == 87.7
     assert "fang2024-gelma-5pct-bms-d4" not in by_id
     assert "fang2024-ncg-cck8" not in by_id
+
+
+def test_queue_pass_eighteen_gold_is_numeric_and_honest():
+    by_id = {e["experiment_id"]: e for e in EXPERIMENTS}
+    low = by_id["burchak2022-gelnb-low-asc-d2"]
+    assert low["cell_type"] == "adipose_MSC"
+    assert low["material_class"] == "gelatin"
+    assert low["culture_model"] == "3D_encapsulation"
+    assert low["measurements"][0]["value"] == 81.3
+    assert low.get("stiffness_kpa") is None
+    assert low["growth_factor"] == "none"
+    med = by_id["burchak2022-gelnb-medium-asc-d2"]
+    assert med["measurements"][0]["value"] == 75.7
+    assert med["stiffness_kpa"] == 15.56
+    assert med["culture_time_days"] == 2.0
+    assert "burchak2022-gelnb-high-print" not in by_id
+    assert "burchak2022-mts" not in by_id
 
 
 def test_curated_viability_excludes_auto_promote():

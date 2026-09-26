@@ -1207,6 +1207,24 @@ STUDIES: list[dict] = [
             "No starting Young's. Gel volume not quoted so density is unknown. IVD in vivo arm not stored."
         ),
     },
+    {
+        "study_id": "burchak2022",
+        "citation": "Burchak et al., Int. J. Mol. Sci. 2022",
+        "doi": "10.3390/ijms23147939",
+        "pmid": "35887286",
+        "year": 2022,
+        "journal": "International Journal of Molecular Sciences",
+        "pmcid": "PMC9321464",
+        "license": "CC-BY",
+        "notes": (
+            "Human ASC P2–P5, 0.1e6/ml in GelNB/GelS (thiol–norbornene gelatin), LAP, 48 h EGM-2. "
+            "Live/Dead L3224: 81.3±4.4% (low, 7.5%) and 75.7±2.7% (medium). "
+            "Starting compression E 15.56±0.05 kPa on medium (10–20% strain, cell-free). "
+            "High-crosslink encapsulate % not quoted. Print/DoD about 80% is a floor and is not stored. "
+            "MTS proliferation not stored. TGF-β3 is in the 21-day chondrogenesis arm, not viability. "
+            "G′ 0.21–1.38 kPa is storage modulus and is not stored as Young's."
+        ),
+    },
 ]
 
 
@@ -5580,6 +5598,72 @@ def _queue_pass_seventeen() -> list[dict]:
     return rows
 
 
+def _queue_pass_eighteen() -> list[dict]:
+    """Gelatin norbornene/thiol ASC encapsulate live/dead (Burchak 2022)."""
+    rows = []
+    for tag, conc, val, sd, kpa, ksd, extra in (
+        (
+            "low",
+            7.5,
+            81.3,
+            4.4,
+            None,
+            None,
+            "Paper: 81.3 ± 4.4% GelNB/GelS-low. Compression E not quoted for low (G′ only).",
+        ),
+        (
+            "medium",
+            5.0,
+            75.7,
+            2.7,
+            15.56,
+            0.05,
+            "Paper: 75.7 ± 2.7% GelNB/GelS-medium. Starting compression E 15.56±0.05 kPa.",
+        ),
+    ):
+        row = {
+            "experiment_id": f"burchak2022-gelnb-{tag}-asc-d2",
+            "study_id": "burchak2022",
+            "material_class": "gelatin",
+            "material_detail": (
+                f"GelNB/GelS-{tag} thiol–norbornene gelatin, LAP, UV-visible 140–160 s"
+                + (f", {conc:g}% w/v precursor" if conc else "")
+            ),
+            "crosslinking": "photocrosslink",
+            "polymer_concentration_wt_pct": conc,
+            "surface_chemistry": "native",
+            "has_adhesion_ligand": 1.0,
+            "cell_type": "adipose_MSC",
+            "species": "human",
+            "culture_model": "3D_encapsulation",
+            "growth_factor": "none",
+            "culture_time_days": 2.0,
+            "cell_density_million_per_ml": 0.1,
+            "chemical_modification": "norbornene",
+            "architecture": "bulk_hydrogel",
+            "application": "in_vitro_cartilage",
+            "live_dead_kit": "calcein_ethidium",
+            "n_replicates": 3,
+            "extracted_from": f"PMC9321464 Fig. 2B GelNB/GelS-{tag} ASC Live/Dead 48 h",
+            "curator_confidence": "high",
+            "notes": (
+                f"Human ASC P2–P5, 5e4 cells in 500 µl gel (0.1e6/ml). "
+                f"Live/Dead {val}±{sd}% at 48 h in GelNB/GelS-{tag}. {extra} "
+                "High-crosslink encapsulate % not quoted. Print/DoD about 80% not stored. "
+                "MTS not stored. TGF-β3 is not in this viability arm. G′ is not Young's."
+            ),
+            "measurements": [
+                _m("viability_pct", val, "%", sd=sd, evidence="numeric_text", n=3, notes=extra)
+            ],
+        }
+        if kpa is not None:
+            row["stiffness_kpa"] = kpa
+            row["stiffness_sd_kpa"] = ksd
+            row["stiffness_method"] = "unconfined_compression_10_20pct_strain_cell_free"
+        rows.append(row)
+    return rows
+
+
 EXPERIMENTS: list[dict] = (
     _bachmann_experiments()
     + _other_experiments()
@@ -5602,4 +5686,5 @@ EXPERIMENTS: list[dict] = (
     + _queue_pass_fifteen()
     + _queue_pass_sixteen()
     + _queue_pass_seventeen()
+    + _queue_pass_eighteen()
 )
