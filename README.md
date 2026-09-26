@@ -19,7 +19,9 @@ The point of the MVP is not “AI for biology”. It is:
 |---|---|
 | SQLite experimental DB (`studies` / `experiments` / `measurements`) | Done — `data/tissuelab.sqlite` |
 | Hand-curated live/dead training view (`v_model_viability`) | Done — `data/literature_viability.csv` |
-| Literature viability (material-class mean ± LOPO MAE) | Done (barely beats dummy; R² still < 0) |
+| Literature viability (empirical Bayes ± adaptive LOPO band) | Done (beats dummy; R² still < 0) |
+| HTML product: Predict / Table / Compare / CSV | Done — English default |
+| Buyable-minimal plan | `docs/BMP.md` |
 | Native literature measurements (no fake porosity) | Done |
 | Mapped 0–100 scores + simulator (software prior only) | Still in the old CSV/ML path |
 | Literature-informed simulator (~650 records) | Done |
@@ -43,7 +45,7 @@ pip install -e .
 tissuelab-app
 ```
 
-Opens [http://localhost:8501](http://localhost:8501) as a **plain HTML** Predict page (works in Cursor’s browser). Leave GelMA ~25 kPa and read literature viability plus the nearest extracted papers.
+Opens [http://localhost:8501](http://localhost:8501) as a **plain HTML** product (Predict, Table, Compare, CSV). English by default; `?lang=pt` for Portuguese chrome. Leave GelMA ~25 kPa and read the evidence card plus the nearest extracted papers. Open `/table` — that CSV is what you would email a colleague.
 
 Optional:
 
@@ -55,7 +57,7 @@ pip install -e ".[dev]" && pytest -q
 
 ## How to read the numbers
 
-- **Literature viability** is empirical Bayes: a kernel over published live/dead, shrunk toward the material-class mean. Changing stiffness, TGF, cells, or days moves the number. Unseen gels fall back toward the global mean. The band is at least ± leave-one-paper-out MAE, and **wider** when that gel has few rows, is heterogeneous, or is borrowing kPa from other materials. It is not a biological CI. The kernel’s global n_eff is ~30 for every query — the number that matters is **n efectivo neste gel**.
+- The kernel’s global n_eff is ~30 for every query — the number that matters is **effective n on this gel**.
 - **Proliferation / differentiation / ECM** in the radar are mapped 0–100 scores plus a simulator prior. Do not cite them as measurements.
 - Shrinkage **beats** a dummy mean under LOPO (~15.8 vs 16.5). Ridge loses and is **not** served. The MVP bar (15% better than dummy, R²>0) is still unmet. Use nearest extracted papers to choose the next gel.
 
@@ -63,9 +65,10 @@ pip install -e ".[dev]" && pytest -q
 
 | Check | Value |
 |---|---|
-| Hand-curated studies | 53 |
-| Hand experiments | 156 |
+| Hand-curated studies | 54 |
+| Hand experiments | ~205 |
 | Numeric live/dead (training) | 42 rows / 15 papers |
+| Viability evidence in `/table` | numeric + qualitative floors |
 | Dummy LOPO MAE | 16.5 |
 | Shrinkage LOPO MAE | ~15.8 (deployed) |
 | Material-mean LOPO MAE | 16.4 |

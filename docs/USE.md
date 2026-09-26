@@ -23,21 +23,26 @@ streamlit run app/streamlit_app.py --server.port 8502
 
 ## 2. What to open
 
-| Tab | Use it for | Trust it? |
+| Page | Use it for | Trust it? |
 |---|---|---|
-| **Predict** | The product: published live/dead % for the gel you typed, plus nearest extracted papers | Literature block: yes, as a lookup. Radar: no |
-| **Dataset** | Browse the training table and the extraction queue | Yes — this is the evidence |
-| **Inverse design** | Demo: sample gels toward a target profile | No — simulator |
-| **Next experiment** | Demo: rank by expected improvement | No — simulator |
-| **About** | Honest LOPO JSON | Yes — the scientific scoreboard |
+| **`/` Predict** | Evidence card for the gel you would run Friday | Literature lookup: yes. Not your next flask |
+| **`/table`** | Every hand-extracted live/dead row (numeric + floors) | Yes — this is the product |
+| **`/export.csv`** | Drop into Excel / GraphPad | Yes |
+| **`/compare`** | Your gel vs GelMA + TGF-β3 | Same estimator, still literature |
+| Streamlit Dataset / About | Queue + LOPO JSON | Yes |
+| Inverse / next experiment | Simulator demo | No |
+
+`?lang=pt` switches chrome to Portuguese. Scientific notes stay in English (that is the language of the papers).
 
 ## 3. Predict — the actual workflow
 
-1. Leave the defaults the first time: **GelMA**, ~25 kPa, articular chondrocyte, 3D encapsulation.
-2. Read **Literature viability** and the **adaptive band** (never narrower than LOPO MAE; wider for thin or heterogeneous gels).
-3. Read **Nearest extracted papers**. Open those DOIs. That list is how you choose the next gel.
-4. Change only the hydrogel (try **fibrin**, **HA**, **alginate**, **chitosan**) and compare the papers that appear.
-5. Ignore the four-outcome radar / protocol / simulated neighbors unless you explicitly want the demo.
+1. Leave the defaults the first time: **GelMA**, ~25 kPa, articular chondrocyte, 14 days.
+2. Read the estimate and the **adaptive band** (never narrower than LOPO MAE; wider for thin or heterogeneous gels). GelMA’s number is one numeric paper (Daly ~80%, no kPa) — that is labeled **weak**.
+3. Read **Also extracted for this gel**: Li 2016 / Levett 2014 / Paul 2023 with published kPa and qualitative live/dead. **Open this next** prefers the closest kPa paper even if it is a floor.
+4. Switch hydrogel to **fibrin**, then **chitosan**. Papers, trust badge, and band must change.
+5. Open **Table**. Filter chitosan (dropdown still lists every gel). Download CSV. Yellow pills are floors (“>90%”), not means.
+6. Open **Compare**: fibrin vs GelMA + TGF-β3. The yellow strip is A minus B on the same estimator.
+7. Ignore Streamlit radar / inverse / next-experiment unless you want the demo.
 
 If the gel you typed has **no** live/dead rows, the app falls back to the global mean and says so. Use the papers, not that number.
 

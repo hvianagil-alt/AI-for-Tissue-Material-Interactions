@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+import csv
+import io
 import sys
 from functools import lru_cache
 from pathlib import Path
@@ -12,18 +14,18 @@ if str(SRC) not in sys.path:
     sys.path.insert(0, str(SRC))
 
 from fastapi import FastAPI, HTTPException, Query
-from fastapi.responses import HTMLResponse
+from fastapi.responses import HTMLResponse, Response
 from pydantic import BaseModel, Field
 
 from tissuelab.inverse import inverse_design
-from tissuelab.literature_model import predict_literature_viability
+from tissuelab.literature_model import list_viability_evidence, predict_literature_viability
 from tissuelab.paths import MODEL_PATH
 from tissuelab.predict import predict_design
 from tissuelab.recommend import recommend_experiments
 from tissuelab.schema import DesignInput, TARGETS
 from tissuelab.train import load_model
 
-from app.ui import CELL_TYPES, GROWTH_FACTORS, MATERIALS, render_predict_page
+from app.ui import CELL_TYPES, GROWTH_FACTORS, MATERIALS, render_compare_page, render_predict_page, render_table_page
 
 app = FastAPI(title="TissueLab AI", version="0.1.0")
 
@@ -60,14 +62,7 @@ class RecommendRequest(BaseModel):
     n: int = 5
 
 
-@app.get("/", response_class=HTMLResponse)
-def home(
-    material_class: str = Query(default="GelMA"),
-    stiffness_kpa: float = Query(default=25.0),
-    cell_type: str = Query(default="articular_chondrocyte"),
-    growth_factor: str = Query(default="none"),
-    culture_time_days: int = Query(default=14),
-):
+def _clamp_design(material_class: str, stiffness_kpa: float, cell_type: str, growth_factor: str, culture_time_days: int):
     if material_class not in MATERIALS:
         material_class = "GelMA"
     if cell_type not in CELL_TYPES:
@@ -76,22 +71,92 @@ def home(
         growth_factor = "none"
     stiffness_kpa = min(200.0, max(0.5, float(stiffness_kpa)))
     culture_time_days = min(42, max(1, int(culture_time_days)))
-    lit = predict_literature_viability(
-        {
-            "material_class": material_class,
-            "stiffness_kpa": stiffness_kpa,
-            "cell_type": cell_type,
-            "growth_factor": growth_factor,
-            "culture_time_days": culture_time_days,
-        }
+    return {
+        "material_class": material_class,
+        "stiffness_kpa": stiffness_kpa,
+        "cell_type": cell_type,
+        "growth_factor": growth_factor,
+        "culture_time_days": culture_time_days,
+    }
+
+
+@app.get("/", response_class=HTMLResponse)
+def home(
+    material_class: str = Query(default="GelMA"),
+    stiffness_kpa: float = Query(default=25.0),
+    cell_type: str = Query(default="articular_chondrocyte"),
+    growth_factor: str = Query(default="none"),
+    culture_time_days: int = Query(default=14),
+    lang: str = Query(default="en"),
+):
+    design = _clamp_design(material_class, stiffness_kpa, cell_type, growth_factor, int(culture_time_days))
+    lit = predict_literature_viability(design)
+    return render_predict_page(lang=lang, literature=lit, **design)
+
+
+@app.get("/table", response_class=HTMLResponse)
+def table(
+    material_class: str | None = Query(default=None),
+    lang: str = Query(default="en"),
+):
+    rows = list_viability_evidence()
+    all_materials = sorted({row["material_class"] for row in rows if row.get("material_class")})
+    want = (material_class or "").strip()
+    filtered = rows
+    if want:
+        filtered = [row for row in rows if row.get("material_class") == want]
+    return render_table_page(filtered, want or None, lang=lang, all_materials=all_materials)
+
+
+@app.get("/export.csv")
+def export_csv():
+    rows = list_viability_evidence()
+    buf = io.StringIO()
+    fields = [
+        "year",
+        "study_id",
+        "citation",
+        "doi",
+        "material_class",
+        "stiffness_kpa",
+        "cell_type",
+        "species",
+        "growth_factor",
+        "culture_time_days",
+        "viability_pct",
+        "viability_sd",
+        "qualitative_label",
+        "evidence",
+    ]
+    writer = csv.DictWriter(buf, fieldnames=fields, extrasaction="ignore")
+    writer.writeheader()
+    for row in rows:
+        writer.writerow(row)
+    return Response(
+        content=buf.getvalue(),
+        media_type="text/csv",
+        headers={"Content-Disposition": "attachment; filename=tissuelab_viability.csv"},
     )
-    return render_predict_page(
-        material_class=material_class,
-        stiffness_kpa=stiffness_kpa,
-        cell_type=cell_type,
-        growth_factor=growth_factor,
-        culture_time_days=culture_time_days,
-        literature=lit,
+
+
+@app.get("/compare", response_class=HTMLResponse)
+def compare(
+    a_material: str = Query(default="GelMA"),
+    a_kpa: float = Query(default=25.0),
+    a_gf: str = Query(default="none"),
+    b_material: str = Query(default="fibrin"),
+    b_kpa: float = Query(default=25.0),
+    b_gf: str = Query(default="TGF_b3"),
+    lang: str = Query(default="en"),
+):
+    left_design = _clamp_design(a_material, a_kpa, "articular_chondrocyte", a_gf, 14)
+    right_design = _clamp_design(b_material, b_kpa, "articular_chondrocyte", b_gf, 14)
+    return render_compare_page(
+        predict_literature_viability(left_design),
+        predict_literature_viability(right_design),
+        left_design,
+        right_design,
+        lang=lang,
     )
 
 

@@ -564,6 +564,17 @@ STUDIES: list[dict] = [
         "license": "NIH public access",
         "notes": "Chondrocytes in saccharide-peptide gels, V vs Y amino acid. Viable 21 d. Day-21 193±46 vs 44±21 kPa is ECM-matured, not starting gel modulus.",
     },
+    {
+        "study_id": "duchi2017",
+        "citation": "Duchi et al., Sci. Rep. 2017",
+        "doi": "10.1038/s41598-017-05699-x",
+        "pmid": "28724980",
+        "year": 2017,
+        "journal": "Scientific Reports",
+        "pmcid": "PMC5517463",
+        "license": "CC-BY",
+        "notes": "Handheld co-axial Biopen: ADSC in GelMA/HAMA 10%/2%. Core/shell 200 kPa after 10 s 365 nm. Abstract live/dead is a >90% floor, not a mean. 2D CellTiter-Blue LAP toxicity is not stored as gel viability.",
+    },
 ]
 
 
@@ -2810,6 +2821,74 @@ def _queue_pass_four() -> list[dict]:
     return rows
 
 
+def _bmp_pass_experiments() -> list[dict]:
+    """Open-fulltext conditions that a PI would open next to GelMA 25 kPa. Floors stay qualitative."""
+    rows = []
+    rows.append(
+        {
+            "experiment_id": "duchi2017-gelma-hama-coaxial-d1",
+            "study_id": "duchi2017",
+            "material_class": "GelMA_HA",
+            "material_detail": "Core/shell GelMA/HAMA 10%/2% w/v, LAP 0.1% in the shell, 10 s 365 nm 700 mW/cm²",
+            "crosslinking": "photocrosslink",
+            "polymer_concentration_wt_pct": 12.0,
+            "stiffness_kpa": 200.0,
+            "stiffness_method": "unconfined_compression_core_shell",
+            "surface_chemistry": "native",
+            "has_adhesion_ligand": 1.0,
+            "cell_type": "adipose_MSC",
+            "species": "human",
+            "culture_model": "3D_bioprint",
+            "growth_factor": "none",
+            "culture_time_days": 1,
+            "extracted_from": "PMC5517463 abstract + results (200 kPa; >90% viable ADSC)",
+            "curator_confidence": "high",
+            "notes": "Infrapatellar ADSCs in the core (no PI). 200 kPa is the printed core/shell modulus, not native cartilage (MPa). >90% is a floor.",
+            "measurements": [
+                _m(
+                    "viability_pct",
+                    None,
+                    "%",
+                    qualitative="floor_>90",
+                    evidence="qualitative_text",
+                    notes="Abstract: containing >90% viable stem cells. Not stored as 90%.",
+                ),
+            ],
+        }
+    )
+    rows.append(
+        {
+            "experiment_id": "duchi2017-gelma-hama-monoaxial-d7",
+            "study_id": "duchi2017",
+            "material_class": "GelMA_HA",
+            "material_detail": "Mono-axial GelMA/HAMA 10%/2% (PI mixed with cells), same UV dose",
+            "crosslinking": "photocrosslink",
+            "polymer_concentration_wt_pct": 12.0,
+            "surface_chemistry": "native",
+            "has_adhesion_ligand": 1.0,
+            "cell_type": "adipose_MSC",
+            "species": "human",
+            "culture_model": "3D_bioprint",
+            "growth_factor": "none",
+            "culture_time_days": 7,
+            "extracted_from": "PMC5517463 results Fig. 3D",
+            "curator_confidence": "medium",
+            "notes": "Mono-axial (cells mixed with LAP) lost ~30% viability vs starting count. No live/dead mean. Contrast for the core/shell row.",
+            "measurements": [
+                _m(
+                    "viability_pct",
+                    None,
+                    "%",
+                    qualitative="declined_~30pp_vs_start",
+                    evidence="qualitative_text",
+                    notes="Paper: mono-axial viability decreased by 30% along with more dead cells. Relative drop, not a 70% mean.",
+                ),
+            ],
+        }
+    )
+    return rows
+
+
 EXPERIMENTS: list[dict] = (
     _bachmann_experiments()
     + _other_experiments()
@@ -2817,4 +2896,5 @@ EXPERIMENTS: list[dict] = (
     + _queue_pass_more()
     + _queue_pass_three()
     + _queue_pass_four()
+    + _bmp_pass_experiments()
 )

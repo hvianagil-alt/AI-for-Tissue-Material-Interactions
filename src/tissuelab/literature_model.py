@@ -179,7 +179,7 @@ def _adaptive_band(
 
     Never narrower than LOPO MAE: that is the honest error for a new paper.
     """
-    reasons: list[str] = ["chão = MAE leave-one-paper-out"]
+    reasons: list[str] = ["floor = leave-one-paper-out MAE"]
     half = float(mae)
     n_sup = int(coverage.get("n_material") or 0)
     n_kpa = int(coverage.get("n_material_with_kpa") or 0)
@@ -189,16 +189,16 @@ def _adaptive_band(
         het = (float(material_sd) / gsd) ** 2
         if het > 1:
             half *= float(np.sqrt(1.0 + 0.5 * (het - 1.0)))
-            reasons.append("este gel é mais heterogéneo do que a tabela")
+            reasons.append("this gel is more heterogeneous than the table")
     half *= float(np.sqrt(1.0 + 1.0 / max(n_sup, 1)))
     if n_sup <= 1:
-        reasons.append("muito poucas condições deste gel")
+        reasons.append("very few extracted conditions of this gel")
     kpa = query.get("stiffness_kpa")
     if kpa not in (None, "") and n_kpa == 0:
         half *= 1.2
-        reasons.append("rigidez pedida emprestada a outros materiais")
+        reasons.append("requested stiffness is borrowed from other materials")
     if n_eff_same is not None and float(n_eff_same) < 2:
-        reasons.append("n efectivo neste gel < 2")
+        reasons.append("effective n on this gel < 2")
     half = float(np.clip(half, mae, 40.0))
     return half, reasons
 
@@ -209,38 +209,38 @@ def _trust(coverage: dict, n_eff_same: float) -> dict:
     sd = coverage.get("material_sd")
     if n == 0:
         return {
-            "level": "sem_dados",
-            "label": "Sem evidência deste gel",
+            "level": "no_data",
+            "label": "No evidence for this gel",
             "fill": 0,
-            "why": "Não há live/dead extraído para esta classe de material.",
+            "why": "No extracted live/dead for this material class.",
         }
     if n == 1 or n_eff_same < 2:
-        extra = " A rigidez, se mexer, vem de outros géis." if n_kpa == 0 else ""
+        extra = " If stiffness moves, it is borrowed from other gels." if n_kpa == 0 else ""
         return {
-            "level": "fraca",
-            "label": "Evidência fraca",
+            "level": "weak",
+            "label": "Weak evidence",
             "fill": 1,
-            "why": f"Só {n} condição extraída deste gel.{extra}",
+            "why": f"Only {n} extracted condition of this gel.{extra}",
         }
     if sd is not None and float(sd) >= 20:
         return {
-            "level": "heterogenea",
-            "label": "Evidência heterogénea",
+            "level": "heterogeneous",
+            "label": "Heterogeneous evidence",
             "fill": 2,
-            "why": f"{n} condições, mas o live/dead deste gel varia ~{sd:.0f} pontos. Olha o mínimo publicado, não só a média.",
+            "why": f"{n} conditions, but live/dead on this gel spans ~{sd:.0f} points. Look at the published minimum, not just the mean.",
         }
     if n >= 4 and n_kpa >= 2:
         return {
-            "level": "util",
-            "label": "Evidência útil (ainda pequena)",
+            "level": "useful",
+            "label": "Useful evidence (still small)",
             "fill": 3,
-            "why": f"{n} condições deste gel, {n_kpa} com kPa. Serve para comparar papers, não para substituir o frasco.",
+            "why": f"{n} conditions of this gel, {n_kpa} with kPa. Good for comparing papers, not a substitute for the flask.",
         }
     return {
-        "level": "fraca",
-        "label": "Evidência limitada",
+        "level": "weak",
+        "label": "Limited evidence",
         "fill": 1,
-        "why": f"{n} condições extraídas; {n_kpa} com kPa.",
+        "why": f"{n} extracted conditions; {n_kpa} with kPa.",
     }
 
 
@@ -252,50 +252,57 @@ def _verdict(
     band: float | None,
     trust: dict,
 ) -> str:
-    material = design.get("material_class") or "este gel"
+    material = design.get("material_class") or "this gel"
     kpa = design.get("stiffness_kpa")
     kpa_s = f" ~{float(kpa):.0f} kPa" if kpa not in (None, "") else ""
     n = coverage.get("n_material") or 0
     n_kpa = coverage.get("n_material_with_kpa") or 0
     if mean is None:
-        return "Ainda não há live/dead extraído para treinar um número."
+        return "No extracted live/dead yet to train a number."
     if n == 0:
         return (
-            f"Não há live/dead extraído para {material}. O valor mostrado pede emprestado a outros géis — "
-            "não o uses para escolher o próximo encapsulamento."
+            f"No extracted live/dead for {material}. The value shown is borrowed from other gels — "
+            "do not use it to pick the next encapsulation."
         )
     floor = coverage.get("material_min")
-    floor_s = f" O pior live/dead extraído deste gel é {floor:.0f}%." if floor is not None else ""
-    band_s = f" (±{band:.0f} pontos; chão = erro entre papers)" if band else ""
+    floor_s = f" The worst extracted live/dead on this gel is {floor:.0f}%." if floor is not None else ""
+    band_s = f" (±{band:.0f} points; floor = error between papers)" if band else ""
     vs = ""
     if competitor_mean is not None:
         diff = mean - competitor_mean
-        side = "acima" if diff > 0 else "abaixo" if diff < 0 else "ao nível"
+        side = "above" if diff > 0 else "below" if diff < 0 else "level with"
         vs = (
-            f" Comparado com GelMA 25 kPa + TGF-β3 ({competitor_mean:.0f}%), "
-            f"isto está {abs(diff):.0f} pontos {side}."
+            f" Versus GelMA 25 kPa + TGF-β3 ({competitor_mean:.0f}%), "
+            f"this sits {abs(diff):.0f} points {side}."
         )
     borrow = ""
     if kpa not in (None, "") and n_kpa == 0:
-        borrow = " A barra de rigidez está a pedir kPa a outros materiais."
+        borrow = " The stiffness slider is borrowing kPa from other materials."
+    n_qual = coverage.get("n_table_material_qual") or 0
+    extra_s = ""
+    if n_qual:
+        extra_s = (
+            f" The table also has {n_qual} extracted floors/‘high’ rows of this gel "
+            "(with kPa when the paper published it) that are not in this number."
+        )
     return (
-        f"{trust.get('label')}. Para {material}{kpa_s}, a literatura aponta para {mean:.0f}% live/dead{band_s}, "
-        f"com {n} condições extraídas ({n_kpa} com kPa).{vs}{borrow}{floor_s} "
-        "Isto não substitui o teu próximo frasco."
+        f"{trust.get('label')}. For {material}{kpa_s}, the literature points to {mean:.0f}% live/dead{band_s}, "
+        f"from {n} extracted numeric conditions ({n_kpa} with kPa).{vs}{borrow}{floor_s}{extra_s} "
+        "This does not replace your next flask."
     )
 
 
 def _alternatives(query: dict, frame: pd.DataFrame) -> list[dict]:
     specs = [
-        ("you", query, "O teu protocolo"),
+        ("you", query, "Your protocol"),
         ("competitor", COMPETITOR, "GelMA 25 kPa + TGF-β3"),
     ]
     if (query.get("growth_factor") or "none") == "none":
-        specs.append(("plus_tgf", {**query, "growth_factor": "TGF_b3"}, "O mesmo gel + TGF-β3"))
+        specs.append(("plus_tgf", {**query, "growth_factor": "TGF_b3"}, "Same gel + TGF-β3"))
     else:
-        specs.append(("no_tgf", {**query, "growth_factor": "none"}, "O mesmo gel sem TGF"))
-    specs.append(("soft", {**query, "stiffness_kpa": 2.0}, "O mesmo gel a 2 kPa (mole)"))
-    specs.append(("stiff", {**query, "stiffness_kpa": 40.0}, "O mesmo gel a 40 kPa (rígido)"))
+        specs.append(("no_tgf", {**query, "growth_factor": "none"}, "Same gel without TGF"))
+    specs.append(("soft", {**query, "stiffness_kpa": 2.0}, "Same gel at 2 kPa (soft)"))
+    specs.append(("stiff", {**query, "stiffness_kpa": 40.0}, "Same gel at 40 kPa (stiff)"))
     seen = set()
     out = []
     for key, spec, label in specs:
@@ -342,12 +349,16 @@ def predict_literature_viability(design: dict) -> dict:
     n_eff_same = float(est.get("n_eff_same") or 0.0)
     global_sd = lopo.get("viability_std")
     if mae is None:
-        band, interval_reasons = 12.0, ["MAE indisponível — banda provisória"]
+        band, interval_reasons = 12.0, ["MAE unavailable — provisional band"]
     else:
         band, interval_reasons = _adaptive_band(float(mae), coverage, query, n_eff_same, global_sd)
     low = None if mean is None else float(np.clip(mean - band, 0, 100))
     high = None if mean is None else float(np.clip(mean + band, 0, 100))
     similar = similar_published(design, k=5, weights=est.get("weights"), frame=frame)
+    evidence_rows = list_viability_evidence()
+    also_extracted = _also_extracted(design.get("material_class"), evidence_rows, similar)
+    table_cov = _table_coverage(design.get("material_class"), evidence_rows)
+    coverage = {**coverage, **table_cov}
     competitor = shrinkage_estimate(COMPETITOR, frame)
     competitor_mean = None if competitor["mean"] is None else round(float(competitor["mean"]), 1)
     chart_points = _chart_points(frame, est.get("weights"), design.get("material_class"))
@@ -362,23 +373,7 @@ def predict_literature_viability(design: dict) -> dict:
     )
     dummy_mae = dummy_lopo.get("mae")
     target_mae = None if dummy_mae is None else round(float(dummy_mae) * 0.85, 2)
-    next_read = None
-    for row in similar:
-        if row.get("material_class") == design.get("material_class") and row.get("doi"):
-            next_read = {
-                "citation": row.get("citation") or row.get("study_id"),
-                "doi": row.get("doi"),
-                "viability_pct": row.get("viability_pct"),
-            }
-            break
-    if next_read is None and similar:
-        top = similar[0]
-        if top.get("doi"):
-            next_read = {
-                "citation": top.get("citation") or top.get("study_id"),
-                "doi": top.get("doi"),
-                "viability_pct": top.get("viability_pct"),
-            }
+    next_read = _pick_next_read(design, similar, also_extracted)
     return {
         "mean": None if mean is None else round(mean, 1),
         "low": None if low is None else round(low, 1),
@@ -404,6 +399,7 @@ def predict_literature_viability(design: dict) -> dict:
             else {}
         ),
         "chart_points": chart_points,
+        "also_extracted": also_extracted,
         "competitor": {
             "label": "GelMA 25 kPa + TGF-β3",
             "mean": competitor_mean,
@@ -458,36 +454,112 @@ def _notes(
     prior: float | None = None,
 ) -> list[str]:
     notes = [
-        "Treino só com live/dead extraído à mão (sem pmid* auto-promovido, sem simulador).",
-        "A estimativa é Bayes empírico: kernel sobre condições publicadas, encolhido para a média da classe de material. Não é uma rede neuronal.",
-        "A banda nunca é mais estreita do que o MAE leave-one-paper-out; alarga-se se o gel tiver poucas linhas, for heterogéneo, ou se a rigidez for emprestada. Não é um intervalo de confiança biológico.",
-        "Não baixamos os 5% de live/dead com Huber/mediana: são evidência de géis que matam células, não ruído.",
+        "Trained only on hand-curated live/dead (no pmid* auto-promote, no simulator).",
+        "The estimate is empirical Bayes: a kernel over published conditions, shrunk toward the material-class mean. Not a neural net.",
+        "The band is never narrower than leave-one-paper-out MAE; it widens if the gel is thin, heterogeneous, or borrowing kPa. Not a biological confidence interval.",
+        "We do not Huber/median away 5% live/dead: those are gels that kill cells, not noise.",
     ]
     if estimator == "shrinkage_global_prior" and material:
         notes.append(
-            f"Não há live/dead publicado para {material} — o prior é a média global, puxado por géis parecidos."
+            f"No published live/dead for {material} — the prior is the global mean, pulled by similar gels."
         )
     elif n_support and material:
-        notes.append(f"Prior do material a partir de {n_support} linhas {material} extraídas.")
+        notes.append(f"Material prior from {n_support} extracted {material} rows.")
     if local is not None and prior is not None and n_eff is not None:
         same_s = f"{n_eff_same:.1f}" if n_eff_same is not None else "—"
         notes.append(
-            f"Média local {local:.1f}% encolhida para o prior {prior:.1f}% "
-            f"(n efectivo neste gel={same_s}, n0={N0:.0f}). "
-            f"O n efectivo do kernel inteiro ({n_eff:.1f}) conta outros materiais e não é o tamanho de amostra deste gel."
+            f"Local mean {local:.1f}% shrunk toward prior {prior:.1f}% "
+            f"(effective n on this gel={same_s}, n0={N0:.0f}). "
+            f"Full-kernel n_eff ({n_eff:.1f}) counts other materials and is not this gel's sample size."
         )
     if not lopo.get("beats_dummy"):
         notes.append(
-            "Ainda não bate um dummy mean — usa os papers extraídos, não o número pontual, para escolher o gel."
+            "Does not yet beat a dummy mean — use the extracted papers, not the point estimate, to pick a gel."
         )
     elif not lopo.get("mvp_pass"):
         notes.append(
-            "O shrinkage bate o dummy no LOPO MAE mas ainda não atinge a barra MVP "
-            "(15% melhor, R²>0, n_studies≥15). Usa os papers vizinhos para escolher o próximo gel."
+            "Shrinkage beats dummy on LOPO MAE but has not met the MVP bar "
+            "(15% better, R²>0, n_studies≥15). Use neighbouring papers to choose the next gel."
         )
     else:
-        notes.append("O LOPO actual atinge a barra MVP de viabilidade.")
+        notes.append("Current LOPO meets the viability MVP bar.")
     return notes
+
+
+def _table_coverage(material: str | None, rows: list[dict]) -> dict:
+    sub = [r for r in rows if r.get("material_class") == material] if material else []
+    n_qual = sum(1 for r in sub if r.get("viability_pct") is None)
+    n_kpa = sum(1 for r in sub if r.get("stiffness_kpa") is not None)
+    return {
+        "n_table_material": int(len(sub)),
+        "n_table_material_qual": int(n_qual),
+        "n_table_material_with_kpa": int(n_kpa),
+    }
+
+
+def _also_extracted(material: str | None, rows: list[dict], similar: list[dict]) -> list[dict]:
+    """Hand-extracted rows of this gel that are not in the numeric lookup list."""
+    if not material:
+        return []
+    seen = {r.get("experiment_id") for r in similar}
+    out = []
+    for row in rows:
+        if row.get("material_class") != material:
+            continue
+        if row.get("experiment_id") in seen:
+            continue
+        out.append(row)
+
+    def sort_key(row: dict):
+        has_kpa = 0 if row.get("stiffness_kpa") is not None else 1
+        is_qual = 0 if row.get("viability_pct") is None else 1
+        return (has_kpa, is_qual, -(row.get("year") or 0))
+
+    out.sort(key=sort_key)
+    return out[:12]
+
+
+def _pick_next_read(design: dict, similar: list[dict], also_extracted: list[dict]) -> dict | None:
+    """Prefer the same gel with a published kPa — even if viability is only a floor."""
+    want = design.get("material_class")
+    query_kpa = design.get("stiffness_kpa")
+
+    def dist(row: dict) -> float:
+        rk = row.get("stiffness_kpa")
+        if query_kpa in (None, "") or rk is None:
+            return 1e9
+        return abs(float(rk) - float(query_kpa))
+
+    def payload(row: dict) -> dict | None:
+        doi = row.get("doi")
+        if not doi:
+            return None
+        return {
+            "citation": row.get("citation") or row.get("study_id"),
+            "doi": doi,
+            "viability_pct": row.get("viability_pct"),
+            "qualitative_label": row.get("qualitative_label"),
+            "stiffness_kpa": row.get("stiffness_kpa"),
+        }
+
+    same_num = [r for r in similar if r.get("material_class") == want]
+    num_kpa = [r for r in same_num if r.get("stiffness_kpa") is not None and r.get("doi")]
+    if num_kpa:
+        return payload(min(num_kpa, key=dist))
+    qual_kpa = [r for r in also_extracted if r.get("stiffness_kpa") is not None]
+    if qual_kpa:
+        picked = payload(min(qual_kpa, key=dist))
+        if picked:
+            return picked
+    for row in same_num:
+        picked = payload(row)
+        if picked:
+            return picked
+    for row in similar:
+        picked = payload(row)
+        if picked:
+            return picked
+    return None
 
 
 def similar_published(design: dict, k: int = 5, weights: np.ndarray | None = None, frame: pd.DataFrame | None = None) -> list[dict]:
@@ -534,3 +606,57 @@ def similar_published(design: dict, k: int = 5, weights: np.ndarray | None = Non
             }
         )
     return out
+
+
+def list_viability_evidence(path=DB_PATH) -> list[dict]:
+    """Hand-curated viability rows for the table. Includes floors/qualitative; excludes pmid*."""
+    conn = connect(path)
+    frame = pd.read_sql_query(
+        """
+        SELECT e.experiment_id, e.study_id, s.citation, s.doi, s.year,
+               e.material_class, e.stiffness_kpa, e.cell_type, e.species,
+               e.growth_factor, e.culture_time_days, e.culture_model,
+               m.value AS viability_pct, m.value_sd, m.qualitative_label,
+               m.evidence, m.notes
+        FROM experiments e
+        JOIN studies s ON s.study_id = e.study_id
+        JOIN measurements m ON m.experiment_id = e.experiment_id
+        WHERE m.assay = 'viability_pct'
+          AND e.study_id NOT LIKE 'pmid%'
+        ORDER BY COALESCE(s.year, 0) DESC, e.material_class, e.experiment_id
+        """,
+        conn,
+    )
+    conn.close()
+    rows = []
+    for row in frame.itertuples(index=False):
+        viab = getattr(row, "viability_pct", None)
+        kpa = getattr(row, "stiffness_kpa", None)
+        days = getattr(row, "culture_time_days", None)
+        year = getattr(row, "year", None)
+        rows.append(
+            {
+                "experiment_id": row.experiment_id,
+                "study_id": row.study_id,
+                "citation": None if pd.isna(getattr(row, "citation", None)) else row.citation,
+                "doi": None if pd.isna(getattr(row, "doi", None)) else row.doi,
+                "year": None if year is None or pd.isna(year) else int(year),
+                "material_class": row.material_class,
+                "stiffness_kpa": None if kpa is None or pd.isna(kpa) else float(kpa),
+                "cell_type": None if pd.isna(getattr(row, "cell_type", None)) else row.cell_type,
+                "species": None if pd.isna(getattr(row, "species", None)) else row.species,
+                "growth_factor": None if pd.isna(getattr(row, "growth_factor", None)) else row.growth_factor,
+                "culture_time_days": None if days is None or pd.isna(days) else float(days),
+                "culture_model": None if pd.isna(getattr(row, "culture_model", None)) else row.culture_model,
+                "viability_pct": None if viab is None or pd.isna(viab) else float(viab),
+                "viability_sd": None
+                if pd.isna(getattr(row, "value_sd", None))
+                else float(row.value_sd),
+                "qualitative_label": None
+                if pd.isna(getattr(row, "qualitative_label", None))
+                else row.qualitative_label,
+                "evidence": None if pd.isna(getattr(row, "evidence", None)) else row.evidence,
+                "notes": None if pd.isna(getattr(row, "notes", None)) else row.notes,
+            }
+        )
+    return rows

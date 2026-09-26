@@ -4,7 +4,7 @@ The product question is unchanged:
 
 > Can this system change which hydrogel experiment a cartilage researcher runs next?
 
-8000 Amass papers are a **library**. They do not make the model work. A model that “works” needs labeled conditions: material × stiffness × cells × time → a number the lab actually measured. That table is now **53 hand-curated studies / 156 experiments / 42 numeric live/dead rows from 15 papers**. Auto-promoted `pmid*` rows stay in SQLite as inventory and are **not** in the training view.
+8000 Amass papers are a **library**. They do not make the model work. A model that “works” needs labeled conditions: material × stiffness × cells × time → a number the lab actually measured. That table is now **54 hand-curated studies / ~205 experiments / 42 numeric live/dead rows from 15 papers**. Auto-promoted `pmid*` rows stay in SQLite as inventory and are **not** in the training view.
 
 ## What “MVP” means here (and what it does not)
 
@@ -31,7 +31,7 @@ Harvest more papers only after the top 250 queued items are extracted or rejecte
 
 There is **no** public `material × chondrocyte × outcome` CSV. BIOMATDB and OOCDB are search portals. The better source we added is **Europe PMC open fulltext** (free XML), used before paid Amass fulltext.
 
-Current snapshot: **53 hand studies / 156 hand experiments / 42 numeric viability (15 papers)**; ~8.5k papers. Deployed estimator is **empirical-Bayes shrinkage** (kernel over published conditions, shrunk to the material mean) — not Ridge, not a neural net. It beats dummy under LOPO (~15.8 vs 16.5) so stiffness / TGF / time move the number. R² is still ~0, `mvp_pass` false. The 15% MAE bar needs more live/dead rows, not more AI.
+Current snapshot: **54 hand studies / ~205 hand experiments / 42 numeric viability (15 papers)**; ~8.5k papers. Deployed estimator is **empirical-Bayes shrinkage** (kernel over published conditions, shrunk to the material mean) — not Ridge, not a neural net. It beats dummy under LOPO (~15.8 vs 16.5) so stiffness / TGF / time move the number. R² is still ~0, `mvp_pass` false. The 15% MAE bar needs more live/dead rows, not more AI.
 
 ## Step by step
 

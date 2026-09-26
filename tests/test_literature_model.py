@@ -8,7 +8,7 @@ def test_notes_warn_when_dummy_wins():
 
 def test_notes_mvp_pass():
     notes = _notes({"beats_dummy": True, "mvp_pass": True, "deployed_estimator": "material_mean"})
-    assert any("atinge a barra MVP" in note for note in notes)
+    assert any("meets the viability MVP bar" in note for note in notes)
 
 
 def test_notes_barely_beats_dummy():

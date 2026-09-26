@@ -166,11 +166,11 @@ def lopo_shrinkage_predictions(frame: pd.DataFrame) -> np.ndarray:
 
 
 KNOB_LABELS = {
-    "material_class": "Hidrogel",
-    "stiffness_kpa": "Rigidez",
-    "cell_type": "Células",
-    "growth_factor": "Factor de crescimento",
-    "culture_time_days": "Dias em cultura",
+    "material_class": "Hydrogel",
+    "stiffness_kpa": "Stiffness",
+    "cell_type": "Cells",
+    "growth_factor": "Growth factor",
+    "culture_time_days": "Culture days",
 }
 
 
@@ -221,7 +221,7 @@ def knob_deltas(query: dict, train: pd.DataFrame) -> list[dict]:
                     "feature": label,
                     "key": key,
                     "delta": round(float(other["mean"] - full), 2),
-                    "note": "se ligares TGF-β3",
+                    "note": "if you turn TGF-β3 on",
                     "hypothetical": True,
                     "borrowed": support["borrowed"],
                     "n_observed": support["n_observed"],
@@ -236,7 +236,7 @@ def knob_deltas(query: dict, train: pd.DataFrame) -> list[dict]:
                 "feature": label,
                 "key": key,
                 "delta": round(float(full - other["mean"]), 2),
-                "note": "puxão vs esta variável ignorada",
+                "note": "pull vs this knob ignored",
                 "hypothetical": False,
                 "borrowed": support["borrowed"],
                 "n_observed": support["n_observed"],

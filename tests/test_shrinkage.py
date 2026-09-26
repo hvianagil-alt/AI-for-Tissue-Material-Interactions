@@ -56,10 +56,14 @@ def test_gelma_is_weaker_evidence_than_fibrin():
     assert gelma["n_eff_same"] <= 1.1
     assert fibrin["n_eff_same"] > gelma["n_eff_same"]
     assert gelma["interval_half"] > fibrin["interval_half"]
-    assert gelma["trust"]["level"] == "fraca"
+    assert gelma["trust"]["level"] == "weak"
     stiff = next(d for d in gelma["knob_deltas"] if d.get("key") == "stiffness_kpa")
     assert stiff["borrowed"] is True
     assert gelma["coverage"]["material_min"] is not None
+    assert gelma["coverage"]["n_table_material"] >= 4
+    assert gelma["also_extracted"]
+    assert any(row.get("stiffness_kpa") for row in gelma["also_extracted"])
+    assert gelma["next_read"] and gelma["next_read"].get("stiffness_kpa") is not None
     assert any(a["id"] == "competitor" for a in gelma["alternatives"])
     assert gelma["interval_floor_is_lopo_mae"] is True
 
