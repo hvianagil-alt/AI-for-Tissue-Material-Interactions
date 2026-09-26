@@ -22,8 +22,8 @@ from tissuelab.paths import DATA_DIR, DB_PATH, ROOT
 
 BASE = "https://api.amass.tech/api/v1/cores/biomedcore/records"
 SEARCH_LIMIT = 300
-TARGET_UNIQUE = 8000
-MAX_REQUESTS = 40
+TARGET_UNIQUE = 12000
+MAX_REQUESTS = 55
 MIN_SLEEP_S = 1.15
 
 
@@ -100,6 +100,13 @@ MATERIAL_QUERIES = [
     "agarose chondrocyte hydrogel",
     "silk fibroin cartilage hydrogel",
     "cartilage bioink hydrogel",
+    "methacrylated gelatin chondrocyte viability",
+    "HAMA chondrocyte hydrogel",
+    "oxidized alginate chondrocyte",
+    "norbornene PEG cartilage",
+    "tyramine hyaluronan chondrocyte",
+    "granular hydrogel cartilage",
+    "interpenetrating network hydrogel chondrocyte",
 ]
 
 
@@ -320,7 +327,15 @@ def already_ran(conn, query: str, lo: str | None, hi: str | None) -> bool:
 
 
 def run(path=DB_PATH) -> dict[str, Any]:
-    key = api_key()
+    try:
+        key = api_key()
+    except SystemExit as exc:
+        conn = connect(path)
+        init_schema(conn)
+        n = conn.execute("SELECT COUNT(*) FROM papers").fetchone()[0]
+        conn.close()
+        print(f"Amass skipped: {exc}", flush=True)
+        return {"status": "skipped", "reason": str(exc), "n_papers": n}
     conn = connect(path)
     init_schema(conn)
     plan = search_plan()

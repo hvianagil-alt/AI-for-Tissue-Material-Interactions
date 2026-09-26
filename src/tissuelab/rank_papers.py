@@ -164,6 +164,12 @@ def rank(path=DB_PATH) -> dict:
     ):
         by_paper.setdefault(row["amass_id"], []).append(row)
 
+    analyses: dict[str, dict] = {}
+    tables = {r[0] for r in conn.execute("SELECT name FROM sqlite_master WHERE type='table'").fetchall()}
+    if "paper_analyses" in tables:
+        for row in conn.execute("SELECT * FROM paper_analyses"):
+            analyses[row["amass_id"]] = dict(row)
+
     conn.execute("DELETE FROM paper_scores")
     conn.execute("DELETE FROM extraction_queue")
     now = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
@@ -196,6 +202,23 @@ def rank(path=DB_PATH) -> dict:
             has_culture_days="culture_time_days" in fields,
             has_tgf="growth_factor" in fields,
         )
+        analysis = analyses.get(paper["amass_id"])
+        if analysis:
+            if int(analysis["training_relevant"] or 0):
+                score += 8
+                reasons.append("uniform_training_relevant")
+            chem = analysis["chemical_modification"]
+            if chem and chem not in {"unmodified", "unspecified"}:
+                score += 3
+                reasons.append("chem:" + str(chem))
+            arch = analysis["architecture"]
+            if arch and arch not in {"bulk_hydrogel"}:
+                score += 3
+                reasons.append("arch:" + str(arch))
+            app = analysis["application"]
+            if app and app not in {"unspecified", "in_vitro_cartilage"}:
+                score += 2
+                reasons.append("app:" + str(app))
         conn.execute(
             """
             INSERT INTO paper_scores (

@@ -37,6 +37,7 @@ VOCAB_MATERIALS = [
     ("fibrin_alginate", "composite", None),
     ("GelMA_chitosan", "composite", "GelMA plus glycol chitosan"),
     ("GelMA_HA", "composite", "GelMA / gelatin-methacrylamide plus HA-MA"),
+    ("GelMA_alginate", "composite", "GelMA plus oxidized methacrylated alginate (OMA)"),
     ("chitosan_gelatin_PVA", "composite", "CS/Gel/PVA freeze–thaw hydrogels"),
     ("alginate_dECM", "composite", "Alginate bioink with processed cartilage matrix"),
     ("collagen_alginate", "composite", "Collagen I / alginate blends"),

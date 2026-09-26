@@ -26,13 +26,30 @@ FT_URL = "https://www.ebi.ac.uk/europepmc/webservices/rest/{pmcid}/fullTextXML"
 HEADERS = {"User-Agent": "TissueLabAI/0.1 (hydrogel-chondrocyte literature harvest)"}
 CACHE_DIR = DATA_DIR / "fulltext_cache"
 SLEEP_S = 0.85
-SEARCH_PAGES = 3
+SEARCH_PAGES = 5
+LIBRARY_PAGES = 3
 PAGE_SIZE = 100
 
 QUERIES = [
     '"chondrocyte" AND hydrogel AND (viability OR "live/dead" OR "Young" OR kPa) AND OPEN_ACCESS:y AND HAS_FT:y',
     'GelMA AND (chondrocyte OR chondrogenesis) AND OPEN_ACCESS:y AND HAS_FT:y',
     '"cartilage" AND hydrogel AND (stiffness OR modulus) AND OPEN_ACCESS:y AND HAS_FT:y',
+    '(methacrylated OR GelMA OR HAMA OR MeHA) AND chondrocyte AND hydrogel AND OPEN_ACCESS:y AND HAS_FT:y',
+    '(oxidized OR norbornene OR tyramine OR "thiol-ene") AND hydrogel AND (chondrocyte OR cartilage) AND OPEN_ACCESS:y AND HAS_FT:y',
+    '(bioprint OR bioink) AND chondrocyte AND (viability OR live) AND OPEN_ACCESS:y AND HAS_FT:y',
+    '("interpenetrating" OR granular OR microgel) AND hydrogel AND cartilage AND OPEN_ACCESS:y AND HAS_FT:y',
+    '(genipin OR "EDC" OR dopamine OR RGD) AND hydrogel AND (chondrocyte OR cartilage) AND OPEN_ACCESS:y AND HAS_FT:y',
+    '(auricular OR osteochondral OR osteoarthritis) AND hydrogel AND chondrocyte AND OPEN_ACCESS:y AND HAS_FT:y',
+    '(injectable OR tyramine OR sulfated) AND hydrogel AND cartilage AND OPEN_ACCESS:y AND HAS_FT:y',
+]
+
+LIBRARY_QUERIES = [
+    'chondrocyte AND hydrogel AND (viability OR "live/dead") AND HAS_ABSTRACT:y',
+    'GelMA AND chondrocyte AND (viability OR live) AND HAS_ABSTRACT:y',
+    'methacrylated AND hydrogel AND cartilage AND HAS_ABSTRACT:y',
+    '(bioprint OR bioink) AND chondrocyte AND hydrogel AND HAS_ABSTRACT:y',
+    'osteoarthritis AND hydrogel AND (chondrocyte OR MSC) AND HAS_ABSTRACT:y',
+    'auricular AND (GelMA OR hydrogel) AND chondrocyte AND HAS_ABSTRACT:y',
 ]
 
 
@@ -131,7 +148,7 @@ def hit_to_record(hit: dict) -> dict:
         "publicationDate": date,
         "citationCount": hit.get("citedByCount"),
         "journalQualityJufo": None,
-        "hasFulltext": True,
+        "hasFulltext": bool(pmcid),
         "isRetracted": False,
         "publicationTypes": pub_types,
         "meshTerms": None,
@@ -140,6 +157,33 @@ def hit_to_record(hit: dict) -> dict:
         "authors": authors,
         "language": hit.get("language"),
     }
+
+
+def _ingest_hits(conn, query: str, pages: int, existing_pmid: set[str]) -> tuple[int, int]:
+    n_new = 0
+    n_hits = 0
+    cursor = "*"
+    for _ in range(pages):
+        payload = search(query, cursor)
+        hits = ((payload.get("resultList") or {}).get("result")) or []
+        if not hits:
+            break
+        for hit in hits:
+            rec = hit_to_record(hit)
+            n_hits += 1
+            if rec["pmid"] and rec["pmid"] in existing_pmid:
+                continue
+            if rec["pmid"]:
+                existing_pmid.add(rec["pmid"])
+            if upsert_paper(conn, rec, f"europepmc|{query[:40]}"):
+                n_new += 1
+        nxt = payload.get("nextCursorMark")
+        if not nxt or nxt == cursor:
+            break
+        cursor = nxt
+        time.sleep(SLEEP_S)
+    time.sleep(SLEEP_S)
+    return n_new, n_hits
 
 
 def harvest(path=DB_PATH) -> dict:
@@ -151,27 +195,15 @@ def harvest(path=DB_PATH) -> dict:
     n_new = 0
     n_hits = 0
     for query in QUERIES:
-        cursor = "*"
-        for _ in range(SEARCH_PAGES):
-            payload = search(query, cursor)
-            hits = ((payload.get("resultList") or {}).get("result")) or []
-            if not hits:
-                break
-            for hit in hits:
-                rec = hit_to_record(hit)
-                n_hits += 1
-                if rec["pmid"] and rec["pmid"] in existing_pmid:
-                    continue
-                if rec["pmid"]:
-                    existing_pmid.add(rec["pmid"])
-                if upsert_paper(conn, rec, f"europepmc|{query[:40]}"):
-                    n_new += 1
-            nxt = payload.get("nextCursorMark")
-            if not nxt or nxt == cursor:
-                break
-            cursor = nxt
-            time.sleep(SLEEP_S)
-        time.sleep(SLEEP_S)
+        added, hits = _ingest_hits(conn, query, SEARCH_PAGES, existing_pmid)
+        n_new += added
+        n_hits += hits
+        conn.commit()
+    for query in LIBRARY_QUERIES:
+        added, hits = _ingest_hits(conn, query, LIBRARY_PAGES, existing_pmid)
+        n_new += added
+        n_hits += hits
+        conn.commit()
     conn.execute(
         """
         INSERT INTO harvest_log (
@@ -180,8 +212,8 @@ def harvest(path=DB_PATH) -> dict:
         ) VALUES (?, NULL, NULL, ?, ?, ?, 200, 0, ?)
         """,
         (
-            "europepmc_oa",
-            PAGE_SIZE * SEARCH_PAGES * len(QUERIES),
+            "europepmc_oa+library",
+            PAGE_SIZE * (SEARCH_PAGES * len(QUERIES) + LIBRARY_PAGES * len(LIBRARY_QUERIES)),
             n_hits,
             n_new,
             datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),

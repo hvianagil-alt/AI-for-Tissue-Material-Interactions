@@ -24,6 +24,7 @@ The point of the MVP is not “AI for biology”. It is:
 | Buyable-minimal plan | `docs/BMP.md` |
 | How to train the viability model (videos → this table) | `docs/ML_PLAN.md` |
 | First training lesson (never trained a model) | `docs/TRAIN.md` → `python3 -m tissuelab.teach_model` |
+| Uniform paper tags + training pack | `python3 -m tissuelab.pipeline` → `data/train_gold.csv` |
 | Native literature measurements (no fake porosity) | Done |
 | Mapped 0–100 scores + simulator (software prior only) | Still in the old CSV/ML path |
 | Literature-informed simulator (~650 records) | Done |
@@ -34,7 +35,7 @@ The point of the MVP is not “AI for biology”. It is:
 | Streamlit app + FastAPI | Done |
 | Competitor / dataset landscape | `docs/LANDSCAPE.md` |
 
-The **source of truth for science** is `data/tissuelab.sqlite` (see `docs/DATA_MODEL.md`). Start with `data/literature_viability.csv` (`v_model_viability`: hand-curated live/dead % only). Amass harvest lives in `papers` (~8.5k BiomedCore records). Regex candidates in `paper_extractions` and auto-promoted `pmid*` rows are **not** training labels. The mixed CSV + simulator is only a software prior.
+The **source of truth for science** is `data/tissuelab.sqlite` (see `docs/DATA_MODEL.md`). Train on `data/train_gold.csv` (hand-curated live/dead % plus chemistry / architecture / application). Harvested papers live in `papers` (~9.7k records, tagged in `data/papers_uniform.csv`). Regex candidates and auto-promoted `pmid*` rows are **not** training labels.
 
 ## Use it now
 
@@ -61,20 +62,21 @@ pip install -e ".[dev]" && pytest -q
 
 - The kernel’s global n_eff is ~30 for every query — the number that matters is **effective n on this gel**.
 - **Proliferation / differentiation / ECM** in the radar are mapped 0–100 scores plus a simulator prior. Do not cite them as measurements.
-- Shrinkage **beats** a dummy mean under LOPO (~15.8 vs 16.5). Ridge loses and is **not** served. The MVP bar (15% better than dummy, R²>0) is still unmet. Use nearest extracted papers to choose the next gel.
+- Shrinkage **beats** a dummy mean under LOPO (15.92 vs 15.93). Ridge loses and is **not** served. HistGradientBoosting looks better on this split (MAE 13.7) but is **not** deployed until ≥25 papers. The MVP bar (15% better than dummy, R²>0) is still unmet.
 
 ### Current baseline
 
 | Check | Value |
 |---|---|
-| Hand-curated studies | 54 |
-| Hand experiments | ~205 |
-| Numeric live/dead (training) | 42 rows / 15 papers |
-| Viability evidence in `/table` | numeric + qualitative floors |
-| Dummy LOPO MAE | 16.5 |
-| Shrinkage LOPO MAE | ~15.8 (deployed) |
-| Material-mean LOPO MAE | 16.4 |
-| Ridge LOPO MAE | 22.6 (not deployed) |
+| Hand-curated studies | 56 |
+| Hand experiments | ~220 |
+| Numeric live/dead (training) | 52 rows / 17 papers |
+| Harvested papers tagged | 9659 (2094 training-relevant) |
+| Dummy LOPO MAE | 15.93 |
+| Shrinkage LOPO MAE | 15.92 (deployed) |
+| Material-mean LOPO MAE | 17.5 |
+| Ridge LOPO MAE | 18.4 (not deployed) |
+| HGB LOPO MAE | 13.7 (reported only; n_studies < 25) |
 | Simulated XGBoost holdout R² | ~0.92 — **ignore** for science |
 
 The product is ready to **use as Protocol**: cells + job → extracted protocol + papers. Lookup is the evidence card. It is not ready to claim a model that beats “GelMA ~25 kPa + TGF-β3”.

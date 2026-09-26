@@ -575,6 +575,28 @@ STUDIES: list[dict] = [
         "license": "CC-BY",
         "notes": "Handheld co-axial Biopen: ADSC in GelMA/HAMA 10%/2%. Core/shell 200 kPa after 10 s 365 nm. Abstract live/dead is a >90% floor, not a mean. 2D CellTiter-Blue LAP toxicity is not stored as gel viability.",
     },
+    {
+        "study_id": "martyniak2023",
+        "citation": "Martyniak et al., Bioengineering 2023",
+        "doi": "10.3390/bioengineering10090997",
+        "pmid": "37760099",
+        "year": 2023,
+        "journal": "Bioengineering",
+        "pmcid": "PMC10526043",
+        "license": "CC-BY",
+        "notes": "Human PRG4-reporter chondrocytes in GelMA ± oxidized methacrylated alginate bioinks. Live/dead percents from printed constructs days 0–7. Storage modulus ~30 or ~60 kPa at day 0.",
+    },
+    {
+        "study_id": "xie2022",
+        "citation": "Xie et al., Adv. Healthcare Mater. 2022",
+        "doi": "10.1002/adhm.202201877",
+        "pmid": "36085440",
+        "year": 2022,
+        "journal": "Advanced Healthcare Materials",
+        "pmcid": "PMC11468467",
+        "license": "CC-BY",
+        "notes": "Microtia auricular chondrocytes in GelMA DLP prints ± chondrocyte microtissues. Live/dead means at day 1/10/20. No starting Young's modulus for the GelMA control.",
+    },
 ]
 
 
@@ -2889,6 +2911,96 @@ def _bmp_pass_experiments() -> list[dict]:
     return rows
 
 
+def _chemistry_pass_experiments() -> list[dict]:
+    """OA fulltext papers that add methacrylation / print architecture with numeric live/dead."""
+    rows = []
+    for gel, conc, kpa, d0, d7, detail in [
+        ("GelMA", 14.0, 30.0, 77.0, 61.0, "14% GelMA, 15 s photocrosslink, printed"),
+        ("GelMA_alginate", 16.0, 30.0, 72.0, 72.0, "14% GelMA + 2% oxidized methacrylated alginate, 15 s, printed"),
+        ("GelMA", 16.0, 60.0, 54.0, 72.0, "16% GelMA, 15 s photocrosslink, printed"),
+    ]:
+        for day, val in ((0.0, d0), (7.0, d7)):
+            rows.append(
+                {
+                    "experiment_id": f"martyniak2023-{gel.replace('_','')}-{int(conc)}wt-d{int(day)}",
+                    "study_id": "martyniak2023",
+                    "material_class": gel,
+                    "material_detail": detail,
+                    "crosslinking": "photocrosslink",
+                    "polymer_concentration_wt_pct": conc,
+                    "stiffness_kpa": kpa,
+                    "stiffness_method": "storage_modulus_day0",
+                    "surface_chemistry": "native",
+                    "has_adhesion_ligand": 1.0,
+                    "cell_type": "articular_chondrocyte",
+                    "species": "human",
+                    "culture_model": "3D_bioprint",
+                    "growth_factor": "none",
+                    "culture_time_days": day,
+                    "cell_density_million_per_ml": 1.0,
+                    "chemical_modification": "methacrylated" if gel == "GelMA" else "oxidized",
+                    "architecture": "3d_printed",
+                    "application": "bioprinting",
+                    "live_dead_kit": "calcein_ethidium",
+                    "extracted_from": "PMC10526043 results Fig. 8 text",
+                    "curator_confidence": "high",
+                    "notes": "Printed live/dead. OMA group held ~72% all 7 days (paper: around 72%).",
+                    "measurements": [_m("viability_pct", val, "%", evidence="numeric_text", n=3)],
+                }
+            )
+    for day, val, sd in ((1.0, 95.68, 0.71),):
+        rows.append(
+            {
+                "experiment_id": "xie2022-gelma-dlp-d1",
+                "study_id": "xie2022",
+                "material_class": "GelMA",
+                "material_detail": "DLP GelMA + microtia chondrocytes, no microtissue",
+                "crosslinking": "photocrosslink",
+                "surface_chemistry": "native",
+                "has_adhesion_ligand": 1.0,
+                "cell_type": "auricular_chondrocyte",
+                "species": "human",
+                "culture_model": "3D_bioprint",
+                "growth_factor": "none",
+                "culture_time_days": day,
+                "chemical_modification": "methacrylated",
+                "architecture": "3d_printed",
+                "application": "auricular",
+                "live_dead_kit": "calcein_ethidium",
+                "extracted_from": "PMC11468467 Fig. 7D day 1",
+                "curator_confidence": "high",
+                "notes": "Control GelMA+chondrocytes 1 d post-print.",
+                "measurements": [_m("viability_pct", val, "%", sd=sd, evidence="numeric_text")],
+            }
+        )
+    for day, val, sd in ((1.0, 98.25, 0.43), (10.0, 95.96, 0.28), (20.0, 92.36, 1.91)):
+        rows.append(
+            {
+                "experiment_id": f"xie2022-gelma-microtissue-d{int(day)}",
+                "study_id": "xie2022",
+                "material_class": "GelMA",
+                "material_detail": "DLP GelMA + chondrocyte microtissues (microshelter)",
+                "crosslinking": "photocrosslink",
+                "surface_chemistry": "native",
+                "has_adhesion_ligand": 1.0,
+                "cell_type": "auricular_chondrocyte",
+                "species": "human",
+                "culture_model": "3D_bioprint",
+                "growth_factor": "none",
+                "culture_time_days": day,
+                "chemical_modification": "methacrylated",
+                "architecture": "microgel",
+                "application": "auricular",
+                "live_dead_kit": "calcein_ethidium",
+                "extracted_from": "PMC11468467 Fig. 7D",
+                "curator_confidence": "high",
+                "notes": "Microtissue bioink; viability stayed >90% through day 20.",
+                "measurements": [_m("viability_pct", val, "%", sd=sd, evidence="numeric_text")],
+            }
+        )
+    return rows
+
+
 EXPERIMENTS: list[dict] = (
     _bachmann_experiments()
     + _other_experiments()
@@ -2897,4 +3009,5 @@ EXPERIMENTS: list[dict] = (
     + _queue_pass_three()
     + _queue_pass_four()
     + _bmp_pass_experiments()
+    + _chemistry_pass_experiments()
 )

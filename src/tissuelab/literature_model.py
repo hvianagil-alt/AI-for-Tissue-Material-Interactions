@@ -85,6 +85,9 @@ def _query_from_design(design: dict) -> dict:
         "growth_factor": design.get("growth_factor") or "none",
         "stiffness_kpa": None if kpa in (None, "") else float(kpa),
         "culture_time_days": None if days in (None, "") else float(days),
+        "culture_model": design.get("culture_model"),
+        "chemical_modification": design.get("chemical_modification"),
+        "architecture": design.get("architecture"),
     }
 
 

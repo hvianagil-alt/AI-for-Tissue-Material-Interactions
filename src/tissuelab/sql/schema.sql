@@ -61,6 +61,11 @@ CREATE TABLE IF NOT EXISTS experiments (
     culture_time_days             REAL,
     cell_density_million_per_ml   REAL,
     passage                       INTEGER,
+    chemical_modification         TEXT,
+    architecture                  TEXT,
+    application                   TEXT,
+    live_dead_kit                 TEXT,
+    modification_degree_pct       REAL,
     n_replicates                  INTEGER,
     extracted_from                TEXT,
     curator_confidence            TEXT NOT NULL DEFAULT 'medium',
@@ -143,6 +148,32 @@ CREATE INDEX IF NOT EXISTS idx_papers_doi ON papers(doi);
 CREATE INDEX IF NOT EXISTS idx_extract_amass ON paper_extractions(amass_id);
 CREATE INDEX IF NOT EXISTS idx_extract_field ON paper_extractions(field);
 
+-- One uniformized record per harvested paper. Tags are retrieval/ontology,
+-- not training labels. Training still uses v_model_viability.
+CREATE TABLE IF NOT EXISTS paper_analyses (
+    amass_id                 TEXT PRIMARY KEY REFERENCES papers(amass_id) ON DELETE CASCADE,
+    chemical_modification    TEXT,
+    chemical_modifications   TEXT,
+    architecture             TEXT,
+    architectures            TEXT,
+    application              TEXT,
+    applications             TEXT,
+    materials                TEXT,
+    cells                    TEXT,
+    culture_model            TEXT,
+    species                  TEXT,
+    growth_factor            TEXT,
+    is_review_like           INTEGER NOT NULL DEFAULT 0,
+    has_hydrogel             INTEGER NOT NULL DEFAULT 0,
+    has_cartilage_cell       INTEGER NOT NULL DEFAULT 0,
+    has_viability_number     INTEGER NOT NULL DEFAULT 0,
+    training_relevant        INTEGER NOT NULL DEFAULT 0,
+    n_viability_hits         INTEGER NOT NULL DEFAULT 0,
+    analyzed_at              TEXT
+);
+
+CREATE INDEX IF NOT EXISTS idx_analyses_relevant ON paper_analyses(training_relevant, application);
+
 -- Ranked work queue: which harvested papers to extract into experiments next.
 -- Scores are retrieval ranks, not scientific measurements.
 CREATE TABLE IF NOT EXISTS paper_scores (
@@ -207,6 +238,10 @@ SELECT
     e.cell_density_million_per_ml,
     e.passage,
     e.has_adhesion_ligand,
+    e.chemical_modification,
+    e.architecture,
+    e.application,
+    e.live_dead_kit,
     e.curator_confidence,
     m.value AS viability_pct,
     m.value_sd AS viability_sd,

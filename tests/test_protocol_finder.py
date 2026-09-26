@@ -9,7 +9,9 @@ def test_articular_alive_prefers_fibrin_over_gelma():
     assert out["papers"]
     assert any(p.get("doi") for p in out["papers"])
     gelma = out["field_default"]
-    assert gelma["n_same_numeric"] == 0
+    assert gelma["n_same_numeric"] >= 2
+    assert gelma["same_mean"] is not None
+    assert gelma["same_mean"] < out["same_mean"]
     assert "GelMA" in out["why"]
 
 

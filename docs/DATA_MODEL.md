@@ -21,6 +21,7 @@ studies 1──* experiments 1──* measurements
 - **measurements** — long form: `(assay, value, unit, evidence)`. Viability, sGAG, COL2/COL1, ALP (bone, later) are rows, not columns.
 - **papers** — Amass BiomedCore harvest (title, abstract, identifiers). Not a training table.
 - **paper_extractions** — regex candidates from title+abstract. Low-confidence numbers stay here; they are **not** copied into `measurements`.
+- **paper_analyses** — one uniform tag set per paper (chemical modification, architecture, application). Not training labels.
 - **paper_scores / extraction_queue** — which harvested papers to read next. A rank, not a measurement.
 - **study_paper_links** — curated `study_id` ↔ Amass `amass_id` when DOI/PMCID matches.
 
@@ -30,7 +31,8 @@ That last point is the answer to “later we add more cell variables”. Osteobl
 
 | Use | Table / view | Why |
 |---|---|---|
-| Viability regressor | `v_model_viability` | Hand-curated numeric live/dead % only (`study_id NOT LIKE 'pmid%'`) |
+| Viability regressor | `v_model_viability` / `data/train_gold.csv` | Hand-curated numeric live/dead % only (`study_id NOT LIKE 'pmid%'`) |
+| Uniform paper tags | `paper_analyses` / `data/papers_uniform.csv` | Chemistry, architecture, application. Not y. |
 | Inventory of auto-promoted abstracts | `v_auto_viability` | pmid* rows; **not** training labels |
 | Stiffness as a feature | experiments with `stiffness_kpa IS NOT NULL` | Complete-case or a missingness indicator |
 | Histology ordinals | measurements `*_histology` | Within-paper rank only; do not treat as µg/µg |
@@ -38,7 +40,7 @@ That last point is the answer to “later we add more cell variables”. Osteobl
 | Amass `papers` | literature index / retrieval | Abstracts + identifiers |
 | `paper_extractions` | **not a model table** | Regex from abstracts; numbers are low-confidence |
 
-CSV exports: `data/literature_viability.csv` is the training table. `data/literature_native.csv` is the long-form measurement dump (includes inventory rows).
+CSV exports: `data/train_gold.csv` (and `literature_viability.csv`) is the training table. `data/papers_uniform.csv` is the tagged library. `data/literature_native.csv` is the long-form dump (includes inventory rows). Build them with `python3 -m tissuelab.training_pack`.
 
 ## How to start using it
 

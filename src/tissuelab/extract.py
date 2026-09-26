@@ -5,6 +5,8 @@ from __future__ import annotations
 import re
 from typing import Any
 
+from tissuelab.ontology import analyze_text
+
 MATERIAL_PATTERNS: list[tuple[str, re.Pattern[str]]] = [
     ("GelMA", re.compile(r"\b(?:gelma|gelatin methacrylate|methacrylated gelatin)\b", re.I)),
     ("HA", re.compile(r"\b(?:hyaluronic acid|hyaluronan|\bHA\b|MeHA|methacrylated HA)\b", re.I)),
@@ -55,6 +57,11 @@ CULTURE_DAYS_RE = re.compile(r"\b(?:after|at|for|day)\s+(\d{1,3})\s*(?:days?|d)\
 CULTURE_DAYS_BARE_RE = re.compile(r"\b(\d{1,2})\s*days?\b", re.I)
 HYDROGEL_RE = re.compile(r"\bhydrogels?\b|\bbioinks?\b|\bscaffolds?\b", re.I)
 CARTILAGE_RE = re.compile(r"\bcartilage\b|\bchondrogen(?:ic|esis)\b", re.I)
+OFF_TARGET_BIO_RE = re.compile(
+    r"\b(?:H9c2|HUVECs?|hepatocytes?|cardiomyocytes?|keratinocytes?|"
+    r"MCF[- ]?7|HeLa|Caco-2|PC-12|SH-SY5Y|osteoblasts?)\b",
+    re.I,
+)
 TGF_RE = re.compile(r"\bTGF[-\s]?β?\s*3\b|\bTGF[-\s]?beta[-\s]?3\b", re.I)
 TGF_B1_RE = re.compile(r"\bTGF[-\s]?β?\s*1\b|\bTGF[-\s]?beta[-\s]?1\b", re.I)
 SPECIES_PATTERNS = [
@@ -74,6 +81,7 @@ COMPOSITE_MATERIALS = {
     frozenset({"silk_fibrin", "fibrin"}): "silk_fibrin",
     frozenset({"GelMA", "chitosan"}): "GelMA_chitosan",
     frozenset({"GelMA", "HA"}): "GelMA_HA",
+    frozenset({"GelMA", "alginate"}): "GelMA_alginate",
     frozenset({"chitosan", "gelatin", "PVA"}): "chitosan_gelatin_PVA",
     frozenset({"collagen", "alginate"}): "collagen_alginate",
 }
@@ -152,6 +160,21 @@ def extract_from_abstract(abstract: str | None, title: str | None = None) -> lis
                 "confidence": "medium",
             }
         )
+
+    tags = analyze_text(title, abstract)
+    for field in ("chemical_modification", "architecture", "application"):
+        val = tags.get(field)
+        if val and val not in {"unmodified", "unspecified"}:
+            rows.append(
+                {
+                    "field": field,
+                    "value_text": val,
+                    "value_num": None,
+                    "unit": None,
+                    "evidence_span": None,
+                    "confidence": "medium",
+                }
+            )
 
     for label, pat in MATERIAL_PATTERNS:
         m = pat.search(text)
@@ -370,6 +393,16 @@ def _window_kpa(text: str, needle: str) -> float | None:
     return None
 
 
+def is_off_target_biology(title: str | None = None, abstract: str | None = None, extra: str | None = None) -> bool:
+    """Heart/endothelium/liver lines are not cartilage training rows."""
+    blob = " ".join(part for part in (title, abstract, extra) if part) or ""
+    if not OFF_TARGET_BIO_RE.search(blob):
+        return False
+    if CARTILAGE_RE.search(blob) or cells_in(blob):
+        return False
+    return True
+
+
 def extract_conditions(title: str | None, abstract: str | None, extra: str | None = None) -> list[dict[str, Any]]:
     """Promote sentence-level numbers into candidate experiments.
 
@@ -378,6 +411,8 @@ def extract_conditions(title: str | None, abstract: str | None, extra: str | Non
     """
     parts = [p for p in (title, abstract, extra) if p]
     text = " ".join(parts)
+    if is_off_target_biology(title, abstract, extra):
+        return []
     if not HYDROGEL_RE.search(text) and not CARTILAGE_RE.search(text):
         return []
     material, detail = pick_material(materials_in(text))
@@ -389,6 +424,7 @@ def extract_conditions(title: str | None, abstract: str | None, extra: str | Non
     model = pick_culture_model(text)
     paper_days = culture_days_in(text)
     paper_day = paper_days[0] if len(paper_days) == 1 else None
+    tags = analyze_text(title, abstract, extra)
 
     conditions: list[dict[str, Any]] = []
     for sent in SENTENCE_SPLIT.split(text):
@@ -467,5 +503,8 @@ def extract_conditions(title: str | None, abstract: str | None, extra: str | Non
         if key in seen_keys:
             continue
         seen_keys.add(key)
+        row["chemical_modification"] = tags.get("chemical_modification")
+        row["architecture"] = tags.get("architecture")
+        row["application"] = tags.get("application")
         uniq.append(row)
     return uniq

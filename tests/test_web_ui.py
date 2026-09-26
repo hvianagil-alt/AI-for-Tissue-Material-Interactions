@@ -77,6 +77,14 @@ def test_table_is_hand_curated_only():
     assert any("daly2016" in line or line.startswith("2016") for line in csv_response.text.splitlines())
 
 
+def test_library_page_loads():
+    client = TestClient(app)
+    response = client.get("/library")
+    assert response.status_code == 200
+    assert "chemistry" in response.text.lower() or "química" in response.text.lower()
+    assert "/library" in client.get("/").text
+
+
 def test_table_filter_keeps_all_gels_in_dropdown():
     client = TestClient(app)
     body = client.get("/table", params={"material_class": "chitosan"}).text

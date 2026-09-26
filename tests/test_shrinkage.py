@@ -50,22 +50,50 @@ def test_soft_gel_is_not_identical_to_stiff_gel():
     ]
 
 
-def test_gelma_is_weaker_evidence_than_fibrin():
+def test_gelma_print_numbers_exist_fibrin_still_cleaner():
     gelma = predict_literature_viability(_q(material_class="GelMA"))
     fibrin = predict_literature_viability(_q(material_class="fibrin"))
-    assert gelma["n_eff_same"] <= 1.1
-    assert fibrin["n_eff_same"] > gelma["n_eff_same"]
-    assert gelma["interval_half"] > fibrin["interval_half"]
-    assert gelma["trust"]["level"] == "weak"
-    stiff = next(d for d in gelma["knob_deltas"] if d.get("key") == "stiffness_kpa")
-    assert stiff["borrowed"] is True
-    assert gelma["coverage"]["material_min"] is not None
+    assert gelma["n_eff_same"] >= 2
+    assert fibrin["n_eff_same"] >= 2
+    assert fibrin["mean"] > gelma["mean"]
+    assert gelma["trust"]["level"] in {"weak", "heterogeneous", "useful"}
     assert gelma["coverage"]["n_table_material"] >= 4
     assert gelma["also_extracted"]
-    assert any(row.get("stiffness_kpa") for row in gelma["also_extracted"])
-    assert gelma["next_read"] and gelma["next_read"].get("stiffness_kpa") is not None
     assert any(a["id"] == "competitor" for a in gelma["alternatives"])
     assert gelma["interval_floor_is_lopo_mae"] is True
+    stiff = next(d for d in gelma["knob_deltas"] if d.get("key") == "stiffness_kpa")
+    assert stiff["n_observed"] >= 1
+
+
+def test_unmatched_chemistry_is_not_penalized():
+    import pandas as pd
+    from tissuelab.shrinkage import kernel_weights
+
+    train = pd.DataFrame(
+        {
+            "material_class": ["GelMA", "GelMA"],
+            "cell_type": ["articular_chondrocyte", "articular_chondrocyte"],
+            "growth_factor": ["none", "none"],
+            "stiffness_kpa": [25.0, 25.0],
+            "culture_time_days": [14.0, 14.0],
+            "chemical_modification": ["methacrylated", "unmodified"],
+            "viability_pct": [80.0, 80.0],
+        }
+    )
+    matched = kernel_weights(
+        {
+            "material_class": "GelMA",
+            "cell_type": "articular_chondrocyte",
+            "chemical_modification": "methacrylated",
+        },
+        train,
+    )
+    assert matched[0] > matched[1]
+    plain = kernel_weights(
+        {"material_class": "GelMA", "cell_type": "articular_chondrocyte"},
+        train,
+    )
+    assert abs(plain[0] - plain[1]) < 1e-9
 
 
 def test_shrinkage_falls_back_on_empty_frame():

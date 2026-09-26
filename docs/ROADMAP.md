@@ -31,7 +31,7 @@ Harvest more papers only after the top 250 queued items are extracted or rejecte
 
 There is **no** public `material × chondrocyte × outcome` CSV. BIOMATDB and OOCDB are search portals. The better source we added is **Europe PMC open fulltext** (free XML), used before paid Amass fulltext.
 
-Current snapshot: **54 hand studies / ~205 hand experiments / 42 numeric viability (15 papers)**; ~8.5k papers. Deployed estimator is **empirical-Bayes shrinkage** (kernel over published conditions, shrunk to the material mean) — not Ridge, not a neural net. It beats dummy under LOPO (~15.8 vs 16.5) so stiffness / TGF / time move the number. R² is still ~0, `mvp_pass` false. The 15% MAE bar needs more live/dead rows, not more AI.
+Current snapshot: hand-curated live/dead in `data/train_gold.csv` (split by `study_id`); harvested papers tagged in `data/papers_uniform.csv`. Deployed estimator is **empirical-Bayes shrinkage** (kernel over published conditions, shrunk to the material mean) — not Ridge, not a neural net. Chemistry / architecture / application are match-only kernel bonuses. R² is still ~0, `mvp_pass` false. The 15% MAE bar needs more independent live/dead papers, not more AI.
 
 How to grow that estimator without copying a random-split materials notebook: `docs/ML_PLAN.md` (mixed models + LOPO + Afflerbach workflow, mapped onto this table). If you have never trained a model, start with `docs/TRAIN.md` (`python3 -m tissuelab.teach_model`).
 

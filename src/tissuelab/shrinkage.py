@@ -20,6 +20,9 @@ TAU_DAYS = 21.0
 MISMATCH_MATERIAL = 0.45
 W_CELL_MATCH = 1.20
 W_GF_MATCH = 1.25
+W_MODEL_MATCH = 1.15
+W_CHEM_MATCH = 1.15
+W_ARCH_MATCH = 1.10
 MISSING_KPA = 0.70
 MISSING_DAYS = 0.80
 
@@ -53,6 +56,20 @@ def kernel_weights(query: dict, train: pd.DataFrame) -> np.ndarray:
     w *= np.where(mats == qmat, 1.0, MISMATCH_MATERIAL)
     w *= np.where(cells == qcell, W_CELL_MATCH, 2.0 - W_CELL_MATCH)
     w *= np.where(gfs == qgf, W_GF_MATCH, 2.0 - W_GF_MATCH)
+    # Match-only bonuses. Penalising a missing/mismatched chemistry or
+    # architecture over-shrinks this table (n≈50) and loses to the dummy mean.
+    models = _col_str(train, "culture_model")
+    qmodel = str(query.get("culture_model") or "")
+    if qmodel:
+        w *= np.where(models == qmodel, W_MODEL_MATCH, 1.0)
+    chems = _col_str(train, "chemical_modification")
+    qchem = str(query.get("chemical_modification") or "")
+    if qchem:
+        w *= np.where(chems == qchem, W_CHEM_MATCH, 1.0)
+    archs = _col_str(train, "architecture")
+    qarch = str(query.get("architecture") or "")
+    if qarch:
+        w *= np.where(archs == qarch, W_ARCH_MATCH, 1.0)
     if qkpa is not None and qkpa != "":
         dk = np.abs(kpas - float(qkpa))
         wk = np.exp(-((dk / TAU_KPA) ** 2))
@@ -116,16 +133,25 @@ def shrinkage_estimate(query: dict, train: pd.DataFrame) -> dict:
     local = float(np.average(y, weights=weights))
     n_eff = _n_eff(weights)
     same = _col_str(train, "material_class") == str(material or "")
-    if same.any():
-        prior = float(y[same].mean())
+    cells = _col_str(train, "cell_type")
+    qcell = str(query.get("cell_type") or "")
+    same_cell = same & (cells == qcell) if qcell else same
+    # Blend with Kish n on this gel, not the full-kernel n_eff (~30 for every
+    # query). Otherwise a unlike GelMA paper (print 54% vs auricular 98%)
+    # hijacks the prior and loses to the dummy mean.
+    n_eff_use = n_eff_same if n_eff_same > 0 else float(n_eff) * 0.25
+    if same_cell.any():
+        prior = float(y[same_cell].mean())
         estimator = "shrinkage"
-        n_support = int(same.sum())
+    elif same.any():
+        prior = float(y.mean())
+        estimator = "shrinkage_global_prior"
     else:
         prior = float(y.mean())
         estimator = "shrinkage_global_prior"
-        n_support = int(len(train))
-    mean = (n_eff * local + N0 * prior) / (n_eff + N0)
-    local_weight = n_eff / (n_eff + N0)
+    n_support = int(same.sum()) if same.any() else int(len(train))
+    mean = (n_eff_use * local + N0 * prior) / (n_eff_use + N0)
+    local_weight = n_eff_use / (n_eff_use + N0)
     return {
         "mean": float(np.clip(mean, 0, 100)),
         "local": float(np.clip(local, 0, 100)),
@@ -159,6 +185,7 @@ def lopo_shrinkage_predictions(frame: pd.DataFrame) -> np.ndarray:
                 "culture_time_days": None
                 if pd.isna(row.get("culture_time_days"))
                 else float(row.get("culture_time_days")),
+                "culture_model": None if pd.isna(row.get("culture_model")) else row.get("culture_model"),
             }
             est = shrinkage_estimate(query, train)
             pred[frame.index.get_loc(idx)] = float(y[train_mask].mean()) if est["mean"] is None else est["mean"]

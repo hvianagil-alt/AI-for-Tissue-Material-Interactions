@@ -20,14 +20,15 @@ from pydantic import BaseModel, Field
 from tissuelab.inverse import inverse_design
 from tissuelab.lit_search import search_question
 from tissuelab.literature_model import list_viability_evidence, predict_literature_viability
-from tissuelab.paths import MODEL_PATH
+from tissuelab.db import connect
+from tissuelab.paths import DB_PATH, MODEL_PATH
 from tissuelab.predict import predict_design
 from tissuelab.protocol_finder import find_protocol
 from tissuelab.recommend import recommend_experiments
 from tissuelab.schema import DesignInput, TARGETS
 from tissuelab.train import load_model
 
-from app.protocol_ui import render_protocol_page
+from app.protocol_ui import render_library_page, render_protocol_page
 from app.ui import CELL_TYPES, GROWTH_FACTORS, MATERIALS, render_compare_page, render_predict_page, render_table_page
 
 app = FastAPI(title="TissueLab AI", version="0.1.0")
@@ -165,6 +166,41 @@ def export_csv():
         media_type="text/csv",
         headers={"Content-Disposition": "attachment; filename=tissuelab_viability.csv"},
     )
+
+
+@app.get("/library", response_class=HTMLResponse)
+def library(lang: str = Query(default="en")):
+    stats = {
+        "n_analyzed": 0,
+        "n_training_relevant": 0,
+        "n_with_viability": 0,
+        "by_application": {},
+        "by_chemistry": {},
+        "by_architecture": {},
+    }
+    conn = connect(DB_PATH)
+    try:
+        tables = {r[0] for r in conn.execute("SELECT name FROM sqlite_master WHERE type='table'").fetchall()}
+        if "paper_analyses" in tables:
+            stats["n_analyzed"] = conn.execute("SELECT COUNT(*) FROM paper_analyses").fetchone()[0]
+            stats["n_training_relevant"] = conn.execute(
+                "SELECT COUNT(*) FROM paper_analyses WHERE training_relevant = 1"
+            ).fetchone()[0]
+            stats["n_with_viability"] = conn.execute(
+                "SELECT COUNT(*) FROM paper_analyses WHERE has_viability_number = 1"
+            ).fetchone()[0]
+            stats["by_application"] = dict(
+                conn.execute("SELECT application, COUNT(*) FROM paper_analyses GROUP BY 1").fetchall()
+            )
+            stats["by_chemistry"] = dict(
+                conn.execute("SELECT chemical_modification, COUNT(*) FROM paper_analyses GROUP BY 1").fetchall()
+            )
+            stats["by_architecture"] = dict(
+                conn.execute("SELECT architecture, COUNT(*) FROM paper_analyses GROUP BY 1").fetchall()
+            )
+    finally:
+        conn.close()
+    return render_library_page(stats=stats, lang=lang)
 
 
 @app.get("/compare", response_class=HTMLResponse)

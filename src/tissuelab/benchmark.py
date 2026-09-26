@@ -17,6 +17,7 @@ import numpy as np
 import pandas as pd
 from sklearn.compose import ColumnTransformer
 from sklearn.dummy import DummyRegressor
+from sklearn.ensemble import HistGradientBoostingRegressor
 from sklearn.impute import SimpleImputer
 from sklearn.linear_model import Ridge
 from sklearn.metrics import mean_absolute_error, r2_score
@@ -28,7 +29,7 @@ from tissuelab.paths import DB_PATH, HONEST_METRICS_PATH
 from tissuelab.shrinkage import lopo_shrinkage_predictions
 
 FEATURES_NUM = ["stiffness_kpa", "polymer_concentration_wt_pct", "culture_time_days"]
-FEATURES_CAT = ["material_class", "cell_type"]
+FEATURES_CAT = ["material_class", "cell_type", "growth_factor", "culture_model"]
 
 
 def load_viability(path=DB_PATH) -> pd.DataFrame:
@@ -48,7 +49,7 @@ def _pipe(model):
     categorical = Pipeline(
         [
             ("impute", SimpleImputer(strategy="most_frequent")),
-            ("onehot", OneHotEncoder(handle_unknown="ignore")),
+            ("onehot", OneHotEncoder(handle_unknown="ignore", sparse_output=False)),
         ]
     )
     prep = ColumnTransformer(
@@ -84,6 +85,14 @@ def _scores(y: pd.Series, pred: np.ndarray) -> dict:
     }
 
 
+def _ensure_features(frame: pd.DataFrame) -> pd.DataFrame:
+    out = frame.copy()
+    for col in FEATURES_NUM + FEATURES_CAT:
+        if col not in out.columns:
+            out[col] = None
+    return out
+
+
 def leave_one_paper_out(frame: pd.DataFrame) -> dict:
     if frame.empty or frame["study_id"].nunique() < 3:
         return {
@@ -93,10 +102,12 @@ def leave_one_paper_out(frame: pd.DataFrame) -> dict:
             "deployed_estimator": None,
             "message": "Need numeric viability from at least 3 papers before LOPO is defined.",
         }
+    frame = _ensure_features(frame)
     y = frame["viability_pct"].astype(float)
     x = frame[FEATURES_NUM + FEATURES_CAT]
     dummy_pred = np.zeros(len(frame))
     ridge_pred = np.zeros(len(frame))
+    hgb_pred = np.zeros(len(frame))
     for study in frame["study_id"].unique():
         train = frame["study_id"] != study
         test = ~train
@@ -104,6 +115,7 @@ def leave_one_paper_out(frame: pd.DataFrame) -> dict:
             fallback = float(y[train].mean()) if train.any() else float(y.mean())
             dummy_pred[test.values] = fallback
             ridge_pred[test.values] = fallback
+            hgb_pred[test.values] = fallback
             continue
         dummy = DummyRegressor(strategy="mean")
         dummy.fit(x[train], y[train])
@@ -111,27 +123,43 @@ def leave_one_paper_out(frame: pd.DataFrame) -> dict:
         ridge = _pipe(Ridge(alpha=1.0))
         ridge.fit(x[train], y[train])
         ridge_pred[test.values] = ridge.predict(x[test])
+        hgb = _pipe(
+            HistGradientBoostingRegressor(
+                max_depth=2,
+                max_iter=80,
+                min_samples_leaf=8,
+                learning_rate=0.08,
+                random_state=0,
+            )
+        )
+        hgb.fit(x[train], y[train])
+        hgb_pred[test.values] = hgb.predict(x[test])
     material_pred = _lopo_group_mean(frame, y, "material_class")
     shrinkage_pred = lopo_shrinkage_predictions(frame)
     dummy_lopo = _scores(y, dummy_pred)
     ridge_lopo = _scores(y, ridge_pred)
+    hgb_lopo = _scores(y, hgb_pred)
     material_mean_lopo = _scores(y, material_pred)
     shrinkage_lopo = _scores(y, shrinkage_pred)
     dummy_mae = dummy_lopo["mae"]
+    n_studies = int(frame["study_id"].nunique())
     candidates = [
         ("dummy", dummy_lopo),
         ("material_mean", material_mean_lopo),
         ("shrinkage", shrinkage_lopo),
     ]
+    if n_studies >= 25:
+        candidates.append(("hgb", hgb_lopo))
     deployed, deployed_lopo = min(candidates, key=lambda item: item[1]["mae"])
     report = {
         "n_rows": int(len(frame)),
-        "n_studies": int(frame["study_id"].nunique()),
+        "n_studies": n_studies,
         "studies": sorted(frame["study_id"].unique().tolist()),
         "viability_mean": float(y.mean()),
         "viability_std": float(y.std(ddof=1)) if len(y) > 1 else None,
         "dummy_lopo": dummy_lopo,
         "ridge_lopo": ridge_lopo,
+        "hgb_lopo": hgb_lopo,
         "material_mean_lopo": material_mean_lopo,
         "shrinkage_lopo": shrinkage_lopo,
         "deployed_estimator": deployed,
@@ -139,7 +167,7 @@ def leave_one_paper_out(frame: pd.DataFrame) -> dict:
         "pass_bar": {
             "description": (
                 "Deployed tabular estimator LOPO MAE at least 15% below dummy LOPO, "
-                "R² > 0, n_studies >= 15. Ridge is reported but not served. "
+                "R² > 0, n_studies >= 15. Ridge/HGB are reported; HGB may deploy only at n_studies>=25. "
                 "Shrinkage is empirical Bayes (kernel + material prior), not a neural net."
             ),
             "dummy_mae_target_ratio": 0.85,
@@ -149,12 +177,13 @@ def leave_one_paper_out(frame: pd.DataFrame) -> dict:
             "This is the MVP scientific metric on hand-curated live/dead only. Simulated holdout R² is not.",
             "Auto-promoted pmid* rows are excluded from this split.",
             "Do not add unpaired regex hits to inflate n_rows.",
-            "Deployed estimator is the LOPO winner among dummy, material-class mean, and shrinkage. Ridge overfits this table.",
+            "Deployed estimator is the LOPO winner among dummy, material-class mean, and shrinkage. Ridge overfits this table. HGB is eligible only at >=25 papers.",
         ],
         "status": "baseline",
     }
     report["beats_dummy"] = bool(deployed != "dummy" and deployed_lopo["mae"] < dummy_mae)
     report["ridge_beats_dummy"] = bool(ridge_lopo["mae"] < dummy_mae)
+    report["hgb_beats_dummy"] = bool(hgb_lopo["mae"] < dummy_mae)
     report["mvp_pass"] = bool(
         report["n_studies"] >= 15
         and deployed_lopo["r2"] > 0

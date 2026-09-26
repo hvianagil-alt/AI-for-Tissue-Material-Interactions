@@ -16,7 +16,7 @@ from datetime import datetime, timezone
 from tissuelab.curated import STUDIES
 from tissuelab.db import VOCAB_MATERIALS, connect, init_schema
 from tissuelab.europepmc import fetch_pmc_fulltext
-from tissuelab.extract import extract_conditions
+from tissuelab.extract import extract_conditions, is_off_target_biology
 from tissuelab.harvest_amass import load_dotenv
 from tissuelab.paths import DATA_DIR, DB_PATH, PROMOTED_PATH
 from tissuelab.rank_papers import is_review, normalize_doi
@@ -132,6 +132,8 @@ def fetch_fulltext(key: str, amass_id: str) -> str | None:
 def promote_paper(paper: dict, extra: str | None) -> dict | None:
     if is_review(paper.get("publication_types")):
         return None
+    if is_off_target_biology(paper.get("title"), paper.get("abstract"), extra):
+        return None
     pmid = paper.get("pmid")
     if not pmid:
         return None
@@ -179,6 +181,9 @@ def promote_paper(paper: dict, extra: str | None) -> dict | None:
                 "culture_time_days": cond.get("culture_time_days"),
                 "extracted_from": source,
                 "curator_confidence": "medium" if cond.get("paired_stiffness") else "low",
+                "chemical_modification": cond.get("chemical_modification"),
+                "architecture": cond.get("architecture"),
+                "application": cond.get("application"),
                 "notes": span,
                 "amass_id": paper.get("amass_id"),
                 "measurements": [
@@ -227,9 +232,13 @@ def ingest(path=DB_PATH, fetch=True) -> dict:
 
     key = None
     if fetch and want_amass:
-        from tissuelab.harvest_amass import api_key as _api_key
+        try:
+            from tissuelab.harvest_amass import api_key as _api_key
 
-        key = _api_key()
+            key = _api_key()
+        except SystemExit:
+            print("No AMASS_API_KEY — Europe PMC fulltext only.", flush=True)
+            key = None
     for i, amass_id in enumerate(want_amass, start=1):
         if amass_id in fulltexts:
             continue

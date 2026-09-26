@@ -8,6 +8,7 @@ NAV = (
     ("/", "Protocol", "Protocolo"),
     ("/lookup", "Lookup", "Consulta"),
     ("/table", "Table", "Tabela"),
+    ("/library", "Library", "Biblioteca"),
     ("/compare", "Compare", "Comparar"),
     ("/export.csv", "CSV", "CSV"),
 )

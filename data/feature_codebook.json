@@ -1,0 +1,91 @@
+{
+  "generated_at": "2026-09-26T18:34:45Z",
+  "gold_path": "train_gold.csv",
+  "silver_path": "train_silver.csv",
+  "papers_uniform_path": "papers_uniform.csv",
+  "split": "Leave-one-paper-out on split_group (= study_id). Never random row split.",
+  "target": "viability_pct",
+  "features": {
+    "categorical": [
+      "material_class",
+      "cell_type",
+      "growth_factor",
+      "culture_model",
+      "chemical_modification",
+      "architecture",
+      "application",
+      "species"
+    ],
+    "numeric": [
+      "stiffness_kpa",
+      "polymer_concentration_wt_pct",
+      "culture_time_days",
+      "cell_density_million_per_ml",
+      "passage",
+      "has_adhesion_ligand"
+    ],
+    "do_not_impute_as_zero": [
+      "stiffness_kpa",
+      "polymer_concentration_wt_pct",
+      "porosity_pct"
+    ]
+  },
+  "chemical_modification": [
+    "unmodified",
+    "methacrylated",
+    "norbornene",
+    "oxidized",
+    "tyramine",
+    "rgd_conjugated",
+    "sulfated",
+    "photo_I2959",
+    "photo_LAP",
+    "enzymatic",
+    "thiolated",
+    "photo_VA086",
+    "freeze_thaw",
+    "hofmeister",
+    "dopamine",
+    "click",
+    "mmp_degradable",
+    "genipin",
+    "edc_nhs",
+    "enzymatic"
+  ],
+  "architecture": [
+    "bulk_hydrogel",
+    "3d_printed",
+    "microgel",
+    "fiber",
+    "bilayer",
+    "porous_scaffold",
+    "microsphere",
+    "ipn",
+    "injectable",
+    "monolayer"
+  ],
+  "application": [
+    "unspecified",
+    "osteoarthritis",
+    "osteochondral",
+    "meniscus",
+    "auricular",
+    "nucleus_pulposus",
+    "tracheal",
+    "in_vivo_repair",
+    "bioprinting",
+    "drug_delivery",
+    "in_vitro_cartilage"
+  ],
+  "notes": [
+    "Gold labels are hand-typed live/dead percents from the paper.",
+    "Silver (pmid*) is regex from abstracts/fulltext. Do not fit a viability model on it.",
+    "papers_uniform.csv tags every harvested paper with the same chemistry/structure/application vocab.",
+    "training_relevant=1 on a paper is a retrieval flag, not a viability label."
+  ],
+  "n_gold_rows": 52,
+  "n_gold_studies": 17,
+  "n_silver_rows": 71,
+  "n_papers_tagged": 9659,
+  "n_training_relevant_papers": 2094
+}

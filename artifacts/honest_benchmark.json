@@ -1,6 +1,6 @@
 {
-  "n_rows": 42,
-  "n_studies": 15,
+  "n_rows": 52,
+  "n_studies": 17,
   "studies": [
     "aitchison2024",
     "bachmann2020",
@@ -10,39 +10,45 @@
     "kessel2020",
     "lindborg2015",
     "markstedt2015",
+    "martyniak2023",
     "ortega2024",
     "park2013",
     "perezdiaz2023",
     "rojas2025",
     "salinas2007",
     "sun2015",
+    "xie2022",
     "zhang2024"
   ],
-  "viability_mean": 77.92595238095238,
-  "viability_std": 23.17423517400555,
+  "viability_mean": 78.13730769230769,
+  "viability_std": 21.802823267028355,
   "dummy_lopo": {
-    "mae": 16.47041399752247,
-    "r2": -0.06500456892061357
+    "mae": 15.934431685885055,
+    "r2": -0.062244614581311586
   },
   "ridge_lopo": {
-    "mae": 22.61101033389934,
-    "r2": -2.0644926330966165
+    "mae": 18.386755159508933,
+    "r2": -0.2733224522969313
+  },
+  "hgb_lopo": {
+    "mae": 13.680991157934756,
+    "r2": 0.24168861530996943
   },
   "material_mean_lopo": {
-    "mae": 16.38413614163614,
-    "r2": -0.08767321626330471
+    "mae": 17.491726147816983,
+    "r2": -0.23476604710278304
   },
   "shrinkage_lopo": {
-    "mae": 15.75770306231539,
-    "r2": -0.028765107093234654
+    "mae": 15.922809746238118,
+    "r2": -0.0932742027256348
   },
   "deployed_estimator": "shrinkage",
   "deployed_lopo": {
-    "mae": 15.75770306231539,
-    "r2": -0.028765107093234654
+    "mae": 15.922809746238118,
+    "r2": -0.0932742027256348
   },
   "pass_bar": {
-    "description": "Deployed tabular estimator LOPO MAE at least 15% below dummy LOPO, R\u00b2 > 0, n_studies >= 15. Ridge is reported but not served. Shrinkage is empirical Bayes (kernel + material prior), not a neural net.",
+    "description": "Deployed tabular estimator LOPO MAE at least 15% below dummy LOPO, R\u00b2 > 0, n_studies >= 15. Ridge/HGB are reported; HGB may deploy only at n_studies>=25. Shrinkage is empirical Bayes (kernel + material prior), not a neural net.",
     "dummy_mae_target_ratio": 0.85,
     "min_studies": 15
   },
@@ -50,10 +56,11 @@
     "This is the MVP scientific metric on hand-curated live/dead only. Simulated holdout R\u00b2 is not.",
     "Auto-promoted pmid* rows are excluded from this split.",
     "Do not add unpaired regex hits to inflate n_rows.",
-    "Deployed estimator is the LOPO winner among dummy, material-class mean, and shrinkage. Ridge overfits this table."
+    "Deployed estimator is the LOPO winner among dummy, material-class mean, and shrinkage. Ridge overfits this table. HGB is eligible only at >=25 papers."
   ],
   "status": "baseline",
   "beats_dummy": true,
   "ridge_beats_dummy": false,
+  "hgb_beats_dummy": true,
   "mvp_pass": false
 }

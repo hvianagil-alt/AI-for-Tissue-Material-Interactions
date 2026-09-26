@@ -16,6 +16,7 @@ MATERIAL_GROUPS = [
         [
             "GelMA_HA",
             "GelMA_chitosan",
+            "GelMA_alginate",
             "silk_fibrin",
             "fibrin_dECM",
             "alginate_dECM",
@@ -51,6 +52,7 @@ MATERIAL_LABELS = {
     "PDLLA_PEG_HA": "PDLLA–PEG–HA",
     "GelMA_HA": "GelMA + HA",
     "GelMA_chitosan": "GelMA + chitosan",
+    "GelMA_alginate": "GelMA + oxidized alginate",
 }
 CELL_TYPES = [
     "articular_chondrocyte",

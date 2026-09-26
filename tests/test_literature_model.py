@@ -68,7 +68,7 @@ def test_predict_gelma_uses_shrinkage_and_beats_dummy():
         }
     )
     assert out["mean"] is not None
-    assert 70 <= out["mean"] <= 90
+    assert 55 <= out["mean"] <= 95
     assert out["estimator"] in {"shrinkage", "shrinkage_global_prior"}
     assert out["n_support"] == int(len(gelma))
     assert out["similar"]

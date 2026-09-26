@@ -1,0 +1,74 @@
+{
+  "n_rows": 52,
+  "n_studies": 17,
+  "budget": {
+    "n_rows": 52,
+    "n_studies": 17,
+    "n_materials": 18,
+    "n_cell_types": 4,
+    "n_with_kpa": 23,
+    "rows_per_paper": 3.06,
+    "dummy_parameters": 1,
+    "material_mean_parameters": 18,
+    "ridge_parameters_guess": 25,
+    "starter_feature_count": 9,
+    "papers_needed_ridge": 90,
+    "papers_needed_mixed": 25,
+    "papers_needed_trees": 40,
+    "have_enough_for_dummy": 1,
+    "have_enough_for_mixed": 0,
+    "have_enough_for_ridge": 0,
+    "have_enough_for_trees": 0,
+    "what_to_add_first": "studies"
+  },
+  "random_split_ridge": {
+    "mae": 16.36668283422133,
+    "r2": -0.37781383651333766,
+    "train_mae": 7.889600740597557,
+    "n_train": 41,
+    "n_test": 11,
+    "test_papers": [
+      "bachmann2020",
+      "daly2016",
+      "hu2012",
+      "kessel2020",
+      "markstedt2015",
+      "park2013"
+    ]
+  },
+  "ridge_lopo": {
+    "mae": 18.386755159508933,
+    "r2": -0.2733224522969313,
+    "n_coefficients": 29
+  },
+  "dummy_lopo": {
+    "mae": 15.934431685885055,
+    "r2": -0.062244614581311586
+  },
+  "material_mean_lopo": {
+    "mae": 17.491726147816983,
+    "r2": -0.23476604710278304
+  },
+  "shrinkage_lopo": {
+    "mae": 15.922809746238118,
+    "r2": -0.0932742027256348
+  },
+  "deployed_estimator": "shrinkage",
+  "mvp_pass": 0,
+  "example_prediction": {
+    "query": {
+      "material_class": "fibrin",
+      "cell_type": "articular_chondrocyte",
+      "growth_factor": "TGF_b3",
+      "stiffness_kpa": 5.0,
+      "culture_time_days": 21.0
+    },
+    "predicted_viability_pct": 91.6,
+    "material_prior": 94.0,
+    "local_kernel": 81.7,
+    "n_eff_same_material": 2.86,
+    "estimator": "shrinkage"
+  },
+  "what_to_add_first": "more independent papers with numeric live/dead",
+  "do_not_add_first": "more features or more Amass abstracts"
+}

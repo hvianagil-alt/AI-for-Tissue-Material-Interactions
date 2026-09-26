@@ -22,6 +22,14 @@ def test_extract_numeric_candidates_are_flagged_low():
     assert "GelMA" in mats
 
 
+def test_off_target_cell_line_is_not_promoted():
+    rows = extract_conditions(
+        "H9c2 hydrogel viability",
+        "H9c2 cardiomyocytes in GelMA showed 90% viability after 7 days.",
+    )
+    assert rows == []
+
+
 def test_extract_conditions_pairs_sentence_numbers():
     rows = extract_conditions(
         "GelMA cartilage hydrogel",

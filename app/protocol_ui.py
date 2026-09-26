@@ -294,3 +294,55 @@ def render_protocol_page(
     """
     title = "TissueLab — this week’s protocol" if lang == "en" else "TissueLab — o protocolo desta semana"
     return render_shell(title=title, lang=lang, page="/", body=body, extra_css=extra_css, onboard="short", qs=qs)
+
+
+def _count_table(counts: dict, lang: str) -> str:
+    if not counts:
+        return "<p class='muted'>No tags yet. Run python3 -m tissuelab.analyze_papers</p>"
+    rows = []
+    for key, n in sorted(counts.items(), key=lambda kv: (-int(kv[1]), str(kv[0]))):
+        rows.append(f"<tr><td>{escape(str(key))}</td><td>{int(n)}</td></tr>")
+    label = "Tag" if lang == "en" else "Etiqueta"
+    return f"<table class='data'><thead><tr><th>{label}</th><th>n</th></tr></thead><tbody>{''.join(rows)}</tbody></table>"
+
+
+def render_library_page(*, stats: dict, lang: str = "en") -> str:
+    pt = lang == "pt"
+    title = "Paper library — chemistry, structure, application" if not pt else "Biblioteca — química, estrutura, aplicação"
+    lead = (
+        "Every harvested paper is tagged with the same labels before anything is trained. "
+        "Numbers in this page are paper counts, not live/dead. Training still uses the extracted table."
+        if not pt
+        else "Cada paper da harvest leva as mesmas etiquetas antes de treinar. "
+        "Estes números são papers, não live/dead. O treino continua a ser a tabela extraída."
+    )
+    n = stats.get("n_analyzed") or 0
+    rel = stats.get("n_training_relevant") or 0
+    viab = stats.get("n_with_viability") or 0
+    by_app = stats.get("by_application") or {}
+    by_chem = stats.get("by_chemistry") or {}
+    by_arch = stats.get("by_architecture") or {}
+    app_table = _count_table(by_app, lang)
+    chem_table = _count_table(by_chem, lang)
+    arch_table = _count_table(by_arch, lang)
+    app_h = "Application" if not pt else "Aplicação"
+    chem_h = "Chemical modification" if not pt else "Modificação química"
+    arch_h = "Architecture" if not pt else "Arquitectura"
+    body = f"""
+    <h1>{escape(title)}</h1>
+    <p class="sub">{escape(lead)}</p>
+    <p class="stat">{n} papers tagged · {rel} relevant to train next · {viab} with a viability % in the abstract</p>
+    <h2>{app_h}</h2>
+    {app_table}
+    <h2>{chem_h}</h2>
+    {chem_table}
+    <h2>{arch_h}</h2>
+    {arch_table}
+    <p class="foot muted"><a href="/table?lang={lang}">Extracted table</a> · <a href="/export.csv">CSV</a></p>
+    """
+    extra_css = """
+    .stat { font-size:1.05rem; color:#c5d4e8; }
+    table.data { max-width: 560px; }
+    """
+    return render_shell(title=title, lang=lang, page="/library", body=body, extra_css=extra_css, onboard=False)
+

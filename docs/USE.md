@@ -26,6 +26,7 @@ streamlit run app/streamlit_app.py --server.port 8502
 | Page | Use it for | Trust it? |
 |---|---|---|
 | **`/` Protocol** | Cells + job → what to run this week | Ranked extracted rows. Not a written methods section |
+| **`/library`** | Chemistry / architecture / application tags on every harvested paper | Paper counts, not live/dead |
 | **`/lookup`** | You already picked a gel | Literature lookup: yes. Not your next flask |
 | **`/table`** | Every hand-extracted live/dead row (numeric + floors) | Yes — this is the product |
 | **`/export.csv`** | Drop into Excel / GraphPad | Yes |
@@ -35,7 +36,7 @@ streamlit run app/streamlit_app.py --server.port 8502
 
 `?lang=pt` switches the decision copy to Portuguese. Paper titles stay as published.
 
-To see what “training a model” means on this table (and why 15 papers are not enough for Ridge): [`docs/TRAIN.md`](TRAIN.md) → `python3 -m tissuelab.teach_model`.
+To see what “training a model” means on this table: [`docs/TRAIN.md`](TRAIN.md) → `python3 -m tissuelab.teach_model`. The clean training table is `data/train_gold.csv` (split by `split_group` = paper).
 
 ## 3. Protocol — the actual workflow
 

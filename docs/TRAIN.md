@@ -9,7 +9,7 @@ pip install -e .
 python3 -m tissuelab.teach_model
 ```
 
-Imprime os números **da tua tabela** (`v_model_viability`: 42 condições, 15 papers) e grava `artifacts/teach_model.json`. Não muda o que a app serve.
+Imprime os números **da tua tabela** (`data/train_gold.csv` = `v_model_viability` com química/arquitectura/aplicação) e grava `artifacts/teach_model.json`. Não muda o que a app serve.
 
 O plano científico está em [`ML_PLAN.md`](ML_PLAN.md). Esta página é o *como se faz em Python*.
 
@@ -21,12 +21,14 @@ pred = model.predict(X_test)  # usar: gel novo → viabilidade %
 erro = abs(pred - y_test)     # avaliar: o paper de teste não entrou no fit
 ```
 
-- **X** = o que o PI controla: família do gel, kPa, wt%, células, TGF, dias.
+- **X** = o que o PI controla: família do gel, kPa, wt%, células, TGF, dias, e agora também modificação química / arquitectura / aplicação.
 - **y** = `viability_pct` publicado (live/dead).
 - **Treinar** = escolher os números internos da função (coeficientes do Ridge, ou os pesos do kernel no shrinkage) para X ficar perto de y **no treino**.
 - **Não treinar no que queres prever.** Se o Bachmann está no teste, nenhuma linha `bachmann2020-*` pode estar no `fit`.
 
 O modelo que a app usa hoje não chama `Ridge.fit`. Chama `shrinkage_estimate()` em `src/tissuelab/shrinkage.py`: média das condições parecidas, puxada para a média daquele gel (`N0 = 12`). Isso **já é** um modelo treinado. O `teach_model` mostra os dois.
+
+A tabela limpa para o próximo `fit` está em `data/train_gold.csv`. Papers da harvest uniformizados: `data/papers_uniform.csv`. Não treines em `train_silver.csv`.
 
 ## Precisas de mais papers, variáveis, ou condições?
 
@@ -56,9 +58,8 @@ paper extraído → curated.py → load_database → benchmark (LOPO) → a app 
 
 ```bash
 # 1. acrescentar linhas em src/tissuelab/curated.py
-python3 -m tissuelab.load_database   # SQLite + data/literature_viability.csv
-python3 -m tissuelab.benchmark       # dummy vs gel vs shrinkage vs Ridge
-python3 -m tissuelab.teach_model     # a aula, com o split errado ao lado do certo
+python3 -m tissuelab.pipeline        # harvest → uniformizar química/estrutura/aplicação → ingest → LOPO
+python3 -m tissuelab.teach_model     # a aula, split errado vs certo
 ```
 
 Não há botão Train na UI. Não há GPU. `LeaveOneGroupOut(groups=study_id)` é o treino a sério — está em `src/tissuelab/benchmark.py`.

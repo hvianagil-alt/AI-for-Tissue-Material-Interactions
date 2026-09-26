@@ -25,6 +25,7 @@ LAB_GELS = [
     "collagen",
     "gelatin_alginate",
     "GelMA_HA",
+    "GelMA_alginate",
     "silk_fibrin",
     "agarose",
     "PEG",
@@ -334,6 +335,7 @@ def find_protocol(
         "growth_factor": gf,
         "stiffness_kpa": kpa,
         "culture_time_days": days,
+        "culture_model": "3D_bioprint" if how == "print" else "3D_encapsulation",
     }
     est = shrinkage_estimate(query, numeric) if not numeric.empty else {"mean": None, "n_eff_same": 0}
 

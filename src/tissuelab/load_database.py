@@ -11,6 +11,7 @@ import pandas as pd
 from tissuelab.curated import EXPERIMENTS, STUDIES
 from tissuelab.db import connect, init_schema
 from tissuelab.ingest_literature import load_promoted
+from tissuelab.ontology import tag_experiment
 from tissuelab.paths import DATA_DIR, DB_PATH, NATIVE_EXPORT_PATH, QUALITY_REPORT_PATH, VIABILITY_EXPORT_PATH
 from tissuelab.rank_papers import normalize_doi
 
@@ -23,6 +24,7 @@ HARVEST_TABLES = (
     "paper_scores",
     "extraction_queue",
     "study_paper_links",
+    "paper_analyses",
 )
 
 EXP_COLUMNS = [
@@ -47,6 +49,11 @@ EXP_COLUMNS = [
     "culture_time_days",
     "cell_density_million_per_ml",
     "passage",
+    "chemical_modification",
+    "architecture",
+    "application",
+    "live_dead_kit",
+    "modification_degree_pct",
     "n_replicates",
     "extracted_from",
     "curator_confidence",
@@ -111,6 +118,21 @@ def quality_report(conn) -> dict:
         report["n_mvp_relevant_papers"] = conn.execute(
             "SELECT COUNT(*) FROM paper_scores WHERE is_mvp_relevant = 1"
         ).fetchone()[0]
+    if "paper_analyses" in tables:
+        report["n_paper_analyses"] = conn.execute("SELECT COUNT(*) FROM paper_analyses").fetchone()[0]
+        report["n_training_relevant_papers"] = conn.execute(
+            "SELECT COUNT(*) FROM paper_analyses WHERE training_relevant = 1"
+        ).fetchone()[0]
+        report["analyses_per_application"] = dict(
+            conn.execute(
+                "SELECT COALESCE(application,'(none)'), COUNT(*) FROM paper_analyses GROUP BY 1"
+            ).fetchall()
+        )
+        report["analyses_per_chemistry"] = dict(
+            conn.execute(
+                "SELECT COALESCE(chemical_modification,'(none)'), COUNT(*) FROM paper_analyses GROUP BY 1"
+            ).fetchall()
+        )
     report["n_auto_promoted_studies"] = conn.execute(
         "SELECT COUNT(*) FROM studies WHERE study_id LIKE 'pmid%'"
     ).fetchone()[0]
@@ -226,11 +248,13 @@ def load(path=DB_PATH):
         placeholders = ",".join(["?"] * len(payload))
         conn.execute(f"INSERT INTO studies ({cols}) VALUES ({placeholders})", tuple(payload.values()))
     seen_exp = set()
+    study_index = {study["study_id"]: study for study in all_studies}
     for exp in all_experiments:
         if exp["experiment_id"] in seen_exp:
             continue
         seen_exp.add(exp["experiment_id"])
-        payload = {key: exp.get(key) for key in EXP_COLUMNS}
+        tagged = tag_experiment(exp, study_index.get(exp.get("study_id")))
+        payload = {key: tagged.get(key) for key in EXP_COLUMNS}
         payload["tissue"] = payload.get("tissue") or "cartilage"
         cols = ",".join(payload.keys())
         placeholders = ",".join(["?"] * len(payload))
@@ -270,6 +294,9 @@ def load(path=DB_PATH):
         native.to_csv(NATIVE_EXPORT_PATH, index=False)
         viability = pd.read_sql_query("SELECT * FROM v_model_viability", conn)
         viability.to_csv(VIABILITY_EXPORT_PATH, index=False)
+        from tissuelab.training_pack import export_pack
+
+        export_pack(path)
     conn.close()
     return report
 
