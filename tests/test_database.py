@@ -77,6 +77,10 @@ def test_queue_pass_five_gold_is_numeric_and_honest():
     assert pold.get("stiffness_kpa") is None
     assert pold["measurements"][0]["value"] == 73.6
     assert pold["application"] == "bone"
+    e_row = by_id["poldervaart2017-meha-2pct-E"]
+    assert e_row["stiffness_kpa"] == 6.3
+    assert e_row["stiffness_sd_kpa"] == 1.2
+    assert e_row["measurements"][0].get("value") is None
 
 
 def test_curated_viability_excludes_auto_promote():

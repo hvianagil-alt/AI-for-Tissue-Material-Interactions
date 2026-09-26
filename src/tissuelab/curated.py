@@ -605,7 +605,7 @@ STUDIES: list[dict] = [
         "year": 2020,
         "journal": "Cartilage",
         "pmcid": "PMC8721610",
-        "license": "Sage OA via PMC",
+        "license": "CC-BY",
         "notes": "Human articular P1 chondrocytes in 80:20 NFC:A, INKREDIBLE, NC-200. 98% is before printing. Printed d3/d5/d7/d14. Pellet 72% is not a hydrogel and is not stored. Printing pressure 5 kPa is not Young's modulus.",
     },
     {
@@ -3113,8 +3113,9 @@ def _queue_pass_five() -> list[dict]:
             "live_dead_kit": "calcein_ethidium",
             "extracted_from": "PMC13117296 Fig. 3B printed 1 h (Day 0)",
             "curator_confidence": "high",
-            "notes": "Nasoseptal chondrocytes, not articular/auricular. 81.9% immediately post-print. E=52.6 kPa cited from prior NCA characterization.",
-            "measurements": [_m("viability_pct", 81.9, "%", evidence="numeric_text")],
+            "n_replicates": 3,
+            "notes": "Nasoseptal chondrocytes, not articular/auricular. 81.9% immediately post-print. E=52.6 kPa cited from prior NCA characterization. 30 kPa is extrusion pressure, not Young's modulus.",
+            "measurements": [_m("viability_pct", 81.9, "%", evidence="numeric_text", n=3)],
         }
     )
     rows.append(
@@ -3140,8 +3141,9 @@ def _queue_pass_five() -> list[dict]:
             "live_dead_kit": "calcein_ethidium",
             "extracted_from": "PMC13117296 Fig. 3B printed 24 h (Day 1)",
             "curator_confidence": "high",
-            "notes": "Printed 61% at 24 h; delayed death after shear, not immediate post-print drop.",
-            "measurements": [_m("viability_pct", 61.0, "%", evidence="numeric_text")],
+            "n_replicates": 3,
+            "notes": "Printed 61% at 24 h; delayed death after shear, not immediate post-print drop. 30 kPa is extrusion pressure, not Young's modulus.",
+            "measurements": [_m("viability_pct", 61.0, "%", evidence="numeric_text", n=3)],
         }
     )
     rows.append(
@@ -3167,8 +3169,9 @@ def _queue_pass_five() -> list[dict]:
             "live_dead_kit": "calcein_ethidium",
             "extracted_from": "PMC13117296 Fig. 3B unprinted 24 h",
             "curator_confidence": "high",
-            "notes": "Same NCA gel without extrusion shear. Unprinted 1 h percent is not in the text.",
-            "measurements": [_m("viability_pct", 79.6, "%", evidence="numeric_text")],
+            "n_replicates": 3,
+            "notes": "Same NCA gel without extrusion shear (1 mL syringe, no nozzle). Unprinted 1 h percent is not in the text.",
+            "measurements": [_m("viability_pct", 79.6, "%", evidence="numeric_text", n=3)],
         }
     )
     for day, val, sd in ((1.0, 73.6, 6.4), (21.0, 64.4, 12.2)):
@@ -3200,10 +3203,53 @@ def _queue_pass_five() -> list[dict]:
                     "Average MSC live/dead across 1–3% w/v; concentration not stored as a single mean. "
                     "1% gels disintegrated by d21 so that timepoint excludes 1%. "
                     "Per-% means only in the figure. Bone/osteogenicity protocol. "
-                    "Table 1 E after UV (1% 1.3, 2% 6.3, 2.5% 6.8, 3% 10.6 kPa) is not attached."
+                    "Table 1 E after UV is stored on separate acellular rows, not attached here."
                 ),
                 "measurements": [
                     _m("viability_pct", val, "%", sd=sd, evidence="numeric_text", n=3)
+                ],
+            }
+        )
+    # Table 1 DMA E after UV — acellular; do not pair with Fig 3 mixed live/dead.
+    for conc, kpa, sd in ((1.0, 1.3, 0.1), (2.0, 6.3, 1.2), (2.5, 6.8, 1.2)):
+        tag = f"{conc:g}".replace(".", "p")
+        rows.append(
+            {
+                "experiment_id": f"poldervaart2017-meha-{tag}pct-E",
+                "study_id": "poldervaart2017",
+                "material_class": "HA",
+                "material_detail": f"{conc:g}% w/v MeHA + 0.1% Irgacure 2959, DMA after UV",
+                "crosslinking": "photocrosslink",
+                "polymer_concentration_wt_pct": conc,
+                "stiffness_kpa": kpa,
+                "stiffness_sd_kpa": sd,
+                "stiffness_method": "dma_elastic_modulus_after_UV",
+                "surface_chemistry": "native",
+                "has_adhesion_ligand": 0.5,
+                "tissue": "bone",
+                "cell_type": "MSC",
+                "species": "human",
+                "culture_model": "3D_encapsulation",
+                "growth_factor": "none",
+                "chemical_modification": "methacrylated",
+                "architecture": "bulk_hydrogel",
+                "application": "bone",
+                "modification_degree_pct": 6.3,
+                "n_replicates": 3,
+                "extracted_from": "PMC5460858 Table 1 elastic modulus E after UV",
+                "curator_confidence": "high",
+                "notes": (
+                    f"Acellular DMA E after UV, n=3. 3% E is 10.6±0.1 kPa in the same table, not stored here. "
+                    "Not paired to Fig 3 mixed-concentration live/dead. 1% gels disintegrated in culture ~14 d."
+                ),
+                "measurements": [
+                    _m(
+                        "viability_pct",
+                        None,
+                        "%",
+                        qualitative="unpaired_to_fig3_average",
+                        evidence="qualitative_text",
+                    )
                 ],
             }
         )
