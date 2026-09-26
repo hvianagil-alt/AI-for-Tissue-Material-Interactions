@@ -19,7 +19,7 @@ The point of the MVP is not “AI for biology”. It is:
 |---|---|
 | SQLite experimental DB (`studies` / `experiments` / `measurements`) | Done — `data/tissuelab.sqlite` |
 | Hand-curated live/dead training view (`v_model_viability`) | Done — `data/literature_viability.csv` |
-| Literature viability (empirical Bayes ± adaptive LOPO band) | Done (served; 34 papers, shrinkage LOPO MAE 10.3 vs dummy 11.9, R² 0.13; MVP 15% bar still unmet) |
+| Literature viability (empirical Bayes ± adaptive LOPO band) | Done (served; 48 papers, shrinkage LOPO MAE 10.8 vs dummy 11.8, R² 0.085; MVP 15% bar still unmet) |
 | HTML product: Protocol / Lookup / Table / Compare / CSV | Done — English default |
 | Buyable-minimal plan | `docs/BMP.md` |
 | How to train the viability model (videos → this table) | `docs/ML_PLAN.md` |
@@ -62,23 +62,23 @@ pip install -e ".[dev]" && pytest -q
 
 - The kernel’s global n_eff is ~30 for every query — the number that matters is **effective n on this gel**.
 - **Proliferation / differentiation / ECM** in the radar are mapped 0–100 scores plus a simulator prior. Do not cite them as measurements.
-- Lookup serves **empirical-Bayes shrinkage** (**44 parameters**: 11 locked kernel hyperparameters + 33 gel×cell means), never a dummy mean and never a tree until ≥40 papers. HGB can look better on a small split and has already reversed — it stays report-only. Beginning target is **100 papers**. The MVP bar (15% better than dummy, R²>0) is still unmet.
+- Lookup serves **empirical-Bayes shrinkage** (**55 parameters**: 11 locked kernel hyperparameters + 44 gel×cell means), never a dummy mean and never a tree. HGB is eligible at ≥40 papers and still loses LOPO, so it stays report-only. Beginning target is **100 papers**. The MVP bar (15% better than dummy, R²>0) is still unmet.
 
 ### Current baseline
 
 | Check | Value |
 |---|---|
-| Hand-curated studies | 73 |
-| Hand experiments | ~294 |
-| Numeric live/dead (training) | 105 rows / 34 papers |
-| Served model parameters | 44 (11 locked kernel + 33 gel×cell means) |
+| Hand-curated studies | 87 |
+| Hand experiments | 261 |
+| Numeric live/dead (training) | 141 rows / 48 papers |
+| Served model parameters | 55 (11 locked kernel + 44 gel×cell means) |
 | Beginning target | 100 independent live/dead papers |
 | Harvested papers tagged | 12024 (2317 training-relevant) |
-| Dummy LOPO MAE | 11.89 |
-| Shrinkage LOPO MAE | 10.35 (deployed; beats dummy, R² 0.13) |
-| Material-mean LOPO MAE | 12.27 |
-| Ridge LOPO MAE | 13.16 (not deployed) |
-| HGB LOPO MAE | 11.95 (reported only; trees need ≥40 papers) |
+| Dummy LOPO MAE | 11.83 |
+| Shrinkage LOPO MAE | 10.83 (deployed; beats dummy, R² 0.085) |
+| Material-mean LOPO MAE | 13.14 |
+| Ridge LOPO MAE | 12.68 (not deployed) |
+| HGB LOPO MAE | 12.49 (eligible at ≥40 papers; still not served) |
 | Simulated XGBoost holdout R² | ~0.92 — **ignore** for science |
 
 The product is ready to **use as Protocol**: cells + job → extracted protocol + papers. Lookup is the evidence card. It is not ready to claim a model that beats “GelMA ~25 kPa + TGF-β3”.

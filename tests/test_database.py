@@ -62,6 +62,11 @@ def test_hand_curated_replaces_auto_promoted():
         "lan2021", "jovic2024", "hosseini2025", "boere2015",
         "ren2016", "zeng2023", "perriergroult2026",
         "setayeshmehr2021", "pei2023",
+        "orabi2023", "pangjantuk2024", "kihara2026",
+        "petta2024", "mckinney2019", "jodat2020",
+        "kilian2020", "yin2023", "sarsenova2022",
+        "garciaaponte2025", "chen2020",
+        "gu2020", "carvalho2025", "yi2019",
     }
     assert all(s.get("pmid") for s in STUDIES if s["study_id"] in require_pmid)
 
@@ -191,6 +196,94 @@ def test_queue_pass_ten_gold_is_numeric_and_honest():
     assert pei["measurements"][0]["value"] == 81.2
     assert pei.get("stiffness_kpa") is None
     assert "95.5" in pei["notes"]
+
+
+def test_queue_pass_eleven_gold_is_numeric_and_honest():
+    by_id = {e["experiment_id"]: e for e in EXPERIMENTS}
+    soft = by_id["orabi2023-alg-gel-4p8-p6-d21"]
+    assert soft["cell_type"] == "MSC"
+    assert soft["species"] == "human"
+    assert soft["stiffness_kpa"] == 4.8
+    assert soft["measurements"][0]["value"] == 63.0
+    stiff = by_id["orabi2023-alg-gel-6p7-p4-d21"]
+    assert stiff["stiffness_kpa"] == 6.7
+    assert stiff["measurements"][0]["value"] == 77.6
+    pang = by_id["pangjantuk2024-al-ha-d14"]
+    assert pang["material_class"] == "alginate_HA"
+    assert pang["measurements"][0]["value"] == 77.36
+    assert pang.get("stiffness_kpa") is None
+    hbss = by_id["kihara2026-mgl-mha-hbss-d21"]
+    assert hbss["cell_type"] == "adipose_MSC"
+    assert hbss["growth_factor"] == "none"
+    assert hbss["measurements"][0]["value"] == 91.1
+    assert hbss.get("stiffness_kpa") is None
+    tgf = by_id["kihara2026-mgl-mha-tgf-d21"]
+    assert tgf["growth_factor"] == "TGF_b3"
+    assert tgf["measurements"][0]["value"] == 87.5
+    petta = by_id["petta2024-ha-pegda-oa-d10"]
+    assert petta["cell_type"] == "articular_chondrocyte"
+    assert petta["measurements"][0]["value"] == 72.0
+    assert petta.get("stiffness_kpa") is None
+    mck = by_id["mckinney2019-alg-encap-d0"]
+    assert mck["culture_time_days"] == 0.0
+    assert mck["measurements"][0]["value"] == 96.0
+    jodat = by_id["jodat2020-gelma-peg-print-d7"]
+    assert jodat["material_class"] == "GelMA_PEG"
+    assert jodat["stiffness_kpa"] == 20.3
+    assert jodat["measurements"][0]["value"] == 95.0
+    assert "orabi2023-alg-gel-4p8-p4-d21" in by_id
+    assert "kihara2026-mgl-mha-prp-d21" not in by_id
+
+
+def test_queue_pass_twelve_gold_is_numeric_and_honest():
+    by_id = {e["experiment_id"]: e for e in EXPERIMENTS}
+    iface = by_id["kilian2020-algmc-gel-cpc-d1"]
+    assert iface["cell_type"] == "articular_chondrocyte"
+    assert iface["species"] == "human"
+    assert iface["culture_model"] == "3D_bioprint"
+    assert iface["measurements"][0]["value"] == 46.5
+    assert iface.get("stiffness_kpa") is None
+    gel = by_id["kilian2020-algmc-gel-gel-d1"]
+    assert gel["measurements"][0]["value"] == 53.8
+    assert by_id["kilian2020-algmc-diff-d7"]["growth_factor"] == "TGF_b3"
+    assert by_id["kilian2020-algmc-diff-d7"]["measurements"][0]["value"] == 48.0
+    assert by_id["kilian2020-algmc-ctrl-d21"]["measurements"][0]["value"] == 45.0
+    yin = by_id["yin2023-ga-ms-fresh-d1"]
+    assert yin["material_class"] == "GelMA_alginate"
+    assert yin["measurements"][0]["value"] == 89.4
+    assert "yin2023-ga-ms-frozen-d1" not in by_id
+    fib = by_id["sarsenova2022-hcf-sdmsc-d7"]
+    assert fib["material_class"] == "fibrin"
+    assert fib["growth_factor"] == "none"
+    assert fib["measurements"][0]["value"] == 97.0
+    low = by_id["garciaaponte2025-gelma-0p25e6-d0"]
+    assert low["cell_type"] == "adipose_MSC"
+    assert low["cell_density_million_per_ml"] == 0.25
+    assert low["measurements"][0]["value"] == 68.5
+    assert by_id["garciaaponte2025-gelma-2e6-d0"]["measurements"][0]["value"] == 84.7
+    chen = by_id["chen2020-gel-bms-d1"]
+    assert chen["species"] == "goat"
+    assert chen["measurements"][0]["value"] == 86.0
+    assert chen.get("stiffness_kpa") is None
+
+
+def test_queue_pass_thirteen_gold_is_numeric_and_honest():
+    by_id = {e["experiment_id"]: e for e in EXPERIMENTS}
+    gu = by_id["gu2020-cana-print-d4"]
+    assert gu["cell_type"] == "nasal_chondrocyte"
+    assert gu["material_class"] == "agarose"
+    assert gu["culture_model"] == "3D_bioprint"
+    assert gu["measurements"][0]["value"] == 71.0
+    assert gu.get("stiffness_kpa") is None
+    assert by_id["gu2020-cana-print-d0"]["measurements"][0]["value"] == 83.0
+    atdc = by_id["carvalho2025-cmc-nfc-atdc5-d1"]
+    assert atdc["cell_type"] == "ATDC5"
+    assert atdc["material_class"] == "cellulose"
+    assert atdc["measurements"][0]["value"] == 81.0
+    yi = by_id["yi2019-alg-hasc-d4"]
+    assert yi["cell_type"] == "adipose_MSC"
+    assert yi["measurements"][0]["value"] == 89.9
+    assert yi.get("stiffness_kpa") is None
 
 
 def test_curated_viability_excludes_auto_promote():

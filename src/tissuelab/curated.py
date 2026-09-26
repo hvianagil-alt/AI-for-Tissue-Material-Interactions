@@ -793,6 +793,215 @@ STUDIES: list[dict] = [
             "TGF-β3 is the later chondrogenesis arm, not the viability row."
         ),
     },
+    {
+        "study_id": "orabi2023",
+        "citation": "Orabi & Ghosh, Ann. Biomed. Eng. 2023",
+        "doi": "10.1007/s10439-023-03313-y",
+        "pmid": "37453976",
+        "year": 2023,
+        "journal": "Annals of Biomedical Engineering",
+        "pmcid": "PMC10632279",
+        "license": "CC-BY",
+        "notes": (
+            "hBM-MSC P4–P6 in alginate–gelatin hybrids (5% gelatin; 2.5 or 5.0% alginate), "
+            "Lonza chondrogenic SingleQuots (TGF-β3). Live/dead d21: 4.8 kPa 72.7/64.9/63.0% "
+            "and 6.7 kPa 77.6/76.6/72.7% (mean±SEM, N=3). Starting compressive E after 48 h DPBS. "
+            "XTT metabolic activity is not stored as viability."
+        ),
+    },
+    {
+        "study_id": "pangjantuk2024",
+        "citation": "Pangjantuk et al., Sci. Rep. 2024",
+        "doi": "10.1038/s41598-024-54912-1",
+        "pmid": "38396088",
+        "year": 2024,
+        "journal": "Scientific Reports",
+        "pmcid": "PMC10891100",
+        "license": "CC-BY",
+        "notes": (
+            "Human UC-MSC P3 in 1 wt% alginate : 1 wt% LMW HA (1:1), UV 365 nm. "
+            "Live/dead 84.11±3.71 / 79.26±3.66 / 77.36±2.19% d3/7/14. Stemness paper, no TGF. "
+            "TPA Young's at d7/d14 is culture-aged and is not stored."
+        ),
+    },
+    {
+        "study_id": "kihara2026",
+        "citation": "Kihara et al., J. Orthop. Transl. 2026",
+        "doi": "10.1016/j.jot.2025.101034",
+        "pmid": "41836553",
+        "year": 2026,
+        "journal": "Journal of Orthopaedic Translation",
+        "pmcid": "PMC12988508",
+        "license": "CC-BY-NC-ND",
+        "notes": (
+            "Goat P3 ASC in 10% mGL / 1% mHA photocrosslink. Live/dead d21: HBSS 91.1±6.0%, "
+            "TGF-β3 87.5±3.5%. PRP arms not stored (different supplement). Indentation kPa is "
+            "native cartilage, not starting gel E. d3/d7 live/dead is figure-only."
+        ),
+    },
+    {
+        "study_id": "petta2024",
+        "citation": "Petta et al., Mater. Today Bio 2024",
+        "doi": "10.1016/j.mtbio.2024.101072",
+        "pmid": "38757057",
+        "year": 2024,
+        "journal": "Materials Today Bio",
+        "pmcid": "PMC11097088",
+        "license": "CC-BY-NC",
+        "notes": (
+            "Human OA P3 articular chondrocytes 1.5e6/ml in HA-PEGDA (6 mg/ml HA, 1:4, 37 °C 30 min). "
+            "Live/dead 72% day 10 (n=3). Fibroblast-in-fibrin 91% skipped. HA-MA/MIX floors and "
+            "G′ ~100 Pa approximate not stored. TGF-β1 is 2D expansion, not the gel arm."
+        ),
+    },
+    {
+        "study_id": "mckinney2019",
+        "citation": "McKinney et al., Eur. Cell Mater. 2019",
+        "doi": "10.22203/eCM.v037a04",
+        "pmid": "30693466",
+        "year": 2019,
+        "journal": "European Cells & Materials",
+        "pmcid": "PMC7549187",
+        "license": "CC-BY",
+        "notes": (
+            "hMSC P4 in 1% alginate BaCl2 capsules. Live/dead 96±2.4% immediately post-encapsulation. "
+            "Later ~75%/30% floors not stored. No starting gel E."
+        ),
+    },
+    {
+        "study_id": "jodat2020",
+        "citation": "Jodat et al., Adv. Sci. 2020",
+        "doi": "10.1002/advs.201901878",
+        "pmid": "32154068",
+        "year": 2020,
+        "journal": "Advanced Science",
+        "pmcid": "PMC7055567",
+        "license": "CC-BY",
+        "notes": (
+            "Bovine P1 articular chondrocytes 20e6/ml printed in 5% GelMA / 5% PEGDMA / 6.5% gelatin. "
+            "Live/dead recovered to average 95% by day 7. Day-1 ~80% approximate not stored. "
+            "Bulk soft Young's 20.3±1.1 kPa. 2D electrode 97.7/79.7% not stored. Print pressure is not E."
+        ),
+    },
+    {
+        "study_id": "kilian2020",
+        "citation": "Kilian et al., Sci. Rep. 2020",
+        "doi": "10.1038/s41598-020-65050-9",
+        "pmid": "32427838",
+        "year": 2020,
+        "journal": "Scientific Reports",
+        "pmcid": "PMC7237416",
+        "license": "CC-BY",
+        "notes": (
+            "Human OA P3 articular (hip) in 3 wt% alginate + 9 wt% methylcellulose, 3D plotted, 100 mM CaCl2. "
+            "Day-1 live/dead: gel-CPC interface 46.5±1.3% vs gel-gel 53.8±2.5%. "
+            "Day-7 ctrl 64% vs TGF-β3 48%; day-21 ctrl 45%. Later ~50% floors not stored. "
+            "Print pressure 90 kPa and CPC ~3e4 kPa are not gel Young's. Citation ~35 kPa not stored."
+        ),
+    },
+    {
+        "study_id": "yin2023",
+        "citation": "Yin et al., iScience 2023",
+        "doi": "10.1016/j.isci.2023.107349",
+        "pmid": "37539040",
+        "year": 2023,
+        "journal": "iScience",
+        "pmcid": "PMC10393809",
+        "license": "CC-BY-NC-ND",
+        "notes": (
+            "Primary rat knee chondrocytes in GelMA 5% / alginate 1.2% microfluidic microspheres (GA-MS), TGF-β1 in precursor. "
+            "Fresh-control live/dead 89.4±1.15% day 1 and 84.1±2.93% day 4. Frozen-thawed arms not stored. "
+            "G′ 15–27 kPa is a range and is not stored as starting E."
+        ),
+    },
+    {
+        "study_id": "sarsenova2022",
+        "citation": "Sarsenova et al., Polymers 2022",
+        "doi": "10.3390/polym14245343",
+        "pmid": "36559710",
+        "year": 2022,
+        "journal": "Polymers",
+        "pmcid": "PMC9780905",
+        "license": "CC-BY",
+        "notes": (
+            "Rabbit synovium-derived MSC P4 in heparin-conjugated fibrin (40 mg/ml heparin-fibrinogen + 60 mg/ml fibrinogen). "
+            "Live/dead 97% through 7 days in α-MEM (no TGF in the viability arm). In vivo TGF-β1/BMP-4 not applied here. "
+            "No starting gel E."
+        ),
+    },
+    {
+        "study_id": "garciaaponte2025",
+        "citation": "García-Aponte et al., Adv. Healthcare Mater. 2025",
+        "doi": "10.1002/adhm.202405137",
+        "pmid": "40484895",
+        "year": 2025,
+        "journal": "Advanced Healthcare Materials",
+        "pmcid": "PMC12333480",
+        "license": "CC-BY",
+        "notes": (
+            "Human adipose MSC P3 in 5% GelMA (DoF 65%) millifluidic microgels. "
+            "Post-encapsulation live/dead 68.5±8.8% at 0.25e6/ml vs 84.7±5.0% at 2e6/ml. "
+            "Day-7 recovery 94.5±2.0% after 0.4% LAP outer-death layer. Expansion culture, no TGF. No starting Young's."
+        ),
+    },
+    {
+        "study_id": "chen2020",
+        "citation": "Chen, Chin, Almarza & Taboas, Biomed. Mater. 2020",
+        "doi": "10.1088/1748-605X/ab401f",
+        "pmid": "31470441",
+        "year": 2020,
+        "journal": "Biomedical Materials",
+        "pmcid": "PMC11934051",
+        "license": "NIH public access",
+        "notes": (
+            "Goat BMSC P3 at 30e6/ml in 10% w/v methacrylated gelatin (GEL), LAP, 365 nm. "
+            "Live/dead approximately 86% day 1 in expansion medium. PGH composite same ~86% not stored as a second material. "
+            "Compressive moduli are figure-only and are not stored."
+        ),
+    },
+    {
+        "study_id": "gu2020",
+        "citation": "Gu et al., Bioengineering 2020",
+        "doi": "10.3390/bioengineering7040141",
+        "pmid": "33171883",
+        "year": 2020,
+        "journal": "Bioengineering",
+        "pmcid": "PMC7711998",
+        "license": "CC-BY",
+        "notes": (
+            "Human nasal P2 chondrocytes 30e6/ml printed in 8% w/v carboxylated agarose (7.8% CA + 0.2% native agarose). "
+            "Live/dead 83±5% immediately, 75±5% day 1, 71±4% day 4, 74±3% day 7. TGF-β1 is 2D expansion. "
+            "G′ 212 kPa at 4 °C / 15 kPa at 37 °C is storage modulus, not Young's."
+        ),
+    },
+    {
+        "study_id": "carvalho2025",
+        "citation": "Carvalho et al., Biomacromolecules 2025",
+        "doi": "10.1021/acs.biomac.4c01546",
+        "pmid": "39901627",
+        "year": 2025,
+        "journal": "Biomacromolecules",
+        "pmcid": "PMC12818718",
+        "license": "ACS AuthorChoice",
+        "notes": (
+            "ATDC5 in CMC70:NFC30 all-cellulose bioink (2.1% CMC + 0.9% NFC), FeCl3, 2e6/ml. "
+            "Live/dead 81±4 / 86±4 / 89±2% day 1/3/7. HaCaT arm not stored. MTT absorbance not stored as viability."
+        ),
+    },
+    {
+        "study_id": "yi2019",
+        "citation": "Yi et al., J. Tissue Eng. 2019",
+        "doi": "10.1177/2041731418824797",
+        "pmid": "30728937",
+        "year": 2019,
+        "journal": "Journal of Tissue Engineering",
+        "pmcid": "PMC6351972",
+        "license": "CC-BY",
+        "notes": (
+            "hASC before P5, 10e6/ml, injected into 2% alginate in a PCL nasal framework. "
+            "Live/dead 89.9±2.3 / 87.7±1.8 / 90.6±2.3% day 4/10/14. Cartilage-derived dECM arm not stored. No starting Young's."
+        ),
+    },
 ]
 
 
@@ -4033,6 +4242,572 @@ def _queue_pass_ten() -> list[dict]:
     return rows
 
 
+def _queue_pass_eleven() -> list[dict]:
+    """Neighborhood OA live/dead with deaths and starting E: alginate-gelatin MSC, AL-HA, GelMA-HA ASC, HA-PEGDA OA chondrocyte, alginate capsule, GelMA-PEG print."""
+    rows = []
+    orabi = [
+        ("4p8-p4", 4.8, 4, 72.7, 1.3, 2.5),
+        ("4p8-p5", 4.8, 5, 64.9, 1.1, 2.5),
+        ("4p8-p6", 4.8, 6, 63.0, 0.8, 2.5),
+        ("6p7-p4", 6.7, 4, 77.6, 1.9, 5.0),
+        ("6p7-p5", 6.7, 5, 76.6, 2.4, 5.0),
+        ("6p7-p6", 6.7, 6, 72.7, 1.7, 5.0),
+    ]
+    for tag, kpa, passage, val, sem, alg in orabi:
+        rows.append(
+            {
+                "experiment_id": f"orabi2023-alg-gel-{tag}-d21",
+                "study_id": "orabi2023",
+                "material_class": "gelatin_alginate",
+                "material_detail": f"{alg:g}% w/v alginate + 5.0% w/v gelatin type A, 0.5 M CaCl2 microspheres",
+                "crosslinking": "ionic",
+                "polymer_concentration_wt_pct": alg + 5.0,
+                "stiffness_kpa": kpa,
+                "stiffness_method": "unconfined_compression_youngs_48h_DPBS",
+                "surface_chemistry": "native",
+                "has_adhesion_ligand": 1.0,
+                "cell_type": "MSC",
+                "species": "human",
+                "culture_model": "3D_encapsulation",
+                "growth_factor": "TGF_b3",
+                "culture_time_days": 21.0,
+                "cell_density_million_per_ml": 0.43,
+                "passage": passage,
+                "chemical_modification": "unmodified",
+                "architecture": "microsphere",
+                "application": "in_vitro_cartilage",
+                "live_dead_kit": "calcein_ethidium",
+                "n_replicates": 3,
+                "extracted_from": f"PMC10632279 Fig. 6b live/dead d21 {kpa} kPa P{passage}",
+                "curator_confidence": "high",
+                "notes": (
+                    f"hBM-MSC P{passage}, 4.3e5/ml, Lonza SingleQuots (TGF-β3). "
+                    f"Live/dead {val}±{sem}% (SEM, N=3) day 21 in {kpa} kPa hybrid. "
+                    "XTT is not stored as viability."
+                ),
+                "measurements": [
+                    _m("viability_pct", val, "%", sd=sem, evidence="numeric_text", n=3, notes="Paper SEM.")
+                ],
+            }
+        )
+    for day, val, sd in ((3.0, 84.11, 3.71), (7.0, 79.26, 3.66), (14.0, 77.36, 2.19)):
+        rows.append(
+            {
+                "experiment_id": f"pangjantuk2024-al-ha-d{int(day)}",
+                "study_id": "pangjantuk2024",
+                "material_class": "alginate_HA",
+                "material_detail": "1 wt% alginate : 1 wt% LMW HA (8–15 kDa) mixed 1:1, UV 365 nm 15 min",
+                "crosslinking": "photocrosslink",
+                "polymer_concentration_wt_pct": 1.0,
+                "surface_chemistry": "native",
+                "has_adhesion_ligand": 1.0,
+                "cell_type": "MSC",
+                "species": "human",
+                "culture_model": "3D_encapsulation",
+                "growth_factor": "none",
+                "culture_time_days": day,
+                "cell_density_million_per_ml": 2.0,
+                "passage": 3,
+                "chemical_modification": "unmodified",
+                "architecture": "bulk_hydrogel",
+                "application": "in_vitro_cartilage",
+                "live_dead_kit": "calcein_ethidium",
+                "n_replicates": 3,
+                "extracted_from": f"PMC10891100 Fig. 3 AL-HA live/dead day {int(day)}",
+                "curator_confidence": "high",
+                "notes": (
+                    f"hUC-MSC P3, 2e6/ml, no TGF. Live/dead {val}±{sd}% day {int(day)}. "
+                    "Dead-cell complement is not a second viability. TPA Young's is culture-aged."
+                ),
+                "measurements": [_m("viability_pct", val, "%", sd=sd, evidence="numeric_text", n=3)],
+            }
+        )
+    for tag, gf, val, sd, note in (
+        ("hbss", "none", 91.1, 6.0, "HBSS vehicle, no exogenous TGF"),
+        ("tgf", "TGF_b3", 87.5, 3.5, "TGF-β3 2 µg/mL in the gel"),
+    ):
+        rows.append(
+            {
+                "experiment_id": f"kihara2026-mgl-mha-{tag}-d21",
+                "study_id": "kihara2026",
+                "material_class": "GelMA_HA",
+                "material_detail": "10% w/v methacrylated gelatin / 1% w/v methacrylated HA, 0.15% LAP",
+                "crosslinking": "photocrosslink",
+                "polymer_concentration_wt_pct": 10.0,
+                "surface_chemistry": "native",
+                "has_adhesion_ligand": 1.0,
+                "cell_type": "adipose_MSC",
+                "species": "goat",
+                "culture_model": "3D_encapsulation",
+                "growth_factor": gf,
+                "culture_time_days": 21.0,
+                "cell_density_million_per_ml": 20.0,
+                "passage": 3,
+                "chemical_modification": "methacrylated",
+                "architecture": "bulk_hydrogel",
+                "application": "osteochondral",
+                "live_dead_kit": "calcein_ethidium",
+                "extracted_from": f"PMC12988508 Fig. 3M live/dead day 21 {tag}",
+                "curator_confidence": "high",
+                "notes": (
+                    f"Goat P3 ASC, 20e6/ml. Live/dead {val}±{sd}% day 21. {note}. "
+                    "PRP arms not stored. Indentation kPa is native cartilage."
+                ),
+                "measurements": [_m("viability_pct", val, "%", sd=sd, evidence="numeric_text")],
+            }
+        )
+    rows.append(
+        {
+            "experiment_id": "petta2024-ha-pegda-oa-d10",
+            "study_id": "petta2024",
+            "material_class": "PEG_HA",
+            "material_detail": "HA-PEGDA 6 mg/ml HA, components mixed 1:4, 37 °C 30 min",
+            "crosslinking": "chemical",
+            "polymer_concentration_wt_pct": 0.6,
+            "surface_chemistry": "native",
+            "has_adhesion_ligand": 1.0,
+            "cell_type": "articular_chondrocyte",
+            "species": "human",
+            "culture_model": "3D_encapsulation",
+            "growth_factor": "none",
+            "culture_time_days": 10.0,
+            "cell_density_million_per_ml": 1.5,
+            "passage": 3,
+            "chemical_modification": "unmodified",
+            "architecture": "bulk_hydrogel",
+            "application": "osteoarthritis",
+            "live_dead_kit": "calcein_ethidium",
+            "n_replicates": 3,
+            "extracted_from": "PMC11097088 Fig. 3D HA-PEGDA live/dead day 10",
+            "curator_confidence": "high",
+            "notes": (
+                "Human OA P3 articular, 1.5e6/ml. Highest viability among HA/Col gels at day 10 (72%, n=3). "
+                "Fibroblast-fibrin 91% skipped. TGF-β1 is 2D expansion."
+            ),
+            "measurements": [_m("viability_pct", 72.0, "%", evidence="numeric_text", n=3)],
+        }
+    )
+    rows.append(
+        {
+            "experiment_id": "mckinney2019-alg-encap-d0",
+            "study_id": "mckinney2019",
+            "material_class": "alginate",
+            "material_detail": "1% w/v Pronova UP-LVG alginate microspheres, electrostatic, 50 mM BaCl2",
+            "crosslinking": "ionic",
+            "polymer_concentration_wt_pct": 1.0,
+            "surface_chemistry": "none",
+            "has_adhesion_ligand": 0.0,
+            "cell_type": "MSC",
+            "species": "human",
+            "culture_model": "3D_encapsulation",
+            "growth_factor": "none",
+            "culture_time_days": 0.0,
+            "cell_density_million_per_ml": 1.0,
+            "passage": 4,
+            "chemical_modification": "unmodified",
+            "architecture": "microsphere",
+            "application": "osteoarthritis",
+            "live_dead_kit": "calcein_ethidium",
+            "extracted_from": "PMC7549187 Fig. 2f immediate post-encapsulation live/dead",
+            "curator_confidence": "high",
+            "notes": (
+                "hMSC P4, 1e6/ml. Live/dead 96±2.4% immediately after BaCl2 encapsulation. "
+                "Later ~75% / ~30% floors not stored."
+            ),
+            "measurements": [_m("viability_pct", 96.0, "%", sd=2.4, evidence="numeric_text")],
+        }
+    )
+    rows.append(
+        {
+            "experiment_id": "jodat2020-gelma-peg-print-d7",
+            "study_id": "jodat2020",
+            "material_class": "GelMA_PEG",
+            "material_detail": "5% GelMA / 5% PEGDMA / 6.5% gelatin / 0.5% Irgacure 2959, UV post-print",
+            "crosslinking": "photocrosslink",
+            "polymer_concentration_wt_pct": 10.0,
+            "stiffness_kpa": 20.3,
+            "stiffness_sd_kpa": 1.1,
+            "stiffness_method": "unconfined_compression_youngs_bulk_soft",
+            "surface_chemistry": "native",
+            "has_adhesion_ligand": 1.0,
+            "cell_type": "articular_chondrocyte",
+            "species": "bovine",
+            "culture_model": "3D_bioprint",
+            "growth_factor": "none",
+            "culture_time_days": 7.0,
+            "cell_density_million_per_ml": 20.0,
+            "passage": 1,
+            "chemical_modification": "methacrylated",
+            "architecture": "3d_printed",
+            "application": "nasal",
+            "live_dead_kit": "calcein_ethidium",
+            "extracted_from": "PMC7055567 printed soft bioink live/dead day 7",
+            "curator_confidence": "medium",
+            "notes": (
+                "Calf primary articular, 20e6/ml. Recovered to an average viability of 95% by day 7. "
+                "Day-1 ~80% approximate not stored. 2D electrode viability not stored. "
+                "Print pressure 30–40 kPa is not Young's modulus."
+            ),
+            "measurements": [
+                _m("viability_pct", 95.0, "%", evidence="numeric_text", notes="Paper: average viability of 95%.")
+            ],
+        }
+    )
+    return rows
+
+
+def _queue_pass_twelve() -> list[dict]:
+    """Neighborhood OA live/dead with real deaths: algMC print, GelMA-alginate MS, fibrin MSC, GelMA density, GelMA goat MSC."""
+    rows = []
+    kilian_d1 = [
+        ("gel-gel", 53.8, 2.5, "gel-gel intersections, away from CPC"),
+        ("gel-cpc", 46.5, 1.3, "algMC strand at the gel-CPC interface"),
+    ]
+    for tag, val, sd, zone in kilian_d1:
+        rows.append(
+            {
+                "experiment_id": f"kilian2020-algmc-{tag}-d1",
+                "study_id": "kilian2020",
+                "material_class": "alginate",
+                "material_detail": "3 wt% alginate + 9 wt% methylcellulose, 100 mM CaCl2, 3D plotted",
+                "crosslinking": "ionic",
+                "polymer_concentration_wt_pct": 3.0,
+                "surface_chemistry": "none",
+                "has_adhesion_ligand": 0.0,
+                "cell_type": "articular_chondrocyte",
+                "species": "human",
+                "culture_model": "3D_bioprint",
+                "growth_factor": "none",
+                "culture_time_days": 1.0,
+                "cell_density_million_per_ml": 5.0,
+                "passage": 3,
+                "chemical_modification": "unmodified",
+                "architecture": "3d_printed",
+                "application": "osteochondral",
+                "live_dead_kit": "calcein_ethidium",
+                "extracted_from": f"PMC7237416 Fig. 6A day-1 {tag} live/dead",
+                "curator_confidence": "high",
+                "notes": (
+                    f"Human OA P3 articular, 5e6 cells per 1 g algMC. Live/dead {val}±{sd}% day 1, {zone}. "
+                    "Print pressure 90 kPa is not Young's. CPC cement modulus is not gel E. "
+                    "Citation ~35 kPa starting E is not stored."
+                ),
+                "measurements": [_m("viability_pct", val, "%", sd=sd, evidence="numeric_text")],
+            }
+        )
+    for tag, gf, day, val, note in (
+        ("ctrl", "none", 7.0, 64.0, "expansion DMEM, no TGF"),
+        ("diff", "TGF_b3", 7.0, 48.0, "chondrogenic medium + 10 ng/ml TGF-β3"),
+        ("ctrl", "none", 21.0, 45.0, "expansion DMEM; paper: dropped to 45% at day 21"),
+    ):
+        rows.append(
+            {
+                "experiment_id": f"kilian2020-algmc-{tag}-d{int(day)}",
+                "study_id": "kilian2020",
+                "material_class": "alginate",
+                "material_detail": "3 wt% alginate + 9 wt% methylcellulose, 100 mM CaCl2, 3D plotted",
+                "crosslinking": "ionic",
+                "polymer_concentration_wt_pct": 3.0,
+                "surface_chemistry": "none",
+                "has_adhesion_ligand": 0.0,
+                "cell_type": "articular_chondrocyte",
+                "species": "human",
+                "culture_model": "3D_bioprint",
+                "growth_factor": gf,
+                "culture_time_days": day,
+                "cell_density_million_per_ml": 5.0,
+                "passage": 3,
+                "chemical_modification": "unmodified",
+                "architecture": "3d_printed",
+                "application": "osteochondral",
+                "live_dead_kit": "calcein_ethidium",
+                "extracted_from": f"PMC7237416 Fig. 6C–D {tag} live/dead day {int(day)}",
+                "curator_confidence": "medium",
+                "notes": (
+                    f"Human OA P3 articular. Mean live/dead {val:.0f}% day {int(day)}. {note}. "
+                    "No SD in text. Later ~50% floors not stored. Diff day-21 'rather constant' not stored."
+                ),
+                "measurements": [
+                    _m("viability_pct", val, "%", evidence="numeric_text", notes=f"Paper: {val:.0f}%.")
+                ],
+            }
+        )
+    for day, val, sd in ((1.0, 89.4, 1.15), (4.0, 84.1, 2.93)):
+        rows.append(
+            {
+                "experiment_id": f"yin2023-ga-ms-fresh-d{int(day)}",
+                "study_id": "yin2023",
+                "material_class": "GelMA_alginate",
+                "material_detail": "GelMA 5% w/v / alginate 1.2% w/v microfluidic microspheres, LAP then CaCl2",
+                "crosslinking": "photocrosslink",
+                "polymer_concentration_wt_pct": 6.2,
+                "surface_chemistry": "native",
+                "has_adhesion_ligand": 1.0,
+                "cell_type": "articular_chondrocyte",
+                "species": "rat",
+                "culture_model": "3D_encapsulation",
+                "growth_factor": "TGF_b1",
+                "culture_time_days": day,
+                "chemical_modification": "methacrylated",
+                "architecture": "microsphere",
+                "application": "bioprinting",
+                "live_dead_kit": "calcein_ethidium",
+                "extracted_from": f"PMC10393809 Fig. 5E fresh-control live/dead day {int(day)}",
+                "curator_confidence": "high",
+                "notes": (
+                    f"Primary Sprague-Dawley knee chondrocytes. Fresh-control live/dead {val}±{sd}% day {int(day)}. "
+                    "Frozen-thawed arms not stored. G′ 15–27 kPa range not stored. "
+                    "1e5/ml is a separate GelMA-drop assay, not this GA-MS density."
+                ),
+                "measurements": [_m("viability_pct", val, "%", sd=sd, evidence="numeric_text")],
+            }
+        )
+    rows.append(
+        {
+            "experiment_id": "sarsenova2022-hcf-sdmsc-d7",
+            "study_id": "sarsenova2022",
+            "material_class": "fibrin",
+            "material_detail": (
+                "heparin-conjugated fibrinogen 40 mg/mL + plasminogen-free fibrinogen 60 mg/mL "
+                "+ thrombin 500 IU/mg + aprotinin"
+            ),
+            "crosslinking": "enzymatic",
+            "polymer_concentration_wt_pct": 10.0,
+            "surface_chemistry": "native",
+            "has_adhesion_ligand": 1.0,
+            "cell_type": "MSC",
+            "species": "rabbit",
+            "culture_model": "3D_encapsulation",
+            "growth_factor": "none",
+            "culture_time_days": 7.0,
+            "cell_density_million_per_ml": 0.2,
+            "passage": 4,
+            "chemical_modification": "unmodified",
+            "architecture": "bulk_hydrogel",
+            "application": "osteochondral",
+            "live_dead_kit": "calcein_ethidium",
+            "extracted_from": "PMC9780905 Fig. 4C–D HCF live/dead through day 7",
+            "curator_confidence": "medium",
+            "notes": (
+                "Rabbit synovium-derived MSC P4. Live/dead 97% for 7 days after encapsulation in α-MEM. "
+                "2e5/ml is the cell-laden HCF density in the degradation assay; viability section does not restate it. "
+                "In vivo TGF-β1/BMP-4 not applied to this row. No starting gel E."
+            ),
+            "measurements": [
+                _m("viability_pct", 97.0, "%", evidence="numeric_text", notes="Paper: high cell viability (97%).")
+            ],
+        }
+    )
+    for tag, dens, day, val, sd, detail, conf, extra in (
+        (
+            "0p25e6-d0",
+            0.25,
+            0.0,
+            68.5,
+            8.8,
+            "5% GelMA DoF 65%, millifluidic microgels, 0.25e6/ml",
+            "high",
+            "Post-encapsulation live/dead at 2.5e5/ml.",
+        ),
+        (
+            "2e6-d0",
+            2.0,
+            0.0,
+            84.7,
+            5.0,
+            "5% GelMA DoF 65%, millifluidic microgels, 2e6/ml",
+            "high",
+            "Post-encapsulation live/dead at 2e6/ml.",
+        ),
+        (
+            "2e6-d7",
+            2.0,
+            7.0,
+            94.5,
+            2.0,
+            "5% GelMA DoF 65%, 0.4% LAP, millifluidic microgels",
+            "high",
+            "Recovery after outer-death layer from 0.4% LAP crosslinking. Default seeding 2e6/ml.",
+        ),
+    ):
+        rows.append(
+            {
+                "experiment_id": f"garciaaponte2025-gelma-{tag}",
+                "study_id": "garciaaponte2025",
+                "material_class": "GelMA",
+                "material_detail": detail,
+                "crosslinking": "photocrosslink",
+                "polymer_concentration_wt_pct": 5.0,
+                "surface_chemistry": "native",
+                "has_adhesion_ligand": 1.0,
+                "cell_type": "adipose_MSC",
+                "species": "human",
+                "culture_model": "3D_encapsulation",
+                "growth_factor": "none",
+                "culture_time_days": day,
+                "cell_density_million_per_ml": dens,
+                "passage": 3,
+                "chemical_modification": "methacrylated",
+                "architecture": "microsphere",
+                "application": "in_vitro_cartilage",
+                "live_dead_kit": "calcein_ethidium",
+                "extracted_from": f"PMC12333480 millifluidic GelMA live/dead {tag}",
+                "curator_confidence": conf,
+                "notes": (
+                    f"Human adipose MSC P3. Live/dead {val}±{sd}% day {int(day)}. {extra} "
+                    "Expansion culture, no TGF. No starting Young's in text."
+                ),
+                "measurements": [_m("viability_pct", val, "%", sd=sd, evidence="numeric_text")],
+            }
+        )
+    rows.append(
+        {
+            "experiment_id": "chen2020-gel-bms-d1",
+            "study_id": "chen2020",
+            "material_class": "GelMA",
+            "material_detail": "10% w/v methacrylated gelatin, 0.005% w/v LAP, 365 nm 3.5 min",
+            "crosslinking": "photocrosslink",
+            "polymer_concentration_wt_pct": 10.0,
+            "surface_chemistry": "native",
+            "has_adhesion_ligand": 1.0,
+            "cell_type": "MSC",
+            "species": "goat",
+            "culture_model": "3D_encapsulation",
+            "growth_factor": "none",
+            "culture_time_days": 1.0,
+            "cell_density_million_per_ml": 30.0,
+            "passage": 3,
+            "chemical_modification": "methacrylated",
+            "architecture": "bulk_hydrogel",
+            "application": "in_vitro_cartilage",
+            "live_dead_kit": "calcein_ethidium",
+            "n_replicates": 3,
+            "extracted_from": "PMC11934051 Fig. 3A–B GEL live/dead day 1 expansion medium",
+            "curator_confidence": "medium",
+            "notes": (
+                "Goat BMSC P3, 30e6/ml. Paper: approximately 86% one day post-fabrication in expansion medium. "
+                "PGH composite same ~86% not stored as a second material. Compressive moduli figure-only, not stored. "
+                "TGF-β3 is later chondrogenesis, not this viability row."
+            ),
+            "measurements": [
+                _m("viability_pct", 86.0, "%", evidence="numeric_text", notes="Paper: approximately 86%.")
+            ],
+        }
+    )
+    return rows
+
+
+def _queue_pass_thirteen() -> list[dict]:
+    """Printed agarose deaths, cellulose ATDC5, alginate hASC nasal inject."""
+    rows = []
+    for day, val, sd, conf, extra in (
+        (0.0, 83.0, 5.0, "medium", "Immediately after printing. Paper: around 83±5%."),
+        (1.0, 75.0, 5.0, "high", "24 h after printing."),
+        (4.0, 71.0, 4.0, "high", "Day 4."),
+        (7.0, 74.0, 3.0, "high", "Day 7; mitosis observed, not a second viability."),
+    ):
+        rows.append(
+            {
+                "experiment_id": f"gu2020-cana-print-d{int(day)}",
+                "study_id": "gu2020",
+                "material_class": "agarose",
+                "material_detail": "8% w/v carboxylated agarose (7.8% CA + 0.2% native agarose), 4 °C bed",
+                "crosslinking": "thermal",
+                "polymer_concentration_wt_pct": 8.0,
+                "surface_chemistry": "none",
+                "has_adhesion_ligand": 0.0,
+                "cell_type": "nasal_chondrocyte",
+                "species": "human",
+                "culture_model": "3D_bioprint",
+                "growth_factor": "none",
+                "culture_time_days": day,
+                "cell_density_million_per_ml": 30.0,
+                "passage": 2,
+                "chemical_modification": "unmodified",
+                "architecture": "3d_printed",
+                "application": "nasal",
+                "live_dead_kit": "calcein_ethidium",
+                "extracted_from": f"PMC7711998 Fig. 5 CANA live/dead day {int(day)}",
+                "curator_confidence": conf,
+                "notes": (
+                    f"Human nasal P2, 30e6/ml. Live/dead {val}±{sd}%. {extra} "
+                    "TGF-β1 is 2D expansion. G′ at 4 °C / 37 °C is not Young's."
+                ),
+                "measurements": [
+                    _m(
+                        "viability_pct",
+                        val,
+                        "%",
+                        sd=sd,
+                        evidence="numeric_text",
+                        notes=extra if conf == "medium" else None,
+                    )
+                ],
+            }
+        )
+    for day, val, sd in ((1.0, 81.0, 4.0), (3.0, 86.0, 4.0), (7.0, 89.0, 2.0)):
+        rows.append(
+            {
+                "experiment_id": f"carvalho2025-cmc-nfc-atdc5-d{int(day)}",
+                "study_id": "carvalho2025",
+                "material_class": "cellulose",
+                "material_detail": "CMC70:NFC30 (2.1% CMC + 0.9% NFC), FeCl3 1% overnight",
+                "crosslinking": "ionic",
+                "polymer_concentration_wt_pct": 3.0,
+                "surface_chemistry": "none",
+                "has_adhesion_ligand": 0.0,
+                "cell_type": "ATDC5",
+                "species": "mouse",
+                "culture_model": "3D_bioprint",
+                "growth_factor": "none",
+                "culture_time_days": day,
+                "cell_density_million_per_ml": 2.0,
+                "chemical_modification": "unmodified",
+                "architecture": "3d_printed",
+                "application": "bioprinting",
+                "live_dead_kit": "calcein_ethidium",
+                "extracted_from": f"PMC12818718 CMC70:NFC30 ATDC5 live/dead day {int(day)}",
+                "curator_confidence": "high",
+                "notes": (
+                    f"ATDC5, 2e6/ml. Live/dead {val}±{sd}% day {int(day)} in CMC70:NFC30. "
+                    "HaCaT 82/84/88% not stored. MTT absorbance not stored as viability."
+                ),
+                "measurements": [_m("viability_pct", val, "%", sd=sd, evidence="numeric_text")],
+            }
+        )
+    for day, val, sd in ((4.0, 89.9, 2.3), (10.0, 87.7, 1.8), (14.0, 90.6, 2.3)):
+        rows.append(
+            {
+                "experiment_id": f"yi2019-alg-hasc-d{int(day)}",
+                "study_id": "yi2019",
+                "material_class": "alginate",
+                "material_detail": "2% w/v medium-viscosity alginate injected into PCL nasal framework",
+                "crosslinking": "ionic",
+                "polymer_concentration_wt_pct": 2.0,
+                "surface_chemistry": "none",
+                "has_adhesion_ligand": 0.0,
+                "cell_type": "adipose_MSC",
+                "species": "human",
+                "culture_model": "3D_encapsulation",
+                "growth_factor": "none",
+                "culture_time_days": day,
+                "cell_density_million_per_ml": 10.0,
+                "chemical_modification": "unmodified",
+                "architecture": "3d_printed",
+                "application": "nasal",
+                "live_dead_kit": "calcein_ethidium",
+                "extracted_from": f"PMC6351972 Fig. 3b alginate live/dead day {int(day)}",
+                "curator_confidence": "high",
+                "notes": (
+                    f"hASC before P5, 10e6/ml. Live/dead {val}±{sd}% day {int(day)} in 2% alginate. "
+                    "Cartilage-derived dECM arm not stored. PCL framework is not gel E."
+                ),
+                "measurements": [_m("viability_pct", val, "%", sd=sd, evidence="numeric_text")],
+            }
+        )
+    return rows
+
+
 EXPERIMENTS: list[dict] = (
     _bachmann_experiments()
     + _other_experiments()
@@ -4048,4 +4823,7 @@ EXPERIMENTS: list[dict] = (
     + _queue_pass_eight()
     + _queue_pass_nine()
     + _queue_pass_ten()
+    + _queue_pass_eleven()
+    + _queue_pass_twelve()
+    + _queue_pass_thirteen()
 )

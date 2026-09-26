@@ -85,6 +85,8 @@ COMPOSITE_MATERIALS = {
     frozenset({"GelMA", "alginate"}): "GelMA_alginate",
     frozenset({"chitosan", "gelatin", "PVA"}): "chitosan_gelatin_PVA",
     frozenset({"collagen", "alginate"}): "collagen_alginate",
+    frozenset({"alginate", "HA"}): "alginate_HA",
+    frozenset({"GelMA", "PEG"}): "GelMA_PEG",
 }
 MATERIAL_PRIORITY = [
     "GelMA",

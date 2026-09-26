@@ -75,7 +75,8 @@ def test_predict_gelma_uses_shrinkage_lookup():
     assert out["similar"]
     lopo = out["lopo"]
     assert lopo["n_studies"] >= 15
-    assert lopo["n_studies"] < PAPERS_NEEDED_TREES
+    assert lopo["n_studies"] >= PAPERS_NEEDED_TREES
+    assert lopo["n_studies"] < 100
     assert lopo["deployed_estimator"] == "shrinkage"
     assert lopo["deployed_estimator"] != "dummy"
     assert lopo["deployed_estimator"] != "hgb"

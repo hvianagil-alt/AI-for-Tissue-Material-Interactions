@@ -1,22 +1,22 @@
 {
-  "n_rows": 105,
-  "n_studies": 34,
-  "served_parameters": 44,
+  "n_rows": 141,
+  "n_studies": 48,
+  "served_parameters": 55,
   "served_locked_hyperparameters": 11,
-  "served_empirical_priors": 33,
+  "served_empirical_priors": 44,
   "budget": {
-    "n_rows": 105,
-    "n_studies": 34,
-    "n_materials": 22,
-    "n_cell_types": 5,
-    "n_with_kpa": 30,
-    "rows_per_paper": 3.09,
+    "n_rows": 141,
+    "n_studies": 48,
+    "n_materials": 27,
+    "n_cell_types": 6,
+    "n_with_kpa": 37,
+    "rows_per_paper": 2.94,
     "dummy_parameters": 1,
-    "material_mean_parameters": 22,
-    "ridge_parameters_guess": 30,
+    "material_mean_parameters": 27,
+    "ridge_parameters_guess": 36,
     "served_locked_hyperparameters": 11,
-    "served_empirical_priors": 33,
-    "served_parameters": 44,
+    "served_empirical_priors": 44,
+    "served_parameters": 55,
     "starter_feature_count": 9,
     "papers_needed_ridge": 90,
     "papers_needed_mixed": 25,
@@ -25,56 +25,61 @@
     "have_enough_for_dummy": 1,
     "have_enough_for_mixed": 1,
     "have_enough_for_ridge": 0,
-    "have_enough_for_trees": 0,
+    "have_enough_for_trees": 1,
     "have_enough_for_beginning": 0,
     "what_to_add_first": "studies"
   },
   "random_split_ridge": {
-    "mae": 8.715671289261412,
-    "r2": 0.3482409449840841,
-    "train_mae": 7.6692738561990526,
-    "n_train": 84,
-    "n_test": 21,
+    "mae": 9.887089255894947,
+    "r2": 0.1929292519073008,
+    "train_mae": 8.089461070539306,
+    "n_train": 112,
+    "n_test": 29,
     "test_papers": [
       "aitchison2024",
       "bachmann2020",
+      "carvalho2025",
       "gatenholm2020",
       "hosseini2025",
-      "hu2012",
       "kessel2020",
+      "kilian2020",
+      "lan2021",
       "markstedt2015",
       "martyniak2023",
       "mcmillan2025",
-      "perezdiaz2023",
+      "orabi2023",
+      "pangjantuk2024",
       "poldervaart2017",
       "rojas2025",
+      "scalzone2022",
       "setayeshmehr2021",
       "sun2015",
       "xie2022",
-      "zhang2024",
-      "ziverec2026"
+      "yin2023",
+      "zeng2023",
+      "zhang2024"
     ]
   },
   "ridge_lopo": {
-    "mae": 13.164287009891131,
-    "r2": -0.6743461464432774,
-    "n_coefficients": 35
+    "mae": 12.67511060152362,
+    "r2": -0.16675566037359912,
+    "n_coefficients": 41
   },
   "dummy_lopo": {
-    "mae": 11.89492656642408,
-    "r2": -0.03163317040824243
+    "mae": 11.833197574716996,
+    "r2": -0.028851637596702284
   },
   "material_mean_lopo": {
-    "mae": 12.274438273319971,
-    "r2": -0.04857683545936897
+    "mae": 13.141509268516597,
+    "r2": -0.1917800073568925
   },
   "shrinkage_lopo": {
-    "mae": 10.348387317642464,
-    "r2": 0.12682958804563427
+    "mae": 10.833758729619271,
+    "r2": 0.08487703667366508
   },
   "hgb_lopo": {
-    "mae": 11.95174489885121,
-    "r2": 0.048713382676865535
+    "mae": 12.489786276722711,
+    "r2": -0.10759996297198682
   },
   "deployed_estimator": "shrinkage",
   "mvp_pass": 0,
@@ -86,10 +91,10 @@
       "stiffness_kpa": 5.0,
       "culture_time_days": 21.0
     },
-    "predicted_viability_pct": 91.1,
+    "predicted_viability_pct": 90.4,
     "material_prior": 94.0,
-    "local_kernel": 81.5,
-    "n_eff_same_material": 3.55,
+    "local_kernel": 79.7,
+    "n_eff_same_material": 4.06,
     "estimator": "shrinkage"
   },
   "what_to_add_first": "more independent papers with numeric live/dead",

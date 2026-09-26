@@ -51,6 +51,8 @@ VOCAB_MATERIALS = [
     ("PEG_HA", "composite", "PEG or pHPMA-PEG hydrogels with methacrylated HA"),
     ("PEG_silk", "composite", "Silk fibroin plus PEGDMA / PEG hydrogels"),
     ("saccharide_peptide", "synthetic", "Saccharide-peptide copolymer hydrogels"),
+    ("alginate_HA", "composite", "Alginate plus hyaluronic acid hydrogels"),
+    ("GelMA_PEG", "composite", "GelMA plus PEGDMA / PEGDA cell-laden bioinks"),
 ]
 
 VOCAB_ASSAYS = [

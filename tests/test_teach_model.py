@@ -6,7 +6,8 @@ def test_teach_model_runs_on_real_table():
 
     report = run_lesson(verbose=False)
     assert report["n_studies"] >= 15
-    assert report["n_studies"] < PAPERS_NEEDED_TREES
+    assert report["n_studies"] >= PAPERS_NEEDED_TREES
+    assert report["n_studies"] < 100
     assert report["served_parameters"] == report["served_locked_hyperparameters"] + report["served_empirical_priors"]
     assert report["served_locked_hyperparameters"] == 11
     assert report["n_rows"] >= 40
