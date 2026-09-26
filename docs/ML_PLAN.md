@@ -10,6 +10,8 @@ Vídeos digeridos:
 
 O produto que o PI usa (`protocol_finder`, busca de papers) **não espera** por este plano. O número em `/lookup` só muda de estimador quando o LOPO mandar.
 
+Se nunca treinaste um modelo: `docs/TRAIN.md` e `python3 -m tissuelab.teach_model` (Python, a tua tabela, split errado vs LOPO).
+
 ---
 
 ## 1. O que cada vídeo realmente ensina

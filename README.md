@@ -23,6 +23,7 @@ The point of the MVP is not “AI for biology”. It is:
 | HTML product: Protocol / Lookup / Table / Compare / CSV | Done — English default |
 | Buyable-minimal plan | `docs/BMP.md` |
 | How to train the viability model (videos → this table) | `docs/ML_PLAN.md` |
+| First training lesson (never trained a model) | `docs/TRAIN.md` → `python3 -m tissuelab.teach_model` |
 | Native literature measurements (no fake porosity) | Done |
 | Mapped 0–100 scores + simulator (software prior only) | Still in the old CSV/ML path |
 | Literature-informed simulator (~650 records) | Done |

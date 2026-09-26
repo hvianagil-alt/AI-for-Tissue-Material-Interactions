@@ -35,6 +35,8 @@ streamlit run app/streamlit_app.py --server.port 8502
 
 `?lang=pt` switches the decision copy to Portuguese. Paper titles stay as published.
 
+To see what “training a model” means on this table (and why 15 papers are not enough for Ridge): [`docs/TRAIN.md`](TRAIN.md) → `python3 -m tissuelab.teach_model`.
+
 ## 3. Protocol — the actual workflow
 
 1. Open `/`. Leave the defaults: **articular chondrocyte**, keep them alive, encapsulate.

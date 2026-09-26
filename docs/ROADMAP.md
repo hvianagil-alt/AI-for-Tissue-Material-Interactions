@@ -33,7 +33,7 @@ There is **no** public `material × chondrocyte × outcome` CSV. BIOMATDB and OO
 
 Current snapshot: **54 hand studies / ~205 hand experiments / 42 numeric viability (15 papers)**; ~8.5k papers. Deployed estimator is **empirical-Bayes shrinkage** (kernel over published conditions, shrunk to the material mean) — not Ridge, not a neural net. It beats dummy under LOPO (~15.8 vs 16.5) so stiffness / TGF / time move the number. R² is still ~0, `mvp_pass` false. The 15% MAE bar needs more live/dead rows, not more AI.
 
-How to grow that estimator without copying a random-split materials notebook: `docs/ML_PLAN.md` (mixed models + LOPO + Afflerbach workflow, mapped onto this table).
+How to grow that estimator without copying a random-split materials notebook: `docs/ML_PLAN.md` (mixed models + LOPO + Afflerbach workflow, mapped onto this table). If you have never trained a model, start with `docs/TRAIN.md` (`python3 -m tissuelab.teach_model`).
 
 ## Step by step
 
