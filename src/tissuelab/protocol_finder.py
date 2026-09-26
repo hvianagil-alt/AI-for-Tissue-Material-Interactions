@@ -205,8 +205,9 @@ def _pick_gf(stats: dict, tgf: str) -> str:
 
 
 def _avoid(stats: dict) -> bool:
+    """Do not serve a gel whose extracted live/dead mean is a death for these cells."""
     mean = stats.get("same_mean")
-    return bool(mean is not None and mean < 55)
+    return bool(mean is not None and mean < 60)
 
 
 def _why(winner: dict, field: dict | None, intent: dict, lang: str = "en") -> str:

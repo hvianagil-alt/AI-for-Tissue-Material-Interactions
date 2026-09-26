@@ -1112,6 +1112,53 @@ STUDIES: list[dict] = [
             "HA day-28 percent not quoted. BMP-2/IL-10 are not in the viability arm. No TGF in CPM."
         ),
     },
+    {
+        "study_id": "kudva2017",
+        "citation": "Kudva, Luyten & Patterson, J. Mater. Sci. Mater. Med. 2017",
+        "doi": "10.1007/s10856-017-5968-6",
+        "pmid": "28875425",
+        "year": 2017,
+        "journal": "Journal of Materials Science: Materials in Medicine",
+        "pmcid": "PMC5585276",
+        "license": "CC-BY",
+        "notes": (
+            "Human articular P5 10e6/ml in 6.5% PEG-VS + MMP-degradable peptide ± RGD. "
+            "Live/dead approximately 75% at 1 week and ~70% at 4 weeks in 4C medium (TGF-β1). "
+            "Day-1 >90% floor not stored. 4.5/13.5 kPa is a citation of prior PEG work and is not stored. "
+            "Independent of kudva2018 (hPDC/ATDC5 floors, not these articular numeric rows)."
+        ),
+    },
+    {
+        "study_id": "diazpayno2022",
+        "citation": "Díaz-Payno et al., Adv. Healthcare Mater. 2022",
+        "doi": "10.1002/adhm.202201891",
+        "pmid": "36308047",
+        "year": 2022,
+        "journal": "Advanced Healthcare Materials",
+        "pmcid": "PMC11468569",
+        "license": "CC-BY",
+        "notes": (
+            "hBM-MSC P5 5e6/ml printed in AHAT (1% alginate + 2.5% tyramine-HA), HRP/H2O2 then 200 mM CaCl2. "
+            "Live/dead ≈75% sustained over 14 days (days 1/7/14). Starting compressive E ≈6.7 kPa after CaCl2. "
+            "TGF-β1 in chondrogenic medium. Print pressure is not Young's. HAT-only arm was acellular."
+        ),
+    },
+    {
+        "study_id": "loveland2026",
+        "citation": "Loveland et al., Bioact. Mater. 2026",
+        "doi": "10.1016/j.bioactmat.2026.03.014",
+        "pmid": "41909512",
+        "year": 2026,
+        "journal": "Bioactive Materials",
+        "pmcid": "PMC13019076",
+        "license": "CC-BY-NC-ND",
+        "notes": (
+            "Human MSC P6 10e6/ml in adaptable sliding PEG hydrogel (ASG Fast, hydrazone). "
+            "Live/dead ≈60% day 7 in ASG Fast vehicle. Day-1 >95% floor not stored. "
+            "Blebbistatin/Y-27632 drop to <45% is a drug arm and is not stored. "
+            "Starting E ≈5–6 kPa is a range and is not stored. Chondrogenic medium has no TGF in the methods sentence."
+        ),
+    },
 ]
 
 
@@ -5219,6 +5266,143 @@ def _queue_pass_fourteen() -> list[dict]:
     return rows
 
 
+def _queue_pass_fifteen() -> list[dict]:
+    """PEG and alginate-HA deaths with quoted in-gel live/dead: Kudva articular PEG, Díaz-Payno AHAT print, Loveland ASG Fast."""
+    rows = []
+    for day, val, extra, conf in (
+        (
+            7.0,
+            75.0,
+            "Paper: approximately 75% in the different hydrogel constructs after 1 week in 4C medium.",
+            "medium",
+        ),
+        (
+            28.0,
+            70.0,
+            "Paper: ~70% after 4 weeks in 4C medium.",
+            "medium",
+        ),
+    ):
+        rows.append(
+            {
+                "experiment_id": f"kudva2017-pegvs-hac-d{int(day)}",
+                "study_id": "kudva2017",
+                "material_class": "PEG",
+                "material_detail": "6.5% w/v 4-arm PEG-VS, MMP-degradable peptide crosslinker (viability similar ±RGD)",
+                "crosslinking": "chemical",
+                "polymer_concentration_wt_pct": 6.5,
+                "surface_chemistry": "none",
+                "has_adhesion_ligand": 0.0,
+                "cell_type": "articular_chondrocyte",
+                "species": "human",
+                "culture_model": "3D_encapsulation",
+                "growth_factor": "TGF_b1",
+                "culture_time_days": day,
+                "cell_density_million_per_ml": 10.0,
+                "passage": 5,
+                "chemical_modification": "mmp_degradable",
+                "architecture": "bulk_hydrogel",
+                "application": "in_vitro_cartilage",
+                "live_dead_kit": "calcein_ethidium",
+                "extracted_from": f"PMC5585276 Fig. 4 hAC live/dead day {int(day)}",
+                "curator_confidence": conf,
+                "notes": (
+                    f"Human articular P5, 10e6/ml. Live/dead {val}% day {int(day)}. {extra} "
+                    "Day-1 >90% floor not stored. 4.5/13.5 kPa is a citation of prior PEG work and is not stored. "
+                    "Independent of kudva2018."
+                ),
+                "measurements": [
+                    _m("viability_pct", val, "%", evidence="numeric_text", notes=extra)
+                ],
+            }
+        )
+    rows.append(
+        {
+            "experiment_id": "diazpayno2022-ahat-hmsc-d14",
+            "study_id": "diazpayno2022",
+            "material_class": "alginate_HA",
+            "material_detail": "AHAT 1% w/v alginate + 2.5% w/v tyramine-HA, HRP/H2O2 then 200 mM CaCl2, printed",
+            "crosslinking": "enzymatic",
+            "polymer_concentration_wt_pct": 3.5,
+            "stiffness_kpa": 6.7,
+            "stiffness_method": "unconfined_compression_after_cacl2",
+            "surface_chemistry": "native",
+            "has_adhesion_ligand": 1.0,
+            "cell_type": "MSC",
+            "species": "human",
+            "culture_model": "3D_bioprint",
+            "growth_factor": "TGF_b1",
+            "culture_time_days": 14.0,
+            "cell_density_million_per_ml": 5.0,
+            "passage": 5,
+            "chemical_modification": "tyramine",
+            "architecture": "3d_printed",
+            "application": "bioprinting",
+            "live_dead_kit": "calcein_ethidium",
+            "extracted_from": "PMC11468569 Fig. 4e–f AHAT live/dead over 14 days",
+            "curator_confidence": "medium",
+            "notes": (
+                "hBM-MSC P5, 5e6/ml. Paper: high and sustained cell viability (≈75%) over 14 days "
+                "(imaged days 1, 7, and 14). Starting compressive modulus ≈6.7 kPa after CaCl2 vs HAT. "
+                "TGF-β1 10 ng/ml. Print pressure is not Young's. HAT-only ink was acellular. "
+                "PrestoBlue metabolic activity is not stored as viability."
+            ),
+            "measurements": [
+                _m(
+                    "viability_pct",
+                    75.0,
+                    "%",
+                    evidence="numeric_text",
+                    notes="Paper: ≈75% over 14 days.",
+                )
+            ],
+        }
+    )
+    rows.append(
+        {
+            "experiment_id": "loveland2026-asg-fast-hmsc-d7",
+            "study_id": "loveland2026",
+            "material_class": "PEG",
+            "material_detail": "Adaptable sliding PEG hydrogel ASG Fast (hydrazone), no adhesion ligand",
+            "crosslinking": "chemical",
+            "surface_chemistry": "none",
+            "has_adhesion_ligand": 0.0,
+            "cell_type": "MSC",
+            "species": "human",
+            "culture_model": "3D_encapsulation",
+            "growth_factor": "none",
+            "culture_time_days": 7.0,
+            "cell_density_million_per_ml": 10.0,
+            "passage": 6,
+            "chemical_modification": "hydrazone",
+            "architecture": "bulk_hydrogel",
+            "application": "in_vitro_cartilage",
+            "live_dead_kit": "calcein_ethidium",
+            "n_replicates": 3,
+            "extracted_from": "PMC13019076 Fig. 7G ASG Fast vehicle live/dead day 7",
+            "curator_confidence": "medium",
+            "notes": (
+                "Human MSC P6, 10e6/ml. Paper: blebbistatin and Y-27632 reduced ASG Fast viability "
+                "from ≈60% to below 45% by day 7 — vehicle ASG Fast stored as ≈60%. "
+                "Day-1 over 95% floor not stored. Inhibitor <45% not stored. "
+                "Starting compressive modulus ≈5–6 kPa is a range and is not stored. "
+                "Chondrogenic medium methods sentence has ascorbate/dexamethasone, no TGF."
+            ),
+            "measurements": [
+                _m(
+                    "viability_pct",
+                    60.0,
+                    "%",
+                    evidence="numeric_text",
+                    n=3,
+                    notes="Paper: ≈60% ASG Fast day 7 vehicle.",
+                )
+            ],
+        }
+    )
+    return rows
+
+
 EXPERIMENTS: list[dict] = (
     _bachmann_experiments()
     + _other_experiments()
@@ -5238,4 +5422,5 @@ EXPERIMENTS: list[dict] = (
     + _queue_pass_twelve()
     + _queue_pass_thirteen()
     + _queue_pass_fourteen()
+    + _queue_pass_fifteen()
 )

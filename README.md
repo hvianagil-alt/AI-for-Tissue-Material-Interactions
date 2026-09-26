@@ -19,7 +19,7 @@ The point of the MVP is not “AI for biology”. It is:
 |---|---|
 | SQLite experimental DB (`studies` / `experiments` / `measurements`) | Done — `data/tissuelab.sqlite` |
 | Hand-curated live/dead training view (`v_model_viability`) | Done — `data/literature_viability.csv` |
-| Literature viability (empirical Bayes ± adaptive LOPO band) | Done (served; 55 papers, shrinkage LOPO MAE 10.8 vs dummy 11.4, R² 0.045; MVP 15% bar still unmet) |
+| Literature viability (empirical Bayes ± adaptive LOPO band) | Done (served; 58 papers, shrinkage LOPO MAE 11.3 vs dummy 11.4, R² −0.012; MVP 15% bar still unmet) |
 | HTML product: Protocol / Lookup / Table / Compare / CSV | Done — English default |
 | Buyable-minimal plan | `docs/BMP.md` |
 | How to train the viability model (videos → this table) | `docs/ML_PLAN.md` |
@@ -68,17 +68,17 @@ pip install -e ".[dev]" && pytest -q
 
 | Check | Value |
 |---|---|
-| Hand-curated studies | 94 |
-| Hand experiments | 279 |
-| Numeric live/dead (training) | 159 rows / 55 papers |
+| Hand-curated studies | 97 |
+| Hand experiments | 283 |
+| Numeric live/dead (training) | 163 rows / 58 papers |
 | Served model parameters | 57 (11 locked kernel + 46 gel×cell means) |
 | Beginning target | 100 independent live/dead papers |
 | Harvested papers tagged | 12024 (2317 training-relevant) |
-| Dummy LOPO MAE | 11.44 |
-| Shrinkage LOPO MAE | 10.84 (deployed; beats dummy, R² 0.045) |
-| Material-mean LOPO MAE | 12.83 |
-| Ridge LOPO MAE | 12.86 (not deployed) |
-| HGB LOPO MAE | 12.68 (eligible at ≥40 papers; still not served) |
+| Dummy LOPO MAE | 11.43 |
+| Shrinkage LOPO MAE | 11.31 (deployed; beats dummy, R² −0.012) |
+| Material-mean LOPO MAE | 12.82 |
+| Ridge LOPO MAE | 12.61 (not deployed) |
+| HGB LOPO MAE | 13.06 (eligible at ≥40 papers; still not served) |
 | Simulated XGBoost holdout R² | ~0.92 — **ignore** for science |
 
 The product is ready to **use as Protocol**: cells + job → extracted protocol + papers. Lookup is the evidence card. It is not ready to claim a model that beats “GelMA ~25 kPa + TGF-β3”.

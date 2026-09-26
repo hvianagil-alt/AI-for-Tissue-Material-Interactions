@@ -69,6 +69,7 @@ def test_hand_curated_replaces_auto_promoted():
         "gu2020", "carvalho2025", "yi2019",
         "liu2025", "akkineni2022", "lopezmarcial2022",
         "zielinska2023", "gvaramia2024", "galarraga2023", "weitkamp2023",
+        "kudva2017", "diazpayno2022", "loveland2026",
     }
     assert all(s.get("pmid") for s in STUDIES if s["study_id"] in require_pmid)
 
@@ -325,6 +326,28 @@ def test_queue_pass_fourteen_gold_is_numeric_and_honest():
     assert inj["measurements"][0]["value"] == 93.0
     assert inj["stiffness_kpa"] == 2.77
     assert "weitkamp2023-novocart-3d" not in by_id
+
+
+def test_queue_pass_fifteen_gold_is_numeric_and_honest():
+    by_id = {e["experiment_id"]: e for e in EXPERIMENTS}
+    peg = by_id["kudva2017-pegvs-hac-d7"]
+    assert peg["cell_type"] == "articular_chondrocyte"
+    assert peg["material_class"] == "PEG"
+    assert peg["growth_factor"] == "TGF_b1"
+    assert peg["measurements"][0]["value"] == 75.0
+    assert peg.get("stiffness_kpa") is None
+    assert by_id["kudva2017-pegvs-hac-d28"]["measurements"][0]["value"] == 70.0
+    ahat = by_id["diazpayno2022-ahat-hmsc-d14"]
+    assert ahat["material_class"] == "alginate_HA"
+    assert ahat["culture_model"] == "3D_bioprint"
+    assert ahat["measurements"][0]["value"] == 75.0
+    assert ahat["stiffness_kpa"] == 6.7
+    asg = by_id["loveland2026-asg-fast-hmsc-d7"]
+    assert asg["cell_type"] == "MSC"
+    assert asg["measurements"][0]["value"] == 60.0
+    assert asg.get("stiffness_kpa") is None
+    assert asg["growth_factor"] == "none"
+    assert "loveland2026-asg-fast-blebb" not in by_id
 
 
 def test_curated_viability_excludes_auto_promote():

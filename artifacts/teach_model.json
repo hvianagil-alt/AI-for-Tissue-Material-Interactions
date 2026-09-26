@@ -1,16 +1,16 @@
 {
-  "n_rows": 159,
-  "n_studies": 55,
+  "n_rows": 163,
+  "n_studies": 58,
   "served_parameters": 57,
   "served_locked_hyperparameters": 11,
   "served_empirical_priors": 46,
   "budget": {
-    "n_rows": 159,
-    "n_studies": 55,
+    "n_rows": 163,
+    "n_studies": 58,
     "n_materials": 27,
     "n_cell_types": 6,
-    "n_with_kpa": 50,
-    "rows_per_paper": 2.89,
+    "n_with_kpa": 51,
+    "rows_per_paper": 2.81,
     "dummy_parameters": 1,
     "material_mean_parameters": 27,
     "ridge_parameters_guess": 36,
@@ -30,56 +30,58 @@
     "what_to_add_first": "studies"
   },
   "random_split_ridge": {
-    "mae": 10.0523773645699,
-    "r2": -0.2617935220576717,
-    "train_mae": 8.307023104646635,
-    "n_train": 127,
-    "n_test": 32,
+    "mae": 9.170765459877439,
+    "r2": -0.23236363583507424,
+    "train_mae": 8.50373027573201,
+    "n_train": 130,
+    "n_test": 33,
     "test_papers": [
       "akkineni2022",
-      "garciaaponte2025",
+      "carvalho2025",
       "gatenholm2020",
       "gu2020",
-      "hosseini2025",
-      "jovic2026",
+      "jovic2024",
       "kessel2020",
       "kilian2020",
+      "kudva2017",
       "liu2025",
       "markstedt2015",
       "martyniak2023",
-      "orabi2023",
       "park2013",
-      "poldervaart2017",
-      "rojas2025",
-      "sarsenova2022",
+      "perriergroult2026",
+      "ren2016",
+      "scalzone2022",
       "setayeshmehr2021",
-      "sun2015",
       "visscher2018",
+      "xie2022",
+      "yi2019",
+      "yin2023",
       "zeng2023",
       "zhang2024",
+      "zielinska2023",
       "ziverec2026"
     ]
   },
   "ridge_lopo": {
-    "mae": 12.859238341999895,
-    "r2": -0.2006497734925572,
+    "mae": 12.606697674778067,
+    "r2": -0.1810164477218259,
     "n_coefficients": 41
   },
   "dummy_lopo": {
-    "mae": 11.435768850622189,
-    "r2": -0.02446379437464552
+    "mae": 11.430770865536434,
+    "r2": -0.023608322007801608
   },
   "material_mean_lopo": {
-    "mae": 12.826166297025692,
-    "r2": -0.1899879209274944
+    "mae": 12.819054915777484,
+    "r2": -0.18619007579784452
   },
   "shrinkage_lopo": {
-    "mae": 10.838441776867336,
-    "r2": 0.04543216941091677
+    "mae": 11.314111635005114,
+    "r2": -0.012194870451784912
   },
   "hgb_lopo": {
-    "mae": 12.680084981765724,
-    "r2": -0.16229237912174654
+    "mae": 13.06361053449441,
+    "r2": -0.1801715683967875
   },
   "deployed_estimator": "shrinkage",
   "mvp_pass": 0,
@@ -91,9 +93,9 @@
       "stiffness_kpa": 5.0,
       "culture_time_days": 21.0
     },
-    "predicted_viability_pct": 90.4,
+    "predicted_viability_pct": 90.3,
     "material_prior": 94.0,
-    "local_kernel": 79.7,
+    "local_kernel": 79.5,
     "n_eff_same_material": 4.06,
     "estimator": "shrinkage"
   },
