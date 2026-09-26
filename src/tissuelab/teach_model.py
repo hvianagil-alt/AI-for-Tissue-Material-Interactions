@@ -203,6 +203,7 @@ def run_lesson(*, verbose: bool = True) -> dict:
     dummy = lopo["dummy_lopo"]
     material = lopo["material_mean_lopo"]
     shrink = lopo["shrinkage_lopo"]
+    hgb = lopo["hgb_lopo"]
     _print(
         f"  dummy (sempre a média)     MAE {dummy['mae']:.1f}   R² {dummy['r2']:.3f}   "
         f"parâmetros {budget['dummy_parameters']}\n"
@@ -212,6 +213,8 @@ def run_lesson(*, verbose: bool = True) -> dict:
         f"N0={12} (não é fit() por query)\n"
         f"  Ridge LOPO                 MAE {ridge_lopo['mae']:.1f}   R² {ridge_lopo['r2']:.3f}   "
         f"perde — memoriza o paper\n"
+        f"  HGB (relatado, não servido até {budget['papers_needed_trees']} papers)  "
+        f"MAE {hgb['mae']:.1f}   R² {hgb['r2']:.3f}\n"
         f"  vencedor servido           {lopo.get('deployed_estimator')}   "
         f"mvp_pass={lopo.get('mvp_pass')}",
         verbose=verbose,
@@ -277,6 +280,7 @@ def run_lesson(*, verbose: bool = True) -> dict:
         "dummy_lopo": dummy,
         "material_mean_lopo": material,
         "shrinkage_lopo": shrink,
+        "hgb_lopo": hgb,
         "deployed_estimator": lopo.get("deployed_estimator"),
         "mvp_pass": lopo.get("mvp_pass"),
         "example_prediction": example,

@@ -64,4 +64,4 @@ python3 -m tissuelab.teach_model     # a aula, split errado vs certo
 
 Não há botão Train na UI. Não há GPU. `LeaveOneGroupOut(groups=study_id)` é o treino a sério — está em `src/tissuelab/benchmark.py`.
 
-Quando houver ≥ 25 papers e o mixed/shrinkage tiver MAE ≤ 85% do dummy e R² > 0, aí sim se abre um `HistGradientBoostingRegressor` com o mesmo LOPO. Até lá, extrair papers é treinar.
+HGB é calculado no LOPO mas só entra no conjunto de deploy a ≥ 40 papers (`papers_needed_trees`). A 25 papers o mixed/shrinkage é o estimador estável; a app continua a servir `shrinkage_estimate`. Até lá, extrair papers é treinar.

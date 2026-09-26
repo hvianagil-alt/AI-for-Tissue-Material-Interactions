@@ -19,7 +19,7 @@ The point of the MVP is not “AI for biology”. It is:
 |---|---|
 | SQLite experimental DB (`studies` / `experiments` / `measurements`) | Done — `data/tissuelab.sqlite` |
 | Hand-curated live/dead training view (`v_model_viability`) | Done — `data/literature_viability.csv` |
-| Literature viability (empirical Bayes ± adaptive LOPO band) | Done (beats dummy; R² still < 0) |
+| Literature viability (empirical Bayes ± adaptive LOPO band) | Done (served; this batch shrinkage MAE is slightly worse than dummy; R² still < 0) |
 | HTML product: Protocol / Lookup / Table / Compare / CSV | Done — English default |
 | Buyable-minimal plan | `docs/BMP.md` |
 | How to train the viability model (videos → this table) | `docs/ML_PLAN.md` |

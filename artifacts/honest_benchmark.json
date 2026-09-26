@@ -55,16 +55,18 @@
     "mae": 13.59794943328593,
     "r2": -0.08292575100468191
   },
+  "papers_needed_trees": 40,
   "pass_bar": {
-    "description": "Deployed tabular estimator LOPO MAE at least 15% below dummy LOPO, R\u00b2 > 0, n_studies >= 15. Ridge/HGB are reported; HGB may deploy only at n_studies>=40. Shrinkage is empirical Bayes (kernel + material prior), not a neural net. Dummy is never served.",
+    "description": "Deployed tabular estimator LOPO MAE at least 15% below dummy LOPO, R\u00b2 > 0, n_studies >= 15. Ridge/HGB are reported; HGB may deploy only at n_studies>=40. Lookup always serves shrinkage (empirical Bayes: kernel + material prior), never dummy or a net.",
     "dummy_mae_target_ratio": 0.85,
-    "min_studies": 15
+    "min_studies": 15,
+    "hgb_min_studies": 40
   },
   "notes": [
     "This is the MVP scientific metric on hand-curated live/dead only. Simulated holdout R\u00b2 is not.",
     "Auto-promoted pmid* rows are excluded from this split.",
     "Do not add unpaired regex hits to inflate n_rows.",
-    "Deployed estimator is the LOPO winner among material-class mean and shrinkage (never dummy). Ridge overfits this table. HGB is reported only until >=40 papers."
+    "Deployed estimator is the LOPO winner among dummy, material-class mean, and shrinkage; dummy is never served (shrinkage stays if dummy would win). Ridge overfits this table. HGB is computed every run but eligible to deploy only at >=40 papers."
   ],
   "status": "baseline",
   "beats_dummy": false,

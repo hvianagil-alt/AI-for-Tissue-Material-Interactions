@@ -58,6 +58,10 @@
     "mae": 13.59794943328593,
     "r2": -0.08292575100468191
   },
+  "hgb_lopo": {
+    "mae": 12.349942545426337,
+    "r2": 0.15472848809655715
+  },
   "deployed_estimator": "shrinkage",
   "mvp_pass": 0,
   "example_prediction": {

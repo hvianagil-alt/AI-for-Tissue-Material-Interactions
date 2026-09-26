@@ -2,12 +2,20 @@ from tissuelab.teach_model import data_budget, predict_one_gel, run_lesson
 
 
 def test_teach_model_runs_on_real_table():
+    from tissuelab.benchmark import PAPERS_NEEDED_TREES
+
     report = run_lesson(verbose=False)
     assert report["n_studies"] >= 15
+    assert report["n_studies"] < PAPERS_NEEDED_TREES
     assert report["n_rows"] >= 40
     assert report["dummy_lopo"]["mae"] > 0
     assert report["ridge_lopo"]["mae"] > report["dummy_lopo"]["mae"]
+    assert report["hgb_lopo"]["mae"] > 0
+    assert report["deployed_estimator"] == "shrinkage"
     assert report["deployed_estimator"] != "dummy"
+    assert report["deployed_estimator"] != "hgb"
+    assert report["mvp_pass"] in {False, 0}
+    assert report["example_prediction"]["estimator"] in {"shrinkage", "shrinkage_global_prior"}
     assert report["what_to_add_first"].startswith("more independent papers")
     pred = report["example_prediction"]["predicted_viability_pct"]
     assert pred is not None

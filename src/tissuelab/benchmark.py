@@ -147,9 +147,10 @@ def leave_one_paper_out(frame: pd.DataFrame) -> dict:
     shrinkage_lopo = _scores(y, shrinkage_pred)
     dummy_mae = dummy_lopo["mae"]
     n_studies = int(frame["study_id"].nunique())
-    # Dummy is the bar, never the product. Lookup stays shrinkage. Trees wait for 40 papers
-    # (HGB beating dummy at n=17–25 has already reversed once).
+    # Dummy is scored as the bar, never served. Lookup stays shrinkage_estimate.
+    # Trees wait for PAPERS_NEEDED_TREES (HGB beating dummy at n=17–25 reversed at n=23).
     candidates = [
+        ("dummy", dummy_lopo),
         ("material_mean", material_mean_lopo),
         ("shrinkage", shrinkage_lopo),
     ]
@@ -157,7 +158,9 @@ def leave_one_paper_out(frame: pd.DataFrame) -> dict:
         candidates.append(("hgb", hgb_lopo))
     deployed, deployed_lopo = min(candidates, key=lambda item: item[1]["mae"])
     if deployed == "dummy":
-        deployed, deployed_lopo = "shrinkage", shrinkage_lopo
+        shrink = next((item for item in candidates if item[0] == "shrinkage"), None)
+        if shrink is not None:
+            deployed, deployed_lopo = shrink
     report = {
         "n_rows": int(len(frame)),
         "n_studies": n_studies,
@@ -171,20 +174,28 @@ def leave_one_paper_out(frame: pd.DataFrame) -> dict:
         "shrinkage_lopo": shrinkage_lopo,
         "deployed_estimator": deployed,
         "deployed_lopo": deployed_lopo,
+        "papers_needed_trees": PAPERS_NEEDED_TREES,
         "pass_bar": {
             "description": (
                 "Deployed tabular estimator LOPO MAE at least 15% below dummy LOPO, "
-                "R² > 0, n_studies >= 15. Ridge/HGB are reported; HGB may deploy only at n_studies>=40. "
-                "Shrinkage is empirical Bayes (kernel + material prior), not a neural net. Dummy is never served."
+                "R² > 0, n_studies >= 15. Ridge/HGB are reported; HGB may deploy only at "
+                f"n_studies>={PAPERS_NEEDED_TREES}. Lookup always serves shrinkage "
+                "(empirical Bayes: kernel + material prior), never dummy or a net."
             ),
             "dummy_mae_target_ratio": 0.85,
             "min_studies": 15,
+            "hgb_min_studies": PAPERS_NEEDED_TREES,
         },
         "notes": [
             "This is the MVP scientific metric on hand-curated live/dead only. Simulated holdout R² is not.",
             "Auto-promoted pmid* rows are excluded from this split.",
             "Do not add unpaired regex hits to inflate n_rows.",
-            "Deployed estimator is the LOPO winner among material-class mean and shrinkage (never dummy). Ridge overfits this table. HGB is reported only until >=40 papers.",
+            (
+                "Deployed estimator is the LOPO winner among dummy, material-class mean, "
+                "and shrinkage; dummy is never served (shrinkage stays if dummy would win). "
+                f"Ridge overfits this table. HGB is computed every run but eligible to "
+                f"deploy only at >={PAPERS_NEEDED_TREES} papers."
+            ),
         ],
         "status": "baseline",
     }

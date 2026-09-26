@@ -8,7 +8,7 @@ import joblib
 import numpy as np
 import pandas as pd
 
-from tissuelab.benchmark import FEATURES_CAT, FEATURES_NUM, leave_one_paper_out, load_viability
+from tissuelab.benchmark import FEATURES_CAT, FEATURES_NUM, PAPERS_NEEDED_TREES, leave_one_paper_out, load_viability
 from tissuelab.db import connect
 from tissuelab.paths import DB_PATH, HONEST_METRICS_PATH, LITERATURE_MODEL_PATH
 from tissuelab.shrinkage import N0, knob_deltas, shrinkage_estimate
@@ -35,11 +35,16 @@ def _lopo_cached(frame: pd.DataFrame) -> dict:
             report = json.loads(HONEST_METRICS_PATH.read_text())
         except json.JSONDecodeError:
             report = {}
+        n_studies = int(frame["study_id"].nunique())
+        stale_hgb = (
+            report.get("deployed_estimator") == "hgb" and n_studies < PAPERS_NEEDED_TREES
+        )
         fresh = (
             report.get("n_rows") == int(len(frame))
-            and report.get("n_studies") == int(frame["study_id"].nunique())
+            and report.get("n_studies") == n_studies
             and "shrinkage_lopo" in report
             and "deployed_estimator" in report
+            and not stale_hgb
         )
         if fresh:
             return report

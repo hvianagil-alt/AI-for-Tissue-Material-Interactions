@@ -50,7 +50,8 @@ def test_similar_published_returns_hand_rows_only():
     assert all("viability_pct" in row for row in rows)
 
 
-def test_predict_gelma_uses_shrinkage_and_beats_dummy():
+def test_predict_gelma_uses_shrinkage_lookup():
+    from tissuelab.benchmark import PAPERS_NEEDED_TREES
     from tissuelab.literature_model import load_curated_viability
     from tissuelab.load_database import load
     from tissuelab.paths import DB_PATH
@@ -73,7 +74,14 @@ def test_predict_gelma_uses_shrinkage_and_beats_dummy():
     assert out["n_support"] == int(len(gelma))
     assert out["similar"]
     lopo = out["lopo"]
+    assert lopo["n_studies"] >= 15
+    assert lopo["n_studies"] < PAPERS_NEEDED_TREES
     assert lopo["deployed_estimator"] == "shrinkage"
+    assert lopo["deployed_estimator"] != "dummy"
+    assert lopo["deployed_estimator"] != "hgb"
+    assert lopo["hgb_mae"] is not None
+    assert lopo["shrinkage_mae"] is not None
+    assert lopo["dummy_mae"] is not None
     assert lopo["ridge_beats_dummy"] is False
     assert lopo["mvp_pass"] is False
     assert lopo["ridge_mae"] > lopo["dummy_mae"]
