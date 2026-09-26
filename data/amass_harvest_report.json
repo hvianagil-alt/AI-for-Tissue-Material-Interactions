@@ -1,106 +1,109 @@
 {
-  "n_papers": 8062,
-  "n_with_abstract": 7944,
-  "n_extractions": 22276,
-  "n_papers_with_viability_mention": 67,
-  "n_papers_with_stiffness_mention": 395,
-  "n_papers_mentioning_chondrocyte": 3041,
-  "n_papers_with_mapped_material": 3618,
+  "n_papers": 12024,
+  "n_with_abstract": 11834,
+  "n_extractions": 38843,
+  "n_papers_with_viability_mention": 152,
+  "n_papers_with_stiffness_mention": 544,
+  "n_papers_mentioning_chondrocyte": 3786,
+  "n_papers_with_mapped_material": 5244,
   "papers_per_year": {
-    "2004": 166,
-    "2005": 175,
-    "2006": 237,
-    "2007": 256,
-    "2008": 178,
-    "2009": 300,
-    "2010": 329,
-    "2011": 207,
-    "2012": 264,
-    "2013": 302,
-    "2014": 350,
-    "2015": 426,
-    "2016": 343,
-    "2017": 397,
-    "2018": 258,
-    "2019": 271,
-    "2020": 527,
-    "2021": 513,
-    "2022": 491,
-    "2023": 512,
-    "2024": 518,
-    "2025": 513,
-    "2026": 529
+    "2004": 197,
+    "2005": 208,
+    "2006": 279,
+    "2007": 314,
+    "2008": 207,
+    "2009": 357,
+    "2010": 392,
+    "2011": 261,
+    "2012": 311,
+    "2013": 377,
+    "2014": 434,
+    "2015": 516,
+    "2016": 345,
+    "2017": 400,
+    "2018": 373,
+    "2019": 404,
+    "2020": 750,
+    "2021": 750,
+    "2022": 733,
+    "2023": 795,
+    "2024": 864,
+    "2025": 1219,
+    "2026": 1538
   },
   "extractions_per_field": {
-    "cell_type": 5226,
-    "culture_time_days": 582,
-    "growth_factor": 159,
-    "material_class": 5426,
-    "scaffold_class": 5284,
-    "stiffness_kpa": 695,
-    "tissue": 4829,
-    "viability_pct": 75
+    "application": 2451,
+    "architecture": 3551,
+    "cell_type": 8110,
+    "chemical_modification": 495,
+    "culture_time_days": 907,
+    "growth_factor": 213,
+    "material_class": 7862,
+    "scaffold_class": 7598,
+    "stiffness_kpa": 956,
+    "tissue": 6523,
+    "viability_pct": 177
   },
   "top_journals": [
     {
       "journal": "Frontiers in bioengineering and biotechnology",
-      "n": 261
-    },
-    {
-      "journal": "Polymers",
-      "n": 260
+      "n": 375
     },
     {
       "journal": "Gels (Basel, Switzerland)",
-      "n": 235
-    },
-    {
-      "journal": "Biomaterials",
-      "n": 233
-    },
-    {
-      "journal": "Acta biomaterialia",
-      "n": 213
+      "n": 340
     },
     {
       "journal": "International journal of molecular sciences",
-      "n": 198
+      "n": 337
     },
     {
-      "journal": "Scientific reports",
-      "n": 125
+      "journal": "Biomaterials",
+      "n": 336
     },
     {
-      "journal": "PloS one",
-      "n": 124
+      "journal": "Polymers",
+      "n": 316
     },
     {
-      "journal": "Journal of biomedical materials research. Part A",
-      "n": 124
+      "journal": "Acta biomaterialia",
+      "n": 284
     },
     {
-      "journal": "Tissue engineering. Part A",
-      "n": 110
-    },
-    {
-      "journal": "Advanced science (Weinheim, Baden-Wurttemberg, Germany)",
-      "n": 108
+      "journal": "Materials today. Bio",
+      "n": 219
     },
     {
       "journal": "Advanced healthcare materials",
-      "n": 105
+      "n": 184
     },
     {
-      "journal": "International journal of biological macromolecules",
-      "n": 98
+      "journal": "Scientific reports",
+      "n": 181
     },
     {
-      "journal": "Osteoarthritis and cartilage",
-      "n": 86
+      "journal": "Stem cell research & therapy",
+      "n": 178
     },
     {
-      "journal": "Materials (Basel, Switzerland)",
-      "n": 79
+      "journal": "Advanced science (Weinheim, Baden-Wurttemberg, Germany)",
+      "n": 174
+    },
+    {
+      "journal": "Bioactive materials",
+      "n": 173
+    },
+    {
+      "journal": "Journal of biomedical materials research. Part A",
+      "n": 167
+    },
+    {
+      "journal": "PloS one",
+      "n": 157
+    },
+    {
+      "journal": "Tissue engineering. Part A",
+      "n": 138
     }
   ],
   "notes": [
