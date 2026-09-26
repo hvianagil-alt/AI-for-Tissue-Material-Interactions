@@ -22,6 +22,7 @@ The point of the MVP is not “AI for biology”. It is:
 | Literature viability (empirical Bayes ± adaptive LOPO band) | Done (beats dummy; R² still < 0) |
 | HTML product: Protocol / Lookup / Table / Compare / CSV | Done — English default |
 | Buyable-minimal plan | `docs/BMP.md` |
+| How to train the viability model (videos → this table) | `docs/ML_PLAN.md` |
 | Native literature measurements (no fake porosity) | Done |
 | Mapped 0–100 scores + simulator (software prior only) | Still in the old CSV/ML path |
 | Literature-informed simulator (~650 records) | Done |
