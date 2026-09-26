@@ -70,6 +70,7 @@ def test_hand_curated_replaces_auto_promoted():
         "liu2025", "akkineni2022", "lopezmarcial2022",
         "zielinska2023", "gvaramia2024", "galarraga2023", "weitkamp2023",
         "kudva2017", "diazpayno2022", "loveland2026",
+        "windisch2023", "zhang2023pva",
     }
     assert all(s.get("pmid") for s in STUDIES if s["study_id"] in require_pmid)
 
@@ -348,6 +349,28 @@ def test_queue_pass_fifteen_gold_is_numeric_and_honest():
     assert asg.get("stiffness_kpa") is None
     assert asg["growth_factor"] == "none"
     assert "loveland2026-asg-fast-blebb" not in by_id
+
+
+def test_queue_pass_sixteen_gold_is_numeric_and_honest():
+    by_id = {e["experiment_id"]: e for e in EXPERIMENTS}
+    w = by_id["windisch2023-pbs-algmc-hmsc-d1"]
+    assert w["cell_type"] == "MSC"
+    assert w["material_class"] == "alginate"
+    assert w["culture_model"] == "3D_bioprint"
+    assert w["measurements"][0]["value"] == 60.0
+    assert w.get("stiffness_kpa") is None
+    assert w["growth_factor"] == "none"
+    assert "windisch2023-plasma" not in by_id
+    assert "windisch2023-saos" not in by_id
+    z1 = by_id["zhang2023pva-algpba-pva-mchond-d1"]
+    assert z1["cell_type"] == "articular_chondrocyte"
+    assert z1["species"] == "mouse"
+    assert z1["material_class"] == "alginate"
+    assert z1["measurements"][0]["value"] == 83.0
+    assert z1.get("stiffness_kpa") is None
+    z7 = by_id["zhang2023pva-algpba-pva-mchond-d7"]
+    assert z7["measurements"][0]["value"] == 80.0
+    assert "zhang2023pva-l929" not in by_id
 
 
 def test_curated_viability_excludes_auto_promote():

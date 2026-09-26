@@ -4,7 +4,7 @@ The product question is unchanged:
 
 > Can this system change which hydrogel experiment a cartilage researcher runs next?
 
-8000 Amass papers are a **library**. They do not make the model work. A model that “works” needs labeled conditions: material × stiffness × cells × time → a number the lab actually measured. That table is now **97 hand-curated studies / 283 experiments / 163 numeric live/dead rows from 58 papers**. Auto-promoted `pmid*` rows stay in SQLite as inventory and are **not** in the training view.
+8000 Amass papers are a **library**. They do not make the model work. A model that “works” needs labeled conditions: material × stiffness × cells × time → a number the lab actually measured. That table is now **99 hand-curated studies / 286 experiments / 166 numeric live/dead rows from 60 papers**. Auto-promoted `pmid*` rows stay in SQLite as inventory and are **not** in the training view.
 
 ## What “MVP” means here (and what it does not)
 
@@ -31,7 +31,7 @@ Harvest more papers only after the top 250 queued items are extracted or rejecte
 
 There is **no** public `material × chondrocyte × outcome` CSV. BIOMATDB and OOCDB are search portals. The better source we added is **Europe PMC open fulltext** (free XML), used before paid Amass fulltext.
 
-Current snapshot: hand-curated live/dead in `data/train_gold.csv` (**163 numeric rows / 58 papers**); harvested papers tagged in `data/papers_uniform.csv` (**12 024**, library not labels). Deployed estimator is **empirical-Bayes shrinkage** — not Ridge, not HGB, not a neural net. There is no 2000-study model. R² is still ~−0.012, `mvp_pass` false. The 15% MAE bar needs more independent live/dead papers, not more AI.
+Current snapshot: hand-curated live/dead in `data/train_gold.csv` (**166 numeric rows / 60 papers**); harvested papers tagged in `data/papers_uniform.csv` (**12 024**, library not labels). Deployed estimator is **empirical-Bayes shrinkage** — not Ridge, not HGB, not a neural net. There is no 2000-study model. R² is still ~−0.027, `mvp_pass` false. The 15% MAE bar needs more independent live/dead papers, not more AI.
 
 How to grow that estimator without copying a random-split materials notebook: `docs/ML_PLAN.md` (mixed models + LOPO + Afflerbach workflow, mapped onto this table). If you have never trained a model, start with `docs/TRAIN.md` (`python3 -m tissuelab.teach_model`).
 

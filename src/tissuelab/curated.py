@@ -1159,6 +1159,38 @@ STUDIES: list[dict] = [
             "Starting E ≈5–6 kPa is a range and is not stored. Chondrogenic medium has no TGF in the methods sentence."
         ),
     },
+    {
+        "study_id": "windisch2023",
+        "citation": "Windisch et al., Adv. Healthcare Mater. 2023",
+        "doi": "10.1002/adhm.202300436",
+        "pmid": "37125819",
+        "year": 2023,
+        "journal": "Advanced Healthcare Materials",
+        "pmcid": "PMC11468998",
+        "license": "CC-BY",
+        "notes": (
+            "hTERT-MSC P5 5e6/g printed in 3% alginate + 9% methylcellulose in PBS (unstored W0). "
+            "Live/dead day 1 ≈60% PBS-Alg-MC. Plasma-Alg-MC 90% is a high/floor-adjacent arm and is not stored. "
+            "Cold-storage W1–W4, SaOS-2, HepG2, DPSC, and microalgae arms not stored. "
+            "Print pressure 270 kPa is not Young's. CaCl2 concentration is not quoted in this paper. "
+            "Independent of liu2025 (same AlgMC family, egg-white arm)."
+        ),
+    },
+    {
+        "study_id": "zhang2023pva",
+        "citation": "Zhang, Kuss, Yan & Shi, Gels 2023",
+        "doi": "10.3390/gels9040312",
+        "pmid": "37102924",
+        "year": 2023,
+        "journal": "Gels",
+        "pmcid": "PMC10137987",
+        "license": "CC-BY",
+        "notes": (
+            "Primary mouse chondrocytes 2.5e6/ml printed in Alg-PBA-PVA (final ~1.9% Alg-PBA + 1% PVA), 50 mM CaCl2. "
+            "Live/dead ~83% day 1 and ~80% day 7. L929 MTT and L929 >90% live/dead not stored. "
+            "H2O2 oxidative-stress arm not stored. G′ 0.28→1.44 kPa is storage modulus, not Young's."
+        ),
+    },
 ]
 
 
@@ -5403,6 +5435,90 @@ def _queue_pass_fifteen() -> list[dict]:
     return rows
 
 
+def _queue_pass_sixteen() -> list[dict]:
+    """AlgMC print death neighbor to Liu, plus Alg-PBA-PVA printed chondrocytes."""
+    rows = [
+        {
+            "experiment_id": "windisch2023-pbs-algmc-hmsc-d1",
+            "study_id": "windisch2023",
+            "material_class": "alginate",
+            "material_detail": "3% w/v alginate + 9% w/v methylcellulose in PBS, ionically crosslinked after print",
+            "crosslinking": "ionic",
+            "polymer_concentration_wt_pct": 3.0,
+            "surface_chemistry": "none",
+            "has_adhesion_ligand": 0.0,
+            "cell_type": "MSC",
+            "species": "human",
+            "culture_model": "3D_bioprint",
+            "growth_factor": "none",
+            "culture_time_days": 1.0,
+            "cell_density_million_per_ml": 5.0,
+            "passage": 5,
+            "chemical_modification": "unmodified",
+            "architecture": "3d_printed",
+            "application": "bioprinting",
+            "live_dead_kit": "calcein_ethidium",
+            "n_replicates": 3,
+            "extracted_from": "PMC11468998 W0 PBS-Alg-MC hTERT-MSC day 1",
+            "curator_confidence": "medium",
+            "notes": (
+                "hTERT-MSC P5, 5e6 cells per gram bioink. Paper: viability of unstored (W0) PBS-Alg-MC "
+                "on day 1 was ≈60%. Plasma-Alg-MC 90% not stored. Cold-storage W1–W4 not stored. "
+                "SaOS-2, HepG2, DPSC, and microalgae not stored. Print 270 kPa is not Young's. "
+                "CaCl2 concentration not quoted in this paper. Independent of liu2025."
+            ),
+            "measurements": [
+                _m(
+                    "viability_pct",
+                    60.0,
+                    "%",
+                    evidence="numeric_text",
+                    n=3,
+                    notes="Paper: ≈60% W0 PBS-Alg-MC day 1.",
+                )
+            ],
+        }
+    ]
+    for day, val, extra in (
+        (1.0, 83.0, "Paper: ~83% on average in the scaffold at day 1."),
+        (7.0, 80.0, "Paper: barely decreased to ~80% at day 7."),
+    ):
+        rows.append(
+            {
+                "experiment_id": f"zhang2023pva-algpba-pva-mchond-d{int(day)}",
+                "study_id": "zhang2023pva",
+                "material_class": "alginate",
+                "material_detail": "1.9% w/v Alg-PBA + 1% w/v PVA, 50 mM CaCl2 after print",
+                "crosslinking": "ionic",
+                "polymer_concentration_wt_pct": 1.9,
+                "surface_chemistry": "none",
+                "has_adhesion_ligand": 0.0,
+                "cell_type": "articular_chondrocyte",
+                "species": "mouse",
+                "culture_model": "3D_bioprint",
+                "growth_factor": "none",
+                "culture_time_days": day,
+                "cell_density_million_per_ml": 2.5,
+                "chemical_modification": "phenylboronic",
+                "architecture": "3d_printed",
+                "application": "bioprinting",
+                "live_dead_kit": "live_dead_fluorescence",
+                "n_replicates": 4,
+                "extracted_from": f"PMC10137987 Fig. 5G mouse chondrocyte live/dead day {int(day)}",
+                "curator_confidence": "medium",
+                "notes": (
+                    f"Primary mouse chondrocytes, 2.5e6/ml. Live/dead {val}% day {int(day)}. {extra} "
+                    "L929 MTT and L929 >90% live/dead not stored. H2O2 arm not stored. "
+                    "G′ 0.28→1.44 kPa is storage modulus and is not stored as Young's."
+                ),
+                "measurements": [
+                    _m("viability_pct", val, "%", evidence="numeric_text", n=4, notes=extra)
+                ],
+            }
+        )
+    return rows
+
+
 EXPERIMENTS: list[dict] = (
     _bachmann_experiments()
     + _other_experiments()
@@ -5423,4 +5539,5 @@ EXPERIMENTS: list[dict] = (
     + _queue_pass_thirteen()
     + _queue_pass_fourteen()
     + _queue_pass_fifteen()
+    + _queue_pass_sixteen()
 )
