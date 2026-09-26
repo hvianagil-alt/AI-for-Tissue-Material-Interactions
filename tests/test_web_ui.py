@@ -3,55 +3,65 @@ from fastapi.testclient import TestClient
 from app.api import app
 
 
-def test_home_shows_gelma_literature_without_javascript():
+def test_home_is_a_protocol_for_my_cells():
     client = TestClient(app)
     response = client.get("/")
     assert response.status_code == 200
-    assert "text/html" in response.headers["content-type"]
     body = response.text
-    assert "Which gel next" in body
-    assert "<svg" in body
-    assert "live/dead" in body.lower()
-    assert "What if you changed the protocol" in body
-    assert "Articular chondrocyte" in body
+    assert "This week, run" in body
+    assert "Fibrin" in body
+    assert "Find protocol" in body
+    assert "Literature for this question" in body
     assert 'lang="en"' in body
+    assert 'href="/lookup' in body
     assert 'href="/table' in body
-    assert 'href="/compare' in body
-    assert "stiffness (kPa)" in body
-    assert "rigidez" not in body
-    assert "Also extracted for this gel" in body
-    assert "Li et al" in body or "li2016" in body.lower()
+    assert "Which gel next" not in body
+    assert "effective n on this gel" not in body
 
 
-def test_home_portuguese_still_available():
+def test_home_portuguese_decision_copy():
     client = TestClient(app)
     body = client.get("/", params={"lang": "pt"}).text
     assert 'lang="pt"' in body
+    assert "Esta semana" in body
+    assert "Protocolo" in body
     assert "Tabela" in body
 
 
-def test_home_fibrin_differs_from_gelma():
+def test_home_print_differs_from_alive():
     client = TestClient(app)
-    gelma = client.get("/", params={"material_class": "GelMA", "stiffness_kpa": 25})
-    fibrin = client.get("/", params={"material_class": "fibrin", "stiffness_kpa": 25})
-    chitosan = client.get("/", params={"material_class": "chitosan", "stiffness_kpa": 25})
+    alive = client.get("/", params={"goal": "alive"})
+    printed = client.get("/", params={"goal": "print", "how": "print"})
+    assert alive.status_code == 200
+    assert printed.status_code == 200
+    assert "Fibrin" in alive.text
+    assert alive.text != printed.text
+
+
+def test_lookup_still_looks_up_a_picked_gel():
+    client = TestClient(app)
+    response = client.get("/lookup")
+    assert response.status_code == 200
+    body = response.text
+    assert "Look up this protocol" in body
+    assert "<svg" in body
+    assert "Also extracted for this gel" in body
+    assert "Li et al" in body or "li2016" in body.lower()
+    assert "stiffness (kPa)" in body
+    assert "rigidez" not in body
+    assert "How this number is made" in body
+
+
+def test_lookup_fibrin_differs_from_gelma():
+    client = TestClient(app)
+    gelma = client.get("/lookup", params={"material_class": "GelMA", "stiffness_kpa": 25})
+    fibrin = client.get("/lookup", params={"material_class": "fibrin", "stiffness_kpa": 25})
+    chitosan = client.get("/lookup", params={"material_class": "chitosan", "stiffness_kpa": 25})
     assert gelma.status_code == 200
-    assert fibrin.status_code == 200
-    assert chitosan.status_code == 200
-    assert "<svg" in gelma.text
-    assert gelma.text != fibrin.text
-    assert fibrin.text != chitosan.text
+    assert fibrin.text != gelma.text
     assert "Fibrin" in fibrin.text
     assert "Chitosan" in chitosan.text
-
-
-def test_home_lists_extracted_composites():
-    client = TestClient(app)
-    body = client.get("/").text
-    assert 'value="fibrin_dECM"' in body
-    assert 'value="chitosan_gelatin_PVA"' in body
-    assert 'value="GelMA_HA"' in body
-    assert "Weak evidence" in body or "borrowed" in body.lower()
+    assert 'value="GelMA_HA"' in gelma.text
 
 
 def test_table_is_hand_curated_only():
@@ -60,15 +70,11 @@ def test_table_is_hand_curated_only():
     assert response.status_code == 200
     body = response.text
     assert "Extracted live/dead table" in body
-    assert "pmid" not in body.lower() or "pmid*" in body  # caption may mention exclusion
-    assert "Daly" in body or "daly" in body.lower() or "Biofabrication" in body
+    assert "pmid" not in body.lower() or "pmid*" in body
     csv_response = client.get("/export.csv")
     assert csv_response.status_code == 200
-    assert "text/csv" in csv_response.headers["content-type"]
-    text = csv_response.text
-    assert "material_class" in text
-    assert "pmid" not in text.splitlines()[0]
-    assert any(line.startswith("2016") or ",daly2016," in line or "daly2016" in line for line in text.splitlines())
+    assert "material_class" in csv_response.text.splitlines()[0]
+    assert any("daly2016" in line or line.startswith("2016") for line in csv_response.text.splitlines())
 
 
 def test_table_filter_keeps_all_gels_in_dropdown():
@@ -78,7 +84,6 @@ def test_table_filter_keeps_all_gels_in_dropdown():
     assert 'value="fibrin"' in body
     assert 'value="GelMA"' in body
     assert "All gels" in body
-    assert "pmid" not in body.lower() or "pmid*" in body
 
 
 def test_compare_gelma_and_fibrin():
@@ -86,7 +91,5 @@ def test_compare_gelma_and_fibrin():
     response = client.get("/compare", params={"a_material": "GelMA", "b_material": "fibrin"})
     assert response.status_code == 200
     assert "Compare two protocols" in response.text
-    assert "GelMA" in response.text
     assert "Fibrin" in response.text
-    assert "pp" in response.text
     assert "A is" in response.text

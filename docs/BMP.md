@@ -24,7 +24,9 @@ Pilot price to say out loud: **£80–150 / lab / month** for the extracted tabl
 
 A PI can do this in **one sitting, no install, no account**:
 
-1. Open the app. In 30 seconds see an evidence card for **GelMA ~25 kPa, articular chondrocyte, 14 d**.
+1. Open the app. In 30 seconds see **this week’s protocol** for articular chondrocytes (not a GelMA slider).
+2. Switch job to **print**. The gel should change. Open the DOIs.
+3. `/lookup` still looks up a gel you already picked. Charts sit behind details.
 2. Switch to **fibrin** and **chitosan**. The papers, trust badge, and band actually change. DOIs open.
 3. Open **the table**: every hand-extracted live/dead row, filter by gel, download CSV.
 4. **Compare** two protocols side by side (their gel vs GelMA + TGF-β3).
@@ -60,7 +62,8 @@ After each extraction batch: `python -m tissuelab.load_database` then `python -m
 
 | Surface | Why a PI uses it |
 |---|---|
-| `/` evidence card | The decision. GelMA also shows **Also extracted** floors/kPa the number ignores. |
+| `/` protocol | Cells + job → what to run. Search harvested papers. |
+| `/lookup` | Evidence card if they already picked a gel |
 | `/table` | The thing they email a colleague. Filter keeps every gel in the dropdown. |
 | `/export.csv` | Drops into GraphPad / Excel |
 | `/compare` | “Is fibrin actually better than GelMA+TGF for *this*?” A minus B in plain English. |

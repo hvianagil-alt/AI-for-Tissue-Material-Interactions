@@ -5,26 +5,31 @@ from __future__ import annotations
 from html import escape
 
 NAV = (
-    ("/", "Predict", "Predict"),
+    ("/", "Protocol", "Protocolo"),
+    ("/lookup", "Lookup", "Consulta"),
     ("/table", "Table", "Tabela"),
     ("/compare", "Compare", "Comparar"),
-    ("/export.csv", "Export CSV", "Exportar CSV"),
+    ("/export.csv", "CSV", "CSV"),
 )
 
 COPY = {
     "en": {
         "product": "TissueLab",
-        "tagline": "Extracted live/dead for cartilage hydrogels — not a virtual flask.",
+        "tagline": "Extracted protocols for cartilage hydrogels.",
         "skip": "Skip to result",
         "lang_switch": "PT",
         "lang_href": "?lang=pt",
+        "onboard": "Tell us the cells and the job. We rank extracted protocols, then search papers. Not a virtual flask.",
+        "onboard_short": "Cells + job → a protocol from the table, then papers.",
     },
     "pt": {
         "product": "TissueLab",
-        "tagline": "Live/dead extraído para hidrogéis de cartilagem — não é um frasco virtual.",
+        "tagline": "Protocolos extraídos para hidrogéis de cartilagem.",
         "skip": "Saltar para o resultado",
         "lang_switch": "EN",
         "lang_href": "?lang=en",
+        "onboard": "Diz as células e o que queres. Ordenamos protocolos extraídos e procuramos papers. Não é um frasco virtual.",
+        "onboard_short": "Células + objetivo → um protocolo da tabela, depois papers.",
     },
 }
 
@@ -63,26 +68,41 @@ def normalize_lang(lang: str | None) -> str:
     return "pt" if str(lang or "").lower().startswith("pt") else "en"
 
 
-def render_shell(*, title: str, lang: str, page: str, body: str, extra_css: str = "", extra_head: str = "") -> str:
+def render_shell(
+    *,
+    title: str,
+    lang: str,
+    page: str,
+    body: str,
+    extra_css: str = "",
+    extra_head: str = "",
+    onboard: str | bool = True,
+    qs: str = "",
+) -> str:
     lang = normalize_lang(lang)
     copy = COPY[lang]
+    other = "pt" if lang == "en" else "en"
     links = []
     for href, en, pt in NAV:
         label = pt if lang == "pt" else en
         current = ' aria-current="page"' if href.rstrip("/") == page.rstrip("/") or (page == "/" and href == "/") else ""
-        sep = "&" if "?" in href else "?"
-        lang_q = "" if href.endswith(".csv") else f"{sep}lang={lang}"
+        if href.endswith(".csv"):
+            lang_q = ""
+        else:
+            lang_q = f"{'&' if '?' in href else '?'}lang={lang}"
         links.append(f'<a href="{escape(href + lang_q)}"{current}>{escape(label)}</a>')
-    switch_href = copy["lang_href"]
-    if page not in {"/", ""}:
-        switch_href = f"{page}{copy['lang_href']}"
-    onboard = (
-        "<p class='onboard'><strong>30 seconds:</strong> pick the gel you would run on Friday. "
-        "Read the nearest extracted papers. Download the table. The number is a literature lookup, not your next flask.</p>"
-        if lang == "en"
-        else "<p class='onboard'><strong>30 segundos:</strong> escolhe o gel que corrias na sexta. "
-        "Abre os papers extraídos. Descarrega a tabela. O número é um lookup da literatura, não o próximo frasco.</p>"
-    )
+    if qs:
+        switch_href = f"{page}?{qs}&lang={other}" if page not in {"/", ""} else f"?{qs}&lang={other}"
+    elif page not in {"/", ""}:
+        switch_href = f"{page}?lang={other}"
+    else:
+        switch_href = f"?lang={other}"
+    if onboard == "short":
+        onboard_html = f"<p class='onboard'>{escape(copy['onboard_short'])}</p>"
+    elif onboard:
+        onboard_html = f"<p class='onboard'>{escape(copy['onboard'])}</p>"
+    else:
+        onboard_html = ""
     return f"""<!DOCTYPE html>
 <html lang="{lang}">
 <head>
@@ -104,7 +124,7 @@ def render_shell(*, title: str, lang: str, page: str, body: str, extra_css: str 
       <a class="lang" href="{escape(switch_href)}">{escape(copy["lang_switch"])}</a>
     </div>
   </header>
-  {onboard}
+  {onboard_html}
   <main>
     {body}
   </main>

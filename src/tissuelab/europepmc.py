@@ -82,11 +82,11 @@ def fetch_pmc_fulltext(pmcid: str | None) -> str | None:
     return text
 
 
-def search(query: str, cursor: str = "*") -> dict:
+def search(query: str, cursor: str = "*", page_size: int | None = None) -> dict:
     params = {
         "query": query,
         "format": "json",
-        "pageSize": str(PAGE_SIZE),
+        "pageSize": str(page_size or PAGE_SIZE),
         "cursorMark": cursor,
         "resultType": "core",
     }

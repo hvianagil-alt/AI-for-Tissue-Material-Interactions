@@ -20,7 +20,7 @@ The point of the MVP is not “AI for biology”. It is:
 | SQLite experimental DB (`studies` / `experiments` / `measurements`) | Done — `data/tissuelab.sqlite` |
 | Hand-curated live/dead training view (`v_model_viability`) | Done — `data/literature_viability.csv` |
 | Literature viability (empirical Bayes ± adaptive LOPO band) | Done (beats dummy; R² still < 0) |
-| HTML product: Predict / Table / Compare / CSV | Done — English default |
+| HTML product: Protocol / Lookup / Table / Compare / CSV | Done — English default |
 | Buyable-minimal plan | `docs/BMP.md` |
 | Native literature measurements (no fake porosity) | Done |
 | Mapped 0–100 scores + simulator (software prior only) | Still in the old CSV/ML path |
@@ -45,7 +45,7 @@ pip install -e .
 tissuelab-app
 ```
 
-Opens [http://localhost:8501](http://localhost:8501) as a **plain HTML** product (Predict, Table, Compare, CSV). English by default; `?lang=pt` for Portuguese chrome. Leave GelMA ~25 kPa and read the evidence card plus the nearest extracted papers. Open `/table` — that CSV is what you would email a colleague.
+Opens [http://localhost:8501](http://localhost:8501) as a **plain HTML** product. Say which cells you have and what you want this week; it ranks extracted protocols and searches papers. English by default; `?lang=pt` for Portuguese. `/lookup` is the old evidence card if you already picked a gel. `/table` is the CSV you would email a colleague.
 
 Optional:
 
@@ -75,7 +75,7 @@ pip install -e ".[dev]" && pytest -q
 | Ridge LOPO MAE | 22.6 (not deployed) |
 | Simulated XGBoost holdout R² | ~0.92 — **ignore** for science |
 
-The product is ready to **use as Predict**: literature viability + nearest extracted papers. It is not ready to claim a model that beats “GelMA ~25 kPa + TGF-β3”.
+The product is ready to **use as Protocol**: cells + job → extracted protocol + papers. Lookup is the evidence card. It is not ready to claim a model that beats “GelMA ~25 kPa + TGF-β3”.
 
 ## Project layout
 

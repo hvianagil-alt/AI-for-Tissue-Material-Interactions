@@ -532,6 +532,8 @@ def render_predict_page(
     .wbar {{ height:6px; background:#0b1220; border-radius:6px; margin-top:10px; }}
     .wbar i {{ display:block; height:6px; background:#3ecfb2; border-radius:6px; }}
     .next {{ background:#12352f; border-radius:12px; padding:14px 16px; margin: 14px 0; }}
+    details.more {{ margin-top: 28px; border-top: 1px solid #2a3b55; padding-top: 14px; }}
+    details.more summary {{ cursor:pointer; color:#9db0c8; font-size:0.95rem; }}
     .paper.context {{ outline:1px dashed #f4b942; }}
     .context-list {{ display:grid; grid-template-columns: 1fr 1fr; gap:10px; }}
     @media (max-width: 800px) {{ .context-list {{ grid-template-columns: 1fr; }} }}
@@ -544,10 +546,10 @@ def render_predict_page(
     }}
     """
     body = f"""
-    <p class="muted">Hydrogel → chondrocyte · hand-extracted live/dead only</p>
-    <h1>Which gel next?</h1>
-    <p class="sub">Change the protocol. The map and the number move with the literature — not with a simulator.</p>
-    <form method="get" action="/">
+    <p class="muted">You already picked a gel. This page looks it up in the extracted table.</p>
+    <h1>Look up this protocol</h1>
+    <p class="sub">Change the gel. The number follows the literature — not a simulator.</p>
+    <form method="get" action="/lookup">
       <input type="hidden" name="lang" value="{lang}"/>
       <fieldset>
         <legend>Protocol you are considering</legend>
@@ -602,22 +604,25 @@ def render_predict_page(
       </div>
     </div>
     {_context_cards(literature.get("also_extracted") or [])}
+    <h2>Nearest extracted papers</h2>
+    <p class="muted">Open the DOI. The bar is kernel weight — not a quality score. Green outline = the gel you picked.</p>
+    {_paper_cards(literature.get("similar") or [], material_class)}
+    <details class="more">
+      <summary>How this number is made — map, knobs, LOPO</summary>
     {_alt_cards(literature.get("alternatives") or [], None if mean is None else float(mean))}
     <h2>Evidence map</h2>
     <p class="legend"><b class="dot">● this gel</b><b class="sq">■ others</b><b class="tri">▲ your query ± band</b><b class="dia">◆ GelMA+TGF</b></p>
     {_scatter_svg(literature.get("chart_points") or [], stiffness_kpa, mean, low, high, competitor.get("stiffness_kpa"), competitor.get("mean"))}
     {_delta_bars(literature.get("knob_deltas") or [])}
-    <h2>Nearest extracted papers</h2>
-    <p class="muted">Open the DOI. The bar is kernel weight — not a quality score. Green outline = the gel you picked.</p>
-    {_paper_cards(literature.get("similar") or [], material_class)}
     <h2>How honest is the error</h2>
     <p class="muted">{escape(var_s)} Dummy vs shrinkage vs the MVP bar (15% better than the mean). R² is still ~0.</p>
     {_lopo_svg(lopo)}
     <h2>Limitations (so you are not fooled)</h2>
     <ul>{notes}</ul>
+    </details>
     """
-    title = "TissueLab — which gel next?" if lang == "en" else "TissueLab — o próximo gel"
-    return render_shell(title=title, lang=lang, page="/", body=body, extra_css=extra_css)
+    title = "TissueLab — look up a gel" if lang == "en" else "TissueLab — consultar um gel"
+    return render_shell(title=title, lang=lang, page="/lookup", body=body, extra_css=extra_css)
 
 
 def _viability_cell(row: dict) -> str:

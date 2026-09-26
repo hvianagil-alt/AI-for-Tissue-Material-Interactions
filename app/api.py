@@ -18,13 +18,16 @@ from fastapi.responses import HTMLResponse, Response
 from pydantic import BaseModel, Field
 
 from tissuelab.inverse import inverse_design
+from tissuelab.lit_search import search_question
 from tissuelab.literature_model import list_viability_evidence, predict_literature_viability
 from tissuelab.paths import MODEL_PATH
 from tissuelab.predict import predict_design
+from tissuelab.protocol_finder import find_protocol
 from tissuelab.recommend import recommend_experiments
 from tissuelab.schema import DesignInput, TARGETS
 from tissuelab.train import load_model
 
+from app.protocol_ui import render_protocol_page
 from app.ui import CELL_TYPES, GROWTH_FACTORS, MATERIALS, render_compare_page, render_predict_page, render_table_page
 
 app = FastAPI(title="TissueLab AI", version="0.1.0")
@@ -82,6 +85,31 @@ def _clamp_design(material_class: str, stiffness_kpa: float, cell_type: str, gro
 
 @app.get("/", response_class=HTMLResponse)
 def home(
+    cell_type: str = Query(default="articular_chondrocyte"),
+    goal: str = Query(default="alive"),
+    how: str = Query(default="encapsulate"),
+    tgf: str = Query(default="either"),
+    stock: str = Query(default="any"),
+    live: bool = Query(default=False),
+    lang: str = Query(default="en"),
+):
+    if cell_type not in CELL_TYPES:
+        cell_type = "articular_chondrocyte"
+    result = find_protocol(
+        cell_type=cell_type,
+        goal=goal,
+        how=how,
+        tgf=tgf,
+        stock=stock,
+        lang=lang,
+    )
+    gel = result["protocol"]["material_class"]
+    search = search_question(cell_type, goal, gel, live=bool(live))
+    return render_protocol_page(result=result, search=search, lang=lang, live=bool(live))
+
+
+@app.get("/lookup", response_class=HTMLResponse)
+def lookup(
     material_class: str = Query(default="GelMA"),
     stiffness_kpa: float = Query(default=25.0),
     cell_type: str = Query(default="articular_chondrocyte"),
