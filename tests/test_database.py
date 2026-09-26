@@ -67,6 +67,8 @@ def test_hand_curated_replaces_auto_promoted():
         "kilian2020", "yin2023", "sarsenova2022",
         "garciaaponte2025", "chen2020",
         "gu2020", "carvalho2025", "yi2019",
+        "liu2025", "akkineni2022", "lopezmarcial2022",
+        "zielinska2023", "gvaramia2024", "galarraga2023", "weitkamp2023",
     }
     assert all(s.get("pmid") for s in STUDIES if s["study_id"] in require_pmid)
 
@@ -284,6 +286,45 @@ def test_queue_pass_thirteen_gold_is_numeric_and_honest():
     assert yi["cell_type"] == "adipose_MSC"
     assert yi["measurements"][0]["value"] == 89.9
     assert yi.get("stiffness_kpa") is None
+
+
+def test_queue_pass_fourteen_gold_is_numeric_and_honest():
+    by_id = {e["experiment_id"]: e for e in EXPERIMENTS}
+    algmc = by_id["liu2025-algmc-hMSC-d1"]
+    assert algmc["cell_type"] == "MSC"
+    assert algmc["culture_model"] == "3D_bioprint"
+    assert algmc["measurements"][0]["value"] == 52.7
+    assert algmc["stiffness_kpa"] == 62.3
+    assert by_id["liu2025-ewp-hMSC-d1"]["measurements"][0]["value"] == 79.8
+    assert "liu2025-nhdf" not in "".join(by_id)
+    gg = by_id["akkineni2022-gg-330-d14"]
+    assert gg["material_class"] == "gellan"
+    assert gg["measurements"][0]["value"] == 68.82
+    assert gg["stiffness_kpa"] == 55.02
+    assert by_id["akkineni2022-gg-331-d14"]["measurements"][0]["value"] == 64.91
+    assert by_id["akkineni2022-gg-331-d14"].get("stiffness_kpa") is None
+    ctl = by_id["lopezmarcial2022-agarose-ctl-d21"]
+    assert ctl["cell_type"] == "articular_chondrocyte"
+    assert ctl["growth_factor"] == "TGF_b3"
+    assert ctl["measurements"][0]["value"] == 75.8
+    assert ctl["stiffness_kpa"] == 14.4
+    assert "lopezmarcial2022-agarose-hicoll" not in by_id
+    hatg = by_id["zielinska2023-hatg-haur-d1"]
+    assert hatg["cell_type"] == "auricular_chondrocyte"
+    assert hatg["measurements"][0]["value"] == 76.3
+    assert hatg["stiffness_kpa"] == 2.0
+    rab = by_id["gvaramia2024-hatg-raur-d1"]
+    assert rab["species"] == "rabbit"
+    assert rab["measurements"][0]["value"] == 75.0
+    assert rab["stiffness_kpa"] == 9.0
+    nor = by_id["galarraga2023-norha-pmsc-d7"]
+    assert nor["species"] == "porcine"
+    assert nor["measurements"][0]["value"] == 79.4
+    assert nor.get("stiffness_kpa") is None
+    inj = by_id["weitkamp2023-novocart-inject-d1"]
+    assert inj["measurements"][0]["value"] == 93.0
+    assert inj["stiffness_kpa"] == 2.77
+    assert "weitkamp2023-novocart-3d" not in by_id
 
 
 def test_curated_viability_excludes_auto_promote():

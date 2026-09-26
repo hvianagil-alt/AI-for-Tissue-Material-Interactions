@@ -1,16 +1,19 @@
 {
-  "n_rows": 141,
-  "n_studies": 48,
+  "n_rows": 159,
+  "n_studies": 55,
   "studies": [
     "aitchison2024",
+    "akkineni2022",
     "bachmann2020",
     "boere2015",
     "carvalho2025",
     "chen2020",
     "daly2016",
+    "galarraga2023",
     "garciaaponte2025",
     "gatenholm2020",
     "gu2020",
+    "gvaramia2024",
     "hosseini2025",
     "hu2012",
     "ingavle2012",
@@ -23,6 +26,8 @@
     "lan2021",
     "lan2022",
     "lindborg2015",
+    "liu2025",
+    "lopezmarcial2022",
     "markstedt2015",
     "martyniak2023",
     "mckinney2019",
@@ -44,39 +49,41 @@
     "setayeshmehr2021",
     "sun2015",
     "visscher2018",
+    "weitkamp2023",
     "xie2022",
     "yi2019",
     "yin2023",
     "zeng2023",
     "zhang2024",
+    "zielinska2023",
     "ziverec2026"
   ],
-  "viability_mean": 79.7341134751773,
-  "viability_std": 16.50297479984061,
+  "viability_mean": 79.61811320754717,
+  "viability_std": 15.946083808338209,
   "dummy_lopo": {
-    "mae": 11.833197574716996,
-    "r2": -0.028851637596702284
+    "mae": 11.435768850622189,
+    "r2": -0.02446379437464552
   },
   "ridge_lopo": {
-    "mae": 12.67511060152362,
-    "r2": -0.16675566037359912
+    "mae": 12.859238341999895,
+    "r2": -0.2006497734925572
   },
   "hgb_lopo": {
-    "mae": 12.489786276722711,
-    "r2": -0.10759996297198682
+    "mae": 12.680084981765724,
+    "r2": -0.16229237912174654
   },
   "material_mean_lopo": {
-    "mae": 13.141509268516597,
-    "r2": -0.1917800073568925
+    "mae": 12.826166297025692,
+    "r2": -0.1899879209274944
   },
   "shrinkage_lopo": {
-    "mae": 10.833758729619271,
-    "r2": 0.08487703667366508
+    "mae": 10.838441776867336,
+    "r2": 0.04543216941091677
   },
   "deployed_estimator": "shrinkage",
   "deployed_lopo": {
-    "mae": 10.833758729619271,
-    "r2": 0.08487703667366508
+    "mae": 10.838441776867336,
+    "r2": 0.04543216941091677
   },
   "papers_needed_trees": 40,
   "pass_bar": {

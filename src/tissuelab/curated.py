@@ -1002,6 +1002,116 @@ STUDIES: list[dict] = [
             "Live/dead 89.9±2.3 / 87.7±1.8 / 90.6±2.3% day 4/10/14. Cartilage-derived dECM arm not stored. No starting Young's."
         ),
     },
+    {
+        "study_id": "liu2025",
+        "citation": "Liu et al., Adv. Healthcare Mater. 2025",
+        "doi": "10.1002/adhm.202404470",
+        "pmid": "39995366",
+        "year": 2025,
+        "journal": "Advanced Healthcare Materials",
+        "pmcid": "PMC12004440",
+        "license": "CC-BY",
+        "notes": (
+            "Immortalized hTERT-MSC 5e6/g printed in 3% alginate + 9% MC ± 10% egg-white powder, 100 mM CaCl2. "
+            "Day-1 live/dead 52.7±2.1% AlgMC vs 79.8±1.2% AlgMC+EWP; day-21 89.3±6.1 vs 97.6±0.1. "
+            "Starting compressive Young's (cell-free printed, 1 day hydrated) 62.3±7.7 / 69.8±7.5 kPa. "
+            "NHDF and hOB arms not stored. No TGF in the viability culture."
+        ),
+    },
+    {
+        "study_id": "akkineni2022",
+        "citation": "Akkineni et al., Gels 2022",
+        "doi": "10.3390/gels8040199",
+        "pmid": "35448100",
+        "year": 2022,
+        "journal": "Gels",
+        "pmcid": "PMC9030627",
+        "license": "CC-BY",
+        "notes": (
+            "hTERT-MSC 5e6/g printed in 3% LAGG + 3% HAGG (330) ± 1% gelatin (331), 0.1 M CaCl2. "
+            "Live/dead 330: 86.63±3.10% post-print, 68.82±2.52% day 14, 72.78±2.54% day 21; "
+            "331: 84.62±1.61 / 64.91±3.73 / 72.21±2.69. Starting compressive E 330 = 55.02±6.26 kPa. "
+            "331 modulus and freeze-dried ~1145 kPa not stored. Abstract >80% is the post-print pair. No TGF."
+        ),
+    },
+    {
+        "study_id": "lopezmarcial2022",
+        "citation": "López-Marcial, Elango & O’Connell, Regen. Biomater. 2022",
+        "doi": "10.1093/rb/rbac048",
+        "pmid": "35991580",
+        "year": 2022,
+        "journal": "Regenerative Biomaterials",
+        "pmcid": "PMC9390219",
+        "license": "CC-BY",
+        "notes": (
+            "Bovine P6 articular 30e6/ml in 2% agarose ± 2 mg/ml collagen I, TGF-β3 first 2 weeks. "
+            "Day-21 live/dead CTL 75.8±13.2%, LoColl 78.6±2.1%. Week-0 Young's CTL 14.4±2.6 kPa. "
+            "HiColl 47.8 kPa not paired to a text viability. Week-1 >90% floor not stored. TGF-β1 is 2D expansion."
+        ),
+    },
+    {
+        "study_id": "zielinska2023",
+        "citation": "Zielinska et al., Sci. Adv. 2023",
+        "doi": "10.1126/sciadv.adh1890",
+        "pmid": "37792948",
+        "year": 2023,
+        "journal": "Science Advances",
+        "pmcid": "PMC10550230",
+        "license": "CC-BY-NC",
+        "notes": (
+            "Human P3 auricular 15e6/ml printed in 1.5% HATG + 1.5% HA + 2.0% sNAG, FXIII/thrombin. "
+            "Live/dead 76.3±6.6% day 1 after printing → 92.3±2.9% day 21. Starting compression 2±0.1 kPa "
+            "(cell-laden, day 1). TGF-β3 10 ng/ml in chondrogenic medium. Print 35–40 kPa is not E. "
+            "585 kPa week-17 ECM not stored. Skin FDA not stored."
+        ),
+    },
+    {
+        "study_id": "gvaramia2024",
+        "citation": "Gvaramia et al., Adv. Ther. 2024",
+        "doi": "10.1002/adtp.202300441",
+        "pmid": "39713175",
+        "year": 2024,
+        "journal": "Advanced Therapeutics",
+        "pmcid": "PMC7617253",
+        "license": "CC-BY-NC-ND",
+        "notes": (
+            "Rabbit P3 auricular 30e6/ml printed in 0.5% HATG + 0.25% alginate + 1.5% HA + 2.0% sNAG, FXIII/thrombin. "
+            "Live/dead 75±6% day 1 post-print → 77±7% day 21. Starting compression 9±1 kPa. "
+            "167 kPa week-3 ECM not stored. Chondrogenic medium has 10 ng/ml TGF-β3. Print 40–50 kPa is not E. "
+            "Independent of Zielinska 2023 (human vs rabbit; extra 0.25% alginate thickener)."
+        ),
+    },
+    {
+        "study_id": "galarraga2023",
+        "citation": "Galarraga et al., Int. J. Bioprint. 2023",
+        "doi": "10.18063/ijb.775",
+        "pmid": "37457945",
+        "year": 2023,
+        "journal": "International Journal of Bioprinting",
+        "pmcid": "PMC10339416",
+        "license": "CC-BY",
+        "notes": (
+            "Porcine P1 BM-MSC 20e6/ml in NorHA (LAP/DTT, blue light) infilled into MEW PCL. "
+            "Live/dead ~79.4±3.0% day 7 (n=21) calcein/EthD, TGF-β3. ~2 kPa is a citation of prior work and is not stored. "
+            "NorHA wt% not a unique number in the text. ~160 kPa day-28 composite is ECM-matured. Independent of galarraga2021."
+        ),
+    },
+    {
+        "study_id": "weitkamp2023",
+        "citation": "Weitkamp et al., Cartilage 2023",
+        "doi": "10.1177/19476035231154507",
+        "pmid": "36859785",
+        "year": 2023,
+        "journal": "Cartilage",
+        "pmcid": "PMC10416195",
+        "license": "CC-BY-NC",
+        "notes": (
+            "Human articular P3 2.5e6/ml embedded in Novocart Inject albumin-HA (maleolyl-albumin + HA, thio-PEG). "
+            "Live/dead HA day 1: 93.0±1.76%. Starting Young's 2.77±1.04 kPa. "
+            "Novocart 3D collagen scaffold 84.33% is surface-seeded and is not stored. "
+            "HA day-28 percent not quoted. BMP-2/IL-10 are not in the viability arm. No TGF in CPM."
+        ),
+    },
 ]
 
 
@@ -4808,6 +4918,307 @@ def _queue_pass_thirteen() -> list[dict]:
     return rows
 
 
+def _queue_pass_fourteen() -> list[dict]:
+    """Neighborhood OA live/dead with deaths and starting kPa: AlgMC±EWP, gellan print, agarose+col, HATG print, NorHA infill, albumin-HA."""
+    rows = []
+    for tag, ewp, day, val, sd, kpa, ksd, extra in (
+        ("algmc", False, 1.0, 52.7, 2.1, 62.3, 7.7, "EWP-free AlgMC. Day-1 death neighbor to Kilian algMC."),
+        ("ewp", True, 1.0, 79.8, 1.2, 69.8, 7.5, "AlgMC + 10% egg-white powder."),
+        ("algmc", False, 21.0, 89.3, 6.1, 62.3, 7.7, "EWP-free AlgMC recovered by day 21."),
+        ("ewp", True, 21.0, 97.6, 0.1, 69.8, 7.5, "AlgMC + 10% EWP day 21."),
+    ):
+        detail = "3% w/v alginate + 9% w/v methylcellulose, 100 mM CaCl2, 3D printed"
+        if ewp:
+            detail += ", 10% w/v egg-white powder"
+        rows.append(
+            {
+                "experiment_id": f"liu2025-{tag}-hMSC-d{int(day)}",
+                "study_id": "liu2025",
+                "material_class": "alginate",
+                "material_detail": detail,
+                "crosslinking": "ionic",
+                "polymer_concentration_wt_pct": 3.0,
+                "stiffness_kpa": kpa,
+                "stiffness_sd_kpa": ksd,
+                "stiffness_method": "unconfined_compression_youngs_cell_free_d1",
+                "surface_chemistry": "native" if ewp else "none",
+                "has_adhesion_ligand": 1.0 if ewp else 0.0,
+                "cell_type": "MSC",
+                "species": "human",
+                "culture_model": "3D_bioprint",
+                "growth_factor": "none",
+                "culture_time_days": day,
+                "cell_density_million_per_ml": 5.0,
+                "chemical_modification": "unmodified",
+                "architecture": "3d_printed",
+                "application": "bioprinting",
+                "live_dead_kit": "calcein_ethidium",
+                "n_replicates": 3,
+                "extracted_from": f"PMC12004440 Fig. 7D hMSC {tag} day {int(day)}",
+                "curator_confidence": "high",
+                "notes": (
+                    f"Immortalized hTERT-MSC, 5e6 cells per gram bioink. Live/dead {val}±{sd}% day {int(day)}. {extra} "
+                    f"Starting compressive Young's {kpa}±{ksd} kPa (cell-free printed, 1 day hydrated). "
+                    "NHDF and hOB arms not stored. No TGF."
+                ),
+                "measurements": [_m("viability_pct", val, "%", sd=sd, evidence="numeric_text", n=3)],
+            }
+        )
+    for blend, gel, day, val, sd, kpa, ksd in (
+        ("330", False, 0.0, 86.63, 3.10, 55.02, 6.26),
+        ("330", False, 14.0, 68.82, 2.52, 55.02, 6.26),
+        ("330", False, 21.0, 72.78, 2.54, 55.02, 6.26),
+        ("331", True, 0.0, 84.62, 1.61, None, None),
+        ("331", True, 14.0, 64.91, 3.73, None, None),
+        ("331", True, 21.0, 72.21, 2.69, None, None),
+    ):
+        row = {
+            "experiment_id": f"akkineni2022-gg-{blend}-d{int(day)}",
+            "study_id": "akkineni2022",
+            "material_class": "gellan",
+            "material_detail": (
+                "3% w/v LAGG + 3% w/v HAGG, 0.1 M CaCl2, 3D printed"
+                + (", 1% w/v gelatin" if gel else ", no gelatin")
+            ),
+            "crosslinking": "ionic",
+            "polymer_concentration_wt_pct": 7.0 if gel else 6.0,
+            "surface_chemistry": "native" if gel else "none",
+            "has_adhesion_ligand": 1.0 if gel else 0.0,
+            "cell_type": "MSC",
+            "species": "human",
+            "culture_model": "3D_bioprint",
+            "growth_factor": "none",
+            "culture_time_days": day,
+            "cell_density_million_per_ml": 5.0,
+            "chemical_modification": "unmodified",
+            "architecture": "3d_printed",
+            "application": "bioprinting",
+            "live_dead_kit": "calcein_ethidium",
+            "extracted_from": f"PMC9030627 Fig. 6–7A blend {blend} day {int(day)}",
+            "curator_confidence": "high",
+            "notes": (
+                f"hTERT-MSC, 5e6/g. Live/dead {val}±{sd}% day {int(day)} in blend {blend}. "
+                "Abstract >80% is this post-print pair. Freeze-dried ~1145 kPa is not starting E. "
+                "TGF-β3 is a future-work citation, not this culture. 331 modulus not quoted."
+            ),
+            "measurements": [_m("viability_pct", val, "%", sd=sd, evidence="numeric_text")],
+        }
+        if kpa is not None:
+            row["stiffness_kpa"] = kpa
+            row["stiffness_sd_kpa"] = ksd
+            row["stiffness_method"] = "unconfined_compression_youngs_fresh_crosslink"
+            row["notes"] += f" Starting compressive E {kpa}±{ksd} kPa (freshly crosslinked 330)."
+        rows.append(row)
+    for tag, col, val, sd, kpa, ksd, extra in (
+        (
+            "ctl",
+            False,
+            75.8,
+            13.2,
+            14.4,
+            2.6,
+            "2% agarose, no collagen. Week-0 Young's paired to this CTL arm.",
+        ),
+        (
+            "locoll",
+            True,
+            78.6,
+            2.1,
+            None,
+            None,
+            "2% agarose + 2 mg/ml collagen I. LoColl week-0 E not quoted separately.",
+        ),
+    ):
+        row = {
+            "experiment_id": f"lopezmarcial2022-agarose-{tag}-d21",
+            "study_id": "lopezmarcial2022",
+            "material_class": "agarose",
+            "material_detail": "2% w/v agarose" + (", 2 mg/ml collagen I" if col else ", no collagen"),
+            "crosslinking": "thermal",
+            "polymer_concentration_wt_pct": 2.0,
+            "surface_chemistry": "native" if col else "none",
+            "has_adhesion_ligand": 1.0 if col else 0.0,
+            "cell_type": "articular_chondrocyte",
+            "species": "bovine",
+            "culture_model": "3D_encapsulation",
+            "growth_factor": "TGF_b3",
+            "culture_time_days": 21.0,
+            "cell_density_million_per_ml": 30.0,
+            "passage": 6,
+            "chemical_modification": "unmodified",
+            "architecture": "bulk_hydrogel",
+            "application": "in_vitro_cartilage",
+            "live_dead_kit": "calcein_ethidium",
+            "n_replicates": 3,
+            "extracted_from": f"PMC9390219 Fig. 3B {tag} week 3 live/dead",
+            "curator_confidence": "high",
+            "notes": (
+                f"Juvenile bovine P6 articular, 30e6/ml. Live/dead {val}±{sd}% day 21. {extra} "
+                "TGF-β3 10 ng/ml first 2 weeks. Week-1 >90% floor not stored. "
+                "HiColl 47.8 kPa not paired to a text viability. TGF-β1 is 2D expansion."
+            ),
+            "measurements": [_m("viability_pct", val, "%", sd=sd, evidence="numeric_text", n=3)],
+        }
+        if kpa is not None:
+            row["stiffness_kpa"] = kpa
+            row["stiffness_sd_kpa"] = ksd
+            row["stiffness_method"] = "unconfined_compression_youngs_week0"
+            row["notes"] += f" Starting Young's {kpa}±{ksd} kPa (week 0, days 1–2)."
+        rows.append(row)
+    for day, val, sd in ((1.0, 76.3, 6.6), (21.0, 92.3, 2.9)):
+        rows.append(
+            {
+                "experiment_id": f"zielinska2023-hatg-haur-d{int(day)}",
+                "study_id": "zielinska2023",
+                "material_class": "HA",
+                "material_detail": "1.5% HATG + 1.5% HA + 2.0% sNAG, FXIII 20 U/ml, thrombin 1 U/ml, printed",
+                "crosslinking": "enzymatic",
+                "polymer_concentration_wt_pct": 5.0,
+                "stiffness_kpa": 2.0,
+                "stiffness_sd_kpa": 0.1,
+                "stiffness_method": "unconfined_compression_cell_laden_d1",
+                "surface_chemistry": "native",
+                "has_adhesion_ligand": 1.0,
+                "cell_type": "auricular_chondrocyte",
+                "species": "human",
+                "culture_model": "3D_bioprint",
+                "growth_factor": "TGF_b3",
+                "culture_time_days": day,
+                "cell_density_million_per_ml": 15.0,
+                "passage": 3,
+                "chemical_modification": "transglutaminase_peptide",
+                "architecture": "3d_printed",
+                "application": "auricular",
+                "live_dead_kit": "calcein_ethidium",
+                "n_replicates": 3,
+                "extracted_from": f"PMC10550230 Fig. 3B–C hAUR day {int(day)}",
+                "curator_confidence": "high",
+                "notes": (
+                    f"Human P3 auricular, 15e6/ml. Live/dead {val}±{sd}% day {int(day)}. "
+                    "Starting compression 2±0.1 kPa (cell-laden, 1 day after printing). "
+                    "TGF-β3 10 ng/ml in chondrogenic medium. Print 35–40 kPa is not Young's. "
+                    "585 kPa week-17 ECM not stored."
+                ),
+                "measurements": [_m("viability_pct", val, "%", sd=sd, evidence="numeric_text", n=3)],
+            }
+        )
+    for day, val, sd in ((1.0, 75.0, 6.0), (21.0, 77.0, 7.0)):
+        rows.append(
+            {
+                "experiment_id": f"gvaramia2024-hatg-raur-d{int(day)}",
+                "study_id": "gvaramia2024",
+                "material_class": "HA",
+                "material_detail": "0.5% HATG + 0.25% alginate + 1.5% HA + 2.0% sNAG, FXIII/thrombin, printed",
+                "crosslinking": "enzymatic",
+                "polymer_concentration_wt_pct": 4.25,
+                "stiffness_kpa": 9.0,
+                "stiffness_sd_kpa": 1.0,
+                "stiffness_method": "unconfined_compression_starting",
+                "surface_chemistry": "native",
+                "has_adhesion_ligand": 1.0,
+                "cell_type": "auricular_chondrocyte",
+                "species": "rabbit",
+                "culture_model": "3D_bioprint",
+                "growth_factor": "TGF_b3",
+                "culture_time_days": day,
+                "cell_density_million_per_ml": 30.0,
+                "passage": 3,
+                "chemical_modification": "transglutaminase_peptide",
+                "architecture": "3d_printed",
+                "application": "auricular",
+                "live_dead_kit": "calcein_propidium",
+                "extracted_from": f"PMC7617253 Fig. 3a–b rAUR day {int(day)}",
+                "curator_confidence": "high",
+                "notes": (
+                    f"Rabbit P3 auricular, 30e6/ml. Live/dead {val}±{sd}% day {int(day)}. "
+                    "Starting compression 9±1 kPa. 167 kPa week-3 ECM not stored. "
+                    "Chondrogenic medium 10 ng/ml TGF-β3. Print 40–50 kPa is not Young's. "
+                    "0.25% alginate is a print thickener; gel is HA/HATG. Independent of Zielinska 2023."
+                ),
+                "measurements": [_m("viability_pct", val, "%", sd=sd, evidence="numeric_text")],
+            }
+        )
+    rows.append(
+        {
+            "experiment_id": "galarraga2023-norha-pmsc-d7",
+            "study_id": "galarraga2023",
+            "material_class": "HA",
+            "material_detail": "NorHA infilled into MEW PCL, LAP 0.05%, DTT 0.54 mM, 400–500 nm 5 min",
+            "crosslinking": "photocrosslink",
+            "stiffness_method": None,
+            "surface_chemistry": "native",
+            "has_adhesion_ligand": 1.0,
+            "cell_type": "MSC",
+            "species": "porcine",
+            "culture_model": "3D_encapsulation",
+            "growth_factor": "TGF_b3",
+            "culture_time_days": 7.0,
+            "cell_density_million_per_ml": 20.0,
+            "passage": 1,
+            "chemical_modification": "norbornene",
+            "architecture": "bulk_hydrogel",
+            "application": "in_vitro_cartilage",
+            "live_dead_kit": "calcein_ethidium",
+            "n_replicates": 21,
+            "extracted_from": "PMC10339416 preculture Live/Dead day 7 n=21",
+            "curator_confidence": "medium",
+            "notes": (
+                "Porcine P1 BM-MSC, 20e6/ml. Paper: ~79.4% ± 3.0% day 7 (n=21) across donors/surgeries. "
+                "~2 kPa is a citation of prior NorHA work and is not stored. NorHA wt% not quoted. "
+                "MEW PCL mesh is not gel Young's. ~160 kPa day-28 composite is ECM-matured. "
+                "Independent of galarraga2021 (no live/dead % in that paper)."
+            ),
+            "measurements": [
+                _m(
+                    "viability_pct",
+                    79.4,
+                    "%",
+                    sd=3.0,
+                    evidence="numeric_text",
+                    n=21,
+                    notes="Paper: ~79.4% ± 3.0%.",
+                )
+            ],
+        }
+    )
+    rows.append(
+        {
+            "experiment_id": "weitkamp2023-novocart-inject-d1",
+            "study_id": "weitkamp2023",
+            "material_class": "HA",
+            "material_detail": "Novocart Inject albumin-HA (maleolyl-albumin + HA, thio-PEG crosslink)",
+            "crosslinking": "chemical",
+            "stiffness_kpa": 2.77,
+            "stiffness_sd_kpa": 1.04,
+            "stiffness_method": "unconfined_compression_youngs_d1",
+            "surface_chemistry": "native",
+            "has_adhesion_ligand": 1.0,
+            "cell_type": "articular_chondrocyte",
+            "species": "human",
+            "culture_model": "3D_encapsulation",
+            "growth_factor": "none",
+            "culture_time_days": 1.0,
+            "cell_density_million_per_ml": 2.5,
+            "passage": 3,
+            "chemical_modification": "maleolyl_albumin_PEG",
+            "architecture": "bulk_hydrogel",
+            "application": "in_vitro_cartilage",
+            "live_dead_kit": "calcein_ethidium",
+            "extracted_from": "PMC10416195 Fig. 1a HA day-1 live/dead",
+            "curator_confidence": "high",
+            "notes": (
+                "Human articular P3, 2.5e6/ml. Live/dead HA day 1: 93% ± 1.76%. "
+                "Starting Young's 2.77±1.04 kPa. Novocart 3D collagen 84.33% is surface-seeded and is not stored. "
+                "HA day-28 percent not quoted. BMP-2/IL-10 not in this viability arm. CPM has no TGF."
+            ),
+            "measurements": [
+                _m("viability_pct", 93.0, "%", sd=1.76, evidence="numeric_text", notes="Paper: 93% ± 1.76%.")
+            ],
+        }
+    )
+    return rows
+
+
 EXPERIMENTS: list[dict] = (
     _bachmann_experiments()
     + _other_experiments()
@@ -4826,4 +5237,5 @@ EXPERIMENTS: list[dict] = (
     + _queue_pass_eleven()
     + _queue_pass_twelve()
     + _queue_pass_thirteen()
+    + _queue_pass_fourteen()
 )

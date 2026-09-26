@@ -1,22 +1,22 @@
 {
-  "n_rows": 141,
-  "n_studies": 48,
-  "served_parameters": 55,
+  "n_rows": 159,
+  "n_studies": 55,
+  "served_parameters": 57,
   "served_locked_hyperparameters": 11,
-  "served_empirical_priors": 44,
+  "served_empirical_priors": 46,
   "budget": {
-    "n_rows": 141,
-    "n_studies": 48,
+    "n_rows": 159,
+    "n_studies": 55,
     "n_materials": 27,
     "n_cell_types": 6,
-    "n_with_kpa": 37,
-    "rows_per_paper": 2.94,
+    "n_with_kpa": 50,
+    "rows_per_paper": 2.89,
     "dummy_parameters": 1,
     "material_mean_parameters": 27,
     "ridge_parameters_guess": 36,
     "served_locked_hyperparameters": 11,
-    "served_empirical_priors": 44,
-    "served_parameters": 55,
+    "served_empirical_priors": 46,
+    "served_parameters": 57,
     "starter_feature_count": 9,
     "papers_needed_ridge": 90,
     "papers_needed_mixed": 25,
@@ -30,56 +30,56 @@
     "what_to_add_first": "studies"
   },
   "random_split_ridge": {
-    "mae": 9.887089255894947,
-    "r2": 0.1929292519073008,
-    "train_mae": 8.089461070539306,
-    "n_train": 112,
-    "n_test": 29,
+    "mae": 10.0523773645699,
+    "r2": -0.2617935220576717,
+    "train_mae": 8.307023104646635,
+    "n_train": 127,
+    "n_test": 32,
     "test_papers": [
-      "aitchison2024",
-      "bachmann2020",
-      "carvalho2025",
+      "akkineni2022",
+      "garciaaponte2025",
       "gatenholm2020",
+      "gu2020",
       "hosseini2025",
+      "jovic2026",
       "kessel2020",
       "kilian2020",
-      "lan2021",
+      "liu2025",
       "markstedt2015",
       "martyniak2023",
-      "mcmillan2025",
       "orabi2023",
-      "pangjantuk2024",
+      "park2013",
       "poldervaart2017",
       "rojas2025",
-      "scalzone2022",
+      "sarsenova2022",
       "setayeshmehr2021",
       "sun2015",
-      "xie2022",
-      "yin2023",
+      "visscher2018",
       "zeng2023",
-      "zhang2024"
+      "zhang2024",
+      "ziverec2026"
     ]
   },
   "ridge_lopo": {
-    "mae": 12.67511060152362,
-    "r2": -0.16675566037359912,
+    "mae": 12.859238341999895,
+    "r2": -0.2006497734925572,
     "n_coefficients": 41
   },
   "dummy_lopo": {
-    "mae": 11.833197574716996,
-    "r2": -0.028851637596702284
+    "mae": 11.435768850622189,
+    "r2": -0.02446379437464552
   },
   "material_mean_lopo": {
-    "mae": 13.141509268516597,
-    "r2": -0.1917800073568925
+    "mae": 12.826166297025692,
+    "r2": -0.1899879209274944
   },
   "shrinkage_lopo": {
-    "mae": 10.833758729619271,
-    "r2": 0.08487703667366508
+    "mae": 10.838441776867336,
+    "r2": 0.04543216941091677
   },
   "hgb_lopo": {
-    "mae": 12.489786276722711,
-    "r2": -0.10759996297198682
+    "mae": 12.680084981765724,
+    "r2": -0.16229237912174654
   },
   "deployed_estimator": "shrinkage",
   "mvp_pass": 0,
