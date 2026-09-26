@@ -1,22 +1,22 @@
 {
-  "n_rows": 94,
-  "n_studies": 32,
-  "served_parameters": 42,
+  "n_rows": 105,
+  "n_studies": 34,
+  "served_parameters": 44,
   "served_locked_hyperparameters": 11,
-  "served_empirical_priors": 31,
+  "served_empirical_priors": 33,
   "budget": {
-    "n_rows": 94,
-    "n_studies": 32,
-    "n_materials": 20,
+    "n_rows": 105,
+    "n_studies": 34,
+    "n_materials": 22,
     "n_cell_types": 5,
-    "n_with_kpa": 29,
-    "rows_per_paper": 2.94,
+    "n_with_kpa": 30,
+    "rows_per_paper": 3.09,
     "dummy_parameters": 1,
-    "material_mean_parameters": 20,
-    "ridge_parameters_guess": 28,
+    "material_mean_parameters": 22,
+    "ridge_parameters_guess": 30,
     "served_locked_hyperparameters": 11,
-    "served_empirical_priors": 31,
-    "served_parameters": 42,
+    "served_empirical_priors": 33,
+    "served_parameters": 44,
     "starter_feature_count": 9,
     "papers_needed_ridge": 90,
     "papers_needed_mixed": 25,
@@ -30,50 +30,51 @@
     "what_to_add_first": "studies"
   },
   "random_split_ridge": {
-    "mae": 10.671663857622907,
-    "r2": 0.1639602039309529,
-    "train_mae": 7.415680160862061,
-    "n_train": 75,
-    "n_test": 19,
+    "mae": 8.715671289261412,
+    "r2": 0.3482409449840841,
+    "train_mae": 7.6692738561990526,
+    "n_train": 84,
+    "n_test": 21,
     "test_papers": [
       "aitchison2024",
       "bachmann2020",
       "gatenholm2020",
+      "hosseini2025",
       "hu2012",
-      "jovic2024",
-      "lan2021",
+      "kessel2020",
       "markstedt2015",
+      "martyniak2023",
+      "mcmillan2025",
       "perezdiaz2023",
-      "perriergroult2026",
       "poldervaart2017",
-      "ren2016",
       "rojas2025",
-      "scalzone2022",
+      "setayeshmehr2021",
+      "sun2015",
       "xie2022",
       "zhang2024",
       "ziverec2026"
     ]
   },
   "ridge_lopo": {
-    "mae": 13.39857437322124,
-    "r2": -0.23905754550370806,
-    "n_coefficients": 33
+    "mae": 13.164287009891131,
+    "r2": -0.6743461464432774,
+    "n_coefficients": 35
   },
   "dummy_lopo": {
-    "mae": 12.442959696612506,
-    "r2": -0.03523412717003649
+    "mae": 11.89492656642408,
+    "r2": -0.03163317040824243
   },
   "material_mean_lopo": {
-    "mae": 12.981720981250707,
-    "r2": -0.0562795927209625
+    "mae": 12.274438273319971,
+    "r2": -0.04857683545936897
   },
   "shrinkage_lopo": {
-    "mae": 10.820551670280135,
-    "r2": 0.12325236646621462
+    "mae": 10.348387317642464,
+    "r2": 0.12682958804563427
   },
   "hgb_lopo": {
-    "mae": 12.069254041922713,
-    "r2": 0.11714660953497924
+    "mae": 11.95174489885121,
+    "r2": 0.048713382676865535
   },
   "deployed_estimator": "shrinkage",
   "mvp_pass": 0,
@@ -85,9 +86,9 @@
       "stiffness_kpa": 5.0,
       "culture_time_days": 21.0
     },
-    "predicted_viability_pct": 91.2,
+    "predicted_viability_pct": 91.1,
     "material_prior": 94.0,
-    "local_kernel": 81.9,
+    "local_kernel": 81.5,
     "n_eff_same_material": 3.55,
     "estimator": "shrinkage"
   },

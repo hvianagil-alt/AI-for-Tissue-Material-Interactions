@@ -31,6 +31,7 @@ VOCAB_MATERIALS = [
     ("chitosan", "polysaccharide", None),
     ("gelatin", "protein", None),
     ("PVA", "synthetic", None),
+    ("PVA_dECM", "composite", "PVA-norbornene plus solubilized decellularized cartilage matrix"),
     ("dextran", "polysaccharide", None),
     ("cellulose", "polysaccharide", None),
     ("gellan", "polysaccharide", None),

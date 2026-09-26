@@ -235,50 +235,56 @@ def load(path=DB_PATH):
         path.unlink()
     conn = connect(path)
     init_schema(conn)
-    promoted_studies, promoted_experiments = drop_hand_overlapped_promoted(*load_promoted())
-    all_studies = list(STUDIES) + promoted_studies
-    all_experiments = list(EXPERIMENTS) + promoted_experiments
-    seen_study = set()
-    for study in all_studies:
-        if study["study_id"] in seen_study:
-            continue
-        seen_study.add(study["study_id"])
-        payload = {k: v for k, v in study.items() if k not in STUDY_SKIP_KEYS}
-        cols = ",".join(payload.keys())
-        placeholders = ",".join(["?"] * len(payload))
-        conn.execute(f"INSERT INTO studies ({cols}) VALUES ({placeholders})", tuple(payload.values()))
-    seen_exp = set()
-    study_index = {study["study_id"]: study for study in all_studies}
-    for exp in all_experiments:
-        if exp["experiment_id"] in seen_exp:
-            continue
-        seen_exp.add(exp["experiment_id"])
-        tagged = tag_experiment(exp, study_index.get(exp.get("study_id")))
-        payload = {key: tagged.get(key) for key in EXP_COLUMNS}
-        payload["tissue"] = payload.get("tissue") or "cartilage"
-        cols = ",".join(payload.keys())
-        placeholders = ",".join(["?"] * len(payload))
-        conn.execute(f"INSERT INTO experiments ({cols}) VALUES ({placeholders})", tuple(payload.values()))
-        for meas in exp["measurements"]:
-            conn.execute(
-                """
-                INSERT INTO measurements (experiment_id, assay, value, value_sd, unit, qualitative_label, evidence, n, notes)
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
-                """,
-                (
-                    exp["experiment_id"],
-                    meas["assay"],
-                    meas.get("value"),
-                    meas.get("value_sd"),
-                    meas["unit"],
-                    meas.get("qualitative_label"),
-                    meas["evidence"],
-                    meas.get("n"),
-                    meas.get("notes"),
-                ),
-            )
-    restore_harvest(conn, snap)
-    conn.commit()
+    try:
+        promoted_studies, promoted_experiments = drop_hand_overlapped_promoted(*load_promoted())
+        all_studies = list(STUDIES) + promoted_studies
+        all_experiments = list(EXPERIMENTS) + promoted_experiments
+        seen_study = set()
+        for study in all_studies:
+            if study["study_id"] in seen_study:
+                continue
+            seen_study.add(study["study_id"])
+            payload = {k: v for k, v in study.items() if k not in STUDY_SKIP_KEYS}
+            cols = ",".join(payload.keys())
+            placeholders = ",".join(["?"] * len(payload))
+            conn.execute(f"INSERT INTO studies ({cols}) VALUES ({placeholders})", tuple(payload.values()))
+        seen_exp = set()
+        study_index = {study["study_id"]: study for study in all_studies}
+        for exp in all_experiments:
+            if exp["experiment_id"] in seen_exp:
+                continue
+            seen_exp.add(exp["experiment_id"])
+            tagged = tag_experiment(exp, study_index.get(exp.get("study_id")))
+            payload = {key: tagged.get(key) for key in EXP_COLUMNS}
+            payload["tissue"] = payload.get("tissue") or "cartilage"
+            cols = ",".join(payload.keys())
+            placeholders = ",".join(["?"] * len(payload))
+            conn.execute(f"INSERT INTO experiments ({cols}) VALUES ({placeholders})", tuple(payload.values()))
+            for meas in exp["measurements"]:
+                conn.execute(
+                    """
+                    INSERT INTO measurements (experiment_id, assay, value, value_sd, unit, qualitative_label, evidence, n, notes)
+                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+                    """,
+                    (
+                        exp["experiment_id"],
+                        meas["assay"],
+                        meas.get("value"),
+                        meas.get("value_sd"),
+                        meas["unit"],
+                        meas.get("qualitative_label"),
+                        meas["evidence"],
+                        meas.get("n"),
+                        meas.get("notes"),
+                    ),
+                )
+        restore_harvest(conn, snap)
+        conn.commit()
+    except Exception:
+        restore_harvest(conn, snap)
+        conn.commit()
+        conn.close()
+        raise
     report = quality_report(conn)
     if Path(path).resolve() == DB_PATH.resolve():
         DATA_DIR.mkdir(parents=True, exist_ok=True)

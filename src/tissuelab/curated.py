@@ -762,6 +762,37 @@ STUDIES: list[dict] = [
         "license": "CC-BY",
         "notes": "Human nasal chondrocytes, 2e6/ml, in 10 mg/mL fibrinogen + 0.4 U/mL thrombin inside 3D-printed silicone. Live/dead after 3 weeks maturation: mean 71% (donors 65–79%). BIT cocktail is not TGF-β3. No gel E stored.",
     },
+    {
+        "study_id": "setayeshmehr2021",
+        "citation": "Setayeshmehr et al., Int. J. Mol. Sci. 2021",
+        "doi": "10.3390/ijms22083901",
+        "pmid": "33918892",
+        "year": 2021,
+        "journal": "International Journal of Molecular Sciences",
+        "pmcid": "PMC8069267",
+        "license": "CC-BY",
+        "notes": (
+            "ATDC5 murine chondrogenic line in 10 wt% PVA-norbornene ± solubilized decellularized cartilage (SDCM), "
+            "LAP/DT thiol-ene. Bulk live/dead d1/d7: PVA-Nb 82/71%, SDCM30 88/82%, SDCM50 70/78%. "
+            "Printed tildes: PVA-Nb ~85/~75%, SDCM50 ~60/~75%. Starting compressive E 21.43±1.16 kPa day 2 PVA-Nb only; "
+            "SDCM relatives and day-28 moduli not stored. Print pressure 30 kPa is not Young's."
+        ),
+    },
+    {
+        "study_id": "pei2023",
+        "citation": "Pei et al., Int. J. Bioprint. 2023",
+        "doi": "10.18063/ijb.v9i2.662",
+        "pmid": "37065652",
+        "year": 2023,
+        "journal": "International Journal of Bioprinting",
+        "pmcid": "PMC10090535",
+        "license": "CC-BY",
+        "notes": (
+            "Rabbit P3–P5 MSCs in 5% GelMA-60, Ca-AM/PI at 48 h. 3D group about 81.2%; adherent 95.5% is 2D and is not stored. "
+            "Young's for GelMA-90 10% vs GelMA-60 5% is figure-only without a number. Print pressure 10–30 kPa is not E. "
+            "TGF-β3 is the later chondrogenesis arm, not the viability row."
+        ),
+    },
 ]
 
 
@@ -3886,6 +3917,122 @@ def _queue_pass_nine() -> list[dict]:
     return rows
 
 
+def _queue_pass_ten() -> list[dict]:
+    """Neighborhood OA live/dead with real deaths: PVA-Nb/SDCM ATDC5, GelMA-60 rabbit MSC."""
+    rows = []
+    bulk = [
+        ("pva-nb", "PVA", "10 wt% PVA-norbornene, 2 mM LAP, 0.5 eq DT, 365 nm", 0.0, 1.0, 82.0, 21.43, 1.16),
+        ("pva-nb", "PVA", "10 wt% PVA-norbornene, 2 mM LAP, 0.5 eq DT, 365 nm", 0.0, 7.0, 71.0, None, None),
+        ("sdcm30", "PVA_dECM", "10 wt% PVA-norbornene + 30% SDCM, 2 mM LAP, 0.5 eq DT", 30.0, 1.0, 88.0, None, None),
+        ("sdcm30", "PVA_dECM", "10 wt% PVA-norbornene + 30% SDCM, 2 mM LAP, 0.5 eq DT", 30.0, 7.0, 82.0, None, None),
+        ("sdcm50", "PVA_dECM", "10 wt% PVA-norbornene + 50% SDCM, 2 mM LAP, 0.5 eq DT", 50.0, 1.0, 70.0, None, None),
+        ("sdcm50", "PVA_dECM", "10 wt% PVA-norbornene + 50% SDCM, 2 mM LAP, 0.5 eq DT", 50.0, 7.0, 78.0, None, None),
+    ]
+    for tag, material, detail, sdcm, day, val, kpa, ksd in bulk:
+        row = {
+            "experiment_id": f"setayeshmehr2021-{tag}-bulk-d{int(day)}",
+            "study_id": "setayeshmehr2021",
+            "material_class": material,
+            "material_detail": detail,
+            "crosslinking": "photocrosslink",
+            "polymer_concentration_wt_pct": 10.0,
+            "surface_chemistry": "native" if sdcm else "none",
+            "has_adhesion_ligand": 1.0 if sdcm else 0.0,
+            "cell_type": "articular_chondrocyte",
+            "species": "mouse",
+            "culture_model": "3D_encapsulation",
+            "growth_factor": "none",
+            "culture_time_days": day,
+            "chemical_modification": "norbornene",
+            "architecture": "bulk_hydrogel",
+            "application": "bioprinting",
+            "live_dead_kit": "calcein_ethidium",
+            "extracted_from": f"PMC8069267 §2.7 bulk Live/Dead day {int(day)}",
+            "curator_confidence": "high",
+            "notes": (
+                f"ATDC5 line, DMEM/F-12 5% FBS, no TGF. Bulk live/dead {val:.0f}% day {int(day)}. "
+                "Day-28 compressive moduli are degraded gels and are not stored."
+            ),
+            "measurements": [_m("viability_pct", val, "%", evidence="numeric_text")],
+        }
+        if kpa is not None:
+            row["stiffness_kpa"] = kpa
+            row["stiffness_sd_kpa"] = ksd
+            row["stiffness_method"] = "unconfined_compression_youngs_day2"
+        rows.append(row)
+    printed = [
+        ("pva-nb", "PVA", "10 wt% PVA-norbornene printed cube, 2 mM LAP, 0.5 eq DT", 1.0, 85.0),
+        ("pva-nb", "PVA", "10 wt% PVA-norbornene printed cube, 2 mM LAP, 0.5 eq DT", 7.0, 75.0),
+        ("sdcm50", "PVA_dECM", "10 wt% PVA-norbornene + 50% SDCM printed cube", 1.0, 60.0),
+        ("sdcm50", "PVA_dECM", "10 wt% PVA-norbornene + 50% SDCM printed cube", 7.0, 75.0),
+    ]
+    for tag, material, detail, day, val in printed:
+        rows.append(
+            {
+                "experiment_id": f"setayeshmehr2021-{tag}-print-d{int(day)}",
+                "study_id": "setayeshmehr2021",
+                "material_class": material,
+                "material_detail": detail,
+                "crosslinking": "photocrosslink",
+                "polymer_concentration_wt_pct": 10.0,
+                "surface_chemistry": "native" if "sdcm" in tag else "none",
+                "has_adhesion_ligand": 1.0 if "sdcm" in tag else 0.0,
+                "cell_type": "articular_chondrocyte",
+                "species": "mouse",
+                "culture_model": "3D_bioprint",
+                "growth_factor": "none",
+                "culture_time_days": day,
+                "cell_density_million_per_ml": 10.0,
+                "chemical_modification": "norbornene",
+                "architecture": "3d_printed",
+                "application": "bioprinting",
+                "live_dead_kit": "calcein_ethidium",
+                "extracted_from": f"PMC8069267 Fig. 6-II printed Live/Dead day {int(day)}",
+                "curator_confidence": "medium",
+                "notes": (
+                    f"ATDC5, 1e7/ml. Paper used tildes for printed constructs (~{int(val)}% day {int(day)}). "
+                    "30 kPa extrusion pressure is not Young's modulus."
+                ),
+                "measurements": [
+                    _m("viability_pct", val, "%", evidence="numeric_text", notes=f"Paper: ~{int(val)}%.")
+                ],
+            }
+        )
+    rows.append(
+        {
+            "experiment_id": "pei2023-gelma60-msc-d2",
+            "study_id": "pei2023",
+            "material_class": "GelMA",
+            "material_detail": "5% w/v GelMA-60, 3D culture, Ca-AM/PI at 48 h",
+            "crosslinking": "photocrosslink",
+            "polymer_concentration_wt_pct": 5.0,
+            "surface_chemistry": "native",
+            "has_adhesion_ligand": 1.0,
+            "cell_type": "MSC",
+            "species": "rabbit",
+            "culture_model": "3D_encapsulation",
+            "growth_factor": "none",
+            "culture_time_days": 2.0,
+            "passage": 4,
+            "chemical_modification": "methacrylated",
+            "architecture": "3d_printed",
+            "application": "bioprinting",
+            "live_dead_kit": "calcein_ethidium",
+            "extracted_from": "PMC10090535 Fig. 2F 3D vs adherent Ca-AM/PI 48 h",
+            "curator_confidence": "medium",
+            "notes": (
+                "Rabbit P3–P5 MSCs in GelMA-60 5%. Paper: 3D culture about 81.2% at 48 h. "
+                "Adherent 95.5% is 2D and is not stored. No numeric starting Young's. "
+                "TGF-β3 is later chondrogenesis, not this viability row."
+            ),
+            "measurements": [
+                _m("viability_pct", 81.2, "%", evidence="numeric_text", notes="Paper: about 81.2%.")
+            ],
+        }
+    )
+    return rows
+
+
 EXPERIMENTS: list[dict] = (
     _bachmann_experiments()
     + _other_experiments()
@@ -3900,4 +4047,5 @@ EXPERIMENTS: list[dict] = (
     + _queue_pass_seven()
     + _queue_pass_eight()
     + _queue_pass_nine()
+    + _queue_pass_ten()
 )

@@ -61,6 +61,7 @@ def test_hand_curated_replaces_auto_promoted():
         "lan2022", "scalzone2022",
         "lan2021", "jovic2024", "hosseini2025", "boere2015",
         "ren2016", "zeng2023", "perriergroult2026",
+        "setayeshmehr2021", "pei2023",
     }
     assert all(s.get("pmid") for s in STUDIES if s["study_id"] in require_pmid)
 
@@ -169,6 +170,27 @@ def test_queue_pass_nine_neighborhood_gold_is_numeric_and_honest():
     assert fib["growth_factor"] == "none"
     assert fib["measurements"][0]["value"] == 71.0
     assert "BIT" in fib["notes"]
+
+
+def test_queue_pass_ten_gold_is_numeric_and_honest():
+    by_id = {e["experiment_id"]: e for e in EXPERIMENTS}
+    bulk = by_id["setayeshmehr2021-pva-nb-bulk-d1"]
+    assert bulk["cell_type"] == "articular_chondrocyte"
+    assert bulk["species"] == "mouse"
+    assert bulk["measurements"][0]["value"] == 82.0
+    assert bulk["stiffness_kpa"] == 21.43
+    assert by_id["setayeshmehr2021-sdcm50-bulk-d1"]["measurements"][0]["value"] == 70.0
+    assert by_id["setayeshmehr2021-sdcm50-bulk-d1"].get("stiffness_kpa") is None
+    printed = by_id["setayeshmehr2021-sdcm50-print-d1"]
+    assert printed["culture_model"] == "3D_bioprint"
+    assert printed["measurements"][0]["value"] == 60.0
+    assert printed.get("stiffness_kpa") is None
+    pei = by_id["pei2023-gelma60-msc-d2"]
+    assert pei["cell_type"] == "MSC"
+    assert pei["species"] == "rabbit"
+    assert pei["measurements"][0]["value"] == 81.2
+    assert pei.get("stiffness_kpa") is None
+    assert "95.5" in pei["notes"]
 
 
 def test_curated_viability_excludes_auto_promote():
