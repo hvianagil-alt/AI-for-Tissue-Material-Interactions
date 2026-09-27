@@ -18,7 +18,7 @@ PubMed / SciFinder rank by citation. BIOMATDB and OOCDB are search portals. Benc
 | Core facility / bioink applications | “What has anyone measured in GelMA 25 kPa?” | A living table they can send a customer |
 | PhD student | First protocol | Papers ranked by protocol match, not h-index |
 
-Not the buyer: a patient, a bioprinter OEM, a hydrogel SKU company. Price a **lab seat**. Pilot: **£80–150 / lab / month**.
+Not the buyer: a patient, a bioprinter OEM, a hydrogel SKU company. PhDs do not sign POs. Pilot: **£400–1,200 / lab / quarter**, billed like Covidence or a TGF vial (supplies). Monthly SaaS is the wrong grain. Year-1 seat only after a PI changed a gel: **£1,000–2,500 / year**.
 
 Sell: *the labeled live/dead table for cartilage hydrogels, this week’s protocol, three DOIs, and what to skip.* Do **not** sell “AI that predicts viability”.
 
@@ -38,13 +38,13 @@ Honest LOPO stays on the page. If dummy is ahead, the page says dummy is ahead.
 
 Harvest (~12k papers) is a **library**. Gold (`v_model_viability`) is the only training table. Regex hits, floors, MTT, 2D, wrong cells never become means.
 
-Order the next read by **product hole**, not by abstract `%`:
+Order the next read by **product hole**, not by abstract `%`. Do **not** work `extraction_queue.csv` top-down (rank 1 is meniscus). Do **not** extract more PEG deaths — they stay on Avoid.
 
-1. **Fragile competitor** — GelMA × articular (labs already run this; gold has 1 paper). Ranking vs fibrin is one paper from flipping.
-2. **Death confirm** — mean &lt; 60% with &lt; 3 papers (lock the avoid board).
-3. **Fragile winner** — mean ≥ 90% from 1 paper (do not let a singleton rank the week).
-4. **Missing commercial pair** — GelMA × nasal, fibrin × auricular, collagen × MSC… a buyer will type these.
-5. **Missing kPa** — live/dead without an encapsulation modulus; lookup looks empty.
+1. **GelMA × articular encapsulate** — gold is 1 print paper, 0 encapsulation rows. Labs already run this; Friday keep-alive cannot cite it.
+2. **Second independent GelMA × articular numeric paper** (with starting kPa; reject Li/Levett/Paul floors). Ranking vs fibrin is one paper from flipping.
+3. **fibrin × articular print** — keep-alive winner has 0 printed rows, so job=print cannot cite fibrin.
+4. **GelMA × MSC starting kPa** — 8 live/dead rows, 0 kPa.
+5. **Fragile winners / missing commercial pairs** — collagen articular, GelMA × nasal. Not gellan pile-on.
 
 Demote: reviews, citation-of-citation, floors, extract cytotoxicity, week-3+ ECM kPa, print pressure as Young’s, post-thaw, PRP-as-TGF.
 

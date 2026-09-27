@@ -54,10 +54,21 @@ def test_research_queue_puts_gelma_articular_first():
     top = {(h["material_class"], h["cell_type"]) for h in queue[:5]}
     assert ("GelMA", "articular_chondrocyte") in top
     gelma = next(h for h in queue if h["material_class"] == "GelMA" and h["cell_type"] == "articular_chondrocyte")
-    assert gelma["kind"] == "fragile_competitor"
+    assert gelma["kind"] in {"fragile_competitor", "missing_encap"}
     assert gelma["n_papers"] == 1
+    assert gelma.get("n_encap", 1) == 0
+    kinds = {h["kind"] for h in queue}
+    assert "locked_avoid" not in kinds
+    assert not any(h["material_class"] == "PEG" and h["cell_type"] == "articular_chondrocyte" for h in queue)
+    fibrin = next(
+        (h for h in queue if h["material_class"] == "fibrin" and h["cell_type"] == "articular_chondrocyte"),
+        None,
+    )
+    assert fibrin is not None
+    assert fibrin["kind"] == "missing_print"
     assert NEVER_EXTRACT
     assert any("MTT" in line for line in NEVER_EXTRACT)
+    assert any("death gels" in line for line in NEVER_EXTRACT)
 
 
 def test_lab_decision_is_friday_pack_not_a_predictor():
@@ -72,3 +83,5 @@ def test_lab_decision_is_friday_pack_not_a_predictor():
     assert out["model_card"]["mvp_pass"] is False
     assert out["coverage"]
     assert out["research_queue"]
+    assert out["offer"]["price_pilot"].startswith("£400")
+    assert "quarter" in out["offer"]["price_pilot"]

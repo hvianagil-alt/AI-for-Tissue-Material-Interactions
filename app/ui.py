@@ -777,13 +777,13 @@ def render_compare_page(left: dict, right: dict, left_design: dict, right_design
         else:
             gap = "lower than"
         delta_html = (
-            f"<p class='delta'>A is {abs(d):.1f} pp {gap} B on the same literature estimator. "
+            f"<p class='delta'>A is {abs(d):.1f} pp {gap} B on the same extracted table — not a prediction duel. "
             "If either trust badge is weak, use the papers, not this gap.</p>"
         )
 
     body = f"""
     <h1>Compare two protocols</h1>
-    <p class="sub">The question a PI actually has: is fibrin better than GelMA + TGF-β3 for <em>this</em> week? Same estimator on both sides.</p>
+    <p class="sub">Same extracted table, A minus B. Is fibrin better than GelMA + TGF-β3 for <em>this</em> week?</p>
     {delta_html}
     <form method="get" action="/compare" class="compare-grid">
       <input type="hidden" name="lang" value="{lang}"/>

@@ -60,7 +60,7 @@ Exit: one protocol the lab ran because of the tool, written up with predicted vs
 
 ### Months 4–6 — product-shaped MVP
 
-- Protocol page + avoid board + CSV already ship. Paid conversation with 3 PIs: would they change next week’s gel? Price a pilot (£80–150 / lab / month), not a hydrogel SKU.
+- Protocol page + avoid board + CSV already ship. Paid conversation with 3 PIs: would they change next week’s gel? Price a pilot (£400–1,200 / lab / quarter), not a hydrogel SKU.
 - Next extraction ordered by `python -m tissuelab.product --queue` (GelMA × articular first), not by harvest size.
 - Inverse design stays a demo until LOPO beats dummy.
 

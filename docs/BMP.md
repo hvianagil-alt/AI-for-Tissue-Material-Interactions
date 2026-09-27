@@ -18,7 +18,7 @@ SciFinder / PubMed / Benchling do not answer that. BIOMATDB and OOCDB are search
 
 Not the buyer: a patient, a bioprinter OEM, a hydrogel SKU company (E&M BioLab already sells gel). Price a **lab seat**, not a material.
 
-Pilot price to say out loud: **£80–150 / lab / month** for the extracted table + avoid list + evidence card. Do not sell “AI that predicts viability”. Sell “the labeled live/dead table for cartilage hydrogels, this week’s protocol, and what to skip”. See [`PRODUCT.md`](PRODUCT.md).
+Pilot price to say out loud: **£400–1,200 / lab / quarter** (Covidence-like, PI signs the PO). Do not sell “AI that predicts viability”. Sell “the labeled live/dead table for cartilage hydrogels, this week’s protocol, and what to skip”. See [`PRODUCT.md`](PRODUCT.md).
 
 ## What “good enough to buy” means (gates)
 

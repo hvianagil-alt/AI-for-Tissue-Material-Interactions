@@ -67,8 +67,12 @@ OFFER = {
         "Tabela live/dead extraída para hidrogéis de cartilagem, com lista do que "
         "evitar e os DOIs. Não é uma AI que prevê viabilidade."
     ),
-    "price_pilot": "£80–150 / lab / month",
-    "buyer": "Cartilage / bioink PI or core facility — a lab seat, not a patient or a gel SKU.",
+    "price_pilot": "£400–1,200 / lab / quarter",
+    "price_note": (
+        "Priced like Covidence / a TGF vial, billed as supplies. The PI signs the PO. "
+        "A PhD does not. Monthly SaaS is the wrong grain."
+    ),
+    "buyer": "Cartilage / bioink PI (signs) or core facility — a lab seat, not a patient or a gel SKU.",
     "not_a_prediction": True,
 }
 
@@ -81,6 +85,8 @@ NEVER_EXTRACT = [
     "ECM-matured kPa at week 3+ as the encapsulation modulus",
     "Print pressure as Young’s modulus; thermoplastic / PCL mesh E",
     "Post-thaw cryo viability; PRP counted as TGF-β3",
+    "Do not expand death gels (PEG / PEG-dextran articular) to ‘fix’ the avoid board",
+    "Meniscus-only, heart-valve, osteogenic-only, tribology, lignin cytotoxicity",
 ]
 
 
@@ -102,6 +108,7 @@ def coverage_table(path=DB_PATH) -> list[dict]:
         n_print = 0
         if "culture_model" in sub.columns:
             n_print = int((sub["culture_model"] == "3D_bioprint").sum())
+        n_encap = int(len(sub)) - n_print
         mean = float(values.mean())
         grouped.append(
             {
@@ -113,6 +120,7 @@ def coverage_table(path=DB_PATH) -> list[dict]:
                 "min": _round(float(values.min())),
                 "n_kpa": n_kpa,
                 "n_print": n_print,
+                "n_encap": n_encap,
                 "avoid": bool(mean < AVOID_MEAN),
                 "fragile": int(sub["study_id"].nunique()) < 2,
             }
@@ -182,18 +190,25 @@ def _hole_score(row: dict | None, material: str, cell: str) -> tuple[float, str]
     if material == "GelMA" and cell == "articular_chondrocyte" and n_papers < 3:
         score += 100
         kind = "fragile_competitor"
-    elif row["avoid"] and n_papers < 3:
-        score += 40
-        kind = "death_confirm"
+        if int(row.get("n_encap") or 0) == 0:
+            score += 40
+            kind = "missing_encap"
+    elif row["avoid"]:
+        # Deaths stay on the avoid board. Do not spend the next pass making PEG deader.
+        return -1.0, "locked_avoid"
+    elif material == "fibrin" and cell == "articular_chondrocyte" and int(row.get("n_print") or 0) == 0:
+        score += 50
+        kind = "missing_print"
     elif mean is not None and mean >= 90 and n_papers < 2:
         score += 30
         kind = "fragile_winner"
     elif n_papers < 2:
         score += 12
         kind = "fragile"
-    if row["n_rows"] >= 3 and row["n_kpa"] == 0:
-        score += 15
-        kind = kind if kind != "thin" else "missing_kpa"
+    if row["n_rows"] >= 3 and row["n_kpa"] == 0 and kind not in {"missing_encap", "fragile_competitor"}:
+        score += 18
+        if kind in {"thin", "fragile"}:
+            kind = "missing_kpa"
     return score, kind
 
 
@@ -207,9 +222,14 @@ def research_queue(path=DB_PATH, limit: int = 15) -> list[dict]:
             key = (gel, cell)
             row = have.get(key)
             score, kind = _hole_score(row, gel, cell)
-            if row and not row["fragile"] and not row["avoid"] and kind not in {
+            if kind == "locked_avoid" or score < 0:
+                seen.add(key)
+                continue
+            if row and not row["fragile"] and kind not in {
                 "fragile_competitor",
                 "missing_kpa",
+                "missing_encap",
+                "missing_print",
             }:
                 if int(row["n_papers"]) >= 3 and (row["n_kpa"] or row["n_rows"] < 3):
                     continue
@@ -224,6 +244,8 @@ def research_queue(path=DB_PATH, limit: int = 15) -> list[dict]:
                     "n_rows": 0 if row is None else row["n_rows"],
                     "mean": None if row is None else row["mean"],
                     "n_kpa": 0 if row is None else row["n_kpa"],
+                    "n_print": 0 if row is None else row.get("n_print") or 0,
+                    "n_encap": 0 if row is None else row.get("n_encap") or 0,
                     "why": _hole_why(kind, gel, cell, row),
                 }
             )
@@ -235,6 +257,8 @@ def research_queue(path=DB_PATH, limit: int = 15) -> list[dict]:
             continue
         gel, cell = key
         score, kind = _hole_score(row, gel, cell)
+        if kind == "locked_avoid" or score < 0:
+            continue
         holes.append(
             {
                 "material_class": gel,
@@ -245,6 +269,8 @@ def research_queue(path=DB_PATH, limit: int = 15) -> list[dict]:
                 "n_rows": row["n_rows"],
                 "mean": row["mean"],
                 "n_kpa": row["n_kpa"],
+                "n_print": row.get("n_print") or 0,
+                "n_encap": row.get("n_encap") or 0,
                 "why": _hole_why(kind, gel, cell, row),
             }
         )
@@ -259,6 +285,16 @@ def _hole_why(kind: str, gel: str, cell: str, row: dict | None) -> str:
         return (
             f"Labs already run {gel} on {cell_s}. Gold has {n} paper(s). "
             "The ranking vs fibrin is one paper away from flipping."
+        )
+    if kind == "missing_encap":
+        return (
+            f"Labs already run {gel} encapsulate on {cell_s}. Gold is print-only "
+            f"({n_papers(row)} paper(s), 0 encapsulation rows). The Friday keep-alive path is empty."
+        )
+    if kind == "missing_print":
+        return (
+            f"{gel} × {cell_s} ranks keep-alive but has 0 printed rows. "
+            "Switching the job to print cannot cite this gel."
         )
     if kind == "missing_pair":
         return f"No numeric in-gel live/dead for {gel} × {cell_s}. A buyer will type this pair."

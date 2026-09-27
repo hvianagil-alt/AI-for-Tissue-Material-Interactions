@@ -287,7 +287,7 @@ def render_protocol_page(
             "lang": lang,
         }
     )
-    find_lab = "Encontrar protocolo" if pt else "Find protocol"
+    find_lab = "O gel desta semana" if pt else "This week’s gel"
     search_lab = "Procurar no Europe PMC" if pt else "Search Europe PMC"
     papers_h = "Papers extraídos para abrir" if pt else "Extracted papers to open"
     also_h = "Outros na tabela" if pt else "Others in the table"
@@ -338,6 +338,25 @@ def render_protocol_page(
     if result.get("stock_warning"):
         why_block = f"<p class='why warn'>{escape(result['stock_warning'])}</p>" + why_block
 
+    field = result.get("field_default") or {}
+    field_block = ""
+    if field.get("material_class") and field["material_class"] != proto["material_class"]:
+        fname = _label(MATERIAL_LABELS, field["material_class"])
+        if field.get("same_mean") is not None:
+            fstat = (
+                f"{field['same_mean']:.0f}% · {field.get('n_same_numeric') or 0} numeric · "
+                f"{field.get('n_papers_same') or 0} papers"
+            )
+        else:
+            fstat = "no numeric live/dead for these cells"
+        field_block = (
+            f"<p class='field'>O que os labs correm: <strong>{escape(fname)}</strong> — {escape(fstat)}. "
+            "Não é o arranque desta semana.</p>"
+            if pt
+            else f"<p class='field'>What labs run: <strong>{escape(fname)}</strong> — {escape(fstat)}. "
+            "Not this week’s start.</p>"
+        )
+
     extra_css = """
     main { max-width: 760px; }
     .ask { background:#121b2b; border:1px solid #24344c; border-radius:14px; padding:16px; }
@@ -350,7 +369,8 @@ def render_protocol_page(
     .answer { margin-top:28px; }
     .kicker { text-transform:uppercase; letter-spacing:0.08em; font-size:0.72rem; color:#8fa3bb; margin:0 0 6px; }
     .answer h1 { font-size:1.7rem; letter-spacing:-0.03em; margin:0 0 10px; line-height:1.25; }
-    .stat { font-size:1.05rem; margin:0 0 12px; }
+    .stat { font-size:0.92rem; color:#8fa3bb; margin:0 0 8px; }
+    .field { color:#c5d4e8; margin: 12px 0 0; padding: 10px 12px; border:1px dashed #2a3b55; border-radius:10px; }
     .why { color:#c5d4e8; margin:0 0 18px; }
     .why.warn { color:#f07178; }
     h2 { margin: 26px 0 8px; font-size:1.02rem; font-weight:650; }
@@ -406,17 +426,18 @@ def render_protocol_page(
     <section class="answer" id="resultado">
       <p class="kicker">{escape(kicker)}</p>
       <h1>{escape(headline)}</h1>
-      <p class="stat">{escape(stat)}</p>
       <p class="muted">{escape(not_pred)}</p>
       {_recipe_box(result.get("recipe"), lang)}
+      {field_block}
       {why_block}
+      <p class="stat">{escape(stat)}</p>
       <p><a href="/lookup?{escape(lookup_qs)}">{escape(evidence)}</a></p>
     </section>
+    {avoid_block}
     <h2>{escape(papers_h)}</h2>
     <ol class="papers">{papers}</ol>
     <h2>{escape(also_h)}</h2>
     <ul class="alts">{''.join(alts)}</ul>
-    {avoid_block}
     <h2>{escape(search_h)}</h2>
     <p class="sub">{escape(search_sub)}</p>
     <p class="query">{escape(q)}</p>

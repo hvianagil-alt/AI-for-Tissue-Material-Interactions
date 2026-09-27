@@ -10,7 +10,8 @@ def test_home_is_a_protocol_for_my_cells():
     body = response.text
     assert "This week, run" in body
     assert "Fibrin" in body
-    assert "Find protocol" in body
+    assert "This week’s gel" in body
+    assert "Find protocol" not in body
     assert "Literature for this question" in body
     assert "served model has" in body
     assert "Beginning target" in body
@@ -115,6 +116,7 @@ def test_compare_gelma_and_fibrin():
     assert "Compare two protocols" in response.text
     assert "Fibrin" in response.text
     assert "A is" in response.text
+    assert "not a prediction duel" in response.text
 
 
 def test_avoid_page_lists_peg_for_articular():
@@ -134,6 +136,8 @@ def test_home_is_not_a_prediction():
     body = client.get("/").text
     assert "not a prediction of your flask" in body.lower()
     assert "Do not start here" in body
+    assert "What labs run" in body
+    assert "This week’s gel" in body
     assert "dummy MAE" in body or "LOPO" in body
 
 
