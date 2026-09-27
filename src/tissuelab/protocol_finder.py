@@ -16,6 +16,8 @@ GOALS = ("alive", "print", "matrix")
 HOW = ("encapsulate", "print", "either")
 TGF_CHOICES = ("either", "none", "TGF_b3")
 SITES = ("any", "nasal", "osteoarthritis", "auricular", "bioprinting")
+# Extracted live/dead mean below this is a death — do not start the week here.
+AVOID_MEAN = 60.0
 
 LAB_GELS = [
     "fibrin",
@@ -207,7 +209,7 @@ def _pick_gf(stats: dict, tgf: str) -> str:
 def _avoid(stats: dict) -> bool:
     """Do not serve a gel whose extracted live/dead mean is a death for these cells."""
     mean = stats.get("same_mean")
-    return bool(mean is not None and mean < 60)
+    return bool(mean is not None and mean < AVOID_MEAN)
 
 
 def _why(winner: dict, field: dict | None, intent: dict, lang: str = "en") -> str:

@@ -23,16 +23,16 @@ from tissuelab.literature_model import list_viability_evidence, predict_literatu
 from tissuelab.db import connect
 from tissuelab.paths import DB_PATH, MODEL_PATH
 from tissuelab.predict import predict_design
-from tissuelab.protocol_finder import find_protocol
+from tissuelab.product import avoid_board, coverage_for_cell, honest_model_card, lab_decision, NEVER_EXTRACT, research_queue
 from tissuelab.recommend import recommend_experiments
 from tissuelab.schema import DesignInput, TARGETS
 from tissuelab.shrinkage import N_LOCKED_HYPERPARAMETERS, PAPERS_NEEDED_BEGINNING
 from tissuelab.train import load_model
 
-from app.protocol_ui import render_library_page, render_protocol_page
+from app.protocol_ui import render_avoid_page, render_library_page, render_protocol_page
 from app.ui import CELL_TYPES, GROWTH_FACTORS, MATERIALS, render_compare_page, render_predict_page, render_table_page
 
-app = FastAPI(title="TissueLab AI", version="0.1.0")
+app = FastAPI(title="TissueLab", version="0.1.0")
 
 
 @lru_cache(maxsize=1)
@@ -131,7 +131,7 @@ def home(
 ):
     if cell_type not in CELL_TYPES:
         cell_type = "articular_chondrocyte"
-    result = find_protocol(
+    result = lab_decision(
         cell_type=cell_type,
         goal=goal,
         how=how,
@@ -145,6 +145,65 @@ def home(
     return render_protocol_page(
         result=result, search=search, lang=lang, live=bool(live), corpus=_corpus_counts()
     )
+
+
+@app.get("/avoid", response_class=HTMLResponse)
+def avoid(
+    cell_type: str = Query(default="articular_chondrocyte"),
+    lang: str = Query(default="en"),
+):
+    if cell_type not in CELL_TYPES:
+        cell_type = "articular_chondrocyte"
+    return render_avoid_page(
+        cell_type=cell_type,
+        board=avoid_board(cell_type),
+        coverage=coverage_for_cell(cell_type),
+        card=honest_model_card(),
+        queue=research_queue(limit=8),
+        never=NEVER_EXTRACT,
+        lang=lang,
+    )
+
+
+@app.get("/api/decision")
+def api_decision(
+    cell_type: str = Query(default="articular_chondrocyte"),
+    goal: str = Query(default="alive"),
+    how: str = Query(default="encapsulate"),
+    tgf: str = Query(default="either"),
+    stock: str = Query(default="any"),
+    site: str = Query(default="any"),
+    lang: str = Query(default="en"),
+):
+    if cell_type not in CELL_TYPES:
+        cell_type = "articular_chondrocyte"
+    return lab_decision(
+        cell_type=cell_type,
+        goal=goal,
+        how=how,
+        tgf=tgf,
+        stock=stock,
+        site=site,
+        lang=lang,
+    )
+
+
+@app.get("/api/avoid")
+def api_avoid(cell_type: str = Query(default="articular_chondrocyte")):
+    if cell_type not in CELL_TYPES:
+        cell_type = "articular_chondrocyte"
+    return {"cell_type": cell_type, "avoid": avoid_board(cell_type)}
+
+
+@app.get("/api/coverage")
+def api_coverage(cell_type: str | None = Query(default=None)):
+    from tissuelab.product import coverage_table
+
+    if cell_type:
+        if cell_type not in CELL_TYPES:
+            cell_type = "articular_chondrocyte"
+        return coverage_for_cell(cell_type)
+    return coverage_table()
 
 
 @app.get("/lookup", response_class=HTMLResponse)
@@ -269,6 +328,8 @@ def compare(
 def health():
     return {
         "status": "ok",
+        "product": "friday_protocol",
+        "sell": "extracted table + avoid list, not a viability predictor",
         "mvp": "hydrogel-chondrocyte",
         "simulator_available": MODEL_PATH.exists(),
     }

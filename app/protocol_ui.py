@@ -192,6 +192,11 @@ def render_protocol_page(
         )
     else:
         stat = "Sem linhas extraídas nestas células." if pt else "No extracted rows in these cells."
+    not_pred = (
+        "Isto não é uma previsão do teu frasco. É a condição extraída + os papers."
+        if pt
+        else "This is not a prediction of your flask. It is the extracted condition plus the papers."
+    )
 
     papers = "".join(_paper_line(p) for p in result.get("papers") or []) or (
         "<li class='muted'>No extracted paper for this gel × cell yet.</li>"
@@ -218,6 +223,42 @@ def render_protocol_page(
             f"&stiffness_kpa={alt.get('typical_kpa') or 25}&lang={lang}"
         )
         alts.append(f"<li><a href='{escape(href)}'>{escape(name)}</a> — {escape(detail)}</li>")
+
+    avoid_items = []
+    for death in result.get("avoid_board") or []:
+        name = _label(MATERIAL_LABELS, death["material_class"])
+        mean = death.get("mean")
+        mean_s = "n/d" if mean is None else f"{mean:.0f}%"
+        avoid_items.append(
+            f"<li><strong>{escape(name)}</strong> — {escape(mean_s)} "
+            f"({death['n_papers']} papers, min {death['min']:.0f}%)</li>"
+        )
+    if avoid_items:
+        avoid_h = "Não comeces aqui" if pt else "Do not start here"
+        avoid_block = (
+            f"<h2>{escape(avoid_h)}</h2>"
+            f"<p class='sub'><a href='/avoid?cell_type={escape(intent['cell_type'])}&lang={lang}'>"
+            f"{'Lista completa' if pt else 'Full avoid board'}</a></p>"
+            f"<ul class='alts'>{''.join(avoid_items)}</ul>"
+        )
+    else:
+        avoid_block = ""
+
+    card = result.get("model_card") or {}
+    if card:
+        dummy = card.get("dummy_mae")
+        shrink = card.get("shrinkage_mae")
+        r2 = card.get("shrinkage_r2")
+        honest = (
+            f"LOPO honesto: dummy MAE {dummy} vs shrinkage {shrink}, R² {r2}. "
+            f"{card.get('sell') or ''}"
+            if not pt
+            else f"LOPO honesto: dummy MAE {dummy} vs shrinkage {shrink}, R² {r2}. "
+            f"Não compres isto como preditor."
+        )
+        honest_block = f"<p class='muted honest'>{escape(honest)}</p>"
+    else:
+        honest_block = ""
 
     harvested = "".join(_search_line(r, lang) for r in (search.get("harvested") or [])) or (
         "<li class='muted'>No harvested hit for this query.</li>"
@@ -328,6 +369,7 @@ def render_protocol_page(
     .recipe h3 { margin:0 0 8px; font-size:0.82rem; text-transform:uppercase; letter-spacing:0.06em; color:#3ecfb2; }
     .recipe .meta { color:#e8eef7; margin: 0 0 8px; }
     .recipe .muted { margin:0; font-size:0.82rem; color:#8fa3bb; }
+    .honest { margin-top: 28px; }
     @media (max-width: 700px) { .ask fieldset { grid-template-columns: 1fr; } .answer h1 { font-size:1.35rem; } }
     """
     legend = "O que vais fazer esta semana" if pt else "What you are doing this week"
@@ -365,6 +407,7 @@ def render_protocol_page(
       <p class="kicker">{escape(kicker)}</p>
       <h1>{escape(headline)}</h1>
       <p class="stat">{escape(stat)}</p>
+      <p class="muted">{escape(not_pred)}</p>
       {_recipe_box(result.get("recipe"), lang)}
       {why_block}
       <p><a href="/lookup?{escape(lookup_qs)}">{escape(evidence)}</a></p>
@@ -373,13 +416,15 @@ def render_protocol_page(
     <ol class="papers">{papers}</ol>
     <h2>{escape(also_h)}</h2>
     <ul class="alts">{''.join(alts)}</ul>
+    {avoid_block}
     <h2>{escape(search_h)}</h2>
     <p class="sub">{escape(search_sub)}</p>
     <p class="query">{escape(q)}</p>
     <ol class="search-list">{harvested}</ol>
     <p><a class="live" href="/?{escape(live_qs)}">{escape(search_lab)}</a></p>
     {epmc_block}
-    <p class="foot muted"><a href="/table?lang={lang}">Table</a> · <a href="/compare?lang={lang}">Compare</a> · <a href="/export.csv">CSV</a></p>
+    {honest_block}
+    <p class="foot muted"><a href="/avoid?lang={lang}">Avoid</a> · <a href="/table?lang={lang}">Table</a> · <a href="/compare?lang={lang}">Compare</a> · <a href="/export.csv">CSV</a> · <a href="/api/decision">JSON</a></p>
     """
     title = "TissueLab — this week’s protocol" if lang == "en" else "TissueLab — o protocolo desta semana"
     return render_shell(title=title, lang=lang, page="/", body=body, extra_css=extra_css, onboard="short", qs=qs)
@@ -449,4 +494,116 @@ def render_library_page(*, stats: dict, lang: str = "en") -> str:
     table.data { max-width: 560px; }
     """
     return render_shell(title=title, lang=lang, page="/library", body=body, extra_css=extra_css, onboard=False)
+
+
+def render_avoid_page(
+    *,
+    cell_type: str,
+    board: list[dict],
+    coverage: list[dict],
+    card: dict,
+    queue: list[dict],
+    never: list[str],
+    lang: str = "en",
+) -> str:
+    lang = normalize_lang(lang)
+    pt = lang == "pt"
+    title = "Do not start here" if not pt else "Não comeces aqui"
+    lead = (
+        "Gels whose extracted in-gel live/dead mean is below 60% for these cells. "
+        "This is the paid skip — not a predicted death."
+        if not pt
+        else "Géis cujo live/dead extraído em gel está abaixo de 60% nestas células. "
+        "Isto é o skip pago — não é uma morte prevista."
+    )
+    rows = []
+    for death in board:
+        name = _label(MATERIAL_LABELS, death["material_class"])
+        mean = "—" if death.get("mean") is None else f"{death['mean']:.0f}%"
+        mn = "—" if death.get("min") is None else f"{death['min']:.0f}%"
+        rows.append(
+            f"<tr><td>{escape(name)}</td><td>{escape(mean)}</td><td>{escape(mn)}</td>"
+            f"<td>{int(death['n_papers'])}</td><td>{int(death['n_rows'])}</td></tr>"
+        )
+    if rows:
+        table = (
+            "<table class='data'><thead><tr>"
+            f"<th>{'Gel' if not pt else 'Gel'}</th><th>mean</th><th>min</th>"
+            f"<th>{'papers' if not pt else 'papers'}</th><th>n</th>"
+            f"</tr></thead><tbody>{''.join(rows)}</tbody></table>"
+        )
+    else:
+        table = (
+            "<p class='muted'>No extracted mean below 60% for these cells.</p>"
+            if not pt
+            else "<p class='muted'>Nenhuma média extraída abaixo de 60% nestas células.</p>"
+        )
+    cov_rows = []
+    for row in coverage:
+        name = _label(MATERIAL_LABELS, row["material_class"])
+        mean = "—" if row.get("mean") is None else f"{row['mean']:.0f}%"
+        flag = "avoid" if row.get("avoid") else ("fragile" if row.get("fragile") else "")
+        cov_rows.append(
+            f"<tr class='{flag}'><td>{escape(name)}</td><td>{escape(mean)}</td>"
+            f"<td>{int(row['n_papers'])}</td><td>{int(row['n_kpa'])}</td>"
+            f"<td>{int(row['n_print'])}</td></tr>"
+        )
+    cov_table = (
+        "<table class='data'><thead><tr>"
+        "<th>gel</th><th>mean</th><th>papers</th><th>kPa</th><th>print</th>"
+        f"</tr></thead><tbody>{''.join(cov_rows)}</tbody></table>"
+        if cov_rows
+        else "<p class='muted'>No numeric rows for these cells.</p>"
+    )
+    q_rows = []
+    for hole in queue:
+        q_rows.append(
+            f"<li><strong>{escape(_label(MATERIAL_LABELS, hole['material_class']))}</strong> × "
+            f"{escape(hole['cell_type'].replace('_', ' '))} "
+            f"<em class='flag'>{escape(hole['kind'])}</em> — {escape(hole['why'])}</li>"
+        )
+    never_l = "".join(f"<li>{escape(item)}</li>" for item in never)
+    dummy = card.get("dummy_mae")
+    shrink = card.get("shrinkage_mae")
+    r2 = card.get("shrinkage_r2")
+    honest = (
+        f"Dummy LOPO MAE {dummy} vs shrinkage {shrink}, R² {r2}. "
+        f"{card.get('sell') or ''}"
+    )
+    cell_form = (
+        f"<form class='ask' method='get' action='/avoid'>"
+        f"<input type='hidden' name='lang' value='{lang}'/>"
+        f"<label>{'Células' if pt else 'Cells'}"
+        f"<select name='cell_type' onchange='this.form.submit()'>{_cell_sel(cell_type, lang)}</select>"
+        f"</label></form>"
+    )
+    cov_h = "Coverage for these cells" if not pt else "Cobertura nestas células"
+    q_h = "Next extraction holes (product order)" if not pt else "Próximos buracos (ordem do produto)"
+    never_h = "Never extract as a training mean" if not pt else "Nunca extrair como média de treino"
+    body = f"""
+    <h1>{escape(title)}</h1>
+    <p class="sub">{escape(lead)}</p>
+    {cell_form}
+    {table}
+    <p class="muted honest">{escape(honest)}</p>
+    <h2>{escape(cov_h)}</h2>
+    {cov_table}
+    <h2>{escape(q_h)}</h2>
+    <ol class="papers">{''.join(q_rows)}</ol>
+    <h2>{escape(never_h)}</h2>
+    <ul class="alts">{never_l}</ul>
+    <p class="foot muted"><a href="/?lang={lang}">Protocol</a> · <a href="/table?lang={lang}">Table</a> · <a href="/export.csv">CSV</a> · <a href="/api/decision">JSON</a></p>
+    """
+    extra_css = """
+    main { max-width: 760px; }
+    .ask { background:#121b2b; border:1px solid #24344c; border-radius:14px; padding:16px; margin: 12px 0 18px; }
+    .ask label { display:flex; flex-direction:column; gap:6px; font-size:0.82rem; color:#8fa3bb; }
+    .ask select { background:#0b1220; color:#e8eef7; border:1px solid #2a3b55; border-radius:8px; padding:9px 10px; font-size:1rem; }
+    table.data tr.avoid td { color:#f07178; }
+    table.data tr.fragile td { color:#f4b942; }
+    .flag { font-style:normal; font-size:0.72rem; margin-left:6px; border-radius:999px; padding:1px 8px; border:1px solid #2a3b55; color:#9db0c8; }
+    .honest { margin: 16px 0; }
+    """
+    return render_shell(title=title, lang=lang, page="/avoid", body=body, extra_css=extra_css, onboard="short")
+
 

@@ -26,6 +26,8 @@ streamlit run app/streamlit_app.py --server.port 8502
 | Page | Use it for | Trust it? |
 |---|---|---|
 | **`/` Protocol** | Cells + job → what to run this week | Ranked extracted rows. Not a written methods section |
+| **`/avoid`** | Gels with extracted mean &lt; 60% | Yes — this is the skip they pay for |
+| **`/api/decision`** | Same pack as JSON | Same labels as the page |
 | **`/library`** | Chemistry / architecture / application tags on every harvested paper | Paper counts, not live/dead |
 | **`/lookup`** | You already picked a gel | Literature lookup: yes. Not your next flask |
 | **`/table`** | Every hand-extracted live/dead row (numeric + floors) | Yes — this is the product |
@@ -41,11 +43,12 @@ To see what “training a model” means on this table: [`docs/TRAIN.md`](TRAIN.
 ## 3. Protocol — the actual workflow
 
 1. Open `/`. Leave the defaults: **articular chondrocyte**, keep them alive, encapsulate.
-2. Read **This week, run** — today that is fibrin, not GelMA. GelMA is what labs run; this table has no numeric articular live/dead for GelMA.
-3. Open the three extracted papers. Then **Search Europe PMC** if you want live literature (tagged already-in-the-table or not).
-4. If you already picked a gel, open **Lookup**. Charts and LOPO are behind “How this number is made”.
-5. **Table** / CSV for the lab meeting. **Compare** for fibrin vs GelMA + TGF-β3.
-6. Ignore Streamlit radar / inverse unless you want the demo.
+2. Read **This week, run** — today that is fibrin, not GelMA. GelMA is what labs run; this table has one articular live/dead paper for GelMA.
+3. Read **Do not start here** — PEG. Open `/avoid` for coverage and the next extraction holes.
+4. Open the three extracted papers. Then **Search Europe PMC** if you want live literature (tagged already-in-the-table or not).
+5. If you already picked a gel, open **Lookup**. The big % is a table mean, not your flask. Charts and LOPO are behind “How this number is made”.
+6. **Table** / CSV for the lab meeting. **Compare** for fibrin vs GelMA + TGF-β3. `GET /api/decision` for a script.
+7. Ignore Streamlit radar / inverse unless you want the demo.
 
 If the gel you typed has **no** live/dead rows, the app falls back to the global mean and says so. Use the papers, not that number.
 

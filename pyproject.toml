@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "tissuelab"
 version = "0.1.0"
-description = "TissueLab AI — predict and inverse-design hydrogel–chondrocyte interactions."
+description = "TissueLab — this week’s cartilage hydrogel protocol, avoid list, and extracted live/dead table."
 readme = "README.md"
 requires-python = ">=3.10"
 dependencies = [
@@ -36,6 +36,7 @@ tissuelab-teach-model = "tissuelab.teach_model:main"
 tissuelab-analyze-papers = "tissuelab.analyze_papers:main"
 tissuelab-training-pack = "tissuelab.training_pack:main"
 tissuelab-pipeline = "tissuelab.pipeline:main"
+tissuelab-product = "tissuelab.product:main"
 tissuelab-ingest-literature = "tissuelab.ingest_literature:main"
 tissuelab-europepmc = "tissuelab.europepmc:main"
 

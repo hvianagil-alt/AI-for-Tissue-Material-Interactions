@@ -1,17 +1,14 @@
-# TissueLab AI
+# TissueLab
 
-A first working prototype of a **Tissue Interaction Engine**: predict how a hydrogel will interact with chondrocytes, then invert that model to propose designs and the next experiment.
+This week’s gel for cartilage hydrogels. Three papers. What not to start.
 
-This repo starts the project described in *AI for Tissue–Material Interactions*. It follows the brief on purpose:
+A PI already spends Friday deciding GelMA vs fibrin. TissueLab returns an **extracted protocol**, an **avoid list** (in-gel live/dead mean &lt; 60%), and the **DOIs**. It is not an AI that predicts viability — dummy still slightly beats shrinkage on leave-one-paper-out.
 
-- one tissue (cartilage)
-- one material class (hydrogels)
-- four measurable outcomes (viability, proliferation, differentiation, ECM deposition)
-- no attempt to simulate a whole organ
-
-The point of the MVP is not “AI for biology”. It is:
+The scientific question remains:
 
 > **Can this system change which hydrogel experiment a cartilage researcher runs next?**
+
+How to sell it, how to research the next paper, and which model we actually serve: [`docs/PRODUCT.md`](docs/PRODUCT.md). Buyable-minimal plan: [`docs/BMP.md`](docs/BMP.md).
 
 ## What is in v0.1
 
@@ -20,7 +17,7 @@ The point of the MVP is not “AI for biology”. It is:
 | SQLite experimental DB (`studies` / `experiments` / `measurements`) | Done — `data/tissuelab.sqlite` |
 | Hand-curated live/dead training view (`v_model_viability`) | Done — `data/literature_viability.csv` |
 | Literature viability (empirical Bayes ± adaptive LOPO band) | Done (served; 65 papers, shrinkage LOPO MAE 11.69 vs dummy 11.56, R² −0.049; MVP 15% bar still unmet) |
-| HTML product: Protocol / Lookup / Table / Compare / CSV | Done — English default |
+| HTML product: Protocol / Avoid / Lookup / Table / Compare / CSV / `GET /api/decision` | Done — English default |
 | Buyable-minimal plan | `docs/BMP.md` |
 | How to train the viability model (videos → this table) | `docs/ML_PLAN.md` |
 | First training lesson (never trained a model) | `docs/TRAIN.md` → `python3 -m tissuelab.teach_model` |
@@ -48,7 +45,7 @@ pip install -e .
 tissuelab-app
 ```
 
-Opens [http://127.0.0.1:8501](http://127.0.0.1:8501) as a **plain HTML** product. Say which cells you have and what you want this week; it ranks extracted protocols and searches papers. English by default; `?lang=pt` for Portuguese. If Chrome refuses `localhost`, that is IPv6 — use 127.0.0.1. `/lookup` is the old evidence card if you already picked a gel. `/table` is the CSV you would email a colleague.
+Opens [http://127.0.0.1:8501](http://127.0.0.1:8501) as a **plain HTML** product. Say which cells you have and what you want this week; it returns an extracted protocol, what to skip, and papers. English by default; `?lang=pt` for Portuguese. If Chrome refuses `localhost`, that is IPv6 — use 127.0.0.1. `/avoid` is the death list. `/lookup` is the old evidence card if you already picked a gel. `/table` is the CSV you would email a colleague. `GET /api/decision` is the same pack as JSON.
 
 Optional:
 
@@ -81,7 +78,7 @@ pip install -e ".[dev]" && pytest -q
 | HGB LOPO MAE | 12.61 (eligible at ≥40 papers; still not served) |
 | Simulated XGBoost holdout R² | ~0.92 — **ignore** for science |
 
-The product is ready to **use as Protocol**: cells + job → extracted protocol + papers. Lookup is the evidence card. It is not ready to claim a model that beats “GelMA ~25 kPa + TGF-β3”.
+The product is ready to **use as Protocol**: cells + job → extracted protocol + avoid list + papers. Lookup is the evidence card. It is not ready to claim a model that beats “GelMA ~25 kPa + TGF-β3”.
 
 ## Project layout
 

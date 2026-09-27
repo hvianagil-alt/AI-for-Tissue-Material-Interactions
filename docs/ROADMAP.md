@@ -10,7 +10,7 @@ The product question is unchanged:
 
 **MVP (scientific):** a viability model that beats a dummy mean under **leave-one-paper-out** on real live/dead %, with enough papers that a PI would not laugh at the split (`n_studies ≥ 15` is the first bar; `≥ 40` is the useful bar).
 
-**MVP (product):** inverse design + next-experiment that cites 3–5 extracted papers and proposes a protocol a cartilage lab would actually run this quarter (GelMA or fibrin, 1–30 kPa, TGF-β3 on/off).
+**MVP (product):** this week’s extracted protocol + avoid list (mean &lt; 60%) + three DOIs + CSV. Inverse design is a demo, not the SKU. See `docs/PRODUCT.md`.
 
 **Not the MVP:** more tissues, a virtual joint, an LLM that invents sGAG numbers from abstracts, Postgres, or a neural net on 13 points.
 
@@ -60,9 +60,9 @@ Exit: one protocol the lab ran because of the tool, written up with predicted vs
 
 ### Months 4–6 — product-shaped MVP
 
-- Evidence card: prediction + 3 nearest **extracted** papers (not simulated neighbors).
-- Inverse design constrained to physiological stiffness and materials the lab stocks.
-- Paid conversation with 3 PIs: would they change next week’s gel? Price a pilot (£ / lab / quarter), not a hydrogel SKU.
+- Protocol page + avoid board + CSV already ship. Paid conversation with 3 PIs: would they change next week’s gel? Price a pilot (£80–150 / lab / month), not a hydrogel SKU.
+- Next extraction ordered by `python -m tissuelab.product --queue` (GelMA × articular first), not by harvest size.
+- Inverse design stays a demo until LOPO beats dummy.
 
 ### Months 6–12 — business if the metric moved
 

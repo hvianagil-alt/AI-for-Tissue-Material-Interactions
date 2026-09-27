@@ -115,3 +115,38 @@ def test_compare_gelma_and_fibrin():
     assert "Compare two protocols" in response.text
     assert "Fibrin" in response.text
     assert "A is" in response.text
+
+
+def test_avoid_page_lists_peg_for_articular():
+    client = TestClient(app)
+    response = client.get("/avoid")
+    assert response.status_code == 200
+    body = response.text
+    assert "Do not start here" in body
+    assert "PEG" in body
+    assert "Never extract" in body
+    assert "fragile_competitor" in body or "GelMA" in body
+    assert "/avoid" in client.get("/").text
+
+
+def test_home_is_not_a_prediction():
+    client = TestClient(app)
+    body = client.get("/").text
+    assert "not a prediction of your flask" in body.lower()
+    assert "Do not start here" in body
+    assert "dummy MAE" in body or "LOPO" in body
+
+
+def test_api_decision_json():
+    client = TestClient(app)
+    response = client.get("/api/decision", params={"cell_type": "articular_chondrocyte"})
+    assert response.status_code == 200
+    data = response.json()
+    assert data["not_a_prediction"] is True
+    assert data["protocol"]["material_class"] == "fibrin"
+    assert data["avoid_board"]
+    assert data["model_card"]["mvp_pass"] is False
+    avoid = client.get("/api/avoid", params={"cell_type": "articular_chondrocyte"}).json()
+    assert any(row["material_class"] == "PEG" for row in avoid["avoid"])
+    health = client.get("/health").json()
+    assert health["product"] == "friday_protocol"

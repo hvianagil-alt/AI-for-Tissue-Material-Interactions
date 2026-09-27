@@ -510,7 +510,7 @@ def render_predict_page(
     button:focus, select:focus, input:focus {{ outline: 2px solid #f4b942; outline-offset: 2px; }}
     .hero {{ display:grid; grid-template-columns: 1.05fr 1fr; gap:14px; margin-top:18px; }}
     .card {{ background:#152033; border-radius:12px; padding:16px; }}
-    .big {{ font-size:3rem; color:#f4b942; font-weight:800; letter-spacing:-0.03em; }}
+    .big {{ font-size:2.1rem; color:#c5d4e8; font-weight:700; letter-spacing:-0.03em; }}
     .chips {{ display:flex; flex-wrap:wrap; gap:8px; margin-top:10px; }}
     .chips span {{ background:#0b1220; border:1px solid #2a3b55; border-radius:999px; padding:4px 10px; font-size:0.82rem; color:#c5d4e8; }}
     .trust {{ display:flex; gap:4px; height:10px; border-radius:99px; overflow:hidden; background:#0b1220; margin:10px 0 6px; }}
@@ -588,7 +588,7 @@ def render_predict_page(
     <p class="verdict" id="resultado">{verdict}</p>
     <div class="hero">
       <div class="card">
-        <div class="muted">Literature live/dead estimate</div>
+        <div class="muted">Extracted table mean — not a prediction of your flask</div>
         <div class="big">{escape(mean_s)}</div>
         <div class="muted">band {escape(band_s)} · {escape(reasons_s)}</div>
         {_trust_meter(trust)}

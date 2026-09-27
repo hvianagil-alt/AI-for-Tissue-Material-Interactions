@@ -6,6 +6,7 @@ from html import escape
 
 NAV = (
     ("/", "Protocol", "Protocolo"),
+    ("/avoid", "Avoid", "Evitar"),
     ("/lookup", "Lookup", "Consulta"),
     ("/table", "Table", "Tabela"),
     ("/library", "Library", "Biblioteca"),
@@ -16,21 +17,21 @@ NAV = (
 COPY = {
     "en": {
         "product": "TissueLab",
-        "tagline": "Extracted protocols for cartilage hydrogels.",
+        "tagline": "This week’s gel. Three papers. What to skip.",
         "skip": "Skip to result",
         "lang_switch": "PT",
         "lang_href": "?lang=pt",
-        "onboard": "Tell us the cells and the job. We rank extracted protocols, then search papers. Not a virtual flask.",
-        "onboard_short": "Cells + job → a protocol from the table, then papers.",
+        "onboard": "Tell us the cells and the job. We return an extracted protocol, an avoid list, and the DOIs. We do not predict your next flask.",
+        "onboard_short": "Cells + job → this week’s gel, what to skip, three papers.",
     },
     "pt": {
         "product": "TissueLab",
-        "tagline": "Protocolos extraídos para hidrogéis de cartilagem.",
+        "tagline": "O gel desta semana. Três papers. O que não começar.",
         "skip": "Saltar para o resultado",
         "lang_switch": "EN",
         "lang_href": "?lang=en",
-        "onboard": "Diz as células e o que queres. Ordenamos protocolos extraídos e procuramos papers. Não é um frasco virtual.",
-        "onboard_short": "Células + objetivo → um protocolo da tabela, depois papers.",
+        "onboard": "Diz as células e o que queres. Devolvemos um protocolo extraído, o que evitar, e os DOIs. Não prevemos o próximo frasco.",
+        "onboard_short": "Células + objetivo → o gel desta semana, o que evitar, três papers.",
     },
 }
 

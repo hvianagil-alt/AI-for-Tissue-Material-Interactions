@@ -11,7 +11,7 @@ python3 -m tissuelab.teach_model
 
 Imprime os números **da tua tabela** (`data/train_gold.csv` = `v_model_viability` com química/arquitectura/aplicação) e grava `artifacts/teach_model.json`. Não muda o que a app serve.
 
-O plano científico está em [`ML_PLAN.md`](ML_PLAN.md). Esta página é o *como se faz em Python*.
+O plano científico está em [`ML_PLAN.md`](ML_PLAN.md). Esta página é o *como se faz em Python*. O que se vende (protocolo de sexta + lista do que evitar, não o preditor) está em [`PRODUCT.md`](PRODUCT.md).
 
 ## O que é um modelo, em três linhas
 

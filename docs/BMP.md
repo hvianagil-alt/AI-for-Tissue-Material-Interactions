@@ -18,20 +18,20 @@ SciFinder / PubMed / Benchling do not answer that. BIOMATDB and OOCDB are search
 
 Not the buyer: a patient, a bioprinter OEM, a hydrogel SKU company (E&M BioLab already sells gel). Price a **lab seat**, not a material.
 
-Pilot price to say out loud: **£80–150 / lab / month** for the extracted table + evidence card. Do not sell “AI that predicts viability”. Sell “the labeled live/dead table for cartilage hydrogels, with an honest lookup”.
+Pilot price to say out loud: **£80–150 / lab / month** for the extracted table + avoid list + evidence card. Do not sell “AI that predicts viability”. Sell “the labeled live/dead table for cartilage hydrogels, this week’s protocol, and what to skip”. See [`PRODUCT.md`](PRODUCT.md).
 
 ## What “good enough to buy” means (gates)
 
 A PI can do this in **one sitting, no install, no account**:
 
-1. Open the app. In 30 seconds see **this week’s protocol** for articular chondrocytes (not a GelMA slider).
+1. Open the app. In 30 seconds see **this week’s protocol** for articular chondrocytes (not a GelMA slider) and **Do not start here** (PEG).
 2. Switch job to **print**. The gel should change. Open the DOIs.
-3. `/lookup` still looks up a gel you already picked. Charts sit behind details.
-2. Switch to **fibrin** and **chitosan**. The papers, trust badge, and band actually change. DOIs open.
-3. Open **the table**: every hand-extracted live/dead row, filter by gel, download CSV.
-4. **Compare** two protocols side by side (their gel vs GelMA + TGF-β3).
-5. Read, in plain language, that this is literature lookup, not a virtual flask. Weak evidence is labeled weak.
-6. English by default (international labs). Portuguese still available.
+3. `/avoid` lists death gels for these cells, coverage, and the next extraction holes.
+4. `/lookup` still looks up a gel you already picked. The big % is a table mean, not a flask forecast.
+5. Open **the table**: every hand-extracted live/dead row, filter by gel, download CSV.
+6. **Compare** two protocols side by side (their gel vs GelMA + TGF-β3).
+7. Read, in plain language, that this is literature lookup, not a virtual flask. Weak evidence is labeled weak.
+8. English by default (international labs). Portuguese still available.
 
 Scientific honesty stays on the page: shrinkage vs dummy LOPO, n papers, % kPa missing. If LOPO is still short of the 15% bar, say so. A PI will pay for the table; they will not pay for a fake R².
 
@@ -46,7 +46,7 @@ Scientific honesty stays on the page: shrinkage vs dummy LOPO, n papers, % kPa m
 
 ## Data work that makes it sellable (this pass)
 
-The product lies when GelMA has **one** numeric row and **zero** kPa. A buyer will type GelMA, see “evidence weak”, and bounce.
+The product lies when GelMA articular is **one paper**. A buyer will treat Daly 2016 as a law. Next extraction hole: a second independent GelMA × articular live/dead paper (see `python -m tissuelab.product --queue`).
 
 Priority extraction (hand-curated only, numbers that appear in OA fulltext or a methods table):
 
@@ -63,6 +63,8 @@ After each extraction batch: `python -m tissuelab.load_database` then `python -m
 | Surface | Why a PI uses it |
 |---|---|
 | `/` protocol | Cells + job → what to run. Search harvested papers. |
+| `/avoid` | Mean &lt; 60% for these cells. Coverage. Next holes. |
+| `/api/decision` | Same pack as JSON (scripts, no HTML). |
 | `/lookup` | Evidence card if they already picked a gel |
 | `/table` | The thing they email a colleague. Filter keeps every gel in the dropdown. |
 | `/export.csv` | Drops into GraphPad / Excel |
@@ -75,9 +77,9 @@ Navigation, onboarding strip, English copy, human gel names, next-DOI, trust, bo
 
 Walkthrough (must pass before calling it buyable):
 
-1. Cold open `/`. Title in English. Form labeled. GelMA 25 kPa 14 d.
-2. Big number + band + trust + “open this next” with a working DOI. For GelMA this is a **kPa paper** (Levett / Li), not only Daly.
-3. **Also extracted for this gel** lists Li 2016 / Levett 2014 / Paul 2023 floors with kPa.
+1. Cold open `/`. Title in English. Form labeled. Fibrin for articular / keep alive. “Not a prediction of your flask.”
+2. **Do not start here** lists PEG. Open `/avoid`.
+3. **Also extracted** / papers have working DOIs.
 4. Change hydrogel to fibrin, then chitosan, without a blank page.
 5. `/table` lists only hand-curated live/dead (no `pmid*`). Filter chitosan — other gels stay in the dropdown. CSV downloads.
 6. `/compare` GelMA vs fibrin shows two estimates, two paper lists, and A minus B in points.

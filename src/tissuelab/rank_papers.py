@@ -171,6 +171,15 @@ def rank(path=DB_PATH) -> dict:
         by_paper.setdefault(row["amass_id"], []).append(row)
 
     analyses: dict[str, dict] = {}
+    holes: list[dict] = []
+    gap_boost = None
+    try:
+        from tissuelab.product import product_gap_boost, research_queue
+
+        holes = research_queue(path, limit=12)
+        gap_boost = product_gap_boost
+    except Exception:
+        holes = []
     tables = {r[0] for r in conn.execute("SELECT name FROM sqlite_master WHERE type='table'").fetchall()}
     if "paper_analyses" in tables:
         for row in conn.execute("SELECT * FROM paper_analyses"):
@@ -208,6 +217,10 @@ def rank(path=DB_PATH) -> dict:
             has_culture_days="culture_time_days" in fields,
             has_tgf="growth_factor" in fields,
         )
+        if gap_boost and (cells or materials):
+            bonus, gap_reasons = gap_boost(materials, cells, holes)
+            score += bonus
+            reasons.extend(gap_reasons)
         analysis = analyses.get(paper["amass_id"])
         if analysis:
             if int(analysis["training_relevant"] or 0):
