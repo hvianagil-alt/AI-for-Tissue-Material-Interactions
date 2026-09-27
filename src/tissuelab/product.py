@@ -89,6 +89,32 @@ NEVER_EXTRACT = [
     "Meniscus-only, heart-valve, osteogenic-only, tribology, lignin cytotoxicity",
 ]
 
+# Closed hunts. The hole stays on the board (Friday still cannot cite it).
+# Do not invent a mean. Do not re-boost lookalike tags (silk fibroin ≠ fibrin).
+HUNT_LOG = {
+    ("fibrin", "articular_chondrocyte"): {
+        "status": "hunted_empty",
+        "hole": "missing_print",
+        "date": "2026-09",
+        "why": (
+            "OA fulltext hunt found no numeric in-gel live/dead for fibrin × articular × "
+            "3D_bioprint. Closest miss: Couto 2024 FGT extrusion OA articular — qualitative "
+            "'minimal cell death' only. Existing gold: bachmann2020 + rojas2025 encapsulate. "
+            "Do not invent a print mean."
+        ),
+        "skip": (
+            "xu2013",
+            "bowes2024",
+            "couto2024",
+            "li2025gelbrin",
+            "henrionnet2020",
+            "sun2019",
+            "perriergroult2026",
+        ),
+        "not_this_material": ("silk_fibrin",),
+    }
+}
+
 
 def _round(value, digits: int = 1):
     if value is None:
@@ -234,21 +260,7 @@ def research_queue(path=DB_PATH, limit: int = 15) -> list[dict]:
                 if int(row["n_papers"]) >= 3 and (row["n_kpa"] or row["n_rows"] < 3):
                     continue
             seen.add(key)
-            holes.append(
-                {
-                    "material_class": gel,
-                    "cell_type": cell,
-                    "kind": kind,
-                    "score": round(float(score), 1),
-                    "n_papers": 0 if row is None else row["n_papers"],
-                    "n_rows": 0 if row is None else row["n_rows"],
-                    "mean": None if row is None else row["mean"],
-                    "n_kpa": 0 if row is None else row["n_kpa"],
-                    "n_print": 0 if row is None else row.get("n_print") or 0,
-                    "n_encap": 0 if row is None else row.get("n_encap") or 0,
-                    "why": _hole_why(kind, gel, cell, row),
-                }
-            )
+            holes.append(_hole_record(gel, cell, kind, score, row))
     # Single-paper winners / deaths outside the commercial grid still matter.
     for key, row in have.items():
         if key in seen:
@@ -259,26 +271,43 @@ def research_queue(path=DB_PATH, limit: int = 15) -> list[dict]:
         score, kind = _hole_score(row, gel, cell)
         if kind == "locked_avoid" or score < 0:
             continue
-        holes.append(
-            {
-                "material_class": gel,
-                "cell_type": cell,
-                "kind": kind,
-                "score": round(float(score), 1),
-                "n_papers": row["n_papers"],
-                "n_rows": row["n_rows"],
-                "mean": row["mean"],
-                "n_kpa": row["n_kpa"],
-                "n_print": row.get("n_print") or 0,
-                "n_encap": row.get("n_encap") or 0,
-                "why": _hole_why(kind, gel, cell, row),
-            }
-        )
+        holes.append(_hole_record(gel, cell, kind, score, row))
     holes.sort(key=lambda h: (-h["score"], h["material_class"], h["cell_type"]))
     return holes[:limit]
 
 
-def _hole_why(kind: str, gel: str, cell: str, row: dict | None) -> str:
+def _hunt_for(material: str, cell: str, kind: str) -> dict | None:
+    rec = HUNT_LOG.get((material, cell))
+    if not rec:
+        return None
+    if rec.get("hole") and rec["hole"] != kind:
+        return None
+    return rec
+
+
+def _hole_record(gel: str, cell: str, kind: str, score: float, row: dict | None) -> dict:
+    hunt = _hunt_for(gel, cell, kind)
+    out = {
+        "material_class": gel,
+        "cell_type": cell,
+        "kind": kind,
+        "score": round(float(score), 1),
+        "n_papers": 0 if row is None else row["n_papers"],
+        "n_rows": 0 if row is None else row["n_rows"],
+        "mean": None if row is None else row["mean"],
+        "n_kpa": 0 if row is None else row["n_kpa"],
+        "n_print": 0 if row is None else row.get("n_print") or 0,
+        "n_encap": 0 if row is None else row.get("n_encap") or 0,
+        "why": _hole_why(kind, gel, cell, row, hunt),
+        "hunt_status": None if hunt is None else hunt.get("status"),
+        "hunt_why": None if hunt is None else hunt.get("why"),
+        "hunt_skip": [] if hunt is None else list(hunt.get("skip") or ()),
+        "not_this_material": [] if hunt is None else list(hunt.get("not_this_material") or ()),
+    }
+    return out
+
+
+def _hole_why(kind: str, gel: str, cell: str, row: dict | None, hunt: dict | None = None) -> str:
     cell_s = cell.replace("_", " ")
     if kind == "fragile_competitor":
         n = 0 if row is None else row["n_papers"]
@@ -292,10 +321,16 @@ def _hole_why(kind: str, gel: str, cell: str, row: dict | None) -> str:
             f"({n_papers(row)} paper(s), 0 encapsulation rows). The Friday keep-alive path is empty."
         )
     if kind == "missing_print":
-        return (
+        text = (
             f"{gel} × {cell_s} ranks keep-alive but has 0 printed rows. "
             "Switching the job to print cannot cite this gel."
         )
+        if hunt and hunt.get("status") == "hunted_empty":
+            text += (
+                " OA hunt logged empty (Couto 2024 qualitative only). "
+                "Do not retry xu2013/bowes2024/silk fibroin; do not invent a %."
+            )
+        return text
     if kind == "missing_pair":
         return f"No numeric in-gel live/dead for {gel} × {cell_s}. A buyer will type this pair."
     if kind == "death_confirm":
@@ -316,20 +351,36 @@ def n_papers(row: dict | None) -> int:
 
 
 def product_gap_boost(materials: set[str], cells: set[str], holes: list[dict] | None = None) -> tuple[float, list[str]]:
-    """Bump a harvested paper that would close a buyer hole. Reading-list only."""
+    """Bump a harvested paper that would close a buyer hole. Reading-list only.
+
+    Prefer an exact gel×cell hit over a gel-only hit, including when a higher-scored
+    missing pair (fibrin×MSC) sits above a hunted print hole (fibrin×articular).
+    Silk fibroin tagged silk_fibrin is not a fibrin-print fill.
+    """
     holes = holes if holes is not None else research_queue(limit=12)
-    bonus = 0.0
-    reasons: list[str] = []
+    mats = set(materials or ())
+    exact = None
+    gel_only = None
     for hole in holes:
-        if hole["material_class"] in materials and hole["cell_type"] in cells:
-            bonus += 22.0
-            reasons.append(f"product_gap:{hole['material_class']}×{hole['cell_type']}")
+        banned = set(hole.get("not_this_material") or ())
+        hunted = hole.get("hunt_status") == "hunted_empty"
+        if hunted and banned & mats:
+            continue
+        if hole["material_class"] in mats and hole["cell_type"] in cells:
+            exact = hole
             break
-        if hole["material_class"] in materials:
-            bonus += 8.0
-            reasons.append(f"product_gap_gel:{hole['material_class']}")
-            break
-    return bonus, reasons
+        if gel_only is None and hole["material_class"] in mats and not hunted:
+            gel_only = hole
+    if exact is not None:
+        hunted = exact.get("hunt_status") == "hunted_empty"
+        if hunted:
+            return 6.0, [
+                f"product_gap_open:{exact['material_class']}×{exact['cell_type']}:hunted_empty"
+            ]
+        return 22.0, [f"product_gap:{exact['material_class']}×{exact['cell_type']}"]
+    if gel_only is not None:
+        return 8.0, [f"product_gap_gel:{gel_only['material_class']}"]
+    return 0.0, []
 
 
 def honesty_notes(cell_type: str, how: str, coverage: list[dict], lang: str = "en") -> list[str]:
@@ -351,6 +402,15 @@ def honesty_notes(cell_type: str, how: str, coverage: list[dict], lang: str = "e
             if pt
             else "Fibrin has extracted live/dead but 0 printed rows — the print job cannot cite it."
         )
+        hunt = HUNT_LOG.get(("fibrin", cell_type))
+        if hunt and hunt.get("status") == "hunted_empty":
+            notes.append(
+                "A caça OA a fibrin print não encontrou live/dead numérico (Couto 2024 é qualitativo). "
+                "O buraco fica visível; não inventámos %."
+                if pt
+                else "OA hunt for fibrin print found no numeric live/dead (Couto 2024 is qualitative). "
+                "The hole stays; no invented %."
+            )
     return notes
 
 

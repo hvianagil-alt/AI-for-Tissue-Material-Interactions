@@ -1,10 +1,12 @@
 from tissuelab.product import (
     AVOID_MEAN,
+    HUNT_LOG,
     NEVER_EXTRACT,
     avoid_board,
     coverage_table,
     honest_model_card,
     lab_decision,
+    product_gap_boost,
     research_queue,
 )
 from tissuelab.protocol_finder import AVOID_MEAN as FINDER_AVOID
@@ -66,6 +68,13 @@ def test_research_queue_puts_gelma_articular_first():
     )
     assert fibrin is not None
     assert fibrin["kind"] == "missing_print"
+    assert fibrin["n_print"] == 0
+    assert fibrin["hunt_status"] == "hunted_empty"
+    assert "Couto" in (fibrin.get("hunt_why") or "")
+    assert "xu2013" in fibrin["hunt_skip"]
+    assert "bowes2024" in fibrin["hunt_skip"]
+    assert "silk_fibrin" in fibrin["not_this_material"]
+    assert "invent" in fibrin["why"].lower()
     assert NEVER_EXTRACT
     assert any("MTT" in line for line in NEVER_EXTRACT)
     assert any("death gels" in line for line in NEVER_EXTRACT)
@@ -87,3 +96,29 @@ def test_lab_decision_is_friday_pack_not_a_predictor():
     assert any("print-only" in n.lower() or "encapsul" in n.lower() for n in out["honesty"])
     assert out["offer"]["price_pilot"].startswith("£400")
     assert "quarter" in out["offer"]["price_pilot"]
+
+
+def test_silk_fibrin_is_not_boosted_as_fibrin_print():
+    holes = research_queue(limit=15)
+    false_bonus, false_reasons = product_gap_boost(
+        {"fibrin", "silk_fibrin"}, {"articular_chondrocyte"}, holes
+    )
+    true_bonus, true_reasons = product_gap_boost(
+        {"fibrin"}, {"articular_chondrocyte"}, holes
+    )
+    assert not any("product_gap:fibrin×articular_chondrocyte" in r for r in false_reasons)
+    assert not any("hunted_empty" in r for r in false_reasons)
+    assert any("hunted_empty" in r for r in true_reasons)
+    assert true_bonus == 6.0
+    rec = HUNT_LOG[("fibrin", "articular_chondrocyte")]
+    assert rec["status"] == "hunted_empty"
+    assert rec["hole"] == "missing_print"
+    assert "couto2024" in rec["skip"]
+
+
+def test_print_job_honesty_mentions_empty_fibrin_hunt():
+    out = lab_decision(cell_type="articular_chondrocyte", goal="alive", how="print")
+    blob = " ".join(out["honesty"]).lower()
+    assert "0 printed" in blob or "print" in blob
+    assert "couto" in blob
+    assert "invented" in blob or "inventámos" in blob

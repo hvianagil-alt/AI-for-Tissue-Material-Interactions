@@ -1,6 +1,6 @@
 # TissueLab product
 
-The scientific MVP (LOPO MAE ≤ 85% of dummy, R² > 0) is **not** the product. Dummy still slightly beats shrinkage (MAE 11.56 vs 11.69, R² −0.049). A PI will not pay for a viability predictor that loses to the mean.
+The scientific MVP (LOPO MAE ≤ 85% of dummy, R² > 0) is **not** the product. Dummy still slightly beats shrinkage (MAE 11.56 vs 11.69, R² −0.049). A PI will not pay for a viability predictor that loses to the mean. Sourced demand (papers, EU grant, LinkedIn, comps): [`MARKET.md`](MARKET.md).
 
 They will pay for **Friday’s decision**.
 
@@ -43,7 +43,7 @@ Order the next read by **product hole**, not by abstract `%`. Do **not** work `e
 
 1. **GelMA × articular encapsulate** — gold is 1 print paper, 0 encapsulation rows. Labs already run this; Friday keep-alive cannot cite it.
 2. **Second independent GelMA × articular numeric paper** (with starting kPa; reject Li/Levett/Paul floors). Ranking vs fibrin is one paper from flipping.
-3. **fibrin × articular print** — keep-alive winner has 0 printed rows, so job=print cannot cite fibrin.
+3. **fibrin × articular print** — keep-alive winner has 0 printed rows, so job=print cannot cite fibrin. **OA hunt 2026-09: empty** (Couto 2024 qualitative only). Skip xu2013 / bowes2024 / silk fibroin. Do not invent a %. Hole stays on the queue as `missing_print` + `hunted_empty`.
 4. **GelMA × MSC starting kPa** — 8 live/dead rows, 0 kPa.
 5. **Fragile winners / missing commercial pairs** — collagen articular, GelMA × nasal. Not gellan pile-on.
 
