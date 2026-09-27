@@ -63,7 +63,7 @@ After each extraction batch: `python -m tissuelab.load_database` then `python -m
 | Surface | Why a PI uses it |
 |---|---|
 | `/` protocol | Cells + job → what to run. Search harvested papers. |
-| `/avoid` | Mean &lt; 60% for these cells. Coverage. Next holes. |
+| `/pack` | Print-ready Friday card: gel, 3 DOIs, deaths, price |
 | `/api/decision` | Same pack as JSON (scripts, no HTML). |
 | `/lookup` | Evidence card if they already picked a gel |
 | `/table` | The thing they email a colleague. Filter keeps every gel in the dropdown. |

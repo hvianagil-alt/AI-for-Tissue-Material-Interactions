@@ -29,7 +29,7 @@ from tissuelab.schema import DesignInput, TARGETS
 from tissuelab.shrinkage import N_LOCKED_HYPERPARAMETERS, PAPERS_NEEDED_BEGINNING
 from tissuelab.train import load_model
 
-from app.protocol_ui import render_avoid_page, render_library_page, render_protocol_page
+from app.protocol_ui import render_avoid_page, render_library_page, render_pack_page, render_protocol_page
 from app.ui import CELL_TYPES, GROWTH_FACTORS, MATERIALS, render_compare_page, render_predict_page, render_table_page
 
 app = FastAPI(title="TissueLab", version="0.1.0")
@@ -162,6 +162,48 @@ def avoid(
         queue=research_queue(limit=8),
         never=NEVER_EXTRACT,
         lang=lang,
+    )
+
+
+@app.get("/pack", response_class=HTMLResponse)
+def pack(
+    cell_type: str = Query(default="articular_chondrocyte"),
+    goal: str = Query(default="alive"),
+    how: str = Query(default="encapsulate"),
+    tgf: str = Query(default="either"),
+    stock: str = Query(default="any"),
+    site: str = Query(default="any"),
+    lang: str = Query(default="en"),
+):
+    if cell_type not in CELL_TYPES:
+        cell_type = "articular_chondrocyte"
+    result = lab_decision(
+        cell_type=cell_type,
+        goal=goal,
+        how=how,
+        tgf=tgf,
+        stock=stock,
+        site=site,
+        lang=lang,
+    )
+    return render_pack_page(result=result, lang=lang)
+
+
+@app.get("/export.avoid.csv")
+def export_avoid_csv(cell_type: str = Query(default="articular_chondrocyte")):
+    if cell_type not in CELL_TYPES:
+        cell_type = "articular_chondrocyte"
+    rows = avoid_board(cell_type)
+    buf = io.StringIO()
+    fields = ["cell_type", "material_class", "mean", "min", "n_papers", "n_rows", "n_kpa", "n_print", "n_encap"]
+    writer = csv.DictWriter(buf, fieldnames=fields, extrasaction="ignore")
+    writer.writeheader()
+    for row in rows:
+        writer.writerow({"cell_type": cell_type, **row})
+    return Response(
+        content=buf.getvalue(),
+        media_type="text/csv",
+        headers={"Content-Disposition": "attachment; filename=tissuelab_avoid.csv"},
     )
 
 

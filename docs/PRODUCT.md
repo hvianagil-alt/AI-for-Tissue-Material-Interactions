@@ -29,8 +29,9 @@ Sell: *the labeled live/dead table for cartilage hydrogels, this week’s protoc
 | `/` Protocol | Cells + job → gel, extracted recipe, 3 DOIs |
 | `/avoid` | Mean &lt; 60% for these cells. Coverage. Next extraction holes |
 | `/table` + `/export.csv` | The thing they email a colleague |
+| `/pack` | One-page Friday card: gel, recipe, DOIs, deaths, price, print |
 | `/api/decision` | Same pack as JSON |
-| `/lookup` | Evidence card **if they already picked a gel** — table mean, not a flask forecast |
+| `/export.avoid.csv` | Avoid board as CSV |
 
 Honest LOPO stays on the page. If dummy is ahead, the page says dummy is ahead.
 

@@ -332,6 +332,28 @@ def product_gap_boost(materials: set[str], cells: set[str], holes: list[dict] | 
     return bonus, reasons
 
 
+def honesty_notes(cell_type: str, how: str, coverage: list[dict], lang: str = "en") -> list[str]:
+    """Buyer-facing holes for this job — not model caveats."""
+    pt = lang == "pt"
+    by = {row["material_class"]: row for row in coverage}
+    notes: list[str] = []
+    gelma = by.get("GelMA")
+    fibrin = by.get("fibrin")
+    if how != "print" and gelma and gelma.get("n_rows") and int(gelma.get("n_encap") or 0) == 0:
+        notes.append(
+            "O GelMA extraído nestas células é só print — keep-alive não cita encapsulação GelMA."
+            if pt
+            else "Extracted GelMA for these cells is print-only — keep-alive cannot cite an encapsulate GelMA paper."
+        )
+    if how == "print" and fibrin and fibrin.get("n_rows") and int(fibrin.get("n_print") or 0) == 0:
+        notes.append(
+            "A fibrina tem live/dead extraído mas 0 linhas impressas — o job print não a pode citar."
+            if pt
+            else "Fibrin has extracted live/dead but 0 printed rows — the print job cannot cite it."
+        )
+    return notes
+
+
 def lab_decision(
     *,
     cell_type: str = "articular_chondrocyte",
@@ -364,6 +386,7 @@ def lab_decision(
     else:
         card["served_parameters"] = N_LOCKED_HYPERPARAMETERS + int(card["served_empirical_priors"])
     board = avoid_board(cell, path)
+    cov = coverage_for_cell(cell, path)
     pt = lang == "pt"
     return {
         **proto,
@@ -373,7 +396,8 @@ def lab_decision(
             "sell": OFFER["sell_pt"] if pt else OFFER["sell"],
         },
         "avoid_board": board,
-        "coverage": coverage_for_cell(cell, path),
+        "coverage": cov,
+        "honesty": honesty_notes(cell, proto["intent"]["how"], cov, lang=lang),
         "model_card": card,
         "research_queue": research_queue(path, limit=8),
         "never_extract": NEVER_EXTRACT,

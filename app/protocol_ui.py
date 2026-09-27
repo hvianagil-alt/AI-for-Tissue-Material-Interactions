@@ -260,6 +260,8 @@ def render_protocol_page(
     else:
         honest_block = ""
 
+    honesty_bits = "".join(f"<p class='why warn'>{escape(n)}</p>" for n in (result.get("honesty") or []))
+
     harvested = "".join(_search_line(r, lang) for r in (search.get("harvested") or [])) or (
         "<li class='muted'>No harvested hit for this query.</li>"
     )
@@ -277,6 +279,10 @@ def render_protocol_page(
         }
     )
     live_qs = qs + "&live=1"
+    pack_link = (
+        f"<p><a class='live' href='/pack?{escape(qs)}'>"
+        f"{'Pack de sexta (imprimir)' if pt else 'Friday pack (print this page)'}</a></p>"
+    )
     lookup_qs = urlencode(
         {
             "material_class": proto["material_class"],
@@ -429,6 +435,7 @@ def render_protocol_page(
       <p class="muted">{escape(not_pred)}</p>
       {_recipe_box(result.get("recipe"), lang)}
       {field_block}
+      {honesty_bits}
       {why_block}
       <p class="stat">{escape(stat)}</p>
       <p><a href="/lookup?{escape(lookup_qs)}">{escape(evidence)}</a></p>
@@ -445,7 +452,8 @@ def render_protocol_page(
     <p><a class="live" href="/?{escape(live_qs)}">{escape(search_lab)}</a></p>
     {epmc_block}
     {honest_block}
-    <p class="foot muted"><a href="/avoid?lang={lang}">Avoid</a> · <a href="/table?lang={lang}">Table</a> · <a href="/compare?lang={lang}">Compare</a> · <a href="/export.csv">CSV</a> · <a href="/api/decision">JSON</a></p>
+    {pack_link}
+    <p class="foot muted"><a href="/pack?lang={lang}">Pack</a> · <a href="/avoid?lang={lang}">Avoid</a> · <a href="/table?lang={lang}">Table</a> · <a href="/compare?lang={lang}">Compare</a> · <a href="/export.csv">CSV</a> · <a href="/api/decision">JSON</a></p>
     """
     title = "TissueLab — this week’s protocol" if lang == "en" else "TissueLab — o protocolo desta semana"
     return render_shell(title=title, lang=lang, page="/", body=body, extra_css=extra_css, onboard="short", qs=qs)
@@ -626,5 +634,80 @@ def render_avoid_page(
     .honest { margin: 16px 0; }
     """
     return render_shell(title=title, lang=lang, page="/avoid", body=body, extra_css=extra_css, onboard="short")
+
+
+def render_pack_page(*, result: dict, lang: str = "en") -> str:
+    """One-page Friday card a PI prints before the lab meeting."""
+    lang = normalize_lang(lang)
+    pt = lang == "pt"
+    intent = result["intent"]
+    proto = result["protocol"]
+    offer = result.get("offer") or {}
+    gel = _label(MATERIAL_LABELS, proto["material_class"])
+    gf = _label(GF_LABELS, proto["growth_factor"])
+    kpa = proto.get("stiffness_kpa")
+    days = proto.get("culture_time_days")
+    headline = " · ".join(
+        [gel]
+        + ([f"~{float(kpa):.0f} kPa"] if kpa is not None else [])
+        + ([f"{float(days):.0f} d"] if days not in (None, "") else [])
+        + [gf]
+    )
+    recipe = result.get("recipe") or {}
+    dois = []
+    for paper in result.get("papers") or []:
+        dois.append(_paper_line(paper))
+    avoids = []
+    for death in result.get("avoid_board") or []:
+        name = _label(MATERIAL_LABELS, death["material_class"])
+        mean = "—" if death.get("mean") is None else f"{death['mean']:.0f}%"
+        avoids.append(f"<li><strong>{escape(name)}</strong> — {escape(mean)}</li>")
+    honesty = "".join(f"<p class='why warn'>{escape(n)}</p>" for n in (result.get("honesty") or []))
+    card = result.get("model_card") or {}
+    price = offer.get("price_pilot") or ""
+    sell = offer.get("sell") or ""
+    title = "Friday pack" if not pt else "Pack de sexta"
+    extra_css = """
+    main { max-width: 720px; }
+    .pack { border:1px solid #24344c; border-radius:14px; padding:18px 20px; background:#121b2b; }
+    .pack h1 { margin: 0 0 8px; }
+    .offer { color:#c5d4e8; }
+    .price { color:#3ecfb2; font-weight:700; }
+    ol.papers { padding-left: 1.15rem; }
+    ul.alts { list-style:none; padding-left:0; }
+    ul.alts li { padding: 6px 0; border-bottom: 1px solid #1e2b3f; color:#f07178; }
+    .why.warn { color:#f07178; }
+    .actions a { display:inline-block; margin: 8px 10px 0 0; }
+    @media print {
+      header.top, .onboard, .actions, a.skip { display:none !important; }
+      body { background:#fff; color:#111; }
+      main { max-width: none; }
+      .pack { border-color:#ccc; background:#fff; }
+      a { color:#111; }
+    }
+    """
+    body = f"""
+    <article class="pack" id="resultado">
+      <p class="kicker muted">{escape(title)}</p>
+      <h1>{escape(headline)}</h1>
+      <p class="offer">{escape(sell)}</p>
+      <p class="price">{escape(price)}</p>
+      {_recipe_box(recipe, lang)}
+      {honesty}
+      <h2>{'Papers' if not pt else 'Papers'}</h2>
+      <ol class="papers">{''.join(dois) or '<li>No DOI</li>'}</ol>
+      <h2>{'Do not start here' if not pt else 'Não comeces aqui'}</h2>
+      <ul class="alts">{''.join(avoids) or '<li class="muted">—</li>'}</ul>
+      <p class="muted">{escape(card.get('sell') or '')}</p>
+    </article>
+    <p class="actions">
+      <a class="live" href="javascript:window.print()">{'Imprimir' if pt else 'Print'}</a>
+      <a class="live" href="/api/decision?cell_type={escape(intent['cell_type'])}&goal={escape(intent['goal'])}&how={escape(intent['how'])}&lang={lang}">JSON</a>
+      <a class="live" href="/export.avoid.csv?cell_type={escape(intent['cell_type'])}">Avoid CSV</a>
+      <a class="live" href="/export.csv">Table CSV</a>
+    </p>
+    """
+    return render_shell(title=f"TissueLab — {title}", lang=lang, page="/pack", body=body, extra_css=extra_css, onboard=False)
+
 
 

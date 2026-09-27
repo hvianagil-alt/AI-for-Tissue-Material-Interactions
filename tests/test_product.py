@@ -83,5 +83,7 @@ def test_lab_decision_is_friday_pack_not_a_predictor():
     assert out["model_card"]["mvp_pass"] is False
     assert out["coverage"]
     assert out["research_queue"]
+    assert out["honesty"]
+    assert any("print-only" in n.lower() or "encapsul" in n.lower() for n in out["honesty"])
     assert out["offer"]["price_pilot"].startswith("£400")
     assert "quarter" in out["offer"]["price_pilot"]

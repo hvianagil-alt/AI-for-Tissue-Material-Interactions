@@ -139,6 +139,8 @@ def test_home_is_not_a_prediction():
     assert "What labs run" in body
     assert "This week’s gel" in body
     assert "dummy MAE" in body or "LOPO" in body
+    assert "print-only" in body.lower() or "encapsulate GelMA" in body
+    assert "Friday pack" in body
 
 
 def test_api_decision_json():
@@ -154,3 +156,20 @@ def test_api_decision_json():
     assert any(row["material_class"] == "PEG" for row in avoid["avoid"])
     health = client.get("/health").json()
     assert health["product"] == "friday_protocol"
+
+
+def test_friday_pack_and_avoid_csv():
+    client = TestClient(app)
+    pack = client.get("/pack")
+    assert pack.status_code == 200
+    body = pack.text
+    assert "Friday pack" in body
+    assert "Fibrin" in body
+    assert "PEG" in body
+    assert "£400" in body
+    csv_r = client.get("/export.avoid.csv", params={"cell_type": "articular_chondrocyte"})
+    assert csv_r.status_code == 200
+    assert "material_class" in csv_r.text.splitlines()[0]
+    assert "PEG" in csv_r.text
+    data = client.get("/api/decision").json()
+    assert data.get("honesty")

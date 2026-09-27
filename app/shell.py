@@ -6,6 +6,7 @@ from html import escape
 
 NAV = (
     ("/", "Protocol", "Protocolo"),
+    ("/pack", "Pack", "Pack"),
     ("/avoid", "Avoid", "Evitar"),
     ("/lookup", "Lookup", "Consulta"),
     ("/table", "Table", "Tabela"),

@@ -8,7 +8,7 @@ The scientific question remains:
 
 > **Can this system change which hydrogel experiment a cartilage researcher runs next?**
 
-How to sell it, how to research the next paper, and which model we actually serve: [`docs/PRODUCT.md`](docs/PRODUCT.md). Buyable-minimal plan: [`docs/BMP.md`](docs/BMP.md).
+How to sell it, how to research the next paper, and which model we actually serve: [`docs/PRODUCT.md`](docs/PRODUCT.md). Who to run next: [`docs/TEAM.md`](docs/TEAM.md). Buyable-minimal plan: [`docs/BMP.md`](docs/BMP.md).
 
 ## What is in v0.1
 
