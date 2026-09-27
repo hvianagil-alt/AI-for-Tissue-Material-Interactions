@@ -26,7 +26,7 @@ streamlit run app/streamlit_app.py --server.port 8502
 | Page | Use it for | Trust it? |
 |---|---|---|
 | **`/` Protocol** | Cells + job → what to run this week | Ranked extracted rows. Not a written methods section |
-| **`/avoid`** | Gels with extracted mean &lt; 60% | Yes — this is the skip they pay for |
+| **`/pack`** | One-page Friday card to print | Same labels as Protocol |
 | **`/api/decision`** | Same pack as JSON | Same labels as the page |
 | **`/library`** | Chemistry / architecture / application tags on every harvested paper | Paper counts, not live/dead |
 | **`/lookup`** | You already picked a gel | Literature lookup: yes. Not your next flask |
