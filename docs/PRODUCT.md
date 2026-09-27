@@ -1,6 +1,6 @@
 # TissueLab product
 
-The scientific MVP (LOPO MAE ≤ 85% of dummy, R² > 0) is **not** the product. Dummy still slightly beats shrinkage (MAE 11.56 vs 11.69, R² −0.049). A PI will not pay for a viability predictor that loses to the mean. Sourced demand (papers, EU grant, LinkedIn, comps): [`MARKET.md`](MARKET.md).
+The scientific MVP (LOPO MAE ≤ 85% of dummy, R² > 0) is **not** the product. Dummy still slightly beats shrinkage (MAE 11.50 vs 11.65, R² −0.051). A PI will not pay for a viability predictor that loses to the mean. Sourced demand (papers, EU grant, LinkedIn, comps): [`MARKET.md`](MARKET.md).
 
 They will pay for **Friday’s decision**.
 
@@ -41,15 +41,15 @@ Harvest (~12k papers) is a **library**. Gold (`v_model_viability`) is the only t
 
 Order the next read by **product hole**, not by abstract `%`. Do **not** work `extraction_queue.csv` top-down (rank 1 is meniscus). Do **not** extract more PEG deaths — they stay on Avoid.
 
-1. **GelMA × articular encapsulate** — gold is 1 print paper, 0 encapsulation rows. Labs already run this; Friday keep-alive cannot cite it.
-2. **Second independent GelMA × articular numeric paper** (with starting kPa; reject Li/Levett/Paul floors). Ranking vs fibrin is one paper from flipping.
+1. **GelMA × articular encapsulate** — **filled: schuiringa2022** (10% GelMA, bovine AC, day 7 = 87%; day 1 ≈73%). Still one independent paper besides martyniak print; ranking vs fibrin can flip. Skip Li/Levett/Paul floors.
+2. **Third independent GelMA × articular numeric paper** (with starting kPa; reject Li/Levett/Paul floors).
 3. **fibrin × articular print** — keep-alive winner has 0 printed rows, so job=print cannot cite fibrin. **OA hunt 2026-09: empty** (Couto 2024 qualitative only). Skip xu2013 / bowes2024 / silk fibroin. Do not invent a %. Hole stays on the queue as `missing_print` + `hunted_empty`.
-4. **GelMA × MSC starting kPa** — 8 live/dead rows, 0 kPa.
+4. **GelMA × MSC starting kPa** — live/dead rows, 0 kPa. **OA hunt 2026-09: empty** on existing gold. Skip chai2022 (osteogenic), huang2022 (floors), walejewska2024 (osteoid). Do not digitize Pei Fig. S1A.
 5. **Fragile winners / missing commercial pairs** — collagen articular, GelMA × nasal. Not gellan pile-on.
 
 Demote: reviews, citation-of-citation, floors, extract cytotoxicity, week-3+ ECM kPa, print pressure as Young’s, post-thaw, PRP-as-TGF.
 
-`python -m tissuelab.product --queue` prints the ranked holes. `rank_papers` boosts harvested hits that close those holes (`product_gap:GelMA×articular_chondrocyte`). Still a reading list — a human extracts.
+`python -m tissuelab.product --queue` prints the ranked holes. `hunted_empty` holes stay on the default board even when they score below the cut. `rank_papers` boosts harvested hits that close those holes (`product_gap:GelMA×articular_chondrocyte`). Still a reading list — a human extracts.
 
 ## Which model we serve (and which we refuse)
 

@@ -74,6 +74,7 @@ def test_hand_curated_replaces_auto_promoted():
         "fang2024",
         "burchak2022",
         "martinezgarcia2021", "read2023", "kolan2019",
+        "schuiringa2022",
     }
     assert all(s.get("pmid") for s in STUDIES if s["study_id"] in require_pmid)
 
@@ -432,6 +433,19 @@ def test_queue_pass_nineteen_gold_is_numeric_and_honest():
     assert by_id["kolan2019-alg-gel-asc-d0"]["measurements"][0]["value"] == 81.0
     assert "kolan2019-glass" not in by_id
     assert "boretti2024" not in {e["study_id"] for e in EXPERIMENTS}
+
+
+def test_queue_pass_twenty_schuiringa_is_gelma_articular_encap():
+    by_id = {e["experiment_id"]: e for e in EXPERIMENTS}
+    d7 = by_id["schuiringa2022-gelma-encap-d7"]
+    assert d7["cell_type"] == "articular_chondrocyte"
+    assert d7["culture_model"] == "3D_encapsulation"
+    assert d7["material_class"] == "GelMA"
+    assert d7["measurements"][0]["value"] == 87.0
+    assert d7.get("stiffness_kpa") in (None, )
+    d1 = by_id["schuiringa2022-gelma-encap-d1"]
+    assert d1["measurements"][0]["value"] == 73.0
+    assert not any(e["material_class"] == "HA" and e["study_id"] == "schuiringa2022" for e in EXPERIMENTS)
 
 
 def test_curated_viability_excludes_auto_promote():

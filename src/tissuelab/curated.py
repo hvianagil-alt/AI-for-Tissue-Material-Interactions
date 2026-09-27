@@ -1271,6 +1271,23 @@ STUDIES: list[dict] = [
             "Bioactive-glass/PCL arms not stored. No starting Young's. No TGF."
         ),
     },
+    {
+        "study_id": "schuiringa2022",
+        "citation": "Schuiringa, Mihajlovic, van Donkelaar, Vermonden & Ito, Gels 2022",
+        "doi": "10.3390/gels8070457",
+        "pmid": "35877542",
+        "year": 2022,
+        "journal": "Gels",
+        "pmcid": "PMC9315485",
+        "license": "CC-BY",
+        "notes": (
+            "Bovine metacarpal articular chondrocytes, freshly isolated, 10e6/ml in 10% w/v GelMA, "
+            "injected into PA6 spacer fabric and UV-polymerized (LAP 0.3% w/v, 365 nm, 1.49 mW/cm2, "
+            "7.5 min/side). Calcein AM/PI: approximately 73% day 1; 87% day 7 (n=5). "
+            "CSMA/HAMA 63% day 7 not stored. No starting GelMA Young's (day-0/28 moduli are CSMA/HAMA ± PA6 vs cartilage). "
+            "PA6 is a textile constraint, not a second hydrogel. DMEM + 1% ITS, no TGF."
+        ),
+    },
 ]
 
 
@@ -5867,6 +5884,60 @@ def _queue_pass_nineteen() -> list[dict]:
     return rows
 
 
+def _queue_pass_twenty() -> list[dict]:
+    """GelMA articular encapsulate (Schuiringa 2022 HydroSpacer control)."""
+    rows = []
+    for day, val, conf, extra in (
+        (
+            1.0,
+            73.0,
+            "medium",
+            "Paper: no significant differences … at day 1, reaching approximately 73% (Figure 5 B).",
+        ),
+        (
+            7.0,
+            87.0,
+            "high",
+            "Paper: Cell viability increased over 7 days of culture in the GelMA constructs to 87%.",
+        ),
+    ):
+        rows.append(
+            {
+                "experiment_id": f"schuiringa2022-gelma-encap-d{int(day)}",
+                "study_id": "schuiringa2022",
+                "material_class": "GelMA",
+                "material_detail": (
+                    "10% w/v GelMA, 0.3% w/v LAP, UV 365 nm 1.49 mW/cm2 bilateral 7.5 min/side, "
+                    "injected into PA6 spacer fabric (fill-and-cast, not print)"
+                ),
+                "crosslinking": "photocrosslink",
+                "polymer_concentration_wt_pct": 10.0,
+                "surface_chemistry": "native",
+                "has_adhesion_ligand": 1.0,
+                "cell_type": "articular_chondrocyte",
+                "species": "bovine",
+                "culture_model": "3D_encapsulation",
+                "growth_factor": "none",
+                "culture_time_days": day,
+                "cell_density_million_per_ml": 10.0,
+                "chemical_modification": "methacrylated",
+                "architecture": "bulk_hydrogel",
+                "application": "in_vitro_cartilage",
+                "live_dead_kit": "calcein_propidium",
+                "n_replicates": 5,
+                "extracted_from": f"PMC9315485 Fig. 5B GelMA HydroSpacer day {int(day)}",
+                "curator_confidence": conf,
+                "notes": (
+                    f"Bovine metacarpal articular chondrocytes, freshly isolated, 10e6/ml. "
+                    f"Live/dead {val}% day {int(day)} in 10% GelMA. {extra} "
+                    "CSMA/HAMA 63% not stored. No starting GelMA Young's. PA6 is not a second gel. No TGF."
+                ),
+                "measurements": [_m("viability_pct", val, "%", evidence="numeric_text", n=5, notes=extra)],
+            }
+        )
+    return rows
+
+
 EXPERIMENTS: list[dict] = (
     _bachmann_experiments()
     + _other_experiments()
@@ -5891,4 +5962,5 @@ EXPERIMENTS: list[dict] = (
     + _queue_pass_seventeen()
     + _queue_pass_eighteen()
     + _queue_pass_nineteen()
+    + _queue_pass_twenty()
 )

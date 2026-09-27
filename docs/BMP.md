@@ -46,7 +46,7 @@ Scientific honesty stays on the page: shrinkage vs dummy LOPO, n papers, % kPa m
 
 ## Data work that makes it sellable (this pass)
 
-The product lies when GelMA articular is **one paper**. A buyer will treat Daly 2016 as a law. Next extraction hole: a second independent GelMA × articular live/dead paper (see `python -m tissuelab.product --queue`).
+GelMA articular now has **two** independent numeric papers (martyniak print + schuiringa encap). Ranking vs fibrin can still flip until a third. Next extraction hole: a third GelMA × articular live/dead paper with starting kPa (see `python -m tissuelab.product --queue`). Do not invent fibrin-print %; that hunt is empty.
 
 Priority extraction (hand-curated only, numbers that appear in OA fulltext or a methods table):
 

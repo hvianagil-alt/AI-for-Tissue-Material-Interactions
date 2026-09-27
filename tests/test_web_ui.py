@@ -139,7 +139,7 @@ def test_home_is_not_a_prediction():
     assert "What labs run" in body
     assert "This week’s gel" in body
     assert "dummy MAE" in body or "LOPO" in body
-    assert "print-only" in body.lower() or "encapsulate GelMA" in body
+    assert "fewer than 3" in body.lower() or "ranking vs fibrin" in body.lower()
     assert "Friday pack" in body
 
 

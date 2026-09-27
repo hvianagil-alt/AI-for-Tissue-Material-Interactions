@@ -112,7 +112,31 @@ HUNT_LOG = {
             "perriergroult2026",
         ),
         "not_this_material": ("silk_fibrin",),
-    }
+    },
+    ("GelMA", "MSC"): {
+        "status": "hunted_empty",
+        "hole": "missing_kpa",
+        "date": "2026-09",
+        "why": (
+            "Existing GelMA×MSC gold (chen2020, daly2016, fang2024, mcmillan2025, pei2023) has "
+            "no text-quoted starting Young's. McMillan week-3 E and print-pressure kPa excluded. "
+            "New OA hits skipped: chai2022 osteogenic-only + about 68%; huang2022 floors "
+            "('above 85%') and printed-fiber text; walejewska2024 osteoid/osteogenic medium; "
+            "baldini2026 qualitative. Do not digitize Pei Fig. S1A."
+        ),
+        "skip": (
+            "chen2020",
+            "daly2016",
+            "fang2024",
+            "mcmillan2025",
+            "pei2023",
+            "chai2022",
+            "huang2022",
+            "walejewska2024",
+            "baldini2026",
+        ),
+        "not_this_material": (),
+    },
 }
 
 
@@ -273,7 +297,27 @@ def research_queue(path=DB_PATH, limit: int = 15) -> list[dict]:
             continue
         holes.append(_hole_record(gel, cell, kind, score, row))
     holes.sort(key=lambda h: (-h["score"], h["material_class"], h["cell_type"]))
-    return holes[:limit]
+    return _keep_hunted_empty(holes, limit)
+
+
+def _keep_hunted_empty(holes: list[dict], limit: int) -> list[dict]:
+    """Closed hunts stay on the board even when they score below the cut.
+
+    Friday still cannot cite them. Do not let missing_pair noise bury a logged miss.
+    """
+    if limit >= len(holes):
+        return holes
+    kept = holes[:limit]
+    missed = [h for h in holes[limit:] if h.get("hunt_status") == "hunted_empty"]
+    if not missed:
+        return kept
+    replace_from = [i for i, h in enumerate(kept) if h.get("hunt_status") != "hunted_empty"]
+    for pin in missed:
+        if not replace_from:
+            break
+        kept[replace_from.pop()] = pin
+    kept.sort(key=lambda h: (-h["score"], h["material_class"], h["cell_type"]))
+    return kept
 
 
 def _hunt_for(material: str, cell: str, kind: str) -> dict | None:
@@ -340,7 +384,13 @@ def _hole_why(kind: str, gel: str, cell: str, row: dict | None, hunt: dict | Non
         mean = "n/d" if not row or row["mean"] is None else f"{row['mean']:.0f}%"
         return f"High extracted mean ({mean}) from one paper — do not let a singleton rank the week."
     if kind == "missing_kpa":
-        return f"{gel} × {cell_s} has live/dead but no encapsulation kPa. Lookup looks empty."
+        text = f"{gel} × {cell_s} has live/dead but no encapsulation kPa. Lookup looks empty."
+        if hunt and hunt.get("status") == "hunted_empty":
+            text += (
+                " OA hunt logged empty on existing gold (McMillan week-3 E / print pressure skipped). "
+                "Do not retry chai2022 (osteogenic), huang2022 (floors), walejewska2024 (osteoid)."
+            )
+        return text
     if kind == "fragile":
         return f"Only {n_papers(row)} paper(s) for {gel} × {cell_s}."
     return f"Thin coverage for {gel} × {cell_s}."
@@ -390,6 +440,12 @@ def honesty_notes(cell_type: str, how: str, coverage: list[dict], lang: str = "e
     notes: list[str] = []
     gelma = by.get("GelMA")
     fibrin = by.get("fibrin")
+    if gelma and int(gelma.get("n_papers") or 0) < 3:
+        notes.append(
+            "O GelMA articular ainda tem menos de 3 papers — o ranking vs fibrina pode inverter."
+            if pt
+            else "GelMA articular live/dead is still from fewer than 3 papers — ranking vs fibrin can flip."
+        )
     if how != "print" and gelma and gelma.get("n_rows") and int(gelma.get("n_encap") or 0) == 0:
         notes.append(
             "O GelMA extraído nestas células é só print — keep-alive não cita encapsulação GelMA."
